@@ -1,8 +1,14 @@
 {
   "name": "portfolio",
+  "description": "David Engel's portfolio site!",
   "author": "David Engel",
   "version": "0.1.0",
-  "private": true,
+  "license": "GPL-3.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/engelde/portfolio"
+  },
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
