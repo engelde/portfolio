@@ -41,7 +41,7 @@ const End: FC<Props> = ({ x, y }: Props) => {
           lineHeight={0.7}
           className={'animate__animated animate__infinite animate__slow animate__pulse'}
           _hover={{ color: 'blue.300' }}>
-          <Link as={NextLink} href={'https://github.com/davideengel/portfolio'} target={'_blank'}>
+          <Link as={NextLink} href={'https://github.com/engelde/portfolio'} target={'_blank'}>
             {'> view source'}
           </Link>
         </Heading>
@@ -51,7 +51,7 @@ const End: FC<Props> = ({ x, y }: Props) => {
         </Heading>
 
         <HStack justifyContent={'center'} verticalAlign={'middle'} pt={8}>
-          <Link as={NextLink} href={'https://github.com/davideengel'} target={'_blank'}>
+          <Link as={NextLink} href={'https://github.com/engelde'} target={'_blank'}>
             <Image
               src={'/images/github/github.png'}
               width={'auto'}
