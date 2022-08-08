@@ -2,6 +2,8 @@
 
 This is my portfolio site! The site is a work in progress but feel free to look around.
 
+![Preview](/resources/images/preview.png)
+
 ## Getting Started
 
 Install dependencies:
