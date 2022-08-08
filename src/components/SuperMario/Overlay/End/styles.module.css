@@ -1,0 +1,22 @@
+.end {
+  background: #020204 !important;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.end:after {
+  background: linear-gradient(-45deg, #020204 16px, transparent 0),
+    linear-gradient(0deg, #020204 0px, transparent 0),
+    linear-gradient(-135deg, #020204 16px, transparent 0);
+  background-position: left top;
+  background-repeat: repeat-y;
+  background-size: 32px 32px;
+  content: ' ';
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  left: -23px;
+  width: 32px;
+  height: 100%;
+}

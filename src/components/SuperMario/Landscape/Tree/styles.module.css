@@ -1,0 +1,20 @@
+.v1 {
+  background: url('/images/tree/tree.1.png') no-repeat center center;
+  background-size: cover;
+  height: 244px;
+  width: 320px;
+}
+
+.v2 {
+  background: url('/images/tree/tree.2.png') no-repeat center center;
+  background-size: cover;
+  height: 320px;
+  width: 640px;
+}
+
+.v3 {
+  background: url('/images/tree/tree.3.png') no-repeat center center;
+  background-size: cover;
+  height: 640px;
+  width: 480px;
+}

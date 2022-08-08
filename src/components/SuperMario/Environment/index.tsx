@@ -1,0 +1,19 @@
+import { FC } from 'react'
+import { useMediaQuery } from '@chakra-ui/react'
+import Sun from './Sun'
+import Moon from './Moon'
+import Clouds from './Clouds'
+
+const Environment: FC = () => {
+  const [mobile] = useMediaQuery('(max-width: 48rem)')
+
+  return (
+    <>
+      <Sun />
+      <Moon />
+      {!mobile && <Clouds />}
+    </>
+  )
+}
+
+export default Environment

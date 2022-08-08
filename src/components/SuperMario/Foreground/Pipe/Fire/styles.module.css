@@ -1,0 +1,82 @@
+.fire {
+  background: url('/images/fire/fire.1.png') no-repeat center center;
+  background-size: cover;
+  height: 34px;
+  width: 30px;
+  margin-left: -140vw;
+  animation: rotate 1.2s ease infinite, forward 8s ease infinite;
+}
+
+.reverse {
+  animation: rotate 1.2s ease infinite;
+}
+
+@keyframes forward {
+  0% {
+    opacity: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+  43% {
+    opacity: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+  45% {
+    opacity: 1;
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-bottom: 0;
+  }
+  100% {
+    opacity: 1;
+    margin-left: -110vw;
+    margin-bottom: -80vh;
+  }
+}
+
+@keyframes reverse {
+  0% {
+    opacity: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+  53% {
+    opacity: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+  55% {
+    opacity: 1;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+  100% {
+    opacity: 1;
+    margin-left: 110vw;
+    margin-bottom: -80vh;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    background: url('/images/fire/fire.1.png') no-repeat center center;
+    background-size: cover;
+  }
+  25% {
+    background: url('/images/fire/fire.2.png') no-repeat center center;
+    background-size: cover;
+  }
+  50% {
+    background: url('/images/fire/fire.3.png') no-repeat center center;
+    background-size: cover;
+  }
+  75% {
+    background: url('/images/fire/fire.4.png') no-repeat center center;
+    background-size: cover;
+  }
+  100% {
+    background: url('/images/fire/fire.3.png') no-repeat center center;
+    background-size: cover;
+  }
+}

@@ -1,0 +1,10 @@
+.pipeOpening {
+  background: url('/images/pipe/pipe.0.png') no-repeat left top;
+  background-size: cover;
+}
+
+.pipe {
+  background: url('/images/pipe/pipe.1.png') repeat-y left top;
+  background-size: contain;
+  margin-inline-start: -32px;
+}

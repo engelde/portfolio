@@ -1,0 +1,83 @@
+.plant {
+  background: url('/images/plant/plant.1.png') no-repeat center center;
+  background-size: cover;
+  height: 160px;
+  width: 80px;
+  margin-bottom: -160px;
+  animation: move 1.2s ease infinite, enter 8s ease infinite;
+}
+
+.v2 {
+  animation: move2 2.4s ease infinite, enter 8s ease infinite;
+}
+
+.reverse {
+  transform: scaleX(-1);
+}
+
+@keyframes enter {
+  0% {
+    margin-bottom: -160px;
+  }
+  5% {
+    margin-bottom: -160px;
+  }
+  30% {
+    margin-bottom: 0px;
+  }
+  60% {
+    margin-bottom: 0px;
+  }
+  95% {
+    margin-bottom: -160px;
+  }
+  100% {
+    margin-bottom: -160px;
+  }
+}
+
+@keyframes move {
+  0% {
+    background: url('/images/plant/plant.1.png') no-repeat center center;
+    background-size: cover;
+  }
+  50% {
+    background: url('/images/plant/plant.2.png') no-repeat center center;
+    background-size: cover;
+  }
+  100% {
+    background: url('/images/plant/plant.1.png') no-repeat center center;
+    background-size: cover;
+  }
+}
+
+@keyframes move2 {
+  0% {
+    background: url('/images/plant/plant.3.png') no-repeat center center;
+    background-size: cover;
+  }
+  20% {
+    background: url('/images/plant/plant.4.png') no-repeat center center;
+    background-size: cover;
+  }
+  33% {
+    background: url('/images/plant/plant.5.png') no-repeat center center;
+    background-size: cover;
+  }
+  53% {
+    background: url('/images/plant/plant.6.png') no-repeat center center;
+    background-size: cover;
+  }
+  66% {
+    background: url('/images/plant/plant.5.png') no-repeat center center;
+    background-size: cover;
+  }
+  87% {
+    background: url('/images/plant/plant.4.png') no-repeat center center;
+    background-size: cover;
+  }
+  100% {
+    background: url('/images/plant/plant.3.png') no-repeat center center;
+    background-size: cover;
+  }
+}

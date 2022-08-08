@@ -1,0 +1,25 @@
+.brick {
+  background: url('/images/brick/brick.png') no-repeat center center;
+  background-size: cover;
+  min-height: 80px;
+  width: 80px;
+  animation: active 0.7s ease infinite;
+}
+
+@keyframes active {
+  0% {
+    filter: contrast(107.5%) brightness(110%);
+  }
+  25% {
+    filter: contrast(102.5%) brightness(102.5%);
+  }
+  50% {
+    filter: brightness(100%);
+  }
+  75% {
+    filter: contrast(102.5%) brightness(102.5%);
+  }
+  100% {
+    filter: contrast(107.5%) brightness(110%);
+  }
+}

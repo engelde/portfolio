@@ -1,0 +1,27 @@
+.v1 {
+  background: url('/images/cube/cube.1.png') no-repeat center center;
+  background-size: cover;
+  height: 400px;
+  width: 441px;
+}
+
+.v2 {
+  background: url('/images/cube/cube.2.png') no-repeat center center;
+  background-size: cover;
+  height: 560px;
+  width: 1080px;
+}
+
+.v3 {
+  background: url('/images/cube/cube.3.png') no-repeat center center;
+  background-size: cover;
+  height: 480px;
+  width: 919px;
+}
+
+.v4 {
+  background: url('/images/cube/cube.4.png') no-repeat center center;
+  background-size: cover;
+  height: 785px;
+  width: 480px;
+}

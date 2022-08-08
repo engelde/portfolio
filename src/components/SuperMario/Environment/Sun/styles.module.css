@@ -1,0 +1,135 @@
+.sun {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 50%;
+  animation: enlarge 20s infinite;
+  background: url(/images/sun/sun.png) no-repeat center center;
+  background-size: cover;
+}
+
+.sm {
+  width: 22.5vh;
+  height: 22.5vh;
+  opacity: 0.9;
+  animation: smPosition 90s infinite;
+}
+
+.md {
+  width: 25vh;
+  height: 25vh;
+  opacity: 0.4;
+  animation: mdPosition 90s infinite;
+}
+
+.lg {
+  width: 27.5vh;
+  height: 27.5vh;
+  opacity: 0.4;
+  animation: lgPosition 90s infinite;
+}
+
+@keyframes enlarge {
+  0% {
+    transform: scale(1.3);
+  }
+  50% {
+    transform: scale(1.8);
+  }
+  100% {
+    transform: scale(1.3);
+  }
+}
+
+@keyframes smPosition {
+  0% {
+    right: 4.75vh;
+    top: 4.75vh;
+  }
+  26% {
+    right: -11.25vh;
+    top: -11.25vh;
+  }
+  32% {
+    right: -30vh;
+    top: -30vh;
+  }
+  54% {
+    right: -30vh;
+    top: -30vh;
+  }
+  68% {
+    right: -11.25vh;
+    top: -11.25vh;
+  }
+  90% {
+    right: -0.25vh;
+    top: -0.25vh;
+  }
+  100% {
+    right: 4.75vh;
+    top: 4.75vh;
+  }
+}
+
+@keyframes mdPosition {
+  0% {
+    right: 3.5vh;
+    top: 3.5vh;
+  }
+  26% {
+    right: -12.5vh;
+    top: -12.5vh;
+  }
+  32% {
+    right: -30vh;
+    top: -30vh;
+  }
+  54% {
+    right: -30vh;
+    top: -30vh;
+  }
+  68% {
+    right: -12.5vh;
+    top: -12.5vh;
+  }
+  90% {
+    right: -1.5vh;
+    top: -1.5vh;
+  }
+  100% {
+    right: 3.5vh;
+    top: 3.5vh;
+  }
+}
+
+@keyframes lgPosition {
+  0% {
+    right: 2.25vh;
+    top: 2.25vh;
+  }
+  26% {
+    right: -13.75vh;
+    top: -13.75vh;
+  }
+  32% {
+    right: -30vh;
+    top: -30vh;
+  }
+  54% {
+    right: -30vh;
+    top: -30vh;
+  }
+  68% {
+    right: -13.75vh;
+    top: -13.75vh;
+  }
+  90% {
+    right: -2.75vh;
+    top: -2.75vh;
+  }
+  100% {
+    right: 2.25vh;
+    top: 2.25vh;
+  }
+}

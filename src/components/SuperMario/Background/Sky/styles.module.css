@@ -1,0 +1,17 @@
+.sky {
+  background-size: 300% 300%;
+  background-image: linear-gradient(-135deg, #0987a0 0%, #3182ce 50%, #2c5282 100%);
+  animation: sky 14s ease infinite;
+}
+
+@keyframes sky {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

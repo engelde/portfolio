@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+PATH="/usr/local/bin:$PATH"
+
+npm run format || {
+  false;
+}
+
+npm run lint || {
+  false;
+}
+
+npm run build || {
+  false;
+}
