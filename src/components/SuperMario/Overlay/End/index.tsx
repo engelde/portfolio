@@ -50,7 +50,7 @@ const End: FC<Props> = ({ x, y }: Props) => {
           {'© ' + config.app.author}
         </Heading>
 
-        <HStack justifyContent={'center'} verticalAlign={'middle'} pt={8}>
+        <HStack justifyContent={'center'} verticalAlign={'middle'} pt={8} spacing={2}>
           <Link as={NextLink} href={'https://github.com/engelde'} target={'_blank'}>
             <Image
               src={'/images/github/github.png'}
