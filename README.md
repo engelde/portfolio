@@ -34,6 +34,8 @@ Run the production server:
 npm run start
 ```
 
+Deploy with Docker:
+
 ```bash
 docker build -t portfolio .
 docker run --name davideengel -p 80:3000 -d portfolio
