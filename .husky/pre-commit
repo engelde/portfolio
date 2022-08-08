@@ -10,7 +10,3 @@ npm run format || {
 npm run lint || {
   false;
 }
-
-npm run build || {
-  false;
-}
