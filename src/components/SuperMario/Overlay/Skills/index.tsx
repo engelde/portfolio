@@ -184,7 +184,7 @@ const Skills: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
                 _hover={{
                   cursor: 'pointer',
                   color: skill.color,
-                  transform: 'scale(1.4)',
+                  transform: 'scale(1.25)',
                   className: 'animate__animated animate__tada',
                 }}
                 m={4}
