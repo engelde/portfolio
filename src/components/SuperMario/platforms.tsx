@@ -119,4 +119,9 @@ export const platforms = [
     xMax: 7000,
     height: 158 + smGroundHeight,
   },
+  {
+    xMin: 7460,
+    xMax: 7560,
+    height: 240 + smGroundHeight,
+  },
 ]
