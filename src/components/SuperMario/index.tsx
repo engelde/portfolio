@@ -17,7 +17,7 @@ const SuperMario: FC = () => {
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(300)
 
-  const [walkOffset] = useState(160)
+  const [walkOffset] = useState(0)
   const [jumpOffset, setJumpOffset] = useState(240)
   const length = 13360
   const [maxX] = useState(length + window.innerHeight)
@@ -25,7 +25,7 @@ const SuperMario: FC = () => {
   const [x, setX] = useState(0)
   const [y, setY] = useState(64)
 
-  const [xOffset, setXOffset] = useState(24)
+  const [xOffset, setXOffset] = useState(32)
   const [yOffset, setYOffset] = useState(0)
 
   const [oldX, setOldX] = useState(0)
