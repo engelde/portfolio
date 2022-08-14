@@ -40,5 +40,5 @@ Deploy with Docker:
 
 ```bash
 docker build -t portfolio .
-docker run --name davideengel -p 80:3000 -d portfolio
+docker run --name davidengel -p 80:3000 -d portfolio
 ```
