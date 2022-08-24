@@ -21,20 +21,21 @@ type MenuLink = {
   y: number
 }
 
-const links: MenuLink[] = [
-  { name: '.home()', color: 'cyan.300', x: 0, y: 64 },
-  { name: '.about()', color: 'cyan.300', x: 3500, y: 128 },
-  { name: '.contact()', color: 'cyan.300', x: 13380, y: 64 },
-]
-
 type Props = {
   open: boolean
   setOpen: (status: boolean) => void
   setXPos: (pos: number) => void
   setYPos: (pos: number) => void
+  maxX: number
 }
 
-const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos }: Props) => {
+const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
+  const links: MenuLink[] = [
+    { name: '.home()', color: 'cyan.300', x: 0, y: 64 },
+    { name: '.about()', color: 'cyan.300', x: 3500, y: 128 },
+    { name: '.contact()', color: 'cyan.300', x: maxX, y: 64 },
+  ]
+
   return (
     <>
       <Flex pr={{ base: 2, lg: 2 }} pl={{ base: 2, lg: 2 }}>
