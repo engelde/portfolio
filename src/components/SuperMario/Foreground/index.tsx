@@ -72,7 +72,7 @@ const Foreground: FC<Props> = ({
   const [box8PrizeCount, setBox8PrizeCount] = useState(mobile ? 0 : 1)
 
   useEffect(() => {
-    if (jump) {
+    if (jump && !mobile) {
       // box 1
       if (xPos < 1160 && xPos > 1060 && yPos < 304) {
         if (yPos < 304) {
@@ -169,6 +169,7 @@ const Foreground: FC<Props> = ({
     xPos,
     yPos,
     jump,
+    mobile,
     box1PrizeCount,
     box2PrizeCount,
     box3PrizeCount,
