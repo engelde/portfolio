@@ -318,7 +318,7 @@ const SuperMario: FC = () => {
   return (
     <Box overflowY={'scroll'} overflowX={'hidden'} h={maxX + 'px'} w={'100vw'}>
       <Background />
-      <Environment />
+      {!mobile && <Environment />}
       <Box
         zIndex={1}
         position={'fixed'}
@@ -333,6 +333,7 @@ const SuperMario: FC = () => {
           xPos={x + xOffset}
           yPos={y + yOffset}
           jump={jump}
+          mobile={mobile}
           setJumpOffset={setJumpOffset}
           score={score}
           setScore={setScore}

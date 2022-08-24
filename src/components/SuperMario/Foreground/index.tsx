@@ -15,37 +15,46 @@ type Props = {
   xPos: number
   yPos: number
   jump: boolean
+  mobile: boolean
   score: number
   setJumpOffset: (offset: number) => void
   setScore: (score: number) => void
 }
 
-const Foreground: FC<Props> = ({ xPos, yPos, jump, score, setJumpOffset, setScore }: Props) => {
+const Foreground: FC<Props> = ({
+  xPos,
+  yPos,
+  jump,
+  mobile,
+  score,
+  setJumpOffset,
+  setScore,
+}: Props) => {
   const [box1Status, setBox1Status] = useState(true)
   const [box1Active, setBox1Active] = useState(false)
   const [box1PrizeActive, setBox1PrizeActive] = useState(false)
-  const [box1PrizeCount, setBox1PrizeCount] = useState(1)
+  const [box1PrizeCount, setBox1PrizeCount] = useState(mobile ? 0 : 1)
 
   const [box2Status, setBox2Status] = useState(true)
   const [box2Active, setBox2Active] = useState(false)
   const [box2PrizeActive, setBox2PrizeActive] = useState(false)
-  const [box2PrizeCount, setBox2PrizeCount] = useState(1)
+  const [box2PrizeCount, setBox2PrizeCount] = useState(mobile ? 0 : 1)
 
   const [box3Status, setBox3Status] = useState(true)
   const [box3Active, setBox3Active] = useState(false)
   const [box3PrizeActive, setBox3PrizeActive] = useState(false)
-  const [box3PrizeCount, setBox3PrizeCount] = useState(1)
+  const [box3PrizeCount, setBox3PrizeCount] = useState(mobile ? 0 : 1)
 
   const [box4Status, setBox4Status] = useState(true)
   const [box4Active, setBox4Active] = useState(false)
   const [box4PrizeActive, setBox4PrizeActive] = useState(false)
-  const [box4PrizeCount, setBox4PrizeCount] = useState(1)
+  const [box4PrizeCount, setBox4PrizeCount] = useState(mobile ? 0 : 1)
   const [prize4Active, setPrize4Active] = useState(false)
 
   const [box5Status, setBox5Status] = useState(true)
   const [box5Active, setBox5Active] = useState(false)
   const [box5PrizeActive, setBox5PrizeActive] = useState(false)
-  const [box5PrizeCount, setBox5PrizeCount] = useState(1)
+  const [box5PrizeCount, setBox5PrizeCount] = useState(mobile ? 0 : 1)
 
   const [box6Status, setBox6Status] = useState(true)
   const [box6Active, setBox6Active] = useState(false)
@@ -55,12 +64,12 @@ const Foreground: FC<Props> = ({ xPos, yPos, jump, score, setJumpOffset, setScor
   const [box7Status, setBox7Status] = useState(true)
   const [box7Active, setBox7Active] = useState(false)
   const [box7PrizeActive, setBox7PrizeActive] = useState(false)
-  const [box7PrizeCount, setBox7PrizeCount] = useState(1)
+  const [box7PrizeCount, setBox7PrizeCount] = useState(mobile ? 0 : 1)
 
   const [box8Status, setBox8Status] = useState(true)
   const [box8Active, setBox8Active] = useState(false)
   const [box8PrizeActive, setBox8PrizeActive] = useState(false)
-  const [box8PrizeCount, setBox8PrizeCount] = useState(1)
+  const [box8PrizeCount, setBox8PrizeCount] = useState(mobile ? 0 : 1)
 
   useEffect(() => {
     if (jump) {
