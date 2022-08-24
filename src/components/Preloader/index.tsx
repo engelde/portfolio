@@ -83,7 +83,7 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
       className={(!isLoading && 'animate__animated animate__slideOutDown') || ''}>
       <Flex
         w={'full'}
-        height={isInstructing ? '110vh' : 'full'}
+        height={isInstructing ? '105vh' : 'full'}
         alignItems={'center'}
         justifyContent={'center'}>
         {(position == 1 && (

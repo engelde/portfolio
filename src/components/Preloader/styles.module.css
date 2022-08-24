@@ -3,6 +3,21 @@
   height: 10px;
   width: 10px;
   margin-bottom: 48px;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+
+.preloader::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes spin {
