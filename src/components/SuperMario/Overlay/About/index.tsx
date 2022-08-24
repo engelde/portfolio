@@ -158,7 +158,7 @@ const About: FC<Props> = ({ stage, ...rest }: Props) => {
               <Text className={'animate__animated animate__headShake'}>
                 <Code
                   text={
-                    '// "Wise men say forgiveness is divine but never full price for late pizza."'
+                    '// "Wise men say forgiveness is divine but never pay full price for late pizza."'
                   }
                   color={'gray.300'}
                   fontWeight={300}
