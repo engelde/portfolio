@@ -39,6 +39,9 @@ npm run start
 Deploy with Docker:
 
 ```bash
+# First, add the following to the next.config.js file.
+# output: 'standalone'
+
 docker build -t portfolio .
-docker run --name davideengel -p 80:3000 -d portfolio
+docker run --name engelde -p 80:3000 -d portfolio
 ```
