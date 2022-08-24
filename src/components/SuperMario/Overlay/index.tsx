@@ -20,6 +20,7 @@ type Props = {
   setXPos: (pos: number) => void
   yPos: number
   setYPos: (pos: number) => void
+  maxX: number
   jump: boolean
   paused: boolean
   lives: number
@@ -37,6 +38,7 @@ const Overlay: FC<Props> = ({
   yPos,
   setXPos,
   setYPos,
+  maxX,
   jump,
   length,
   paused,
@@ -126,7 +128,7 @@ const Overlay: FC<Props> = ({
 
       <End x={13360} y={0} />
 
-      <Pause open={paused} setOpen={setPaused} setXPos={setXPos} setYPos={setYPos} />
+      <Pause open={paused} setOpen={setPaused} setXPos={setXPos} setYPos={setYPos} maxX={maxX} />
     </>
   )
 }

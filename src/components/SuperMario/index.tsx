@@ -348,6 +348,7 @@ const SuperMario: FC = () => {
           setXPos={setX}
           yPos={y + yOffset}
           setYPos={setY}
+          maxX={maxX}
           paused={paused}
           lives={lives}
           score={score}
