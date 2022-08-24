@@ -160,13 +160,15 @@ const SuperMario: FC = () => {
       setForwards(window.scrollY - oldX > 0 ? true : false)
       setOldX(window.scrollY)
 
+      let newPos = window.scrollY < maxX ? window.scrollY : maxX
+
       if (forwards) {
-        if (x != (window.scrollY < maxX ? window.scrollY : maxX)) {
-          setX(window.scrollY < maxX ? window.scrollY : maxX)
+        if (x != newPos) {
+          setX(newPos)
         }
       } else {
-        if (x > 0 && x != (window.scrollY < maxX ? window.scrollY : maxX)) {
-          setX(window.scrollY < maxX ? window.scrollY : maxX)
+        if (x > 0 && x != newPos) {
+          setX(newPos)
         }
       }
     }
