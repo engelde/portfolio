@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react'
+import NextImage from 'next/image'
 import { useRouter } from 'next/router'
 import { Box, BoxProps, Flex, Icon, Text, VStack } from '@chakra-ui/react'
 import { FiArrowDown } from 'react-icons/fi'
@@ -103,6 +104,25 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
           </VStack>
         )}
       </Flex>
+      <Box display={'none'}>
+        <NextImage src="/images/box/box.0.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/box/box.1.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/box/box.2.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/box/box.3.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/box/box.4.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/coin/coin.1.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/coin/coin.2.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/coin/coin.3.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/coin/coin.4.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/coin/coin.5.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/ground/ground.1.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/ground/ground.2.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/ground/ground.3.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/mario/mario.sm.1.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/mario/mario.sm.2.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/mario/mario.sm.jump.png" width="0" height="0" priority={true} />
+        <NextImage src="/images/mushroom/mushroom.png" width="0" height="0" priority={true} />
+      </Box>
     </Box>
   )
 }
