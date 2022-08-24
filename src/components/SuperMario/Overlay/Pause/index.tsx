@@ -1,7 +1,5 @@
 import { FC } from 'react'
-import NextLink from 'next/link'
 import {
-  Button,
   Drawer,
   DrawerContent,
   DrawerBody,
@@ -11,7 +9,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  Link,
   Text,
   VStack,
 } from '@chakra-ui/react'
@@ -80,6 +77,8 @@ const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos }: Props) => {
                       textAlign={'center'}
                       _hover={{ cursor: 'pointer', color: link.color }}
                       onClick={() => {
+                        if (window.scrollY !== link.x)
+                          window.scrollTo({ top: link.x, behavior: 'smooth' })
                         setXPos(link.x)
                         setYPos(link.y)
                         setOpen(false)
