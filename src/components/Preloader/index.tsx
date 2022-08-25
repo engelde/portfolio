@@ -81,7 +81,9 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
       overflowY={isInstructing ? 'scroll' : 'hidden'}
       onScroll={handleScroll}
       bg={'black'}
-      className={(!isLoading && 'animate__animated animate__slideOutDown') || ''}>
+      className={
+        styles.container + (!isLoading && ' animate__animated animate__slideOutDown') || ''
+      }>
       <Flex
         w={'full'}
         height={isInstructing ? 'calc(100vh + 10px)' : 'full'}
