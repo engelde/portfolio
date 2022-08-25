@@ -15,6 +15,7 @@ body {
   scroll-behavior: smooth;
   overscroll-behavior-y: none;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 ::-webkit-scrollbar {
