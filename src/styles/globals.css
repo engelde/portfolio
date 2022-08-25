@@ -4,8 +4,6 @@ body {
   margin: 0;
   background: black;
   font-family: 'VT323', monospace !important;
-  scroll-behavior: smooth;
-  overscroll-behavior-y: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -14,11 +12,17 @@ body {
   user-select: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
   overflow-y: scroll;
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
 }
 
 a {

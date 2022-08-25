@@ -1,17 +1,25 @@
+.container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+  height: 0;
+  width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 .preloader {
   animation: spin 1s linear infinite;
   height: 10px;
   width: 10px;
   margin-bottom: 48px;
-  scroll-behavior: smooth;
-  overscroll-behavior-y: none;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow-y: scroll;
-}
-
-.preloader::-webkit-scrollbar {
-  display: none;
 }
 
 @keyframes spin {
