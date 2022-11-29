@@ -35,7 +35,7 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
         </Heading>
         <Text
           fontSize={'xl'}
-          maxWidth={840}
+          maxWidth={820}
           textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
           className={'animate__animated animate__fadeInLeft'}>
           <Code text={'<p>'} />
@@ -43,9 +43,9 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
           <Text as={'span'} color={'cyan.500'} fontWeight={'bold'}>
             {data?.address}
           </Text>
-          ! My name is David Engel and I am a senior full stack software engineer. Here you can
-          learn a little bit about me and the type of work I like doing. This site was built with
-          TypeScript and Next.js. It&apos;s a work in progress but feel free to take a look around!
+          ! My name is David Engel and I am a software engineer. Here you can learn a little bit
+          about me and the type of work I like doing. This site was built with TypeScript and
+          Next.js. It&apos;s a work in progress but feel free to take a look around!
           <Text
             as={'span'}
             display={'inline'}
