@@ -142,7 +142,7 @@ const Skills: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
         size={'4xl'}
         color={'red.500'}
         pb={2}
-        textShadow={'md'}
+        textShadow={'2px 2px rgba(0, 0, 0, 0.14)'}
         className={'animate__animated animate__fadeInDown'}>
         <Code text={'<h1>'} />
         Skills
