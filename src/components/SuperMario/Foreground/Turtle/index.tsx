@@ -16,7 +16,7 @@ const Turtle: FC<Props> = ({ x, y }: Props) => {
       bottom={y + 'px'}
       height={'160px'}
       width={'80px'}
-      animation={''}
+      background={'url("/images/turtle/turtle.1.png") no-repeat center center / contain'}
       className={'animate__animated animate__fadeInUp ' + styles.turtle}
     />
   )

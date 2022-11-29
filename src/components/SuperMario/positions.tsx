@@ -41,11 +41,11 @@ const lgGroundHeight = 128
 export const positions = [
   {
     xMin: 0,
-    xMax: 3260,
+    xMax: 3272,
     height: smGroundHeight,
   },
   {
-    xMin: 3260,
+    xMin: 3272,
     xMax: 5800,
     height: lgGroundHeight,
   },

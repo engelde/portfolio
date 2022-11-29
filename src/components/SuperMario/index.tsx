@@ -19,7 +19,7 @@ const SuperMario: FC = () => {
 
   const [walkOffset] = useState(0)
   const [jumpOffset, setJumpOffset] = useState(240)
-  const length = 13360
+  const length = 13340
   const [maxX] = useState(length + window.innerHeight)
 
   const [x, setX] = useState(0)
@@ -37,11 +37,10 @@ const SuperMario: FC = () => {
   const [moving, setMoving] = useState(false)
   const [moveRight, setMoveRight] = useState(false)
   const [moveLeft, setMoveLeft] = useState(false)
-
   const [jump, setJump] = useState(false)
   const [jumpLock, setJumpLock] = useState(false)
-  const [duck, setDuck] = useState(false)
-  const [duckLock, setDuckLock] = useState(false)
+  // const [duck, setDuck] = useState(false)
+  // const [duckLock, setDuckLock] = useState(false)
 
   const [platform, setPlatform] = useState(false)
 
@@ -333,7 +332,6 @@ const SuperMario: FC = () => {
           xPos={x + xOffset}
           yPos={y + yOffset}
           jump={jump}
-          mobile={mobile}
           setJumpOffset={setJumpOffset}
           score={score}
           setScore={setScore}

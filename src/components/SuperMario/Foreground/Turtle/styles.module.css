@@ -1,21 +1,16 @@
 .turtle {
-  background: url('/images/turtle/turtle.1.png') no-repeat center center;
-  background-size: contain;
   animation: walk 0.7s ease infinite, move 18s linear infinite;
 }
 
 @keyframes walk {
   0% {
-    background: url('/images/turtle/turtle.1.png') no-repeat center center;
-    background-size: contain;
+    background: url('/images/turtle/turtle.1.png') no-repeat center center / contain;
   }
   50% {
-    background: url('/images/turtle/turtle.2.png') no-repeat center center;
-    background-size: contain;
+    background: url('/images/turtle/turtle.2.png') no-repeat center center / contain;
   }
   100% {
-    background: url('/images/turtle/turtle.1.png') no-repeat center center;
-    background-size: contain;
+    background: url('/images/turtle/turtle.1.png') no-repeat center center / contain;
   }
 }
 

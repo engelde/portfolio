@@ -11,11 +11,12 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
 
   return (
     <Box
-      p={2}
       zIndex={999}
       position={'fixed'}
       top={8}
       left={4}
+      py={3}
+      maxW={'calc(100vw - 2rem)'}
       className={'animate__animated animate__fadeInDown'}
       {...rest}>
       <VStack alignItems={'left'} spacing={2}>
@@ -27,21 +28,30 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
           className={'animate__animated animate__slow animate__pulse'}>
           <Code text={'<h1>'} />
           Hello
-          <Text display={{ base: 'block', sm: 'inline' }}>
+          <Text as={'span'} display={{ base: 'block', sm: 'inline' }}>
             .World()
             <Code text={'</h1>'} />
           </Text>
         </Heading>
         <Text
           fontSize={'xl'}
-          maxWidth={800}
+          maxWidth={840}
           textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
           className={'animate__animated animate__fadeInLeft'}>
           <Code text={'<p>'} />
-          Thanks for visiting my site, {data?.address || '127.0.0.1'}! My name is David Engel and I
-          am a full stack software engineer. Here you can learn a little bit about me and the type
-          of work I like doing. This site was built with TypeScript and Next.js. It&apos;s a work in
-          progress but feel free to take a look around!
+          Thanks for visiting my site,{' '}
+          <Text as={'span'} color={'cyan.500'} fontWeight={'bold'}>
+            {data?.address}
+          </Text>
+          ! My name is David Engel and I am a senior full stack software engineer. Here you can
+          learn a little bit about me and the type of work I like doing. This site was built with
+          TypeScript and Next.js. It&apos;s a work in progress but feel free to take a look around!
+          <Text
+            as={'span'}
+            display={'inline'}
+            className={'animate__animated animate__infinite animate__flash'}>
+            |
+          </Text>
           <Code text={'</p>'} />
         </Text>
       </VStack>
@@ -74,7 +84,7 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
           </Kbd>
 
           <Text color={'white'} pl={2}>
-            for settings
+            to pause
           </Text>
         </HStack>
       </HStack>

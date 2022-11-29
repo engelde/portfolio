@@ -56,7 +56,7 @@ export const platforms = [
   // cube 1
   {
     xMin: 1550,
-    xMax: 1790,
+    xMax: 1800,
     height: 396 + smGroundHeight,
   },
   {

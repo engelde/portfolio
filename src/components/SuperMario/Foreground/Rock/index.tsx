@@ -1,6 +1,6 @@
 import { FC } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import styles from './styles.module.css'
 
 type Props = {
   x: number
@@ -10,14 +10,23 @@ type Props = {
 const Rock: FC<Props> = ({ x, y }: Props) => {
   return (
     <Box
-      width={'80px'}
       zIndex={2}
       position={'absolute'}
+      height={'80px'}
+      width={'80px'}
       left={x + 'px'}
       bottom={y + 'px'}
       p={0}
-      className={'animate__animated animate__fadeInUp ' + styles.rock}
-    />
+      className={'animate__animated animate__fadeInUp'}>
+      <NextImage
+        alt={'Rock'}
+        src={'/images/rock/rock.png'}
+        height={'80px'}
+        width={'80px'}
+        quality={80}
+        priority
+      />
+    </Box>
   )
 }
 

@@ -1,9 +1,5 @@
 .brick {
-  background: url('/images/brick/brick.png') no-repeat center center;
-  background-size: cover;
-  min-height: 80px;
-  width: 80px;
-  animation: active 0.7s ease infinite;
+  animation: active 1s ease infinite;
 }
 
 @keyframes active {

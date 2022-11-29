@@ -5,9 +5,10 @@ type Response = {
 }
 
 const Ip = (req: NextApiRequest, res: NextApiResponse<Response>) => {
+  const address = req.socket.remoteAddress
+
   res.status(200).json({
-    address:
-      (req.connection.remoteAddress !== '::1' && req.connection.remoteAddress) || '127.0.0.1',
+    address: address !== undefined ? address : '127.0.0.1',
   })
 }
 
