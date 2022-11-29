@@ -1,5 +1,7 @@
 import { FC, useState, useEffect } from 'react'
 import { useMediaQuery } from '@chakra-ui/react'
+import { Box as CkBox } from '@chakra-ui/react'
+import Pipe from '../Foreground/Pipe'
 import About from './About'
 import Dog from './Dog'
 import End from './End'
@@ -63,17 +65,18 @@ const Overlay: FC<Props> = ({
     <>
       <Intro
         className={
-          xPos > 2880
-            ? 'animate__animated animate__fadeOutUpBig'
+          xPos > 2720
+            ? 'animate__animated animate__faster animate__slideOutUp'
             : 'animate__animated animate__fadeInDownBig'
         }
       />
 
       <About
         stage={xPos < 5100 ? 1 : 2}
+        visibility={xPos > 1000 ? 'inherit' : 'hidden'}
         className={
-          xPos < 3360 || xPos > 7000
-            ? 'animate__animated animate__fadeOutUpBig'
+          xPos < 3040 || xPos > 7000
+            ? 'animate__animated animate__faster animate__slideOutUp'
             : 'animate__animated animate__fadeInDownBig'
         }
       />
@@ -81,19 +84,21 @@ const Overlay: FC<Props> = ({
       <Skills
         xPos={xPos}
         offset={8360 - xPos > 0 ? 8360 - xPos : 0}
+        visibility={xPos > 1000 ? 'inherit' : 'hidden'}
         className={
-          xPos < 7000 || xPos > 9400
-            ? 'animate__animated animate__fadeOutUpBig'
+          xPos < 7240 || xPos > 9800
+            ? 'animate__animated animate__faster animate__slideOutUp'
             : 'animate__animated animate__fadeInDownBig'
         }
       />
 
       <Thanks
         xPos={xPos}
-        offset={10480 - xPos > 0 ? 10480 - xPos : 0}
+        offset={10720 - xPos > 0 ? 10720 - xPos : 0}
+        visibility={xPos > 1000 ? 'inherit' : 'hidden'}
         className={
-          xPos < 9400 || xPos > 12160
-            ? 'animate__animated animate__fadeOutUpBig'
+          xPos < 10040 || xPos > 12160
+            ? 'animate__animated animate__faster animate__slideOutUp'
             : 'animate__animated animate__fadeInDownBig'
         }
       />
@@ -101,9 +106,10 @@ const Overlay: FC<Props> = ({
       <Dog
         xPos={xPos}
         offset={12680 - xPos > 0 ? 12680 - xPos + (12680 % xPos) / 2 : 0}
+        visibility={xPos > 1000 ? 'inherit' : 'hidden'}
         className={
           xPos < 11600
-            ? 'animate__animated animate__fadeOutUpBig'
+            ? 'animate__animated animate__faster animate__slideOutRight'
             : 'animate__animated animate__fadeInDownBig'
         }
       />
@@ -125,6 +131,16 @@ const Overlay: FC<Props> = ({
       {xPos < 13360 && !mobile && (
         <Stats xPos={xPos} yPos={yPos} lives={lives} score={score} timer={timer} />
       )}
+
+      <CkBox
+        position={'absolute'}
+        zIndex={9992}
+        height={'160px'}
+        width={'410px'}
+        left={13080}
+        bottom={'64px'}>
+        <Pipe x={0} y={0} height={410} rotate={-90} />
+      </CkBox>
 
       <End x={13360} y={0} />
 

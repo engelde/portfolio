@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import NextImage from 'next/image'
 import { VStack, Box } from '@chakra-ui/react'
 import Fire from './Fire'
 import Plant from './Plant'
@@ -31,7 +32,14 @@ const Pipe: FC<Props> = ({
         spacing={0}
         mb={rotate !== undefined ? '-' + (height / 2 - 76) + 'px' : '0px'}
         transform={'rotate(' + ((rotate !== undefined && rotate + 'deg') || '0deg') + ')'}>
-        <Box height={'80px'} width={'160px'} className={styles.pipeOpening} />
+        <NextImage
+          alt={'Pipe'}
+          src={'/images/pipe/pipe.0.png'}
+          height={'80px'}
+          width={'160px'}
+          quality={80}
+          priority
+        />
         <Box height={height - 80 + 'px'} width={'160px'} className={styles.pipe} />
       </VStack>
       {plant && (
@@ -45,7 +53,7 @@ const Pipe: FC<Props> = ({
           {plantVariant == 2 && (
             <Fire
               x={40}
-              y={height + 100}
+              y={height + 80}
               forwards={forwards !== undefined ? forwards : true}
               active={active !== undefined ? active : true}
             />

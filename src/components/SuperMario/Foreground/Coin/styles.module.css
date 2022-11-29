@@ -1,48 +1,29 @@
 .coin {
-  background: url('/images/coin/coin.1.png') no-repeat center center;
   animation: spin 0.7s ease infinite;
-  background-size: cover;
-  height: 80px;
-  width: 80px;
-  margin-bottom: 0;
-  cursor: pointer;
 }
 
 .active {
-  opacity: 0;
   animation: active 0.5s ease, spin 0.7s ease infinite;
 }
 
 @keyframes spin {
   0% {
-    background: url('/images/coin/coin.1.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(105%) brightness(105%);
+    background: url('/images/coin/coin.1.png') no-repeat center center / cover;
   }
   20% {
-    background: url('/images/coin/coin.2.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(101.25%) brightness(101.25%);
+    background: url('/images/coin/coin.2.png') no-repeat center center / cover;
   }
   40% {
-    background: url('/images/coin/coin.3.png') no-repeat center center;
-    background-size: cover;
-    filter: brightness(100%);
+    background: url('/images/coin/coin.3.png') no-repeat center center / cover;
   }
   60% {
-    background: url('/images/coin/coin.4.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(101.25%) brightness(101.25%);
+    background: url('/images/coin/coin.4.png') no-repeat center center / cover;
   }
   80% {
-    background: url('/images/coin/coin.5.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(101.25%) brightness(101.25%);
+    background: url('/images/coin/coin.5.png') no-repeat center center / cover;
   }
   100% {
-    background: url('/images/coin/coin.1.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(105%) brightness(105%);
+    background: url('/images/coin/coin.1.png') no-repeat center center / cover;
   }
 }
 

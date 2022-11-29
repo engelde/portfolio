@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { Box, BoxProps, Image } from '@chakra-ui/react'
-import Code from '@/components/Code'
+import NextImage from 'next/image'
+import { Box, BoxProps } from '@chakra-ui/react'
 
 type Props = BoxProps & {
   xPos: number
@@ -18,18 +18,25 @@ const Dog: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
       ml={offset + 'px'}
       className={'animate__animated animate__fadeInLeft'}
       {...rest}>
-      <Image
-        src={'/images/profile/dog.png'}
+      <Box
         width={{ base: 225, md: 300 }}
-        height={'auto'}
-        alt={'Frodo'}
+        height={{ base: 225, md: 300 }}
         border={4}
         borderStyle={'solid'}
         borderColor={'black'}
         rounded={'lg'}
         boxShadow={'2px 2px rgba(0,0,0,.2)'}
-        className={'animate__animated animate__infinite animate__slow animate__pulse'}
-      />
+        overflow={'hidden'}
+        className={'animate__animated animate__infinite animate__slow animate__pulse'}>
+        <NextImage
+          alt={'Dog'}
+          src={'/images/dog/dog.png'}
+          layout={'fill'}
+          objectFit={'cover'}
+          quality={90}
+          priority
+        />
+      </Box>
     </Box>
   )
 }

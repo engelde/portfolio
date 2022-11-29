@@ -1,10 +1,3 @@
-.end {
-  background: #020204 !important;
-  background-size: cover;
-  min-height: 100vh;
-  width: 100vw;
-}
-
 .end:after {
   background: linear-gradient(-45deg, #020204 16px, transparent 0),
     linear-gradient(0deg, #020204 0px, transparent 0),

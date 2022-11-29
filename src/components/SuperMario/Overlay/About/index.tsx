@@ -1,14 +1,18 @@
 import { FC } from 'react'
-import { Box, BoxProps, Heading, HStack, Image, Text, VStack } from '@chakra-ui/react'
+import NextImage from 'next/image'
+import { Box, BoxProps, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import Code from '@/components/Code'
 
 const Bio = (
   <Text fontSize={'xl'} pb={2} className={'animate__animated animate__fadeIn'} maxWidth={680}>
     <Code text={'<p>'} />
     {
-      "I am a full stack software engineer with 9 years of experience delivering successful projects to senior management, clients, and investors. I have a Master's in Software Engineering from DePaul University and I currently work at the University of Southern California. When I'm not making things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo"
+      "I am a full stack software engineer with 9 years of experience delivering successful projects to senior management, clients, and investors. I have a Master's in Software Engineering from DePaul University and I currently work at the University of Southern California. When I'm not making things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
     }
-    <Text display={'inline'} className={'animate__animated animate__infinite animate__flash'}>
+    <Text
+      as={'span'}
+      display={'inline'}
+      className={'animate__animated animate__infinite animate__flash'}>
       |
     </Text>
     <Code text={'</p>'} />
@@ -78,6 +82,7 @@ const Experience = (
           className={'animate__animated animate__fadeInUpBig'}>
           Web and Systems Manager
           <Text
+            as={'span'}
             fontWeight={'500'}
             size={'md'}
             mt={0}
@@ -104,11 +109,12 @@ type Props = BoxProps & {
 const About: FC<Props> = ({ stage, ...rest }: Props) => {
   return (
     <Box
-      p={2}
-      zIndex={999}
+      zIndex={9992}
       position={'fixed'}
       top={8}
       left={4}
+      py={3}
+      maxW={'calc(100vw - 2rem)'}
       className={'animate__animated animate__fadeInDown'}
       {...rest}>
       <Heading
@@ -121,21 +127,30 @@ const About: FC<Props> = ({ stage, ...rest }: Props) => {
         About()
         <Code text={'</h1>'} />
       </Heading>
+
       <HStack mb={2} spacing={{ base: 4, md: 8 }} alignItems={'top'} justifyContent={'flex-start'}>
         <VStack alignItems={'left'}>
-          <Image
-            src={stage == 1 ? '/images/profile/profile.png' : '/images/profile/family.png'}
+          <Box
             width={{ base: 130, md: 300 }}
-            height={'auto'}
-            alt={'Me'}
+            height={{ base: 130, md: 300 }}
             border={4}
             borderStyle={'solid'}
             borderColor={'black'}
             rounded={'lg'}
             boxShadow={'2px 2px rgba(0,0,0,.2)'}
-            className={'animate__animated animate__infinite animate__slow animate__pulse'}
-          />
+            overflow={'hidden'}
+            className={'animate__animated animate__infinite animate__slow animate__pulse'}>
+            <NextImage
+              alt={stage === 1 ? 'Me' : 'Family'}
+              src={stage === 1 ? '/images/me/me.png' : '/images/family/family.png'}
+              layout={'fill'}
+              objectFit={'cover'}
+              quality={90}
+              priority
+            />
+          </Box>
         </VStack>
+
         <VStack alignItems={'top'} spacing={{ base: 4, md: 8 }}>
           <Heading size={'2xl'} className={'animate__animated animate__fadeIn'}>
             David Engel

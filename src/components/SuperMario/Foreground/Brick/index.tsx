@@ -15,7 +15,9 @@ const Brick: FC<Props> = ({ x, y }: Props) => {
       left={x + 'px'}
       bottom={y + 'px'}
       p={0}
+      height={'80px'}
       width={'80px'}
+      background={'url("/images/brick/brick.png") no-repeat center center / cover'}
       className={'animate__animated animate__fadeInUp ' + styles.brick}
     />
   )

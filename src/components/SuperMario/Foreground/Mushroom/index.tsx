@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import Points from '../Points'
 import styles from './styles.module.css'
@@ -29,15 +30,27 @@ const Mushroom: FC<Props> = ({ active, setActive, x, y, score, setScore }: Props
       <Box
         zIndex={-99}
         position={'absolute'}
-        width={'80px'}
         height={'80px'}
+        width={'80px'}
         left={x + 'px'}
         bottom={y + 80 + 'px'}
         p={0}
-        className={styles.mushroom + ' ' + (active && styles.active)}
-        _hover={{ cursor: 'pointer', filter: 'brightness(115%)' }}
-        onClick={() => setActive(true)}
-      />
+        ml={'320px'}
+        mb={'-160px'}
+        cursor={'pointer'}
+        display={active ? 'none' : 'inherit'}
+        _hover={{ cursor: 'pointer', filter: 'brightness(115%) !important' }}
+        className={styles.mushroom}
+        onClick={() => setActive(true)}>
+        <NextImage
+          alt={'Mushroom'}
+          src={'/images/mushroom/mushroom.png'}
+          height={'80px'}
+          width={'80px'}
+          quality={80}
+          priority
+        />
+      </Box>
     </>
   )
 }
