@@ -1,76 +1,23 @@
-.box {
-  background: url('/images/box/box.0.png') no-repeat center center;
-  background-size: cover;
-  height: 80px;
-  width: 80px;
-  margin-bottom: 0;
-  cursor: pointer;
-}
-
-.box:hover {
-  filter: brightness(115%) !important;
-}
-
-.active {
-  background: url('/images/box/box.1.png') no-repeat center center;
-  background-size: cover;
-}
-
 @media (min-width: 768px) {
   .active {
     animation: active 0.7s ease infinite;
   }
 }
 
-.inactive {
-  cursor: default;
-  filter: brightness(100%) !important;
-}
-
-.box.inactive:hover {
-  filter: brightness(100%) !important;
-}
-
-.bump {
-  margin-bottom: 20px;
-  transition: margin-bottom 0.16s ease-in-out;
-}
-
-.prize {
-  margin-bottom: 0px;
-  transition: margin-bottom 2s ease-in-out;
-}
-
-.enter {
-  margin-bottom: 80px;
-  transition-delay: 0.2s;
-  transition: all 0.4s ease-in-out;
-}
-
 @keyframes active {
   0% {
-    background: url('/images/box/box.1.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(107.5%) brightness(110%);
+    background: url('/images/box/box.1.png') no-repeat center center / cover;
   }
   25% {
-    background: url('/images/box/box.2.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(102.5%) brightness(102.5%);
+    background: url('/images/box/box.2.png') no-repeat center center / cover;
   }
   50% {
-    background: url('/images/box/box.3.png') no-repeat center center;
-    background-size: cover;
-    filter: brightness(100%);
+    background: url('/images/box/box.3.png') no-repeat center center / cover;
   }
   75% {
-    background: url('/images/box/box.4.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(102.5%) brightness(102.5%);
+    background: url('/images/box/box.4.png') no-repeat center center / cover;
   }
   100% {
-    background: url('/images/box/box.1.png') no-repeat center center;
-    background-size: cover;
-    filter: contrast(107.5%) brightness(110%);
+    background: url('/images/box/box.1.png') no-repeat center center / cover;
   }
 }

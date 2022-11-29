@@ -1,23 +1,16 @@
 .goomba {
-  background: url('/images/goomba/goomba.1.png') no-repeat center center;
-  background-size: contain;
-  height: 80px;
-  width: 80px;
   animation: walk 0.6s ease infinite, move 18s linear infinite;
 }
 
 @keyframes walk {
   0% {
-    background: url('/images/goomba/goomba.1.png') no-repeat center center;
-    background-size: contain;
+    background: url('/images/goomba/goomba.1.png') no-repeat center center / contain;
   }
   50% {
-    background: url('/images/goomba/goomba.2.png') no-repeat center center;
-    background-size: contain;
+    background: url('/images/goomba/goomba.2.png') no-repeat center center / contain;
   }
   100% {
-    background: url('/images/goomba/goomba.1.png') no-repeat center center;
-    background-size: contain;
+    background: url('/images/goomba/goomba.1.png') no-repeat center center / contain;
   }
 }
 

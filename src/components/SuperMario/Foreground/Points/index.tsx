@@ -22,6 +22,7 @@ const Points: FC<Props> = ({ x, y, total }: Props) => {
       left={x + 'px'}
       bottom={y + 80 + 'px'}
       p={0}
+      opacity={0}
       className={styles.points}>
       {total}
     </Text>

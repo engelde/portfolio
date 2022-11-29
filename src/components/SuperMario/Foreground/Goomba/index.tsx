@@ -13,12 +13,12 @@ const Goomba: FC<Props> = ({ x, y, offset }: Props) => {
     <Box
       zIndex={9}
       position={'absolute'}
-      left={x + 'px'}
-      bottom={y + 'px'}
       height={'80px'}
       width={'80px'}
-      animation={''}
       ml={'-' + offset}
+      left={x + 'px'}
+      bottom={y + 'px'}
+      background={'url("/images/goomba/goomba.1.png") no-repeat center center / contain'}
       className={'animate__animated animate__fadeInUp ' + styles.goomba}
     />
   )
