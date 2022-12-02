@@ -142,7 +142,7 @@ const Skills: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
         size={'4xl'}
         color={'red.500'}
         pb={2}
-        textShadow={'2px 2px rgba(0, 0, 0, 0.14)'}
+        textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
         className={'animate__animated animate__fadeInDown'}>
         <Code text={'<h1>'} />
         Skills
@@ -152,7 +152,7 @@ const Skills: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
       <Text
         fontSize={'xl'}
         pb={6}
-        textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+        textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         className={'animate__animated animate__slow animate__fadeInRightBig'}>
         <Code text={'<p>'} />
         {

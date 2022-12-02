@@ -7,7 +7,7 @@ const Bio = (
   <Text
     fontSize={'xl'}
     pb={2}
-    textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+    textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
     className={'animate__animated animate__fadeIn'}
     maxWidth={680}>
     <Code text={'<p>'} />
@@ -31,7 +31,7 @@ const Experience = (
         size={'2xl'}
         color={'green.400'}
         pb={0}
-        textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+        textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         className={'animate__animated animate__tada'}>
         <Code text={'<h2>'} />
         Education
@@ -43,7 +43,7 @@ const Experience = (
           fontWeight={'500'}
           size={'md'}
           mt={0}
-          textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+          textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
           className={'animate__animated animate__fadeInUpBig'}>
           Master of Science
           <br />
@@ -57,7 +57,7 @@ const Experience = (
           fontWeight={'500'}
           size={'md'}
           mt={0}
-          textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+          textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
           className={'animate__animated animate__fadeInUpBig'}>
           Bachelor of Arts
           <br />
@@ -74,7 +74,7 @@ const Experience = (
         size={'2xl'}
         color={'orange.400'}
         pb={0}
-        textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+        textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         className={'animate__animated animate__tada'}>
         <Code text={'<h2>'} />
         Experience
@@ -86,7 +86,7 @@ const Experience = (
           fontWeight={'500'}
           size={'md'}
           mt={0}
-          textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+          textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
           className={'animate__animated animate__fadeInUpBig'}>
           Web and Systems Manager
           <Text
@@ -129,7 +129,7 @@ const About: FC<Props> = ({ stage, ...rest }: Props) => {
         size={'4xl'}
         color={stage == 1 ? 'blue.400' : 'cyan.500'}
         pb={6}
-        textShadow={'2px 2px rgba(0, 0, 0, 0.14)'}
+        textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
         className={'animate__animated animate__fadeInDown'}>
         <Code text={'<h1>'} />
         About()
@@ -162,7 +162,7 @@ const About: FC<Props> = ({ stage, ...rest }: Props) => {
         <VStack alignItems={'top'} spacing={{ base: 4, md: 8 }}>
           <Heading
             size={'2xl'}
-            textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+            textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
             className={'animate__animated animate__fadeIn'}>
             David Engel
           </Heading>
