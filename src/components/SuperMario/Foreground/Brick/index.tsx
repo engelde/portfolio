@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import styles from './styles.module.css'
 
@@ -17,9 +18,16 @@ const Brick: FC<Props> = ({ x, y }: Props) => {
       p={0}
       height={'80px'}
       width={'80px'}
-      background={'url("/images/brick/brick.png") no-repeat center center / cover'}
-      className={'animate__animated animate__fadeInUp ' + styles.brick}
-    />
+      className={'animate__animated animate__fadeInUp ' + styles.brick}>
+      <NextImage
+        alt={'Brick'}
+        src={'/images/brick/brick.png'}
+        height={'80px'}
+        width={'80px'}
+        quality={80}
+        priority
+      />
+    </Box>
   )
 }
 

@@ -76,7 +76,9 @@ const Box: FC<Props> = ({
         width={'80px'}
         mb={active ? '20px' : 0}
         background={
-          (status ? 'url("/images/box/box.1.png")' : 'url("/images/box/box.0.png")') +
+          (status
+            ? 'url("/_next/image?url=%2Fimages%2Fbox%2Fbox.1.png&w=256&q=80")'
+            : 'url("/_next/image?url=%2Fimages%2Fbox%2Fbox.0.png&w=256&q=80")') +
           ' no-repeat center center / cover'
         }
         cursor={status ? 'pointer' : 'default'}

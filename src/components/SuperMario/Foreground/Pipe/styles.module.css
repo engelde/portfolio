@@ -1,5 +1,5 @@
 .pipe {
-  background: url('/images/pipe/pipe.1.png') repeat-y left top;
+  background: url('/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=80') repeat-y left top;
   background-size: contain;
   margin-inline-start: -32px;
 }

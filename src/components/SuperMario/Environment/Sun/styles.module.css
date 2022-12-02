@@ -4,7 +4,7 @@
   top: 0;
   border-radius: 50%;
   animation: enlarge 20s infinite;
-  background: url(/images/sun/sun.png) no-repeat center center;
+  background: url('/_next/image?url=%2Fimages%2Fsun%2Fsun.png&w=384&q=80') no-repeat center center;
   background-size: cover;
 }
 

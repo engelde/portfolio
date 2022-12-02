@@ -6,18 +6,23 @@
 
 @keyframes active {
   0% {
-    background: url('/images/box/box.1.png') no-repeat center center / cover;
+    background: url('/_next/image?url=%2Fimages%2Fbox%2Fbox.1.png&w=256&q=80') no-repeat center
+      center / cover;
   }
   25% {
-    background: url('/images/box/box.2.png') no-repeat center center / cover;
+    background: url('/_next/image?url=%2Fimages%2Fbox%2Fbox.2.png&w=256&q=80') no-repeat center
+      center / cover;
   }
   50% {
-    background: url('/images/box/box.3.png') no-repeat center center / cover;
+    background: url('/_next/image?url=%2Fimages%2Fbox%2Fbox.3.png&w=256&q=80') no-repeat center
+      center / cover;
   }
   75% {
-    background: url('/images/box/box.4.png') no-repeat center center / cover;
+    background: url('/_next/image?url=%2Fimages%2Fbox%2Fbox.4.png&w=256&q=80') no-repeat center
+      center / cover;
   }
   100% {
-    background: url('/images/box/box.1.png') no-repeat center center / cover;
+    background: url('/_next/image?url=%2Fimages%2Fbox%2Fbox.1.png&w=256&q=80') no-repeat center
+      center / cover;
   }
 }
