@@ -10,7 +10,7 @@ const ScrollIndicator: FC<FlexProps> = ({ ...rest }: FlexProps) => {
       bottom={0}
       left={0}
       w={'full'}
-      mb={7}
+      mb={6}
       alignItems={'center'}
       justifyContent={'center'}
       {...rest}>
@@ -20,10 +20,16 @@ const ScrollIndicator: FC<FlexProps> = ({ ...rest }: FlexProps) => {
         p={1}
         spacing={0}
         className={'animate__animated animate__infinite animate__pulse'}>
-        <Text fontSize={'xl'} color={'white'} textShadow={'2px 2px rgba(0, 0, 0, 0.5)'}>
+        <Text fontSize={'xl'} color={'white'} textShadow={'2px 2px rgba(0, 0, 0, 0.28)'}>
           Scroll for more!
         </Text>
-        <Icon as={FiChevronDown} height={8} width={8} textShadow={'2px 2px rgba(0, 0, 0, 0.33)'} />
+        <Text
+          fontSize={'2xl'}
+          color={'white'}
+          textShadow={'2px 2px rgba(0, 0, 0, 0.28)'}
+          transform={'scaleX(-1) rotate(90deg) '}>
+          {'>'}
+        </Text>
       </VStack>
     </Flex>
   )

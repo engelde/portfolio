@@ -35,7 +35,7 @@ const Custom404: NextPage = () => {
             size={'4xl'}
             color={'red.500'}
             pb={4}
-            textShadow={'2px 2px rgba(0, 0, 0, 0.14)'}
+            textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
             className={'animate__animated animate__fadeInDown'}>
             <Code text={'<h1>'} />
             {'404('}

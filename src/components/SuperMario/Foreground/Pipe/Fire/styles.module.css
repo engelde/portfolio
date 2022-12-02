@@ -1,5 +1,6 @@
 .fire {
-  background: url('/images/fire/fire.1.png') no-repeat center center;
+  background: url('/_next/image?url=%2Fimages%2Ffire%2Ffire.1.png&w=64&q=80') no-repeat center
+    center;
   background-size: cover;
   height: 34px;
   width: 30px;
@@ -60,23 +61,28 @@
 
 @keyframes rotate {
   0% {
-    background: url('/images/fire/fire.1.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Ffire%2Ffire.1.png&w=64&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   25% {
-    background: url('/images/fire/fire.2.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Ffire%2Ffire.2.png&w=64&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   50% {
-    background: url('/images/fire/fire.3.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Ffire%2Ffire.3.png&w=64&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   75% {
-    background: url('/images/fire/fire.4.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Ffire%2Ffire.4.png&w=64&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   100% {
-    background: url('/images/fire/fire.3.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Ffire%2Ffire.3.png&w=64&q=80') no-repeat center
+      center;
     background-size: cover;
   }
 }

@@ -66,6 +66,9 @@ const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
           <DrawerBody>
             <Flex h={'80vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
               <VStack spacing={8}>
+                <Heading size={'4xl'} color={'cyan.500'}>
+                  David.Engel
+                </Heading>
                 <Heading fontSize={'4xl'} color={'white'}>
                   paused
                 </Heading>

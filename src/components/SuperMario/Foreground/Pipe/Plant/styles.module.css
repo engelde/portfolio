@@ -1,5 +1,6 @@
 .plant {
-  background: url('/images/plant/plant.1.png') no-repeat center center;
+  background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.1.png&w=256&q=80') no-repeat center
+    center;
   background-size: cover;
   height: 160px;
   width: 80px;
@@ -38,46 +39,56 @@
 
 @keyframes move {
   0% {
-    background: url('/images/plant/plant.1.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.1.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   50% {
-    background: url('/images/plant/plant.2.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.2.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   100% {
-    background: url('/images/plant/plant.1.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.1.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
 }
 
 @keyframes move2 {
   0% {
-    background: url('/images/plant/plant.3.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.3.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   20% {
-    background: url('/images/plant/plant.4.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.4.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   33% {
-    background: url('/images/plant/plant.5.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.5.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   53% {
-    background: url('/images/plant/plant.6.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.6.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   66% {
-    background: url('/images/plant/plant.5.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.5.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   87% {
-    background: url('/images/plant/plant.4.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.4.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
   100% {
-    background: url('/images/plant/plant.3.png') no-repeat center center;
+    background: url('/_next/image?url=%2Fimages%2Fplant%2Fplant.3.png&w=256&q=80') no-repeat center
+      center;
     background-size: cover;
   }
 }

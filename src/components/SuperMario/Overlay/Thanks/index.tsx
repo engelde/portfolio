@@ -26,7 +26,7 @@ const Thanks: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
         size={mobile ? '2xl' : '4xl'}
         fontSize={mobile ? '76px' : '100px'}
         color={'white'}
-        textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+        textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         pb={2}
         className={'animate__animated animate__fadeInLeft'}>
         THANKS FOR

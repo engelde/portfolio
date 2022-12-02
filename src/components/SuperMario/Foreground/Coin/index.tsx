@@ -35,7 +35,9 @@ const Coin: FC<Props> = ({ active, setActive, x, y, score, setScore }: Props) =>
         p={0}
         left={x + 'px'}
         bottom={y + 80 + 'px'}
-        background={'url("/images/coin/coin.1.png") no-repeat center center / cover'}
+        background={
+          'url("/_next/image?url=%2Fimages%2Fcoin%2Fcoin.1.png&w=256&q=80") no-repeat center center / cover'
+        }
         opacity={active ? 0 : 1}
         className={styles.coin + ' ' + (active && styles.active)}
         _hover={{ cursor: 'pointer', filter: 'brightness(125%)' }}

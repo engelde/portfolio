@@ -24,7 +24,7 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
           size={'4xl'}
           color={'purple.500'}
           pb={6}
-          textShadow={'2px 2px rgba(0, 0, 0, 0.14)'}
+          textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
           className={'animate__animated animate__slow animate__pulse'}>
           <Code text={'<h1>'} />
           Hello
@@ -36,7 +36,7 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
         <Text
           fontSize={'xl'}
           maxWidth={820}
-          textShadow={'1px 1px rgba(0, 0, 0, 0.14)'}
+          textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
           className={'animate__animated animate__fadeInLeft'}>
           <Code text={'<p>'} />
           Thanks for visiting my site,{' '}
