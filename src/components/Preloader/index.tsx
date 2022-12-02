@@ -142,7 +142,7 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
         {(position == 1 && (
           <VStack className={(!isPreloading && 'animate__animated animate__backOutDown') || ''}>
             <Flex className={styles.preloader} />
-            <Text fontSize={'2xl'} color={'white'}>
+            <Text fontSize={'2xl'} color={'cyan.500'}>
               <strong>Loading...</strong>
             </Text>
           </VStack>
@@ -170,13 +170,14 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
                   textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
                   <strong>Scroll down to start!</strong>
                 </Text>
-                <Icon
-                  as={FiChevronDown}
-                  height={mobile ? 12 : 16}
-                  width={mobile ? 12 : 16}
-                  color={'white'}
-                  textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
-                />
+                <Text
+                  fontSize={'4xl'}
+                  color={'cyan.500'}
+                  mb={3}
+                  transform={'rotate(90deg)'}
+                  textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
+                  <strong>{'>'}</strong>
+                </Text>
               </VStack>
             </Flex>
           </VStack>

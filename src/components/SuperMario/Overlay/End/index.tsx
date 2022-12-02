@@ -60,7 +60,7 @@ const End: FC<Props> = ({ x, y }: Props) => {
             textAlign={'center'}
             lineHeight={0.7}
             className={'animate__animated animate__infinite animate__slow animate__pulse'}
-            _hover={{ color: 'blue.300' }}>
+            _hover={{ color: 'cyan.500' }}>
             <Link as={NextLink} href={'https://github.com/engelde/portfolio'} target={'_blank'}>
               {'> view source'}
             </Link>
