@@ -15,21 +15,27 @@ const Ground: FC<Props> = ({ variant, x, height, width }: Props) => {
         <Box
           height={height + 'px'}
           width={'12px'}
-          bg={'url("/images/ground/ground.1.png") no-repeat left top'}
+          bg={
+            'url("/_next/image?url=%2Fimages%2Fground%2Fground.1.png&w=256&q=80") no-repeat left top'
+          }
           backgroundSize={'12px 128px'}
           overflow={'hidden'}
         />
         <Box
           height={height + 'px'}
           width={width - 16 + 'px'}
-          bg={'url("/images/ground/ground.2.png") repeat-x left top'}
+          bg={
+            'url("/_next/image?url=%2Fimages%2Fground%2Fground.2.png&w=256&q=80") repeat-x left top'
+          }
           backgroundSize={'64px 128px'}
           overflow={'hidden'}
         />
         <Box
           height={height + 'px'}
           width={'4px'}
-          bg={'url("/images/ground/ground.3.png") no-repeat left top'}
+          bg={
+            'url("/_next/image?url=%2Fimages%2Fground%2Fground.3.png&w=128&q=80") no-repeat left top'
+          }
           backgroundSize={'4px 128px'}
           overflow={'hidden'}
         />

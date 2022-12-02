@@ -18,7 +18,9 @@ const Goomba: FC<Props> = ({ x, y, offset }: Props) => {
       ml={'-' + offset}
       left={x + 'px'}
       bottom={y + 'px'}
-      background={'url("/images/goomba/goomba.1.png") no-repeat center center / contain'}
+      background={
+        'url("/_next/image?url=%2Fimages%2Fgoomba%2Fgoomba.1.png&w=256&q=80") no-repeat center center / contain'
+      }
       className={'animate__animated animate__fadeInUp ' + styles.goomba}
     />
   )

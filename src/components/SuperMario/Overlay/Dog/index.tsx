@@ -33,7 +33,7 @@ const Dog: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
           src={'/images/dog/dog.png'}
           layout={'fill'}
           objectFit={'cover'}
-          quality={90}
+          quality={80}
           priority
         />
       </Box>

@@ -2,7 +2,8 @@
   width: 166px;
   height: 120px;
   position: fixed;
-  background: url('/images/clouds/clouds.1.png') no-repeat center center;
+  background: url('/_next/image?url=%2Fimages%2Fclouds%2Fclouds.1.png&w=384&q=80') no-repeat center
+    center;
   background-size: cover;
 }
 
@@ -13,7 +14,8 @@
 .l {
   width: 250px;
   height: 120px;
-  background: url('/images/clouds/clouds.2.png') no-repeat center center;
+  background: url('/_next/image?url=%2Fimages%2Fclouds%2Fclouds.2.png&w=384&q=80') no-repeat center
+    center;
   background-size: cover;
 }
 
