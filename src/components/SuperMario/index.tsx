@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, useEffect, useState } from 'react'
+import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { Box, useMediaQuery } from '@chakra-ui/react'
 import Background from './Background'
 import Environment from './Environment'
@@ -8,6 +8,30 @@ import Overlay from './Overlay'
 import config from '@/utilities/config'
 import { platforms, PlatformUpdate } from './platforms'
 import { positions, PositionUpdate } from './positions'
+
+const useEventListener = (type: string, handler: (event: KeyboardEvent) => void, run = true) => {
+  const savedHandler = useRef<(event: KeyboardEvent) => void>((event) => {})
+
+  useEffect(() => {
+    if (run) {
+      savedHandler.current = handler
+    }
+  }, [handler, run])
+
+  useEffect(() => {
+    const listener: (event: any) => void = (e) => savedHandler.current(e)
+
+    if (run) {
+      window.addEventListener(type, listener)
+    }
+
+    return () => {
+      if (run) {
+        window.removeEventListener(type, listener)
+      }
+    }
+  }, [type, run])
+}
 
 const SuperMario: FC = () => {
   const [mobile] = useMediaQuery('(max-width: 48rem)')
@@ -39,8 +63,6 @@ const SuperMario: FC = () => {
   const [moveLeft, setMoveLeft] = useState(false)
   const [jump, setJump] = useState(false)
   const [jumpLock, setJumpLock] = useState(false)
-  // const [duck, setDuck] = useState(false)
-  // const [duckLock, setDuckLock] = useState(false)
 
   const [platform, setPlatform] = useState(false)
 
@@ -85,129 +107,96 @@ const SuperMario: FC = () => {
   }, [x, y, xOffset, jump, mobile, setJump])
 
   // Input
-  useEffect(() => {
-    const handleMove = (event: KeyboardEvent) => {
-      if (event.code === 'ArrowRight') {
-        event.preventDefault()
-        if (!moveRight && !moveLeft && !paused) {
-          setMoving(true)
-          setMoveRight(true)
-          setMoveLeft(false)
-          setForwards(true)
-        }
-      } else if (event.code === 'ArrowLeft') {
-        event.preventDefault()
-        if (!moveLeft && !moveRight && !paused) {
-          setMoving(true)
-          setMoveRight(false)
-          setMoveLeft(true)
-          setForwards(false)
-        }
+  const handleMove = (event: KeyboardEvent) => {
+    if (event.code === 'ArrowRight') {
+      event.preventDefault()
+      if (!moveRight && !moveLeft && !paused) {
+        setMoving(true)
+        setMoveRight(true)
+        setMoveLeft(false)
+        setForwards(true)
       }
-
-      if (event.code === 'ArrowUp' || event.code === 'Space') {
-        event.preventDefault()
-        if (!jumpLock && !jump && !paused) {
-          setJump(true)
-          setJumpLock(true)
-        }
-      } else if (event.code === 'ArrowDown') {
-        event.preventDefault()
-      }
-
-      if (event.code === 'Escape') {
-        event.preventDefault()
-        if (!paused) {
-          setPaused(!paused)
-        }
+    } else if (event.code === 'ArrowLeft') {
+      event.preventDefault()
+      if (!moveLeft && !moveRight && !paused) {
+        setMoving(true)
+        setMoveRight(false)
+        setMoveLeft(true)
+        setForwards(false)
       }
     }
 
-    // Move End
-    const handleMoveEnd = (event: KeyboardEvent) => {
-      if (event.code === 'ArrowRight') {
-        event.preventDefault()
-        if (moveRight && !moveLeft && !paused) {
-          setMoveRight(false)
-          setMoving(false)
-        }
-      } else if (event.code === 'ArrowLeft') {
-        event.preventDefault()
-        if (moveLeft && !moveRight && !paused) {
-          setMoveLeft(false)
-          setMoving(false)
-        }
+    if (event.code === 'ArrowUp' || event.code === 'Space') {
+      event.preventDefault()
+      if (!jumpLock && !jump && !paused) {
+        setJump(true)
+        setJumpLock(true)
       }
-
-      if ((event.code === 'ArrowUp' || event.code === 'Space') && !paused) {
-        event.preventDefault()
-        if (!paused) {
-          setJump(false)
-          if (jumpLock) {
-            setTimeout(() => {
-              setJumpLock(false)
-            }, 200)
-          }
-        }
-      } else if (event.code === 'ArrowDown') {
-        event.preventDefault()
-      }
+    } else if (event.code === 'ArrowDown') {
+      event.preventDefault()
     }
 
-    // Move on scroll
-    const handleScroll = () => {
-      setForwards(window.scrollY - oldX > 0 ? true : false)
-      setOldX(window.scrollY)
+    if (event.code === 'Escape') {
+      event.preventDefault()
+      if (!paused) {
+        setPaused(!paused)
+      }
+    }
+  }
 
-      let newPos = window.scrollY < maxX ? window.scrollY : maxX
-
-      if (forwards) {
-        if (x != newPos) {
-          setX(newPos)
-        }
-      } else {
-        if (x > 0 && x != newPos) {
-          setX(newPos)
-        }
+  // Input End
+  const handleMoveEnd = (event: KeyboardEvent) => {
+    if (event.code === 'ArrowRight') {
+      event.preventDefault()
+      if (moveRight && !moveLeft && !paused) {
+        setMoveRight(false)
+        setMoving(false)
+      }
+    } else if (event.code === 'ArrowLeft') {
+      event.preventDefault()
+      if (moveLeft && !moveRight && !paused) {
+        setMoveLeft(false)
+        setMoving(false)
       }
     }
 
-    if (!mobile) {
-      // @ts-ignore
-      window.addEventListener('keydown', handleMove)
-      // @ts-ignore
-      window.addEventListener('keyup', handleMoveEnd)
-    }
-    // @ts-ignore
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      if (!mobile) {
-        // @ts-ignore
-        window.removeEventListener('keydown', handleMove)
-        // @ts-ignore
-        window.removeEventListener('keyup', handleMoveEnd)
+    if ((event.code === 'ArrowUp' || event.code === 'Space') && !paused) {
+      event.preventDefault()
+      if (!paused) {
+        setJump(false)
+        if (jumpLock) {
+          setTimeout(() => {
+            setJumpLock(false)
+          }, 200)
+        }
       }
-      // @ts-ignore
-      window.removeEventListener('scroll', handleScroll)
+    } else if (event.code === 'ArrowDown') {
+      event.preventDefault()
     }
-  }, [
-    jump,
-    jumpLock,
-    forwards,
-    length,
-    paused,
-    moveRight,
-    moveLeft,
-    oldX,
-    maxX,
-    mobile,
-    x,
-    xOffset,
-    setJump,
-    setJumpLock,
-    walkOffset,
-  ])
+  }
+
+  // Scroll
+  const handleScroll = (event: KeyboardEvent) => {
+    setForwards(window.scrollY - oldX > 0 ? true : false)
+    setOldX(window.scrollY)
+
+    let newPos = window.scrollY < maxX ? window.scrollY : maxX
+
+    if (forwards) {
+      if (x != newPos) {
+        setX(newPos)
+      }
+    } else {
+      if (x > 0 && x != newPos) {
+        setX(newPos)
+      }
+    }
+  }
+
+  // Events
+  useEventListener('keydown', handleMove, !mobile)
+  useEventListener('keyup', handleMoveEnd, !mobile)
+  useEventListener('scroll', handleScroll)
 
   // Control Movements
   useEffect(() => {
