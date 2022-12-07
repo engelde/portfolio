@@ -9,24 +9,17 @@
 }
 
 .sm {
-  width: 22.5vh;
-  height: 22.5vh;
+  width: 225px;
+  height: 225px;
   opacity: 0.9;
   animation: smPosition 90s infinite;
 }
 
 .md {
-  width: 25vh;
-  height: 25vh;
+  width: 250px;
+  height: 250px;
   opacity: 0.4;
   animation: mdPosition 90s infinite;
-}
-
-.lg {
-  width: 27.5vh;
-  height: 27.5vh;
-  opacity: 0.4;
-  animation: lgPosition 90s infinite;
 }
 
 @keyframes enlarge {
@@ -43,93 +36,62 @@
 
 @keyframes smPosition {
   0% {
-    right: 4.75vh;
-    top: 4.75vh;
+    right: 47.5px;
+    top: 47.5px;
   }
   26% {
-    right: -11.25vh;
-    top: -11.25vh;
+    right: -112.5px;
+    top: -112.5px;
   }
   32% {
-    right: -30vh;
-    top: -30vh;
+    right: -300px;
+    top: -300px;
   }
   54% {
-    right: -30vh;
-    top: -30vh;
+    right: -300px;
+    top: -300px;
   }
   68% {
-    right: -11.25vh;
-    top: -11.25vh;
+    right: -112.5px;
+    top: -112.5px;
   }
   90% {
-    right: -0.25vh;
-    top: -0.25vh;
+    right: -2.5px;
+    top: -2.5px;
   }
   100% {
-    right: 4.75vh;
-    top: 4.75vh;
+    right: 47.5px;
+    top: 47.5px;
   }
 }
 
 @keyframes mdPosition {
   0% {
-    right: 3.5vh;
-    top: 3.5vh;
+    right: 35px;
+    top: 35px;
   }
   26% {
-    right: -12.5vh;
-    top: -12.5vh;
+    right: -125px;
+    top: -125px;
   }
   32% {
-    right: -30vh;
-    top: -30vh;
+    right: -300px;
+    top: -300px;
   }
   54% {
-    right: -30vh;
-    top: -30vh;
+    right: -300px;
+    top: -300px;
   }
   68% {
-    right: -12.5vh;
-    top: -12.5vh;
+    right: -125px;
+    top: -125px;
   }
   90% {
-    right: -1.5vh;
-    top: -1.5vh;
+    right: -15px;
+    top: -15px;
   }
   100% {
-    right: 3.5vh;
-    top: 3.5vh;
-  }
-}
-
-@keyframes lgPosition {
-  0% {
-    right: 2.25vh;
-    top: 2.25vh;
-  }
-  26% {
-    right: -13.75vh;
-    top: -13.75vh;
-  }
-  32% {
-    right: -30vh;
-    top: -30vh;
-  }
-  54% {
-    right: -30vh;
-    top: -30vh;
-  }
-  68% {
-    right: -13.75vh;
-    top: -13.75vh;
-  }
-  90% {
-    right: -2.75vh;
-    top: -2.75vh;
-  }
-  100% {
-    right: 2.25vh;
-    top: 2.25vh;
+    right: 35px;
+    top: 35px;
   }
 }
