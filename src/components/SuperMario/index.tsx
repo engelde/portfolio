@@ -209,34 +209,36 @@ const SuperMario: FC = () => {
 
   // Control Movements
   useEffect(() => {
-    if (!mobile && !paused && x + xOffset < length) {
+    if (!paused && x + xOffset < length) {
       // move
-      if (!moveRight && !moveLeft) {
-        // stop moving
-        if (xSpeed !== 0) {
-          setXSpeed(0)
-        }
-      } else {
-        // automatic speed
-        if (xSpeed !== 16) {
-          setXSpeed(16)
-        }
-
-        // move left and right
-        if (moveRight && x + xSpeed < maxX) {
-          setOldX(x)
-          if (xOffset < walkOffset) {
-            setXOffset(xOffset + xSpeed)
-          } else {
-            setX(x + xSpeed)
+      if (!mobile) {
+        if (!moveRight && !moveLeft) {
+          // stop moving
+          if (xSpeed !== 0) {
+            setXSpeed(0)
           }
-        } else if (moveLeft && x + xSpeed < maxX) {
-          setOldX(x)
-          if (x > 0) {
-            setX(x - xSpeed)
-          } else if (xOffset - xSpeed < walkOffset) {
-            if (xOffset > 0) {
-              setXOffset(xOffset - xSpeed)
+        } else {
+          // automatic speed
+          if (xSpeed !== 16) {
+            setXSpeed(16)
+          }
+
+          // move left and right
+          if (moveRight && x + xSpeed < maxX) {
+            setOldX(x)
+            if (xOffset < walkOffset) {
+              setXOffset(xOffset + xSpeed)
+            } else {
+              setX(x + xSpeed)
+            }
+          } else if (moveLeft && x + xSpeed < maxX) {
+            setOldX(x)
+            if (x > 0) {
+              setX(x - xSpeed)
+            } else if (xOffset - xSpeed < walkOffset) {
+              if (xOffset > 0) {
+                setXOffset(xOffset - xSpeed)
+              }
             }
           }
         }
@@ -257,18 +259,19 @@ const SuperMario: FC = () => {
       }
 
       // platform updates
-      setPlatform(
-        PlatformUpdate({
-          xPos: x,
-          yPos: y,
-          xOffset: xOffset,
-          yOffset: yOffset,
-          setY: setY,
-          setYOffset: setYOffset,
-          ySpeed: ySpeed,
-          platforms: platforms,
-        }),
-      )
+      !mobile &&
+        setPlatform(
+          PlatformUpdate({
+            xPos: x,
+            yPos: y,
+            xOffset: xOffset,
+            yOffset: yOffset,
+            setY: setY,
+            setYOffset: setYOffset,
+            ySpeed: ySpeed,
+            platforms: platforms,
+          }),
+        )
 
       // automatic y updates
       if (!jump && !platform) {
