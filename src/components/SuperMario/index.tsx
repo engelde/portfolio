@@ -192,7 +192,7 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
 
   // Scroll Event
   useEffect(() => {
-    return scrollY.onChange(() => {
+    return scrollY.on('change', () => {
       let val = scrollY.get()
       let newPos = val < maxX ? val : maxX
 

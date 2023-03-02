@@ -31,8 +31,8 @@ const Dog: FC<Props> = ({ xPos, offset, ...rest }: Props) => {
         <NextImage
           alt={'Dog'}
           src={'/images/dog/dog.png'}
-          layout={'fill'}
-          objectFit={'cover'}
+          width={300}
+          height={300}
           quality={80}
           priority
         />
