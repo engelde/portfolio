@@ -10,8 +10,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const forwarded = ctx.req.headers['x-forwarded-for']
   const ip = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : ctx.req.socket.remoteAddress
 
-  console.log(ip)
-
   return {
     props: {
       ip: ip !== undefined ? ip : '127.0.0.1',
