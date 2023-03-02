@@ -24,8 +24,8 @@ const Cube: FC<Props> = ({ variant, x, y }: Props) => {
           <NextImage
             alt={'Cube 1'}
             src={'/images/cube/cube.1.png'}
-            height={'400px'}
-            width={'441px'}
+            height={400}
+            width={441}
             quality={80}
             priority
           />
@@ -44,8 +44,8 @@ const Cube: FC<Props> = ({ variant, x, y }: Props) => {
             <NextImage
               alt={'Cube 2'}
               src={'/images/cube/cube.2.png'}
-              height={'560px'}
-              width={'1080px'}
+              height={560}
+              width={1080}
               quality={80}
               priority
             />
@@ -64,8 +64,8 @@ const Cube: FC<Props> = ({ variant, x, y }: Props) => {
             <NextImage
               alt={'Cube 3'}
               src={'/images/cube/cube.3.png'}
-              height={'480px'}
-              width={'919px'}
+              height={480}
+              width={919}
               quality={80}
               priority
             />
@@ -84,8 +84,8 @@ const Cube: FC<Props> = ({ variant, x, y }: Props) => {
             <NextImage
               alt={'Cube 4'}
               src={'/images/cube/cube.4.png'}
-              height={'785px'}
-              width={'480px'}
+              height={785}
+              width={480}
               quality={80}
               priority
             />

@@ -7,7 +7,7 @@ import Code from '@/components/Code'
 type Props = BoxProps & {}
 
 const Intro: FC<Props> = ({ ...rest }: Props) => {
-  const { data, error } = useSWR('/api/ip', (url: string) => fetch(url).then((res) => res.json()))
+  const { data } = useSWR('/api/ip', (url: string) => fetch(url).then((res) => res.json()))
 
   return (
     <Box

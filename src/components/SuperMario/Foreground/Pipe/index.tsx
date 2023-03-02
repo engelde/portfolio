@@ -35,8 +35,8 @@ const Pipe: FC<Props> = ({
         <NextImage
           alt={'Pipe'}
           src={'/images/pipe/pipe.0.png'}
-          height={'80px'}
-          width={'160px'}
+          height={80}
+          width={160}
           quality={80}
           priority
         />
