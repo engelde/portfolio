@@ -6,7 +6,7 @@ import Preloader from '@/components/Preloader'
 import config from '@/utilities/config'
 
 type Props = ContainerProps & {
-  title?: String
+  title: String
   dark?: boolean
   children: ReactNode
 }
@@ -17,10 +17,7 @@ const Layout: FC<Props> = ({ title, dark, children, ...rest }: Props) => {
   return (
     <Container maxWidth={'full'} p={0} bg={'black'} {...rest}>
       <Head>
-        <title>
-          {config.app.name}
-          {title ? ' | ' + title : ''}
-        </title>
+        <title>{config.app.name + ' | ' + title}</title>
       </Head>
 
       <Preloader isLoading={isLoading} setIsLoading={setIsLoading} />
