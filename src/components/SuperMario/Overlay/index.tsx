@@ -29,6 +29,7 @@ type Props = {
   score: number
   timer: number
   setPaused: (status: boolean) => void
+  ip: string
 }
 
 const Overlay: FC<Props> = ({
@@ -48,6 +49,7 @@ const Overlay: FC<Props> = ({
   score,
   timer,
   setPaused,
+  ip,
 }: Props) => {
   const [marioState, setMarioState] = useState('sm')
   const [mobile] = useMediaQuery('(max-width: 48rem)')
@@ -64,6 +66,7 @@ const Overlay: FC<Props> = ({
   return (
     <>
       <Intro
+        ip={ip}
         className={
           xPos > 2720
             ? 'animate__animated animate__faster animate__slideOutUp'

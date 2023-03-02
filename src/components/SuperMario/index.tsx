@@ -35,7 +35,11 @@ const useEventListener = (type: string, handler: (event: KeyboardEvent) => void,
   }, [type, run])
 }
 
-const SuperMario: FC = () => {
+type Props = {
+  ip: string
+}
+
+const SuperMario: FC<Props> = ({ ip }: Props) => {
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const { scrollY } = useScroll()
 
@@ -349,6 +353,7 @@ const SuperMario: FC = () => {
           score={score}
           timer={timer}
           setPaused={setPaused}
+          ip={ip}
         />
       </Box>
     </Box>

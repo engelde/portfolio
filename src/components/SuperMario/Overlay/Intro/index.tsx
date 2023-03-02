@@ -1,14 +1,13 @@
 import { FC } from 'react'
-import useSWR from 'swr'
 import { Box, BoxProps, Heading, HStack, Icon, Kbd, Text, VStack } from '@chakra-ui/react'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 import Code from '@/components/Code'
 
-type Props = BoxProps & {}
+type Props = BoxProps & {
+  ip: string
+}
 
-const Intro: FC<Props> = ({ ...rest }: Props) => {
-  const { data } = useSWR('/api/ip', (url: string) => fetch(url).then((res) => res.json()))
-
+const Intro: FC<Props> = ({ ip, ...rest }: Props) => {
   return (
     <Box
       zIndex={999}
@@ -41,7 +40,7 @@ const Intro: FC<Props> = ({ ...rest }: Props) => {
           <Code text={'<p>'} />
           Thanks for visiting my site,{' '}
           <Text as={'span'} color={'cyan.500'} fontWeight={'bold'}>
-            {data?.address}
+            {ip}
           </Text>
           ! My name is David Engel and I am a software engineer. Here you can learn a little bit
           about me and the type of work I like doing. This site was built with TypeScript and
