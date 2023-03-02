@@ -1,14 +1,16 @@
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { Box, useMediaQuery } from '@chakra-ui/react'
+import { useScroll } from 'framer-motion'
+import config from '@/utilities/config'
 import Background from './Background'
 import Environment from './Environment'
 import Landscape from './Landscape'
 import Foreground from './Foreground'
 import Overlay from './Overlay'
-import config from '@/utilities/config'
 import { platforms, PlatformUpdate } from './platforms'
 import { positions, PositionUpdate } from './positions'
 
+// Event Listener
 const useEventListener = (type: string, handler: (event: KeyboardEvent) => void, run = true) => {
   const savedHandler = useRef<(event: KeyboardEvent) => void>((event) => {})
 
@@ -33,10 +35,15 @@ const useEventListener = (type: string, handler: (event: KeyboardEvent) => void,
   }, [type, run])
 }
 
-const SuperMario: FC = () => {
-  const [mobile] = useMediaQuery('(max-width: 48rem)')
-  const [paused, setPaused] = useState(false)
+type Props = {
+  ip: string
+}
 
+const SuperMario: FC<Props> = ({ ip }: Props) => {
+  const [mobile] = useMediaQuery('(max-width: 48rem)')
+  const { scrollY } = useScroll()
+
+  const [paused, setPaused] = useState(false)
   const [lives] = useState(3)
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(300)
@@ -106,109 +113,115 @@ const SuperMario: FC = () => {
     }
   }, [x, y, xOffset, jump, mobile, setJump])
 
-  // Input
-  const handleMove = (event: KeyboardEvent) => {
-    if (event.code === 'ArrowRight') {
-      event.preventDefault()
-      if (!moveRight && !moveLeft && !paused) {
-        setMoving(true)
-        setMoveRight(true)
-        setMoveLeft(false)
-        setForwards(true)
-      }
-    } else if (event.code === 'ArrowLeft') {
-      event.preventDefault()
-      if (!moveLeft && !moveRight && !paused) {
-        setMoving(true)
-        setMoveRight(false)
-        setMoveLeft(true)
-        setForwards(false)
-      }
-    }
-
-    if (event.code === 'ArrowUp' || event.code === 'Space') {
-      event.preventDefault()
-      if (!jumpLock && !jump && !paused) {
-        setJump(true)
-        setJumpLock(true)
-      }
-    } else if (event.code === 'ArrowDown') {
-      event.preventDefault()
-    }
-
-    if (event.code === 'Escape') {
-      event.preventDefault()
-      if (!paused) {
-        setPaused(!paused)
-      }
-    }
-  }
-
-  // Input End
-  const handleMoveEnd = (event: KeyboardEvent) => {
-    if (event.code === 'ArrowRight') {
-      event.preventDefault()
-      if (moveRight && !moveLeft && !paused) {
-        setMoveRight(false)
-        setMoving(false)
-      }
-    } else if (event.code === 'ArrowLeft') {
-      event.preventDefault()
-      if (moveLeft && !moveRight && !paused) {
-        setMoveLeft(false)
-        setMoving(false)
-      }
-    }
-
-    if ((event.code === 'ArrowUp' || event.code === 'Space') && !paused) {
-      event.preventDefault()
-      if (!paused) {
-        setJump(false)
-        if (jumpLock) {
-          setTimeout(() => {
-            setJumpLock(false)
-          }, 200)
+  // Key Down Event
+  useEventListener(
+    'keydown',
+    (event: KeyboardEvent) => {
+      if (event.code === 'ArrowRight') {
+        event.preventDefault()
+        if (!moveRight && !moveLeft && !paused) {
+          setMoving(true)
+          setMoveRight(true)
+          setMoveLeft(false)
+          setForwards(true)
+        }
+      } else if (event.code === 'ArrowLeft') {
+        event.preventDefault()
+        if (!moveLeft && !moveRight && !paused) {
+          setMoving(true)
+          setMoveRight(false)
+          setMoveLeft(true)
+          setForwards(false)
         }
       }
-    } else if (event.code === 'ArrowDown') {
-      event.preventDefault()
-    }
-  }
 
-  // Scroll
-  const handleScroll = (event: KeyboardEvent) => {
-    setForwards(window.scrollY - oldX > 0 ? true : false)
-    setOldX(window.scrollY)
-
-    let newPos = window.scrollY < maxX ? window.scrollY : maxX
-
-    if (forwards) {
-      if (x != newPos) {
-        setX(newPos)
+      if (event.code === 'ArrowUp' || event.code === 'Space') {
+        event.preventDefault()
+        if (!jumpLock && !jump && !paused) {
+          setJump(true)
+          setJumpLock(true)
+        }
+      } else if (event.code === 'ArrowDown') {
+        event.preventDefault()
       }
-    } else {
-      if (x > 0 && x != newPos) {
-        setX(newPos)
-      }
-    }
-  }
 
-  // Events
-  useEventListener('keydown', handleMove, !mobile)
-  useEventListener('keyup', handleMoveEnd, !mobile)
-  useEventListener('scroll', handleScroll)
+      if (event.code === 'Escape') {
+        event.preventDefault()
+        if (!paused) {
+          setPaused(!paused)
+        }
+      }
+    },
+    !mobile,
+  )
+
+  // Key Up Event
+  useEventListener(
+    'keyup',
+    (event: KeyboardEvent) => {
+      if (event.code === 'ArrowRight') {
+        event.preventDefault()
+        if (moveRight && !moveLeft && !paused) {
+          setMoveRight(false)
+          setMoving(false)
+        }
+      } else if (event.code === 'ArrowLeft') {
+        event.preventDefault()
+        if (moveLeft && !moveRight && !paused) {
+          setMoveLeft(false)
+          setMoving(false)
+        }
+      }
+
+      if ((event.code === 'ArrowUp' || event.code === 'Space') && !paused) {
+        event.preventDefault()
+        if (!paused) {
+          setJump(false)
+          if (jumpLock) {
+            setTimeout(() => {
+              setJumpLock(false)
+            }, 200)
+          }
+        }
+      } else if (event.code === 'ArrowDown') {
+        event.preventDefault()
+      }
+    },
+    !mobile,
+  )
+
+  // Scroll Event
+  useEffect(() => {
+    return scrollY.on('change', () => {
+      let val = scrollY.get()
+      let newPos = val < maxX ? val : maxX
+
+      setForwards(val - oldX > 0 ? true : false)
+      setOldX(val)
+
+      if (forwards) {
+        if (x != newPos) {
+          setX(newPos)
+        }
+      } else {
+        if (x > 0 && x != newPos) {
+          setX(newPos)
+        }
+      }
+    })
+  }, [forwards, maxX, oldX, scrollY, x])
 
   // Control Movements
   useEffect(() => {
-    if (!paused) {
-      if (x + xOffset < length) {
-        // move
-        if (!mobile && !moveRight && !moveLeft) {
+    if (!paused && x + xOffset < length) {
+      // move
+      if (!mobile) {
+        if (!moveRight && !moveLeft) {
           // stop moving
           if (xSpeed !== 0) {
             setXSpeed(0)
           }
-        } else if (!mobile) {
+        } else {
           // automatic speed
           if (xSpeed !== 16) {
             setXSpeed(16)
@@ -233,50 +246,48 @@ const SuperMario: FC = () => {
             }
           }
         }
+      }
 
-        // jump
-        if (jump) {
-          if (yOffset + ySpeed < jumpOffset) {
-            setYOffset(yOffset + ySpeed)
-          } else if (yOffset !== jumpOffset) {
-            setYOffset(jumpOffset)
-          }
+      // jump
+      if (jump) {
+        if (yOffset + ySpeed < jumpOffset) {
+          setYOffset(yOffset + ySpeed)
+        } else if (yOffset !== jumpOffset) {
+          setYOffset(jumpOffset)
         }
-
+      } else {
         // descend
-        else {
-          if (yOffset !== 0) {
-            setYOffset(yOffset - ySpeed > 0 ? yOffset - ySpeed : 0)
-          }
+        if (yOffset !== 0) {
+          setYOffset(yOffset - ySpeed > 0 ? yOffset - ySpeed : 0)
         }
+      }
 
-        // platform updates
-        !mobile &&
-          setPlatform(
-            PlatformUpdate({
-              xPos: x,
-              yPos: y,
-              xOffset: xOffset,
-              yOffset: yOffset,
-              setY: setY,
-              setYOffset: setYOffset,
-              ySpeed: ySpeed,
-              platforms: platforms,
-            }),
-          )
-
-        // automatic y updates
-        if (!jump && !platform) {
-          const positionUpdate = PositionUpdate({
+      // platform updates
+      !mobile &&
+        setPlatform(
+          PlatformUpdate({
             xPos: x,
             yPos: y,
             xOffset: xOffset,
             yOffset: yOffset,
             setY: setY,
             setYOffset: setYOffset,
-            positions: positions,
-          })
-        }
+            ySpeed: ySpeed,
+            platforms: platforms,
+          }),
+        )
+
+      // automatic y updates
+      if (!jump && !platform) {
+        PositionUpdate({
+          xPos: x,
+          yPos: y,
+          xOffset: xOffset,
+          yOffset: yOffset,
+          setY: setY,
+          setYOffset: setYOffset,
+          positions: positions,
+        })
       }
     }
   }, [
@@ -342,6 +353,7 @@ const SuperMario: FC = () => {
           score={score}
           timer={timer}
           setPaused={setPaused}
+          ip={ip}
         />
       </Box>
     </Box>

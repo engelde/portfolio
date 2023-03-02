@@ -45,8 +45,8 @@ const Mushroom: FC<Props> = ({ active, setActive, x, y, score, setScore }: Props
         <NextImage
           alt={'Mushroom'}
           src={'/images/mushroom/mushroom.png'}
-          height={'80px'}
-          width={'80px'}
+          height={80}
+          width={80}
           quality={80}
           priority
         />

@@ -38,8 +38,8 @@ const End: FC<Props> = ({ x, y }: Props) => {
             <NextImage
               alt={'Fireworks'}
               src={'/media/fireworks/fireworks.webp'}
-              height={'248px'}
-              width={'300px'}
+              height={248}
+              width={300}
               quality={80}
               priority
             />
@@ -84,8 +84,8 @@ const End: FC<Props> = ({ x, y }: Props) => {
                   alt={'GitHub'}
                   title={'GitHub'}
                   src={'/images/github/github.png'}
-                  width={'58px'}
-                  height={'60px'}
+                  width={58}
+                  height={60}
                   quality={80}
                   priority
                 />
@@ -101,8 +101,8 @@ const End: FC<Props> = ({ x, y }: Props) => {
                   alt={'LinkedIn'}
                   title={'LinkedIn'}
                   src={'/images/linkedin/linkedin.png'}
-                  width={'60px'}
-                  height={'60px'}
+                  width={60}
+                  height={60}
                   quality={80}
                   priority
                 />

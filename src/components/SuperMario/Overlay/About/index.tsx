@@ -151,8 +151,8 @@ const About: FC<Props> = ({ stage, ...rest }: Props) => {
             <NextImage
               alt={stage === 1 ? 'Me' : 'Family'}
               src={stage === 1 ? '/images/me/me.png' : '/images/family/family.png'}
-              layout={'fill'}
-              objectFit={'cover'}
+              width={300}
+              height={300}
               quality={90}
               priority
             />

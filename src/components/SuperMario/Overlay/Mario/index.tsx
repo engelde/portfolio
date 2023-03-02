@@ -90,8 +90,8 @@ const Mario: FC<Props> = ({ variant, x, y, xPos, forwards, moving, jump }: Props
       <NextImage
         alt={'Mario'}
         src={jump ? jumpImages[variant][0] : image}
-        height={variant === 'lg' ? '160px' : '100px'}
-        width={variant === 'lg' ? '80px' : '100px'}
+        height={variant === 'lg' ? 160 : 100}
+        width={variant === 'lg' ? 80 : 100}
         quality={80}
         priority
       />

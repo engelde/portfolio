@@ -21,8 +21,8 @@ const Rock: FC<Props> = ({ x, y }: Props) => {
       <NextImage
         alt={'Rock'}
         src={'/images/rock/rock.png'}
-        height={'80px'}
-        width={'80px'}
+        height={80}
+        width={80}
         quality={80}
         priority
       />

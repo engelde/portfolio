@@ -24,8 +24,8 @@ const Tree: FC<Props> = ({ variant, x, y }: Props) => {
           <NextImage
             alt={'Tree 1'}
             src={'/images/tree/tree.1.png'}
-            height={'244px'}
-            width={'320px'}
+            height={244}
+            width={320}
             quality={80}
             priority
           />
@@ -44,8 +44,8 @@ const Tree: FC<Props> = ({ variant, x, y }: Props) => {
             <NextImage
               alt={'Tree 2'}
               src={'/images/tree/tree.2.png'}
-              height={'320px'}
-              width={'640px'}
+              height={320}
+              width={640}
               quality={80}
               priority
             />
@@ -57,15 +57,15 @@ const Tree: FC<Props> = ({ variant, x, y }: Props) => {
             position={'absolute'}
             left={x + 'px'}
             bottom={y + 'px'}
-            height={'640px'}
-            width={'480px'}
+            height={640}
+            width={480}
             p={0}
             className={'animate__animated animate__fadeInUp'}>
             <NextImage
               alt={'Tree 3'}
               src={'/images/tree/tree.3.png'}
-              height={'640px'}
-              width={'480px'}
+              height={640}
+              width={480}
               quality={80}
               priority
             />

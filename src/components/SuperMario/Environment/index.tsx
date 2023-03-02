@@ -10,7 +10,7 @@ const Environment: FC = () => {
   return (
     <>
       <Sun />
-      <Moon />
+      {/* <Moon /> */}
       {!mobile && <Clouds />}
     </>
   )
