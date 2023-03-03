@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import config from '@/utilities/config'
 
 type Props = {
@@ -13,12 +14,14 @@ type Props = {
 const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
   return (
     <Box
+      as={motion.div}
       p={2}
       zIndex={990}
       position={'fixed'}
       top={2}
       right={2}
-      className={'animate__animated animate__slow animate__fadeInLeftBig'}>
+      initial={{ right: -500 }}
+      animate={{ right: 2, transition: { delay: 1.5 } }}>
       <VStack spacing={0}>
         <StatGroup
           width={{ base: '140px', md: '200px' }}

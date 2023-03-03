@@ -13,6 +13,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { CgMenuLeftAlt } from 'react-icons/cg'
+import { motion } from 'framer-motion'
 
 type MenuLink = {
   name: string
@@ -41,6 +42,7 @@ const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
       <Flex pr={{ base: 2, lg: 2 }} pl={{ base: 2, lg: 2 }}>
         <HStack>
           <IconButton
+            as={motion.div}
             variant={'link'}
             zIndex={9999}
             position={'fixed'}
@@ -49,20 +51,27 @@ const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
             py={4}
             size={'lg'}
             color={'white'}
+            cursor={'pointer'}
             title={'Pause'}
             aria-label={'open menu'}
-            onClick={() => setOpen(true)}
-            _hover={{ color: 'cyan.300', transform: 'scale(1.25) !important' }}
-            _active={{ color: 'cyan.300' }}
             icon={<CgMenuLeftAlt />}
-            className={'animate__animated animate__fadeInDownBig'}
+            onClick={() => setOpen(true)}
+            _active={{ color: 'cyan.300' }}
+            initial={{ marginTop: -100 }}
+            animate={{ marginTop: 0, transition: { delay: 1 } }}
+            whileHover={{ color: '#76E4F7', scale: 1.25 }}
           />
         </HStack>
       </Flex>
       <Drawer isOpen={open} placement={'left'} size={'md'} onClose={() => setOpen(false)}>
         <DrawerOverlay bg={'blackAlpha.800'} />
         <DrawerContent color={'white'} bg={'blackAlpha.900'}>
-          <DrawerCloseButton _hover={{ color: 'cyan.300' }} _active={{ color: 'cyan.300' }} />
+          <DrawerCloseButton
+            as={motion.div}
+            _active={{ color: 'cyan.300' }}
+            cursor={'pointer'}
+            whileHover={{ color: '#76E4F7', scale: 1.25 }}
+          />
           <DrawerBody>
             <Flex h={'80vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
               <VStack spacing={8}>
