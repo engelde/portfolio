@@ -3,7 +3,7 @@
   right: 0;
   top: 0;
   border-radius: 50%;
-  animation: enlarge 20s infinite;
+  animation: enlarge 30s infinite;
   background: url('/_next/image?url=%2Fimages%2Fsun%2Fsun.png&w=384&q=80') no-repeat center center;
   background-size: cover;
 }
@@ -39,25 +39,21 @@
     right: 47.5px;
     top: 47.5px;
   }
-  26% {
+  36% {
     right: -112.5px;
     top: -112.5px;
   }
-  32% {
-    right: -300px;
-    top: -300px;
+  48% {
+    right: -200px;
+    top: -200px;
   }
-  54% {
-    right: -300px;
-    top: -300px;
-  }
-  68% {
+  60% {
     right: -112.5px;
     top: -112.5px;
   }
-  90% {
-    right: -2.5px;
-    top: -2.5px;
+  94% {
+    right: 47.5px;
+    top: 47.5px;
   }
   100% {
     right: 47.5px;
@@ -70,25 +66,21 @@
     right: 35px;
     top: 35px;
   }
-  26% {
+  36% {
     right: -125px;
     top: -125px;
   }
-  32% {
+  48% {
     right: -300px;
     top: -300px;
   }
-  54% {
-    right: -300px;
-    top: -300px;
-  }
-  68% {
+  60% {
     right: -125px;
     top: -125px;
   }
-  90% {
-    right: -15px;
-    top: -15px;
+  94% {
+    right: 35px;
+    top: 35px;
   }
   100% {
     right: 35px;
