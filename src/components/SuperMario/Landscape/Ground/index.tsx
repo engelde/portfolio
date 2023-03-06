@@ -2,19 +2,18 @@ import { FC } from 'react'
 import { HStack, Box } from '@chakra-ui/react'
 
 type Props = {
-  variant: number
   x: number
   height: number
   width: number
 }
 
-const Ground: FC<Props> = ({ variant, x, height, width }: Props) => {
+const Ground: FC<Props> = ({ x, height, width }: Props) => {
   return (
-    <Box width={width + 'px'} zIndex={-99} position={'absolute'} bottom={0} left={x + 'px'} p={0}>
+    <Box zIndex={-98} position={'absolute'} bottom={0} left={x + 'px'} w={width + 'px'}>
       <HStack spacing={0}>
         <Box
-          height={height + 'px'}
-          width={'12px'}
+          w={'12px'}
+          h={height + 'px'}
           bg={
             'url("/_next/image?url=%2Fimages%2Fground%2Fground.1.png&w=256&q=80") no-repeat left top'
           }
@@ -22,8 +21,8 @@ const Ground: FC<Props> = ({ variant, x, height, width }: Props) => {
           overflow={'hidden'}
         />
         <Box
-          height={height + 'px'}
-          width={width - 16 + 'px'}
+          w={width - 16 + 'px'}
+          h={height + 'px'}
           bg={
             'url("/_next/image?url=%2Fimages%2Fground%2Fground.2.png&w=256&q=80") repeat-x left top'
           }
@@ -31,8 +30,8 @@ const Ground: FC<Props> = ({ variant, x, height, width }: Props) => {
           overflow={'hidden'}
         />
         <Box
-          height={height + 'px'}
-          width={'4px'}
+          w={'4px'}
+          h={height + 'px'}
           bg={
             'url("/_next/image?url=%2Fimages%2Fground%2Fground.3.png&w=128&q=80") no-repeat left top'
           }
