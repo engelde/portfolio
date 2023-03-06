@@ -2,7 +2,6 @@ import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { Box, useMediaQuery } from '@chakra-ui/react'
 import { useScroll } from 'framer-motion'
 import config from '@/utilities/config'
-import Background from './Background'
 import Environment from './Environment'
 import Landscape from './Landscape'
 import Foreground from './Foreground'
@@ -316,8 +315,7 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
 
   return (
     <Box overflowY={'scroll'} overflowX={'hidden'} h={maxX + 'px'} w={'100vw'}>
-      <Background />
-      {!mobile && <Environment />}
+      <Environment />
       <Box
         zIndex={1}
         position={'fixed'}

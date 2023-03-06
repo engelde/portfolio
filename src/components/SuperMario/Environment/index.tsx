@@ -1,7 +1,8 @@
 import { FC } from 'react'
 import { useMediaQuery } from '@chakra-ui/react'
 import Clouds from './Clouds'
-import Moon from './Moon'
+import Daylight from './Daylight'
+import Sky from './Sky'
 import Sun from './Sun'
 
 const Environment: FC = () => {
@@ -9,8 +10,9 @@ const Environment: FC = () => {
 
   return (
     <>
+      <Sky />
+      {!mobile && <Daylight />}
       <Sun />
-      {/* <Moon /> */}
       {!mobile && <Clouds />}
     </>
   )
