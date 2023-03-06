@@ -5,9 +5,11 @@ import Daylight from './Daylight'
 import Sky from './Sky'
 import Sun from './Sun'
 
-const Environment: FC = () => {
-  const [mobile] = useMediaQuery('(max-width: 48rem)')
+type Props = {
+  mobile: boolean
+}
 
+const Environment: FC<Props> = ({ mobile }: Props) => {
   return (
     <>
       <Sky />

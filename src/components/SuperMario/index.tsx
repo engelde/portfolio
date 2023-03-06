@@ -315,7 +315,7 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
 
   return (
     <Box overflowY={'scroll'} overflowX={'hidden'} h={maxX + 'px'} w={'100vw'}>
-      <Environment />
+      <Environment mobile={mobile} />
       <Box
         zIndex={1}
         position={'fixed'}

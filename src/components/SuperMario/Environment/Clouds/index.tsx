@@ -9,14 +9,14 @@ type CloudProps = {
   opacity: number
   duration: number
   delay: number
-  variant: 'a' | 'b'
+  variant: 1 | 2
 }
 
 type VariantProps = {
-  [variant: string]: {
+  [variant: number]: {
     src: string
-    height: number
     width: number
+    height: number
   }
 }
 
@@ -30,7 +30,7 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.45,
       duration: 90,
       delay: 0,
-      variant: 'a',
+      variant: 1,
     },
     {
       y: 33,
@@ -38,7 +38,7 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.4,
       duration: 115,
       delay: 3,
-      variant: 'b',
+      variant: 2,
     },
     {
       y: 15,
@@ -46,7 +46,7 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.45,
       duration: 140,
       delay: 14,
-      variant: 'b',
+      variant: 2,
     },
     {
       y: 42,
@@ -54,7 +54,7 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.4,
       duration: 145,
       delay: 37,
-      variant: 'a',
+      variant: 1,
     },
     {
       y: 24,
@@ -62,7 +62,7 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.5,
       duration: 140,
       delay: 66,
-      variant: 'b',
+      variant: 2,
     },
     {
       y: 20,
@@ -70,7 +70,7 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.5,
       duration: 175,
       delay: 90,
-      variant: 'b',
+      variant: 2,
     },
     {
       y: 30,
@@ -78,7 +78,7 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.4,
       duration: 115,
       delay: 140,
-      variant: 'a',
+      variant: 1,
     },
     {
       y: 14,
@@ -86,20 +86,20 @@ const Clouds: FC<Props> = ({}: Props) => {
       opacity: 0.4,
       duration: 90,
       delay: 145,
-      variant: 'a',
+      variant: 1,
     },
   ]
 
   const variants: VariantProps = {
-    a: {
+    1: {
       src: '/images/clouds/clouds.1.png',
-      height: 120,
       width: 166,
-    },
-    b: {
-      src: '/images/clouds/clouds.2.png',
       height: 120,
+    },
+    2: {
+      src: '/images/clouds/clouds.2.png',
       width: 250,
+      height: 120,
     },
   }
 
