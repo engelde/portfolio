@@ -1,26 +1,20 @@
 import { FC } from 'react'
 import { Box } from '@chakra-ui/react'
 import Bush from './Bush'
-import GuideLines from './GuideLines'
 import Ground from './Ground'
 import Tree from './Tree'
-import config from '@/utilities/config'
 
-type Props = {
-  length: number
-  xPos: number
-  yPos: number
-}
+type Props = {}
 
-const Landscape: FC<Props> = ({ length, xPos, yPos }: Props) => {
+const Landscape: FC<Props> = ({}: Props) => {
   return (
-    <Box zIndex={99} position={'absolute'} left={0} bottom={0} width={'full'} height={'full'}>
-      <Ground variant={1} x={0} height={64} width={3374} />
-      <Ground variant={2} x={3360} height={128} width={2320} />
-      <Ground variant={1} x={5920} height={64} width={1760} />
-      <Ground variant={1} x={7840} height={64} width={400} />
-      <Ground variant={1} x={8480} height={64} width={3000} />
-      <Ground variant={1} x={11560} height={64} width={1800} />
+    <Box zIndex={99} position={'absolute'} left={0} bottom={0} w={'full'} h={'full'}>
+      <Ground x={0} height={64} width={3374} />
+      <Ground x={3360} height={128} width={2320} />
+      <Ground x={5920} height={64} width={1760} />
+      <Ground x={7840} height={64} width={400} />
+      <Ground x={8480} height={64} width={3000} />
+      <Ground x={11560} height={64} width={1800} />
 
       <Tree variant={2} x={320} y={64} />
 
@@ -53,8 +47,6 @@ const Landscape: FC<Props> = ({ length, xPos, yPos }: Props) => {
       <Tree variant={1} x={9680} y={64} />
 
       <Tree variant={3} x={12120} y={64} />
-
-      {config.app.environment === 'development' && <GuideLines length={length} />}
     </Box>
   )
 }

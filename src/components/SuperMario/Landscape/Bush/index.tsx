@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 
 type Props = {
   x: number
@@ -10,22 +11,16 @@ type Props = {
 const Bush: FC<Props> = ({ x, y }: Props) => {
   return (
     <Box
+      as={motion.div}
       zIndex={-99}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
-      height={'80px'}
-      width={'80px'}
-      p={0}
-      className={'animate__animated animate__fadeInUp'}>
-      <NextImage
-        alt={'Bush'}
-        src={'/images/bush/bush.png'}
-        height={80}
-        width={80}
-        quality={80}
-        priority
-      />
+      w={'80px'}
+      h={'80px'}
+      initial={{ translateY: '200%' }}
+      animate={{ translateY: '0', transition: { delay: 0.3, ease: 'linear' } }}>
+      <NextImage alt={'bush'} src={'/images/bush/bush.png'} width={80} height={80} priority />
     </Box>
   )
 }
