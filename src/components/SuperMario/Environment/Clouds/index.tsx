@@ -22,7 +22,7 @@ type VariantProps = {
 
 type Props = {}
 
-const Clouds: FC<Props> = ({ ...rest }: Props) => {
+const Clouds: FC<Props> = ({}: Props) => {
   const clouds: CloudProps[] = [
     {
       y: 4,
@@ -104,7 +104,7 @@ const Clouds: FC<Props> = ({ ...rest }: Props) => {
   }
 
   return (
-    <Box zIndex={-99} position={'fixed'} top={0} left={0} width={'100vw'} {...rest}>
+    <Box zIndex={-99} position={'fixed'} top={0} left={0} width={'100vw'}>
       {clouds.map((item, x) => (
         <Box
           key={x}

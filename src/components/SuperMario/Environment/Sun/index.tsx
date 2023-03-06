@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import NextImage from 'next/image'
-import { Box, BoxProps } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = BoxProps & {}
+type Props = {}
 
-const Sun: FC<Props> = ({ ...rest }: Props) => {
+const Sun: FC<Props> = ({}: Props) => {
   return (
     <Box
       as={motion.div}
@@ -15,8 +15,7 @@ const Sun: FC<Props> = ({ ...rest }: Props) => {
       right={0}
       minW={'full'}
       initial={{ marginTop: -300, marginRight: -300 }}
-      animate={{ marginTop: 0, marginRight: 0 }}
-      {...rest}>
+      animate={{ marginTop: 0, marginRight: 0 }}>
       <Box
         as={motion.div}
         position={'absolute'}

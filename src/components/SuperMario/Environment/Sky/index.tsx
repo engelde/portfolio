@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 type Props = {}
 
-const Sky: FC<Props> = ({ ...rest }: Props) => {
+const Sky: FC<Props> = ({}: Props) => {
   return (
     <Box
       as={motion.div}
