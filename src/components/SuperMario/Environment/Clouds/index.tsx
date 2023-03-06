@@ -131,6 +131,7 @@ const Clouds: FC<Props> = ({ ...rest }: Props) => {
             src={variants[item.variant].src}
             width={variants[item.variant].width * item.scale}
             height={variants[item.variant].height * item.scale}
+            priority
           />
         </Box>
       ))}

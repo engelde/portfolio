@@ -41,7 +41,13 @@ const Sun: FC<Props> = ({ ...rest }: Props) => {
             repeatDelay: 0,
           },
         }}>
-        <NextImage alt={'sun shadow'} src={'/images/sun/sun.png'} width={240} height={240} />
+        <NextImage
+          alt={'sun shadow'}
+          src={'/images/sun/sun.png'}
+          width={240}
+          height={240}
+          priority
+        />
       </Box>
 
       <Box
@@ -68,7 +74,7 @@ const Sun: FC<Props> = ({ ...rest }: Props) => {
             repeatDelay: 0,
           },
         }}>
-        <NextImage alt={'sun'} src={'/images/sun/sun.png'} width={215} height={215} />
+        <NextImage alt={'sun'} src={'/images/sun/sun.png'} width={215} height={215} priority />
       </Box>
     </Box>
   )
