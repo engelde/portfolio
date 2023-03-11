@@ -45,7 +45,7 @@ const Pipe: FC<Props> = ({
           w={'160px'}
           h={height - 80 + 'px'}
           bg={
-            'url(/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=80) repeat-y left top / contain;'
+            'url(/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=75) repeat-y left top / contain;'
           }
         />
       </VStack>
