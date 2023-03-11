@@ -1,444 +1,517 @@
-import { FC, useEffect, useState } from 'react'
-import { Box as CkBox } from '@chakra-ui/react'
-import Box from './Box'
-import Brick from './Brick'
-import Coin from './Coin'
-import Cube from './Cube'
-import Goomba from './Goomba'
+import { FC, useEffect, useMemo, useState } from 'react'
+import Brick, { type BrickProps } from './Brick'
+import Coin, { type CoinProps } from './Coin'
+import Goomba, { type GoombaProps } from './Goomba'
 import Mushroom from './Mushroom'
-import Pipe from './Pipe'
-import Rock from './Rock'
-import ScrollIndicator from './ScrollIndicator'
-import Turtle from './Turtle'
+import Pipe, { type PipeProps } from './Pipe'
+import PrizeBox, { type PrizeBoxProps } from './PrizeBox'
+import Turtle, { type TurtleProps } from './Turtle'
 
 type Props = {
   xPos: number
   yPos: number
   jump: boolean
+  marioVariant: 1 | 2
   score: number
   setJumpOffset: (offset: number) => void
+  setMarioVariant: (variant: 1 | 2) => void
   setScore: (score: number) => void
 }
 
-const Foreground: FC<Props> = ({ xPos, yPos, jump, score, setJumpOffset, setScore }: Props) => {
-  const [box1Status, setBox1Status] = useState(true)
-  const [box1Active, setBox1Active] = useState(false)
-  const [box1PrizeActive, setBox1PrizeActive] = useState(false)
-  const [box1PrizeCount, setBox1PrizeCount] = useState(1)
+const Foreground: FC<Props> = ({
+  xPos,
+  yPos,
+  jump,
+  marioVariant,
+  score,
+  setJumpOffset,
+  setMarioVariant,
+  setScore,
+}: Props) => {
+  const [prizeBox1Status, setPrizeBox1Status] = useState(true)
+  const [prizeBox1Active, setPrizeBox1Active] = useState(false)
+  const [prizeBox1Count, setPrizeBox1Count] = useState(1)
+  const [prizeBox1Prize, setPrizeBox1Prize] = useState(false)
 
-  const [box2Status, setBox2Status] = useState(true)
-  const [box2Active, setBox2Active] = useState(false)
-  const [box2PrizeActive, setBox2PrizeActive] = useState(false)
-  const [box2PrizeCount, setBox2PrizeCount] = useState(1)
+  const [prizeBox2Status, setPrizeBox2Status] = useState(true)
+  const [prizeBox2Active, setPrizeBox2Active] = useState(false)
+  const [prizeBox2Count, setPrizeBox2Count] = useState(1)
+  const [prizeBox2Prize, setPrizeBox2Prize] = useState(false)
 
-  const [box3Status, setBox3Status] = useState(true)
-  const [box3Active, setBox3Active] = useState(false)
-  const [box3PrizeActive, setBox3PrizeActive] = useState(false)
-  const [box3PrizeCount, setBox3PrizeCount] = useState(1)
+  const [prizeBox3Status, setPrizeBox3Status] = useState(true)
+  const [prizeBox3Active, setPrizeBox3Active] = useState(false)
+  const [prizeBox3Count, setPrizeBox3Count] = useState(1)
+  const [prizeBox3Prize, setPrizeBox3Prize] = useState(false)
 
-  const [box4Status, setBox4Status] = useState(true)
-  const [box4Active, setBox4Active] = useState(false)
-  const [box4PrizeActive, setBox4PrizeActive] = useState(false)
-  const [box4PrizeCount, setBox4PrizeCount] = useState(1)
-  const [prize4Active, setPrize4Active] = useState(false)
+  const [prizeBox4Status, setPrizeBox4Status] = useState(true)
+  const [prizeBox4Active, setPrizeBox4Active] = useState(false)
+  const [prizeBox4Count, setPrizeBox4Count] = useState(1)
+  const [prizeBox4Prize, setPrizeBox4Prize] = useState(false)
 
-  const [box5Status, setBox5Status] = useState(true)
-  const [box5Active, setBox5Active] = useState(false)
-  const [box5PrizeActive, setBox5PrizeActive] = useState(false)
-  const [box5PrizeCount, setBox5PrizeCount] = useState(1)
+  const [prizeBox5Status, setPrizeBox5Status] = useState(true)
+  const [prizeBox5Active, setPrizeBox5Active] = useState(false)
+  const [prizeBox5Count, setPrizeBox5Count] = useState(1)
+  const [prizeBox5Prize, setPrizeBox5Prize] = useState(false)
 
-  const [box6Status, setBox6Status] = useState(true)
-  const [box6Active, setBox6Active] = useState(false)
-  const [box6PrizeActive, setBox6PrizeActive] = useState(false)
-  const [box6PrizeCount, setBox6PrizeCount] = useState(0)
+  const [prizeBox6Status, setPrizeBox6Status] = useState(true)
+  const [prizeBox6Active, setPrizeBox6Active] = useState(false)
+  const [prizeBox6Count, setPrizeBox6Count] = useState(0)
+  const [prizeBox6Prize, setPrizeBox6Prize] = useState(false)
 
-  const [box7Status, setBox7Status] = useState(true)
-  const [box7Active, setBox7Active] = useState(false)
-  const [box7PrizeActive, setBox7PrizeActive] = useState(false)
-  const [box7PrizeCount, setBox7PrizeCount] = useState(1)
+  const [prizeBox7Status, setPrizeBox7Status] = useState(true)
+  const [prizeBox7Active, setPrizeBox7Active] = useState(false)
+  const [prizeBox7Count, setPrizeBox7Count] = useState(1)
+  const [prizeBox7Prize, setPrizeBox7Prize] = useState(false)
 
-  const [box8Status, setBox8Status] = useState(true)
-  const [box8Active, setBox8Active] = useState(false)
-  const [box8PrizeActive, setBox8PrizeActive] = useState(false)
-  const [box8PrizeCount, setBox8PrizeCount] = useState(1)
+  const [prizeBox8Status, setPrizeBox8Status] = useState(true)
+  const [prizeBox8Active, setPrizeBox8Active] = useState(false)
+  const [prizeBox8Count, setPrizeBox8Count] = useState(1)
+  const [prizeBox8Prize, setPrizeBox8Prize] = useState(false)
 
+  const [coin1Active, setCoin1Active] = useState(false)
+  const [coin2Active, setCoin2Active] = useState(false)
+  const [coin3Active, setCoin3Active] = useState(false)
+  const [coin4Active, setCoin4Active] = useState(false)
+  const [coin5Active, setCoin5Active] = useState(false)
+
+  const [mushroom1Active, setMushroom1Active] = useState(false)
+
+  const bricks: BrickProps[] = [
+    { x: 10000, y: 64 },
+    { x: 10080, y: 64 },
+    { x: 10080, y: 144 },
+    { x: 10160, y: 64 },
+    { x: 10160, y: 144 },
+    { x: 10160, y: 224 },
+    { x: 10240, y: 64 },
+    { x: 10240, y: 144 },
+    { x: 10240, y: 224 },
+    { x: 10320, y: 64 },
+    { x: 10320, y: 144 },
+    { x: 10320, y: 224 },
+    { x: 10400, y: 64 },
+    { x: 10400, y: 144 },
+    { x: 10400, y: 224 },
+    { x: 10480, y: 64 },
+    { x: 10720, y: 64 },
+    { x: 10720, y: 144 },
+    { x: 10800, y: 64 },
+  ]
+
+  const coins: CoinProps[] = [
+    {
+      x: 5600,
+      y: 308,
+      active: coin1Active,
+      setActive: setCoin1Active,
+      score: score,
+      setScore: setScore,
+    },
+    {
+      x: 5760,
+      y: 468,
+      active: coin2Active,
+      setActive: setCoin2Active,
+      score: score,
+      setScore: setScore,
+    },
+    {
+      x: 5920,
+      y: 628,
+      active: coin3Active,
+      setActive: setCoin3Active,
+      score: score,
+      setScore: setScore,
+    },
+    {
+      x: 6080,
+      y: 788,
+      active: coin4Active,
+      setActive: setCoin4Active,
+      score: score,
+      setScore: setScore,
+    },
+    {
+      x: 6240,
+      y: 948,
+      active: coin5Active,
+      setActive: setCoin5Active,
+      score: score,
+      setScore: setScore,
+    },
+  ]
+
+  const goombas: GoombaProps[] = [
+    { x: 1920, y: 64, offset: 1200 },
+    { x: 3280, y: 64, offset: 1120 },
+    { x: 4800, y: 128, offset: 1200 },
+    { x: 5600, y: 128, offset: 2000 },
+  ]
+
+  const pipes: PipeProps[] = [
+    {
+      x: 2000,
+      y: 64,
+      height: 240,
+      plant: true,
+      plantVariant: 2,
+      active: true,
+    },
+    {
+      x: 9200,
+      y: 64,
+      height: 160,
+      plant: true,
+      plantVariant: 1,
+    },
+    {
+      x: 9520,
+      y: 64,
+      height: 240,
+      plant: true,
+      plantVariant: 2,
+      active: xPos < 9600,
+    },
+    { x: 11560, y: 64, height: 240 },
+    { x: 11560, y: 624, height: 1120 },
+    { x: 11560, y: 544, height: 80 },
+    { x: 11880, y: 64, height: 160 },
+  ]
+
+  const turtles: TurtleProps[] = [{ x: 3200, y: 224, offset: 400 }]
+
+  const prizeBoxes = useMemo<PrizeBoxProps[]>(
+    () => [
+      {
+        x: 1120,
+        y: 304,
+        jumpMax: 160,
+        status: prizeBox1Status,
+        setStatus: setPrizeBox1Status,
+        active: prizeBox1Active,
+        setActive: setPrizeBox1Active,
+        prizeActive: prizeBox1Prize,
+        setPrizeActive: setPrizeBox1Prize,
+        prizeCount: prizeBox1Count,
+        setPrizeCount: setPrizeBox1Count,
+        children: (
+          <Coin
+            x={0}
+            y={0}
+            active={prizeBox1Prize}
+            setActive={setPrizeBox1Prize}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 1200,
+        y: 304,
+        jumpMax: 160,
+        status: prizeBox2Status,
+        setStatus: setPrizeBox2Status,
+        active: prizeBox2Active,
+        setActive: setPrizeBox2Active,
+        prizeActive: prizeBox2Prize,
+        setPrizeActive: setPrizeBox2Prize,
+        prizeCount: prizeBox2Count,
+        setPrizeCount: setPrizeBox2Count,
+        children: (
+          <Coin
+            x={0}
+            y={0}
+            active={prizeBox2Prize}
+            setActive={setPrizeBox2Prize}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 1360,
+        y: 544,
+        jumpMax: 160,
+        status: prizeBox3Status,
+        setStatus: setPrizeBox3Status,
+        active: prizeBox3Active,
+        setActive: setPrizeBox3Active,
+        prizeActive: prizeBox3Prize,
+        setPrizeActive: setPrizeBox3Prize,
+        prizeCount: prizeBox3Count,
+        setPrizeCount: setPrizeBox3Count,
+        children: (
+          <Coin
+            x={0}
+            y={0}
+            active={prizeBox3Prize}
+            setActive={setPrizeBox3Prize}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 1440,
+        y: 544,
+        jumpMax: 160,
+        status: prizeBox4Status,
+        setStatus: setPrizeBox4Status,
+        active: prizeBox4Active,
+        setActive: setPrizeBox4Active,
+        prizeActive: prizeBox4Prize,
+        setPrizeActive: setPrizeBox4Prize,
+        prizeCount: prizeBox4Count,
+        setPrizeCount: setPrizeBox4Count,
+        children: (
+          <Mushroom
+            x={0}
+            y={0}
+            active={mushroom1Active}
+            setActive={setMushroom1Active}
+            marioVariant={marioVariant}
+            setMarioVariant={setMarioVariant}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 2320,
+        y: 544,
+        jumpMax: 160,
+        status: prizeBox5Status,
+        setStatus: setPrizeBox5Status,
+        active: prizeBox5Active,
+        setActive: setPrizeBox5Active,
+        prizeActive: prizeBox5Prize,
+        setPrizeActive: setPrizeBox5Prize,
+        prizeCount: prizeBox5Count,
+        setPrizeCount: setPrizeBox5Count,
+        children: (
+          <Coin
+            x={0}
+            y={0}
+            active={prizeBox5Prize}
+            setActive={setPrizeBox5Prize}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 3520,
+        y: 128,
+        jumpMax: 80,
+        status: prizeBox6Status,
+        setStatus: setPrizeBox6Status,
+        active: prizeBox6Active,
+        setActive: setPrizeBox6Active,
+        prizeActive: prizeBox6Prize,
+        setPrizeActive: setPrizeBox6Prize,
+        prizeCount: prizeBox6Count,
+        setPrizeCount: setPrizeBox6Count,
+        children: (
+          <Coin
+            x={0}
+            y={0}
+            active={prizeBox6Prize}
+            setActive={setPrizeBox6Prize}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 3760,
+        y: 288,
+        jumpMax: 80,
+        status: prizeBox7Status,
+        setStatus: setPrizeBox7Status,
+        active: prizeBox7Active,
+        setActive: setPrizeBox7Active,
+        prizeActive: prizeBox7Prize,
+        setPrizeActive: setPrizeBox7Prize,
+        prizeCount: prizeBox7Count,
+        setPrizeCount: setPrizeBox7Count,
+        children: (
+          <Coin
+            x={0}
+            y={0}
+            active={prizeBox7Prize}
+            setActive={setPrizeBox7Prize}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 7520,
+        y: 224,
+        jumpMax: 20,
+        status: prizeBox8Status,
+        setStatus: setPrizeBox8Status,
+        active: prizeBox8Active,
+        setActive: setPrizeBox8Active,
+        prizeActive: prizeBox8Prize,
+        setPrizeActive: setPrizeBox8Prize,
+        prizeCount: prizeBox8Count,
+        setPrizeCount: setPrizeBox8Count,
+        children: (
+          <Coin
+            x={0}
+            y={0}
+            active={prizeBox8Prize}
+            setActive={setPrizeBox8Prize}
+            score={score}
+            setScore={setScore}
+          />
+        ),
+      },
+    ],
+    [
+      prizeBox1Status,
+      prizeBox1Active,
+      prizeBox1Count,
+      prizeBox1Prize,
+      prizeBox2Status,
+      prizeBox2Active,
+      prizeBox2Count,
+      prizeBox2Prize,
+      prizeBox3Status,
+      prizeBox3Active,
+      prizeBox3Count,
+      prizeBox3Prize,
+      prizeBox4Status,
+      prizeBox4Active,
+      prizeBox4Count,
+      prizeBox4Prize,
+      prizeBox5Status,
+      prizeBox5Active,
+      prizeBox5Count,
+      prizeBox5Prize,
+      prizeBox6Status,
+      prizeBox6Active,
+      prizeBox6Count,
+      prizeBox6Prize,
+      prizeBox7Status,
+      prizeBox7Active,
+      prizeBox7Count,
+      prizeBox7Prize,
+      prizeBox8Status,
+      prizeBox8Active,
+      prizeBox8Count,
+      prizeBox8Prize,
+      mushroom1Active,
+      marioVariant,
+      setMarioVariant,
+      score,
+      setScore,
+    ],
+  )
+
+  // Prize Box interactions
   useEffect(() => {
     if (jump) {
-      // box 1
-      if (xPos < 1160 && xPos > 1060 && yPos < 304) {
-        if (yPos < 304) {
-          setJumpOffset(160)
-        }
-        if (yPos > 204 && yPos < 244) {
-          setBox1Active(true)
-          if (box1PrizeCount > 0) {
-            setBox1PrizeActive(true)
+      prizeBoxes.map((item) => {
+        if (xPos > item.x - 45 && xPos < item.x + 35 && yPos > item.y - 100 && yPos < item.y) {
+          setJumpOffset(item.jumpMax - (marioVariant !== 1 ? 60 : 0))
+          item.setActive(true)
+          if (item.prizeCount > 0) {
+            item.setPrizeActive(true)
           }
         }
-      }
-      // box 2
-      else if (xPos < 1240 && xPos > 1140 && yPos < 304) {
-        if (yPos < 304) {
-          setJumpOffset(160)
-        }
-        if (yPos > 204 && yPos < 244) {
-          setBox2Active(true)
-          if (box2PrizeCount > 0) {
-            setBox2PrizeActive(true)
-          }
-        }
-      }
-      // box 3
-      else if (xPos < 1400 && xPos > 1300 && yPos > 384) {
-        if (yPos > 384) {
-          setJumpOffset(160)
-        }
-        if (yPos > 444 && yPos < 484) {
-          setBox3Active(true)
-          if (box3PrizeCount > 0) {
-            setBox3PrizeActive(true)
-          }
-        }
-      }
-      // box 4
-      else if (xPos < 1480 && xPos > 1380 && yPos > 384) {
-        if (yPos > 384) {
-          setJumpOffset(160)
-        }
-        if (yPos > 444 && yPos < 484) {
-          setBox4Active(true)
-          if (box4PrizeCount > 0) {
-            setBox4PrizeActive(true)
-          }
-        }
-      }
-      // box 5
-      else if (xPos < 2360 && xPos > 2260 && yPos > 384) {
-        if (yPos > 384) {
-          setJumpOffset(160)
-        }
-        if (yPos > 440 && yPos < 480) {
-          setBox5Active(true)
-          if (box5PrizeCount > 0) {
-            setBox5PrizeActive(true)
-          }
-        }
-      }
-      // box 7
-      else if (xPos < 3800 && xPos > 3720 && yPos < 288) {
-        if (yPos < 288) {
-          setJumpOffset(60)
-        }
-        if (yPos > 168 && yPos < 208) {
-          setBox7Active(true)
-          if (box7PrizeCount > 0) {
-            setBox7PrizeActive(true)
-          }
-        }
-      }
-      // box 8
-      else if (xPos < 7600 && xPos > 7500 && yPos < 244) {
-        if (yPos < 244) {
-          setJumpOffset(60)
-        }
-        if (yPos > 104 && yPos < 144) {
-          setBox8Active(true)
-          if (box8PrizeCount > 0) {
-            setBox8PrizeActive(true)
-          }
-        }
-      }
+      })
     }
+  }, [prizeBoxes, jump, marioVariant, xPos, yPos, setJumpOffset])
 
-    // prize 4
-    if (xPos > 1700 && xPos < 1800 && yPos > 440 && yPos < 540) {
-      if (!prize4Active) {
-        setPrize4Active(true)
+  const powerUps = useMemo(
+    () => [
+      {
+        xRange: [1690, 1790],
+        yRange: [460, 540],
+        prizeStatus: mushroom1Active,
+        setPrizeStatus: setMushroom1Active,
+      },
+    ],
+    [mushroom1Active],
+  )
+
+  // Power Up interactions
+  useEffect(() => {
+    powerUps.map((item) => {
+      if (
+        xPos > item.xRange[1] &&
+        xPos < item.xRange[2] &&
+        yPos > item.yRange[1] &&
+        yPos < item.xRange[2]
+      ) {
+        if (!item.prizeStatus) {
+          item.setPrizeStatus(true)
+        }
       }
-    }
-  }, [
-    xPos,
-    yPos,
-    jump,
-    box1PrizeCount,
-    box2PrizeCount,
-    box3PrizeCount,
-    box4PrizeCount,
-    box5PrizeCount,
-    box7PrizeCount,
-    box8PrizeCount,
-    prize4Active,
-    setBox1Active,
-    setBox1PrizeActive,
-    setBox2Active,
-    setBox2PrizeActive,
-    setBox3Active,
-    setBox3PrizeActive,
-    setBox4Active,
-    setBox4PrizeActive,
-    setBox5Active,
-    setBox5PrizeActive,
-    setBox7Active,
-    setBox7PrizeActive,
-    setBox8Active,
-    setBox8PrizeActive,
-    setJumpOffset,
-    setPrize4Active,
-  ])
+    })
+  }, [powerUps, xPos, yPos])
 
   return (
-    <CkBox zIndex={99} position={'absolute'} left={0} bottom={0} width={'full'} height={'full'}>
-      <Box
-        x={1120}
-        y={304}
-        status={box1Status}
-        setStatus={setBox1Status}
-        active={box1Active}
-        setActive={setBox1Active}
-        prizeActive={box1PrizeActive}
-        setPrizeActive={setBox1PrizeActive}
-        prizeCount={box1PrizeCount}
-        setPrizeCount={setBox1PrizeCount}>
+    <>
+      {bricks.map((item, x) => (
+        <Brick key={x} x={item.x} y={item.y} />
+      ))}
+
+      {coins.map((item, x) => (
         <Coin
-          active={box1PrizeActive}
-          setActive={setBox1PrizeActive}
-          x={0}
-          y={0}
+          key={x}
+          x={item.x}
+          y={item.y}
+          show={true}
+          clickable={true}
+          active={item.active}
+          setActive={item.setActive}
           score={score}
           setScore={setScore}
         />
-      </Box>
-      <Box
-        x={1200}
-        y={304}
-        status={box2Status}
-        setStatus={setBox2Status}
-        active={box2Active}
-        setActive={setBox2Active}
-        prizeActive={box2PrizeActive}
-        setPrizeActive={setBox2PrizeActive}
-        prizeCount={box2PrizeCount}
-        setPrizeCount={setBox2PrizeCount}>
-        <Coin
-          active={box2PrizeActive}
-          setActive={setBox2PrizeActive}
-          x={0}
-          y={0}
-          score={score}
-          setScore={setScore}
+      ))}
+
+      {goombas.map((item, x) => (
+        <Goomba key={x} x={item.x} y={item.y} offset={item.offset} />
+      ))}
+
+      {pipes.map((item, x) => (
+        <Pipe
+          key={x}
+          xPos={xPos}
+          x={item.x}
+          y={item.y}
+          height={item.height}
+          {...(item.plant && { plant: item.plant })}
+          {...(item.plantVariant && { plantVariant: item.plantVariant })}
+          {...(item.active && { active: item.active })}
         />
-      </Box>
+      ))}
 
-      <Box
-        x={1360}
-        y={544}
-        status={box3Status}
-        setStatus={setBox3Status}
-        active={box3Active}
-        setActive={setBox3Active}
-        prizeActive={box3PrizeActive}
-        setPrizeActive={setBox3PrizeActive}
-        prizeCount={box3PrizeCount}
-        setPrizeCount={setBox3PrizeCount}>
-        <Coin
-          active={box3PrizeActive}
-          setActive={setBox3PrizeActive}
-          x={0}
-          y={0}
-          score={score}
-          setScore={setScore}
-        />
-      </Box>
-      <Box
-        x={1440}
-        y={544}
-        status={box4Status}
-        setStatus={setBox4Status}
-        active={box4Active}
-        setActive={setBox4Active}
-        prizeActive={box4PrizeActive}
-        setPrizeActive={setBox4PrizeActive}
-        prizeCount={box4PrizeCount}
-        setPrizeCount={setBox4PrizeCount}>
-        <Mushroom
-          active={prize4Active}
-          setActive={setPrize4Active}
-          x={0}
-          y={0}
-          score={score}
-          setScore={setScore}
-        />
-      </Box>
+      {prizeBoxes.map((item, x) => (
+        <PrizeBox
+          key={x}
+          x={item.x}
+          y={item.y}
+          jumpMax={item.jumpMax}
+          status={item.status}
+          setStatus={item.setStatus}
+          active={item.active}
+          setActive={item.setActive}
+          prizeActive={item.prizeActive}
+          setPrizeActive={item.setPrizeActive}
+          prizeCount={item.prizeCount}
+          setPrizeCount={item.setPrizeCount}>
+          {item.children}
+        </PrizeBox>
+      ))}
 
-      <Box
-        x={2320}
-        y={540}
-        status={box5Status}
-        setStatus={setBox5Status}
-        active={box5Active}
-        setActive={setBox5Active}
-        prizeActive={box5PrizeActive}
-        setPrizeActive={setBox5PrizeActive}
-        prizeCount={box5PrizeCount}
-        setPrizeCount={setBox5PrizeCount}>
-        <Coin
-          active={box5PrizeActive}
-          setActive={setBox5PrizeActive}
-          x={0}
-          y={0}
-          score={score}
-          setScore={setScore}
-        />
-      </Box>
-
-      <Cube variant={1} x={1440} y={64} />
-
-      <Goomba x={1520} y={64} offset={800} />
-
-      <Pipe
-        x={2000}
-        y={64}
-        height={240}
-        plant={true}
-        plantVariant={2}
-        forwards={xPos < 2080}
-        active={xPos > 300 && xPos < 2800}
-      />
-
-      <Cube variant={2} x={2240} y={64} />
-
-      <Goomba x={3280} y={64} offset={1120} />
-
-      <Turtle x={3200} y={224} />
-
-      <Box
-        x={3520}
-        y={128}
-        status={box6Status}
-        setStatus={setBox6Status}
-        active={box6Active}
-        setActive={setBox6Active}
-        prizeActive={box6PrizeActive}
-        setPrizeActive={setBox6PrizeActive}
-        prizeCount={box6PrizeCount}
-        setPrizeCount={setBox6PrizeCount}>
-        <Coin
-          active={box6PrizeActive}
-          setActive={setBox6PrizeActive}
-          x={0}
-          y={0}
-          score={score}
-          setScore={setScore}
-        />
-      </Box>
-      <Box
-        x={3760}
-        y={288}
-        status={box7Status}
-        setStatus={setBox7Status}
-        active={box7Active}
-        setActive={setBox7Active}
-        prizeActive={box7PrizeActive}
-        setPrizeActive={setBox7PrizeActive}
-        prizeCount={box7PrizeCount}
-        setPrizeCount={setBox7PrizeCount}>
-        <Coin
-          active={box7PrizeActive}
-          setActive={setBox7PrizeActive}
-          x={0}
-          y={0}
-          score={score}
-          setScore={setScore}
-        />
-      </Box>
-
-      <Goomba x={4780} y={128} offset={1200} />
-      <Goomba x={5580} y={128} offset={2000} />
-
-      <Cube x={6480} y={64} variant={3} />
-
-      <Box
-        x={7520}
-        y={224}
-        status={box8Status}
-        setStatus={setBox8Status}
-        active={box8Active}
-        setActive={setBox8Active}
-        prizeActive={box8PrizeActive}
-        setPrizeActive={setBox8PrizeActive}
-        prizeCount={box8PrizeCount}
-        setPrizeCount={setBox8PrizeCount}>
-        <Coin
-          active={box8PrizeActive}
-          setActive={setBox8PrizeActive}
-          x={0}
-          y={0}
-          score={score}
-          setScore={setScore}
-        />
-      </Box>
-
-      <Rock x={7680} y={384} />
-      <Rock x={7760} y={384} />
-
-      <Rock x={8000} y={64} />
-      <Rock x={8080} y={64} />
-      <Rock x={8080} y={144} />
-      <Rock x={8160} y={64} />
-      <Rock x={8160} y={144} />
-      <Rock x={8160} y={224} />
-      <Rock x={8480} y={64} />
-      <Rock x={8480} y={144} />
-      <Rock x={8480} y={224} />
-      <Rock x={8560} y={64} />
-      <Rock x={8560} y={144} />
-      <Rock x={8640} y={64} />
-
-      <Pipe x={9200} y={64} height={160} plant={true} />
-      <Pipe x={9520} y={64} height={240} plant={true} plantVariant={2} forwards={xPos < 9640} />
-
-      <Brick x={10000} y={64} />
-      <Brick x={10080} y={64} />
-      <Brick x={10080} y={144} />
-      <Brick x={10160} y={64} />
-      <Brick x={10160} y={144} />
-      <Brick x={10160} y={224} />
-      <Brick x={10240} y={64} />
-      <Brick x={10240} y={144} />
-      <Brick x={10240} y={224} />
-      <Brick x={10320} y={64} />
-      <Brick x={10320} y={144} />
-      <Brick x={10320} y={224} />
-      <Brick x={10400} y={64} />
-      <Brick x={10400} y={144} />
-      <Brick x={10400} y={224} />
-      <Brick x={10480} y={64} />
-      <Brick x={10720} y={64} />
-      <Brick x={10720} y={144} />
-      <Brick x={10800} y={64} />
-
-      <Cube variant={4} x={10960} y={64} />
-
-      <Pipe x={11560} y={64} height={240} />
-      <Pipe x={11560} y={624} height={1120} />
-      <Pipe x={11560} y={544} height={80} />
-
-      <Rock x={11560} y={224} />
-      <Rock x={11640} y={224} />
-
-      <Rock x={11560} y={544} />
-      <Rock x={11640} y={544} />
-
-      <Pipe x={11880} y={64} height={160} />
-
-      <ScrollIndicator
-        className={
-          xPos > 1200
-            ? 'animate__animated animate__faster animate__slideOutDown'
-            : 'animate__animated animate__fadeInUpBig'
-        }
-      />
-    </CkBox>
+      {turtles.map((item, x) => (
+        <Turtle key={x} x={item.x} y={item.y} offset={item.offset} />
+      ))}
+    </>
   )
 }
 

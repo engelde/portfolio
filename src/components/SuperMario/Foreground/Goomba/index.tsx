@@ -1,28 +1,64 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import styles from './styles.module.css'
+import { motion } from 'framer-motion'
 
-type Props = {
+export type GoombaProps = {
   x: number
   y: number
   offset: number
 }
 
-const Goomba: FC<Props> = ({ x, y, offset }: Props) => {
+type VariantProps = {
+  [variant: number]: {
+    src: string
+  }
+}
+
+const Goomba: FC<GoombaProps> = ({ x, y, offset }: GoombaProps) => {
+  const variants: VariantProps = {
+    1: {
+      src: '/images/goomba/goomba.1.png',
+    },
+    2: {
+      src: '/images/goomba/goomba.2.png',
+    },
+  }
+
+  const [state, setState] = useState(1)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setState(state === 1 ? 2 : 1), 400)
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [state])
+
   return (
     <Box
-      zIndex={9}
+      as={motion.div}
+      zIndex={2}
       position={'absolute'}
-      height={'80px'}
-      width={'80px'}
-      ml={'-' + offset}
-      left={x + 'px'}
       bottom={y + 'px'}
-      background={
-        'url("/_next/image?url=%2Fimages%2Fgoomba%2Fgoomba.1.png&w=256&q=80") no-repeat center center / contain'
-      }
-      className={'animate__animated animate__fadeInUp ' + styles.goomba}
-    />
+      left={x + 'px'}
+      w={'80px'}
+      h={'80px'}
+      initial={{ translateX: '-' + offset + 'px' }}
+      animate={{
+        translateX: ['-' + offset + 'px', '0px', '-' + offset + 'px'],
+        transition: {
+          type: 'keyframes',
+          times: [0, 0.5, 1],
+          delay: 0,
+          duration: (offset / 90) * 2,
+          ease: 'linear',
+          repeat: Infinity,
+          repeatType: 'loop',
+          repeatDelay: 0,
+        },
+      }}>
+      <NextImage alt={'goomba'} src={variants[state].src} width={80} height={80} priority />
+    </Box>
   )
 }
 

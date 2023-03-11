@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { HStack, VStack, Text } from '@chakra-ui/react'
+import { Box, HStack, Text } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 import config from '@/utilities/config'
 
@@ -16,36 +17,31 @@ const Footer: FC<Props> = ({ dark }: Props) => {
       position={'fixed'}
       bottom={0}
       left={0}
-      width={'full'}
+      w={'full'}
       justifyContent={'space-between'}
       p={3}>
-      <VStack alignItems={'right'}>
+      <Box
+        as={motion.div}
+        initial={{ translateX: '-150%' }}
+        animate={{ translateX: 0, transition: { delay: 1.5 } }}>
         {(dark && (
-          <Code
-            text={'© ' + year + ' ' + config.app.author + ' | v' + config.app.version}
-            className={'animate__animated animate__fadeInLeftBig'}
-          />
+          <Code text={'© ' + year + ' ' + config.app.author + ' | v' + config.app.version} />
         )) || (
-          <Text
-            fontSize={'sm'}
-            color={'white'}
-            textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
-            className={'animate__animated animate__fadeInLeftBig'}>
+          <Text fontSize={'sm'} color={'white'} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
             {'© ' + year + ' ' + config.app.author + ' | v' + config.app.version}
           </Text>
         )}
-      </VStack>
-      {(dark && (
-        <Code text={'</body>'} className={'animate__animated animate__fadeInRightBig'} />
-      )) || (
-        <Text
-          fontSize={'sm'}
-          color={'white'}
-          textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
-          className={'animate__animated animate__fadeInRightBig'}>
-          {'</body>'}
-        </Text>
-      )}
+      </Box>
+      <Box
+        as={motion.div}
+        initial={{ translateX: '150%' }}
+        animate={{ translateX: 0, transition: { delay: 1.5 } }}>
+        {(dark && <Code text={'</body>'} />) || (
+          <Text fontSize={'sm'} color={'white'} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
+            {'</body>'}
+          </Text>
+        )}
+      </Box>
     </HStack>
   )
 }

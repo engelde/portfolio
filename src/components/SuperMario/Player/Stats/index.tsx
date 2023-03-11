@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import config from '@/utilities/config'
 
 type Props = {
@@ -13,15 +14,17 @@ type Props = {
 const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
   return (
     <Box
+      as={motion.div}
       p={2}
       zIndex={990}
       position={'fixed'}
       top={2}
       right={2}
-      className={'animate__animated animate__slow animate__fadeInLeftBig'}>
+      initial={{ translateX: '150%' }}
+      animate={{ translateX: 0, transition: { delay: 1 } }}>
       <VStack spacing={0}>
         <StatGroup
-          width={{ base: '140px', md: '200px' }}
+          w={{ base: '140px', md: '200px' }}
           alignItems={'center'}
           justifyContent={'space-between'}
           bg={'black'}
@@ -32,14 +35,17 @@ const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
             </StatNumber>
           </Stat>
           <Stat textAlign={'right'}>
-            <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Timer'}>
+            <StatNumber
+              fontSize={{ base: 'lg', md: '2xl' }}
+              title={'Timer'}
+              {...(timer < 61 && { color: 'red.500' })}>
               {timer}
             </StatNumber>
           </Stat>
         </StatGroup>
 
         <StatGroup
-          width={{ base: '140px', md: '200px' }}
+          w={{ base: '140px', md: '200px' }}
           alignItems={'center'}
           justifyContent={'space-between'}
           bg={'black'}
@@ -59,19 +65,19 @@ const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
 
         {config.app.environment === 'development' && (
           <StatGroup
-            width={{ base: '160px', md: '200px' }}
+            w={{ base: '160px', md: '200px' }}
             alignItems={'center'}
             justifyContent={'space-between'}
             bg={'black'}
             px={4}>
             <Stat textAlign={'left'}>
               <StatNumber fontSize={'lg'} title={'X'}>
-                x: {xPos}
+                x: {Math.round(xPos)}
               </StatNumber>
             </Stat>
             <Stat textAlign={'right'}>
               <StatNumber fontSize={'lg'} title={'Y'}>
-                y: {yPos}
+                y: {Math.round(yPos)}
               </StatNumber>
             </Stat>
           </StatGroup>

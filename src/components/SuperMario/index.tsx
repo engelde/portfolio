@@ -1,11 +1,10 @@
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { Box, useMediaQuery } from '@chakra-ui/react'
 import { useScroll } from 'framer-motion'
-import config from '@/utilities/config'
-import Background from './Background'
 import Environment from './Environment'
 import Landscape from './Landscape'
 import Foreground from './Foreground'
+import Player from './Player'
 import Overlay from './Overlay'
 import { platforms, PlatformUpdate } from './platforms'
 import { positions, PositionUpdate } from './positions'
@@ -35,31 +34,33 @@ const useEventListener = (type: string, handler: (event: KeyboardEvent) => void,
   }, [type, run])
 }
 
-const SuperMario: FC = () => {
-  const [mobile] = useMediaQuery('(max-width: 48rem)')
-  const { scrollY } = useScroll()
+type Props = {
+  ip: string
+}
 
+const SuperMario: FC<Props> = ({ ip }: Props) => {
+  const [mobile] = useMediaQuery('(max-width: 48rem)')
   const [paused, setPaused] = useState(false)
-  const [lives] = useState(3)
+  const [lives] = useState(1)
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(300)
 
-  const [walkOffset] = useState(0)
-  const [jumpOffset, setJumpOffset] = useState(240)
   const length = 13340
   const [maxX] = useState(length + window.innerHeight)
-
-  const [x, setX] = useState(0)
-  const [y, setY] = useState(64)
-
-  const [xOffset, setXOffset] = useState(32)
-  const [yOffset, setYOffset] = useState(0)
-
   const [oldX, setOldX] = useState(0)
-
   const [xSpeed, setXSpeed] = useState(12)
   const [ySpeed] = useState(16)
+  const [jumpOffset, setJumpOffset] = useState(240)
+  const [walkOffset] = useState(0)
 
+  const { scrollY } = useScroll()
+  const [x, setX] = useState(0)
+  const [y, setY] = useState(64)
+  const [xOffset, setXOffset] = useState(80)
+  const [yOffset, setYOffset] = useState(0)
+  const [platform, setPlatform] = useState(false)
+
+  const [marioVariant, setMarioVariant] = useState<1 | 2>(1)
   const [forwards, setForwards] = useState(true)
   const [moving, setMoving] = useState(false)
   const [moveRight, setMoveRight] = useState(false)
@@ -67,18 +68,16 @@ const SuperMario: FC = () => {
   const [jump, setJump] = useState(false)
   const [jumpLock, setJumpLock] = useState(false)
 
-  const [platform, setPlatform] = useState(false)
-
   // Timer
   useEffect(() => {
-    if (!mobile) {
-      if (timer > 0) {
-        setTimeout(() => {
-          setTimer(timer - 1)
-        }, 1000)
+    if (timer > 0) {
+      const timeout = setTimeout(() => setTimer(timer - 1), 1000)
+      return () => {
+        clearTimeout(timeout)
       }
     }
-  }, [setTimer, timer, mobile])
+    return () => {}
+  }, [timer])
 
   // Puase
   useEffect(() => {
@@ -99,13 +98,10 @@ const SuperMario: FC = () => {
   // Jump
   useEffect(() => {
     if (!mobile && jump) {
-      setTimeout(
-        () => {
-          setJump(false)
-          setJumpOffset(240)
-        },
-        config.app.environment === 'development' ? 800 : 400,
-      )
+      setTimeout(() => {
+        setJump(false)
+        setJumpOffset(240)
+      }, 600)
     }
   }, [x, y, xOffset, jump, mobile, setJump])
 
@@ -188,7 +184,7 @@ const SuperMario: FC = () => {
 
   // Scroll Event
   useEffect(() => {
-    return scrollY.onChange(() => {
+    return scrollY.on('change', () => {
       let val = scrollY.get()
       let newPos = val < maxX ? val : maxX
 
@@ -312,44 +308,46 @@ const SuperMario: FC = () => {
 
   return (
     <Box overflowY={'scroll'} overflowX={'hidden'} h={maxX + 'px'} w={'100vw'}>
-      <Background />
-      {!mobile && <Environment />}
+      <Environment mobile={mobile} />
       <Box
         zIndex={1}
         position={'fixed'}
-        left={'0px'}
-        transition={'marginLeft .1s ease-in-out'}
-        ml={'-' + x + 'px'}
+        left={0}
         bottom={0}
         h={'100vh'}
-        w={'100vw'}>
-        <Landscape length={length} xPos={x + xOffset} yPos={y + yOffset} />
+        w={'100vw'}
+        ml={'-' + x + 'px'}
+        transition={'marginLeft .1s ease-in-out'}>
+        <Landscape />
         <Foreground
           xPos={x + xOffset}
           yPos={y + yOffset}
           jump={jump}
           setJumpOffset={setJumpOffset}
+          marioVariant={marioVariant}
+          setMarioVariant={setMarioVariant}
           score={score}
           setScore={setScore}
         />
-        <Overlay
+        <Player
           x={xOffset}
           y={y + yOffset}
           forwards={forwards}
-          length={length}
-          moving={moving}
           jump={jump}
           xPos={x + xOffset}
           setXPos={setX}
           yPos={y + yOffset}
           setYPos={setY}
           maxX={maxX}
+          marioVariant={marioVariant}
           paused={paused}
           lives={lives}
           score={score}
           timer={timer}
           setPaused={setPaused}
+          mobile={mobile}
         />
+        <Overlay xPos={x + xOffset} ip={ip} />
       </Box>
     </Box>
   )

@@ -6,5 +6,7 @@
     "source.fixAll.eslint": true,
     "source.fixAll.format": true
   },
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
