@@ -15,14 +15,7 @@ import {
 import { CgMenuLeftAlt } from 'react-icons/cg'
 import { motion } from 'framer-motion'
 
-type MenuLink = {
-  name: string
-  color: string
-  x: number
-  y: number
-}
-
-type Props = {
+export type PauseProps = {
   open: boolean
   setOpen: (status: boolean) => void
   setXPos: (pos: number) => void
@@ -30,7 +23,14 @@ type Props = {
   maxX: number
 }
 
-const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
+type MenuLink = {
+  name: string
+  color: string
+  x: number
+  y: number
+}
+
+const Pause: FC<PauseProps> = ({ open, setOpen, setXPos, setYPos, maxX }: PauseProps) => {
   const links: MenuLink[] = [
     { name: '.home()', color: 'cyan.300', x: 0, y: 64 },
     { name: '.about()', color: 'cyan.300', x: 3520, y: 128 },
@@ -44,7 +44,7 @@ const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
           <IconButton
             as={motion.div}
             variant={'link'}
-            zIndex={9999}
+            zIndex={99}
             position={'fixed'}
             top={0}
             left={0}

@@ -2,15 +2,15 @@ import { FC } from 'react'
 import { Flex, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type ScrollIndicatorProps = {
   xPos: number
 }
 
-const ScrollIndicator: FC<Props> = ({ xPos }: Props) => {
+const ScrollIndicator: FC<ScrollIndicatorProps> = ({ xPos }: ScrollIndicatorProps) => {
   return (
     <Flex
       as={motion.div}
-      zIndex={9999}
+      zIndex={9}
       position={'fixed'}
       left={0}
       bottom={0}

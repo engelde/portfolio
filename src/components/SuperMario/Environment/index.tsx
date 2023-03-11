@@ -4,11 +4,11 @@ import Daylight from './Daylight'
 import Sky from './Sky'
 import Sun from './Sun'
 
-type Props = {
+export type EnvironmentProps = {
   mobile: boolean
 }
 
-const Environment: FC<Props> = ({ mobile }: Props) => {
+const Environment: FC<EnvironmentProps> = ({ mobile }: EnvironmentProps) => {
   return (
     <>
       <Sky />

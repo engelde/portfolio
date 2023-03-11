@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 
-type Props = {
+export type MarioProps = {
   variant: 1 | 2
   x: number
   y: number
@@ -21,7 +21,7 @@ type VariantProps = {
   }
 }
 
-const Mario: FC<Props> = ({ variant, x, y, xPos, forwards, jump }: Props) => {
+const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
   const variants: VariantProps = {
     1: {
       1: {
@@ -92,7 +92,7 @@ const Mario: FC<Props> = ({ variant, x, y, xPos, forwards, jump }: Props) => {
 
   return (
     <Box
-      zIndex={9990}
+      zIndex={9}
       position={'fixed'}
       left={x + 'px'}
       bottom={y + 'px'}

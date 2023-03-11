@@ -24,64 +24,64 @@ const Clouds: FC = () => {
   const clouds: CloudProps[] = [
     {
       y: 4,
-      scale: 0.65,
-      opacity: 0.45,
+      scale: 0.7,
+      opacity: 0.55,
       duration: 90,
       delay: 0,
       variant: 1,
     },
     {
       y: 33,
-      scale: 0.7,
-      opacity: 0.4,
+      scale: 0.75,
+      opacity: 0.5,
       duration: 115,
       delay: 3,
       variant: 2,
     },
     {
       y: 15,
-      scale: 0.75,
-      opacity: 0.45,
+      scale: 0.8,
+      opacity: 0.55,
       duration: 140,
       delay: 14,
       variant: 2,
     },
     {
       y: 42,
-      scale: 0.75,
-      opacity: 0.4,
+      scale: 0.8,
+      opacity: 0.5,
       duration: 145,
       delay: 37,
       variant: 1,
     },
     {
       y: 24,
-      scale: 0.7,
-      opacity: 0.5,
+      scale: 0.75,
+      opacity: 0.6,
       duration: 140,
       delay: 66,
       variant: 2,
     },
     {
       y: 20,
-      scale: 0.7,
-      opacity: 0.5,
+      scale: 0.75,
+      opacity: 0.6,
       duration: 175,
       delay: 90,
       variant: 2,
     },
     {
       y: 30,
-      scale: 0.75,
-      opacity: 0.4,
+      scale: 0.8,
+      opacity: 0.5,
       duration: 115,
       delay: 140,
       variant: 1,
     },
     {
       y: 14,
-      scale: 0.6,
-      opacity: 0.4,
+      scale: 0.65,
+      opacity: 0.5,
       duration: 90,
       delay: 145,
       variant: 1,
@@ -127,8 +127,9 @@ const Clouds: FC = () => {
           <NextImage
             alt={'cloud'}
             src={variants[item.variant].src}
-            width={variants[item.variant].width * item.scale}
-            height={variants[item.variant].height * item.scale}
+            width={variants[item.variant].width}
+            height={variants[item.variant].height}
+            style={{ transform: 'scale(' + item.scale + ')' }}
             priority
           />
         </Box>

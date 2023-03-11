@@ -3,18 +3,18 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type DogProps = {
   xPos: number
   xMin: number
   xMax: number
   offset: number
 }
 
-const Dog: FC<Props> = ({ xPos, xMin, xMax, offset }: Props) => {
+const Dog: FC<DogProps> = ({ xPos, xMin, xMax, offset }: DogProps) => {
   return (
     <Box
       as={motion.div}
-      zIndex={999}
+      zIndex={10}
       position={'fixed'}
       top={40}
       left={8}

@@ -6,13 +6,13 @@ import Footer from '@/components/Footer'
 import Preloader from '@/components/Preloader'
 import config from '@/utilities/config'
 
-type Props = ContainerProps & {
+export type LayoutProps = ContainerProps & {
   title: String
   dark?: boolean
   children: ReactNode
 }
 
-const Layout: FC<Props> = ({ title, dark, children, ...rest }: Props) => {
+const Layout: FC<LayoutProps> = ({ title, dark, children, ...rest }: LayoutProps) => {
   const [isLoading, setIsLoading] = useState(true)
 
   return (
@@ -33,8 +33,8 @@ const Layout: FC<Props> = ({ title, dark, children, ...rest }: Props) => {
             alignItems={'center'}
             justifyContent={'center'}>
             {[children]}
+            <Footer dark={(dark !== undefined && dark && true) || false} />
           </Box>
-          <Footer dark={(dark !== undefined && dark && true) || false} />
         </Box>
       )}
     </Container>

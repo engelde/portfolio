@@ -1,5 +1,5 @@
-import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react'
-import { Box, useMediaQuery } from '@chakra-ui/react'
+import { FC, useEffect, useState } from 'react'
+import { Box, useEventListener, useMediaQuery } from '@chakra-ui/react'
 import { useScroll } from 'framer-motion'
 import Environment from './Environment'
 import Landscape from './Landscape'
@@ -9,36 +9,11 @@ import Overlay from './Overlay'
 import { platforms, PlatformUpdate } from './platforms'
 import { positions, PositionUpdate } from './positions'
 
-// Event Listener
-const useEventListener = (type: string, handler: (event: KeyboardEvent) => void, run = true) => {
-  const savedHandler = useRef<(event: KeyboardEvent) => void>((event) => {})
-
-  useEffect(() => {
-    if (run) {
-      savedHandler.current = handler
-    }
-  }, [handler, run])
-
-  useEffect(() => {
-    const listener: (event: any) => void = (e) => savedHandler.current(e)
-
-    if (run) {
-      window.addEventListener(type, listener)
-    }
-
-    return () => {
-      if (run) {
-        window.removeEventListener(type, listener)
-      }
-    }
-  }, [type, run])
-}
-
-type Props = {
+export type SuperMarioProps = {
   ip: string
 }
 
-const SuperMario: FC<Props> = ({ ip }: Props) => {
+const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const [paused, setPaused] = useState(false)
   const [lives] = useState(1)
@@ -46,7 +21,7 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
   const [timer, setTimer] = useState(300)
 
   const length = 13340
-  const [maxX] = useState(length + window.innerHeight)
+  const [maxX, setMaxX] = useState(length + window.innerHeight)
   const [oldX, setOldX] = useState(0)
   const [xSpeed, setXSpeed] = useState(12)
   const [ySpeed] = useState(16)
@@ -67,6 +42,13 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
   const [moveLeft, setMoveLeft] = useState(false)
   const [jump, setJump] = useState(false)
   const [jumpLock, setJumpLock] = useState(false)
+
+  // Resize
+  useEffect(() => {
+    if (maxX !== length + window.innerHeight) {
+      setMaxX(length + window.innerHeight)
+    }
+  }, [length, maxX])
 
   // Timer
   useEffect(() => {
@@ -106,9 +88,8 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
   }, [x, y, xOffset, jump, mobile, setJump])
 
   // Key Down Event
-  useEventListener(
-    'keydown',
-    (event: KeyboardEvent) => {
+  useEventListener('keydown', (event) => {
+    if (!mobile) {
       if (event.code === 'ArrowRight') {
         event.preventDefault()
         if (!moveRight && !moveLeft && !paused) {
@@ -143,14 +124,12 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
           setPaused(!paused)
         }
       }
-    },
-    !mobile,
-  )
+    }
+  })
 
   // Key Up Event
-  useEventListener(
-    'keyup',
-    (event: KeyboardEvent) => {
+  useEventListener('keyup', (event) => {
+    if (!mobile) {
       if (event.code === 'ArrowRight') {
         event.preventDefault()
         if (moveRight && !moveLeft && !paused) {
@@ -178,9 +157,8 @@ const SuperMario: FC<Props> = ({ ip }: Props) => {
       } else if (event.code === 'ArrowDown') {
         event.preventDefault()
       }
-    },
-    !mobile,
-  )
+    }
+  })
 
   // Scroll Event
   useEffect(() => {
