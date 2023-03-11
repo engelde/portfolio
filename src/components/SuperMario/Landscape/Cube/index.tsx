@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 type Props = {
-  variant: 1 | 2 | 3
+  variant: 1 | 2 | 3 | 4
   x: number
   y: number
 }
@@ -17,22 +17,27 @@ type VariantProps = {
   }
 }
 
-const Tree: FC<Props> = ({ variant, x, y }: Props) => {
+const Cube: FC<Props> = ({ variant, x, y }: Props) => {
   const variants: VariantProps = {
     1: {
-      src: '/images/tree/tree.1.png',
-      width: 320,
-      height: 244,
+      src: '/images/cube/cube.1.png',
+      width: 441,
+      height: 400,
     },
     2: {
-      src: '/images/tree/tree.2.png',
-      width: 640,
-      height: 320,
+      src: '/images/cube/cube.2.png',
+      width: 1080,
+      height: 560,
     },
     3: {
-      src: '/images/tree/tree.3.png',
+      src: '/images/cube/cube.3.png',
+      width: 919,
+      height: 480,
+    },
+    4: {
+      src: '/images/cube/cube.4.png',
       width: 480,
-      height: 640,
+      height: 785,
     },
   }
 
@@ -48,7 +53,7 @@ const Tree: FC<Props> = ({ variant, x, y }: Props) => {
       initial={{ translateY: '150%' }}
       animate={{ translateY: 0, transition: { delay: 0.3, ease: 'linear' } }}>
       <NextImage
-        alt={'tree'}
+        alt={'cube'}
         src={variants[variant].src}
         width={variants[variant].width}
         height={variants[variant].height}
@@ -58,4 +63,4 @@ const Tree: FC<Props> = ({ variant, x, y }: Props) => {
   )
 }
 
-export default Tree
+export default Cube

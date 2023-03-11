@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import styles from './styles.module.css'
+import { motion } from 'framer-motion'
 
 type Props = {
   x: number
@@ -11,22 +11,28 @@ type Props = {
 const Brick: FC<Props> = ({ x, y }: Props) => {
   return (
     <Box
+      as={motion.div}
       zIndex={-99}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
-      p={0}
-      height={'80px'}
-      width={'80px'}
-      className={'animate__animated animate__fadeInUp ' + styles.brick}>
-      <NextImage
-        alt={'Brick'}
-        src={'/images/brick/brick.png'}
-        height={80}
-        width={80}
-        quality={80}
-        priority
-      />
+      w={'80px'}
+      h={'80px'}
+      initial={{ filter: 'brightness(100%)' }}
+      animate={{
+        filter: ['brightness(100%)', 'contrast(102.5%) brightness(102.5%)', 'brightness(100%)'],
+        transition: {
+          type: 'keyframes',
+          times: [0, 0.5, 1],
+          delay: 0,
+          duration: 0.8,
+          ease: 'easeInOut',
+          repeat: Infinity,
+          repeatType: 'loop',
+          repeatDelay: 0,
+        },
+      }}>
+      <NextImage alt={'brick'} src={'/images/brick/brick.png'} width={80} height={80} priority />
     </Box>
   )
 }

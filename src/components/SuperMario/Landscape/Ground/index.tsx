@@ -9,7 +9,7 @@ type Props = {
 
 const Ground: FC<Props> = ({ x, height, width }: Props) => {
   return (
-    <Box zIndex={-98} position={'absolute'} bottom={0} left={x + 'px'} w={width + 'px'}>
+    <Box zIndex={5} position={'absolute'} left={x + 'px'} bottom={0} w={width + 'px'}>
       <HStack spacing={0}>
         <Box
           w={'12px'}

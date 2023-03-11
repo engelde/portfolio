@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import NextLink from 'next/link'
 import NextImage from 'next/image'
 import { Box, Button, Flex, Heading, Text, useMediaQuery, VStack } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 import Layout from '@/components/Layout'
 
@@ -14,29 +15,32 @@ const Custom404: NextPage = () => {
         <VStack spacing={0}>
           <Flex>
             <Box
-              height={'230px'}
-              width={'400px'}
+              as={motion.div}
+              w={'400px'}
+              h={'230px'}
               maxW={'90vw'}
               mb={8}
               overflow={'hidden'}
-              className={'animate__animated animate__fadeInDown'}>
+              initial={{ opacity: 0, translateY: -2000 }}
+              animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}>
               <NextImage
-                alt={'You Shall Not Pass!'}
+                alt={'forbidden'}
                 src={'/media/gandalf/gandalf.webp'}
-                layout={'fill'}
-                objectFit={'contain'}
-                quality={80}
+                width={400}
+                height={230}
                 priority
               />
             </Box>
           </Flex>
 
           <Heading
+            as={motion.div}
+            pb={4}
             size={'4xl'}
             color={'red.500'}
-            pb={4}
             textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
-            className={'animate__animated animate__fadeInDown'}>
+            initial={{ opacity: 0, translateY: -2000 }}
+            animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}>
             <Code text={'<h1>'} />
             {'404('}
             <Text
@@ -50,13 +54,22 @@ const Custom404: NextPage = () => {
             <Code text={'</h1>'} />
           </Heading>
 
-          <Text align={'center'} className={'animate__animated animate__fadeInLeft'} pb={12}>
+          <Text
+            as={motion.div}
+            align={'center'}
+            pb={12}
+            initial={{ opacity: 0, translateX: -2000 }}
+            animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}>
             <Code text={'// "Not all those who wander are lost." - J.R.R. Tolkien'} />
           </Text>
 
-          <Flex className={'animate__animated animate__fadeInUp'}>
+          <Flex
+            as={motion.div}
+            initial={{ opacity: 0, translateY: 2000 }}
+            animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}>
             <NextLink href={'/'} passHref>
               <Button
+                as={motion.div}
                 variant={'outline'}
                 colorScheme={'white'}
                 size={'lg'}
@@ -65,7 +78,20 @@ const Custom404: NextPage = () => {
                   color: 'white',
                   borderColor: 'red.500',
                 }}
-                className={'animate__animated animate__infinite animate__slow animate__pulse'}>
+                initial={{ scale: 1 }}
+                whileInView={{
+                  scale: [1, 1.05, 1],
+                  transition: {
+                    type: 'keyframes',
+                    times: [0, 0.5, 1],
+                    delay: 0,
+                    duration: 1.6,
+                    ease: 'easeInOut',
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    repeatDelay: 0,
+                  },
+                }}>
                 {'> Restart'}
               </Button>
             </NextLink>

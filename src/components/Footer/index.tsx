@@ -17,13 +17,13 @@ const Footer: FC<Props> = ({ dark }: Props) => {
       position={'fixed'}
       bottom={0}
       left={0}
-      width={'full'}
+      w={'full'}
       justifyContent={'space-between'}
       p={3}>
       <Box
         as={motion.div}
-        initial={{ marginLeft: -250 }}
-        animate={{ marginLeft: 0, transition: { delay: 1 } }}>
+        initial={{ translateX: '-150%' }}
+        animate={{ translateX: 0, transition: { delay: 1.5 } }}>
         {(dark && (
           <Code text={'© ' + year + ' ' + config.app.author + ' | v' + config.app.version} />
         )) || (
@@ -34,8 +34,8 @@ const Footer: FC<Props> = ({ dark }: Props) => {
       </Box>
       <Box
         as={motion.div}
-        initial={{ marginRight: -250 }}
-        animate={{ marginRight: 0, transition: { delay: 1 } }}>
+        initial={{ translateX: '150%' }}
+        animate={{ translateX: 0, transition: { delay: 1.5 } }}>
         {(dark && <Code text={'</body>'} />) || (
           <Text fontSize={'sm'} color={'white'} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
             {'</body>'}

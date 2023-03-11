@@ -33,7 +33,7 @@ type Props = {
 const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
   const links: MenuLink[] = [
     { name: '.home()', color: 'cyan.300', x: 0, y: 64 },
-    { name: '.about()', color: 'cyan.300', x: 3500, y: 128 },
+    { name: '.about()', color: 'cyan.300', x: 3520, y: 128 },
     { name: '.contact()', color: 'cyan.300', x: maxX, y: 64 },
   ]
 
@@ -57,8 +57,8 @@ const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
             icon={<CgMenuLeftAlt />}
             onClick={() => setOpen(true)}
             _active={{ color: 'cyan.300' }}
-            initial={{ marginTop: -100 }}
-            animate={{ marginTop: 0, transition: { delay: 1 } }}
+            initial={{ translateY: '-150%' }}
+            animate={{ translateY: 0, transition: { delay: 1 } }}
             whileHover={{ color: '#76E4F7', scale: 1.25 }}
           />
         </HStack>
@@ -91,7 +91,8 @@ const Pause: FC<Props> = ({ open, setOpen, setXPos, setYPos, maxX }: Props) => {
                       _hover={{ cursor: 'pointer', color: link.color }}
                       onClick={() => {
                         if (window.scrollY !== link.x)
-                          window.scrollTo({ top: link.x, behavior: 'smooth' })
+                          // @ts-ignore
+                          window.scrollTo({ top: link.x, behavior: 'instant' })
                         setXPos(link.x)
                         setYPos(link.y)
                         setOpen(false)
