@@ -1,15 +1,15 @@
 import { FC } from 'react'
 import { HStack, Box } from '@chakra-ui/react'
 
-type Props = {
+export type GroundProps = {
   x: number
-  height: number
   width: number
+  height: number
 }
 
-const Ground: FC<Props> = ({ x, height, width }: Props) => {
+const Ground: FC<GroundProps> = ({ x, width, height }: GroundProps) => {
   return (
-    <Box zIndex={5} position={'absolute'} left={x + 'px'} bottom={0} w={width + 'px'}>
+    <Box zIndex={1} position={'absolute'} left={x + 'px'} bottom={0} w={width + 'px'}>
       <HStack spacing={0}>
         <Box
           w={'12px'}

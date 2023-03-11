@@ -3,16 +3,16 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type BushProps = {
   x: number
   y: number
 }
 
-const Bush: FC<Props> = ({ x, y }: Props) => {
+const Bush: FC<BushProps> = ({ x, y }: BushProps) => {
   return (
     <Box
       as={motion.div}
-      zIndex={-99}
+      zIndex={1}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
