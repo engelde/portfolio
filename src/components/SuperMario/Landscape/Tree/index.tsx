@@ -3,7 +3,7 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type TreeProps = {
   variant: 1 | 2 | 3
   x: number
   y: number
@@ -17,7 +17,7 @@ type VariantProps = {
   }
 }
 
-const Tree: FC<Props> = ({ variant, x, y }: Props) => {
+const Tree: FC<TreeProps> = ({ variant, x, y }: TreeProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/tree/tree.1.png',
@@ -39,7 +39,7 @@ const Tree: FC<Props> = ({ variant, x, y }: Props) => {
   return (
     <Box
       as={motion.div}
-      zIndex={-99}
+      zIndex={1}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}

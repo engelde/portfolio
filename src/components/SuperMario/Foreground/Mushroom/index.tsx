@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Points from '../Points'
 
-type Props = {
+export type MushroomProps = {
   x: number
   y: number
   active: boolean
@@ -15,7 +15,7 @@ type Props = {
   setScore: (score: number) => void
 }
 
-const Mushroom: FC<Props> = ({
+const Mushroom: FC<MushroomProps> = ({
   x,
   y,
   active,
@@ -24,7 +24,7 @@ const Mushroom: FC<Props> = ({
   setActive,
   setMarioVariant,
   setScore,
-}: Props) => {
+}: MushroomProps) => {
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const value = 1000
@@ -34,7 +34,6 @@ const Mushroom: FC<Props> = ({
       setRunning(true)
       setScore(score + value)
 
-      // power up
       if (marioVariant === 1) {
         setMarioVariant(2)
       }
@@ -51,7 +50,7 @@ const Mushroom: FC<Props> = ({
       {!disabled && (
         <Box
           as={motion.div}
-          zIndex={-99}
+          zIndex={-1}
           position={'absolute'}
           left={x + 'px'}
           bottom={y + 80 + 'px'}

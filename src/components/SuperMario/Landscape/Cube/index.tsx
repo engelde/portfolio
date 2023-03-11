@@ -3,7 +3,7 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type CubeProps = {
   variant: 1 | 2 | 3 | 4
   x: number
   y: number
@@ -17,7 +17,7 @@ type VariantProps = {
   }
 }
 
-const Cube: FC<Props> = ({ variant, x, y }: Props) => {
+const Cube: FC<CubeProps> = ({ variant, x, y }: CubeProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/cube/cube.1.png',
@@ -44,7 +44,7 @@ const Cube: FC<Props> = ({ variant, x, y }: Props) => {
   return (
     <Box
       as={motion.div}
-      zIndex={-99}
+      zIndex={1}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}

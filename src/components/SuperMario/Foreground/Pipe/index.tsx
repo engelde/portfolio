@@ -5,27 +5,27 @@ import { motion } from 'framer-motion'
 import Fire from './Fire'
 import Plant from './Plant'
 
-type Props = {
+export type PipeProps = {
+  xPos?: number
   x: number
   y: number
   height: number
   rotate?: number
   plant?: boolean
   plantVariant?: 1 | 2
-  forwards?: boolean
   active?: boolean
 }
 
-const Pipe: FC<Props> = ({
+const Pipe: FC<PipeProps> = ({
+  xPos,
   x,
   y,
   height,
   rotate,
   plant,
   plantVariant,
-  forwards,
   active,
-}: Props) => {
+}: PipeProps) => {
   return (
     <Box
       as={motion.div}
@@ -45,7 +45,7 @@ const Pipe: FC<Props> = ({
           w={'160px'}
           h={height - 80 + 'px'}
           bg={
-            'url(/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=80) repeat-y left top / contain;'
+            'url(/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=75) repeat-y left top / contain;'
           }
         />
       </VStack>
@@ -55,10 +55,10 @@ const Pipe: FC<Props> = ({
             x={40}
             y={height}
             variant={plantVariant !== undefined ? plantVariant : 1}
-            forwards={forwards !== undefined ? forwards : true}
+            forwards={xPos !== undefined ? xPos < x + 80 : true}
           />
           {plantVariant === 2 && active && (
-            <Fire x={40} y={height + 80} forwards={forwards !== undefined ? forwards : true} />
+            <Fire x={40} y={height + 80} forwards={xPos !== undefined ? xPos < x + 80 : true} />
           )}
         </>
       )}

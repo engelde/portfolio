@@ -20,9 +20,7 @@ type VariantProps = {
   }
 }
 
-type Props = {}
-
-const Clouds: FC<Props> = ({}: Props) => {
+const Clouds: FC = () => {
   const clouds: CloudProps[] = [
     {
       y: 4,
