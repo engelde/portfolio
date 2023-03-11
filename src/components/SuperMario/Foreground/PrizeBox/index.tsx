@@ -3,9 +3,10 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type PrizeBoxProps = {
   x: number
   y: number
+  jumpMax: number
   status: boolean
   setStatus: (status: boolean) => void
   active: boolean
@@ -23,7 +24,7 @@ type VariantProps = {
   }
 }
 
-const PrizeBox: FC<Props> = ({
+const PrizeBox: FC<PrizeBoxProps> = ({
   x,
   y,
   status,
@@ -35,7 +36,7 @@ const PrizeBox: FC<Props> = ({
   prizeCount,
   setPrizeCount,
   children,
-}: Props) => {
+}: PrizeBoxProps) => {
   const variants: VariantProps = {
     0: {
       src: '/images/box/box.0.png',
@@ -94,7 +95,7 @@ const PrizeBox: FC<Props> = ({
   return (
     <Box
       as={motion.div}
-      zIndex={10}
+      zIndex={1}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}

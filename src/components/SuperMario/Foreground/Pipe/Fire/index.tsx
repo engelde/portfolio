@@ -3,7 +3,7 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type FireProps = {
   x: number
   y: number
   forwards: boolean
@@ -15,7 +15,7 @@ type VariantProps = {
   }
 }
 
-const Fire: FC<Props> = ({ x, y, forwards }: Props) => {
+const Fire: FC<FireProps> = ({ x, y, forwards }: FireProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/fire/fire.1.png',
@@ -49,29 +49,30 @@ const Fire: FC<Props> = ({ x, y, forwards }: Props) => {
   return (
     <Box
       as={motion.div}
-      zIndex={9}
+      zIndex={3}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
       w={30}
       h={34}
-      visibility={forwards ? 'visible' : 'hidden'}
       initial={{ opacity: 0, translateX: '0px', translateY: '0px' }}
-      animate={{
-        opacity: [0, 1, 1, 0],
-        translateX: ['0px', '0px', '-2400px', '-2400px'],
-        translateY: ['0px', '0px', '600px', '600px'],
-        transition: {
-          type: 'keyframes',
-          times: [0, 0.02, 0.98, 1],
-          delay: 3.4,
-          duration: 4.5,
-          ease: 'linear',
-          repeat: Infinity,
-          repeatType: 'loop',
-          repeatDelay: 3.6,
-        },
-      }}>
+      animate={
+        forwards && {
+          opacity: [0, 1, 1, 0],
+          translateX: ['0px', '0px', '-2400px', '-2400px'],
+          translateY: ['0px', '0px', '600px', '600px'],
+          transition: {
+            type: 'keyframes',
+            times: [0, 0.02, 0.98, 1],
+            delay: 3.4,
+            duration: 4.5,
+            ease: 'linear',
+            repeat: Infinity,
+            repeatType: 'loop',
+            repeatDelay: 3.6,
+          },
+        }
+      }>
       <NextImage alt={'fire'} src={variants[state].src} width={30} height={34} priority />
     </Box>
   )

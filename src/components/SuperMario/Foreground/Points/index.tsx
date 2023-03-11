@@ -2,17 +2,17 @@ import { FC } from 'react'
 import { Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type PointsProps = {
   x: number
   y: number
   total: number
 }
 
-const Points: FC<Props> = ({ x, y, total }: Props) => {
+const Points: FC<PointsProps> = ({ x, y, total }: PointsProps) => {
   return (
     <Text
       as={motion.div}
-      zIndex={-99}
+      zIndex={3}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 80 + 'px'}

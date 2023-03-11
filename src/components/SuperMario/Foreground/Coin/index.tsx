@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Points from '../Points'
 
-type Props = {
+export type CoinProps = {
   x: number
   y: number
   show?: boolean
@@ -21,7 +21,16 @@ type VariantProps = {
   }
 }
 
-const Coin: FC<Props> = ({ x, y, show, clickable, active, setActive, score, setScore }: Props) => {
+const Coin: FC<CoinProps> = ({
+  x,
+  y,
+  show,
+  clickable,
+  active,
+  setActive,
+  score,
+  setScore,
+}: CoinProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/coin/coin.1.png',
@@ -77,7 +86,7 @@ const Coin: FC<Props> = ({ x, y, show, clickable, active, setActive, score, setS
       {running && (
         <Box
           as={motion.div}
-          zIndex={-99}
+          zIndex={-1}
           position={'absolute'}
           left={x + 'px'}
           bottom={y + 80 + 'px'}

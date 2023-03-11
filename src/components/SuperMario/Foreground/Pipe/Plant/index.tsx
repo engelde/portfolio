@@ -3,7 +3,7 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {
+export type PlantProps = {
   variant: 1 | 2
   forwards: boolean
   x: number
@@ -18,7 +18,7 @@ type VariantProps = {
   }
 }
 
-const Plant: FC<Props> = ({ variant, forwards, x, y }: Props) => {
+const Plant: FC<PlantProps> = ({ variant, forwards, x, y }: PlantProps) => {
   const variants: VariantProps = {
     1: {
       1: {
