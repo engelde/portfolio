@@ -3,7 +3,7 @@ import Mario from './Mario'
 import Pause from './Pause'
 import Stats from './Stats'
 
-type Props = {
+export type PlayerProps = {
   x: number
   y: number
   forwards: boolean
@@ -22,7 +22,7 @@ type Props = {
   setYPos: (pos: number) => void
 }
 
-const Overlay: FC<Props> = ({
+const Player: FC<PlayerProps> = ({
   x,
   y,
   forwards,
@@ -39,7 +39,7 @@ const Overlay: FC<Props> = ({
   setPaused,
   setXPos,
   setYPos,
-}: Props) => {
+}: PlayerProps) => {
   return (
     <>
       {xPos < 13360 && (
@@ -57,4 +57,4 @@ const Overlay: FC<Props> = ({
   )
 }
 
-export default Overlay
+export default Player

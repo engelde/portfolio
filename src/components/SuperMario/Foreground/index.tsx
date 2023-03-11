@@ -7,7 +7,7 @@ import Pipe, { type PipeProps } from './Pipe'
 import PrizeBox, { type PrizeBoxProps } from './PrizeBox'
 import Turtle, { type TurtleProps } from './Turtle'
 
-type Props = {
+export type ForegroundProps = {
   xPos: number
   yPos: number
   jump: boolean
@@ -18,7 +18,7 @@ type Props = {
   setScore: (score: number) => void
 }
 
-const Foreground: FC<Props> = ({
+const Foreground: FC<ForegroundProps> = ({
   xPos,
   yPos,
   jump,
@@ -27,7 +27,7 @@ const Foreground: FC<Props> = ({
   setJumpOffset,
   setMarioVariant,
   setScore,
-}: Props) => {
+}: ForegroundProps) => {
   const [prizeBox1Status, setPrizeBox1Status] = useState(true)
   const [prizeBox1Active, setPrizeBox1Active] = useState(false)
   const [prizeBox1Count, setPrizeBox1Count] = useState(1)
@@ -414,7 +414,7 @@ const Foreground: FC<Props> = ({
   useEffect(() => {
     if (jump) {
       prizeBoxes.map((item) => {
-        if (xPos > item.x - 45 && xPos < item.x + 35 && yPos > item.y - 100 && yPos < item.y) {
+        if (xPos > item.x - 55 && xPos < item.x + 45 && yPos > item.y - 100 && yPos < item.y) {
           setJumpOffset(item.jumpMax - (marioVariant !== 1 ? 60 : 0))
           item.setActive(true)
           if (item.prizeCount > 0) {

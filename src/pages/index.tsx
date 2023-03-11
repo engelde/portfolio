@@ -2,7 +2,7 @@ import type { GetServerSidePropsContext, NextPage } from 'next'
 import Layout from '@/components/Layout'
 import SuperMario from '@/components/SuperMario'
 
-type Props = {
+type HomeProps = {
   ip: string
 }
 
@@ -17,7 +17,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 }
 
-const Home: NextPage<Props> = ({ ip }: Props) => {
+const Home: NextPage<HomeProps> = ({ ip }: HomeProps) => {
   const pageTitle = 'Software Engineer'
 
   return (

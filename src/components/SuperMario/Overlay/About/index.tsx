@@ -4,7 +4,7 @@ import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 
-type Props = {
+export type AboutProps = {
   xPos: number
   xMin: number
   xMax: number
@@ -54,7 +54,7 @@ const Bio = (
       whileInView={{ opacity: 1 }}>
       <Code text={'<p>'} />
       {
-        "I am a senior full stack software engineer with 9 years of experience delivering successful projects to senior management, clients, and investors. I have a Master's in Software Engineering from DePaul University and I currently work at the University of Southern California. When I'm not making things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
+        "I am a senior full stack software engineer with nearly 10 years of experience delivering successful projects to senior management, clients, and investors. I have a Master's in Software Engineering from DePaul University and I currently work at the University of Southern California. When I'm not creating things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
       }
       <Text
         as={motion.span}
@@ -225,7 +225,7 @@ const Experience = (
   </>
 )
 
-const About: FC<Props> = ({ xPos, xMin, xMax, variant }: Props) => {
+const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
   const variants: VariantProps = {
     1: {
       color: 'blue.400',
@@ -242,7 +242,7 @@ const About: FC<Props> = ({ xPos, xMin, xMax, variant }: Props) => {
   return (
     <Box
       as={motion.div}
-      zIndex={9992}
+      zIndex={10}
       position={'fixed'}
       top={8}
       left={4}

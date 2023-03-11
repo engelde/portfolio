@@ -2,7 +2,7 @@
 
 This is my portfolio site! The site is a work in progress but feel free to look around.
 
-![Preview](/resources/images/preview.png)
+![Preview](/resources/preview.png)
 
 ## Getting Started
 
@@ -34,4 +34,11 @@ Run the production server:
 
 ```bash
 npm run start
+```
+
+Deploy with Docker:
+
+```bash
+docker build -t portfolio .
+docker run --name engelde -p 80:3000 -d portfolio
 ```
