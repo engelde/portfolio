@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { useMediaQuery } from '@chakra-ui/react'
 import Clouds from './Clouds'
 import Daylight from './Daylight'
 import Sky from './Sky'
@@ -14,7 +13,7 @@ const Environment: FC<Props> = ({ mobile }: Props) => {
     <>
       <Sky />
       {!mobile && <Daylight />}
-      <Sun />
+      {!mobile && <Sun />}
       {!mobile && <Clouds />}
     </>
   )

@@ -2,7 +2,6 @@ import type { AppProps, NextWebVitalsMetric } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@/utilities/theme'
 import '@fontsource/vt323/400.css'
-import 'animate.css'
 import '@/styles/globals.css'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {

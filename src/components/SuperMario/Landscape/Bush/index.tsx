@@ -18,8 +18,8 @@ const Bush: FC<Props> = ({ x, y }: Props) => {
       bottom={y + 'px'}
       w={'80px'}
       h={'80px'}
-      initial={{ translateY: '200%' }}
-      animate={{ translateY: '0', transition: { delay: 0.3, ease: 'linear' } }}>
+      initial={{ translateY: '150%' }}
+      animate={{ translateY: 0, transition: { delay: 0.3, ease: 'linear' } }}>
       <NextImage alt={'bush'} src={'/images/bush/bush.png'} width={80} height={80} priority />
     </Box>
   )

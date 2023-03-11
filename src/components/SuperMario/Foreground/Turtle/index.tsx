@@ -1,26 +1,65 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import styles from './styles.module.css'
+import { motion } from 'framer-motion'
 
 type Props = {
   x: number
   y: number
+  offset: number
 }
 
-const Turtle: FC<Props> = ({ x, y }: Props) => {
+type VariantProps = {
+  [variant: number]: {
+    src: string
+  }
+}
+
+const Turtle: FC<Props> = ({ x, y, offset }: Props) => {
+  const variants: VariantProps = {
+    1: {
+      src: '/images/turtle/turtle.1.png',
+    },
+    2: {
+      src: '/images/turtle/turtle.2.png',
+    },
+  }
+
+  const [state, setState] = useState(1)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setState(state === 1 ? 2 : 1), 450)
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [state])
+
   return (
     <Box
+      as={motion.div}
       zIndex={9}
       position={'absolute'}
-      left={x + 'px'}
       bottom={y + 'px'}
-      height={'160px'}
-      width={'80px'}
-      background={
-        'url("/_next/image?url=%2Fimages%2Fturtle%2Fturtle.1.png&w=256&q=80") no-repeat center center / contain'
-      }
-      className={'animate__animated animate__fadeInUp ' + styles.turtle}
-    />
+      left={x + 'px'}
+      w={'80px'}
+      h={'160px'}
+      initial={{ translateX: '-' + offset + 'px', scaleX: 1 }}
+      animate={{
+        translateX: ['-' + offset + 'px', '0px', '0px', '-' + offset + 'px'],
+        scaleX: [-1, -1, 1, 1],
+        transition: {
+          type: 'keyframes',
+          times: [0, 0.5, 0.501, 1],
+          delay: 0,
+          duration: (offset / 50) * 2,
+          ease: 'linear',
+          repeat: Infinity,
+          repeatType: 'loop',
+          repeatDelay: 0,
+        },
+      }}>
+      <NextImage alt={'turtle'} src={variants[state].src} width={80} height={160} priority />
+    </Box>
   )
 }
 

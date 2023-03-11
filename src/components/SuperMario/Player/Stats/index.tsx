@@ -20,11 +20,11 @@ const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
       position={'fixed'}
       top={2}
       right={2}
-      initial={{ right: -500 }}
-      animate={{ right: 2, transition: { delay: 1.5 } }}>
+      initial={{ translateX: '150%' }}
+      animate={{ translateX: 0, transition: { delay: 1 } }}>
       <VStack spacing={0}>
         <StatGroup
-          width={{ base: '140px', md: '200px' }}
+          w={{ base: '140px', md: '200px' }}
           alignItems={'center'}
           justifyContent={'space-between'}
           bg={'black'}
@@ -35,14 +35,17 @@ const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
             </StatNumber>
           </Stat>
           <Stat textAlign={'right'}>
-            <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Timer'}>
+            <StatNumber
+              fontSize={{ base: 'lg', md: '2xl' }}
+              title={'Timer'}
+              {...(timer < 61 && { color: 'red.500' })}>
               {timer}
             </StatNumber>
           </Stat>
         </StatGroup>
 
         <StatGroup
-          width={{ base: '140px', md: '200px' }}
+          w={{ base: '140px', md: '200px' }}
           alignItems={'center'}
           justifyContent={'space-between'}
           bg={'black'}
@@ -62,19 +65,19 @@ const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
 
         {config.app.environment === 'development' && (
           <StatGroup
-            width={{ base: '160px', md: '200px' }}
+            w={{ base: '160px', md: '200px' }}
             alignItems={'center'}
             justifyContent={'space-between'}
             bg={'black'}
             px={4}>
             <Stat textAlign={'left'}>
               <StatNumber fontSize={'lg'} title={'X'}>
-                x: {xPos}
+                x: {Math.round(xPos)}
               </StatNumber>
             </Stat>
             <Stat textAlign={'right'}>
               <StatNumber fontSize={'lg'} title={'Y'}>
-                y: {yPos}
+                y: {Math.round(yPos)}
               </StatNumber>
             </Stat>
           </StatGroup>

@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Box, BoxProps, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import styles from './styles.module.css'
 
 type Props = BoxProps & {
@@ -28,7 +29,7 @@ const images = [
   '/_next/image?url=%2Fimages%2Fcube%2Fcube.3.png&w=1920&q=80',
   '/_next/image?url=%2Fimages%2Fcube%2Fcube.4.png&w=1080&q=80',
   '/_next/image?url=%2Fimages%2Fdog%2Fdog.png&w=1920&q=80',
-  '/_next/image?url=%2Fimages%2Ffamily%2Ffamily.png&w=1920&q=90',
+  '/_next/image?url=%2Fimages%2Ffamily%2Ffamily.png&w=1920&q=80',
   '/_next/image?url=%2Fimages%2Ffire%2Ffire.1.png&w=64&q=80',
   '/_next/image?url=%2Fimages%2Ffire%2Ffire.2.png&w=64&q=80',
   '/_next/image?url=%2Fimages%2Ffire%2Ffire.3.png&w=64&q=80',
@@ -47,7 +48,7 @@ const images = [
   '/_next/image?url=%2Fimages%2Fmario%2Fmario.sm.1.png&w=256&q=80',
   '/_next/image?url=%2Fimages%2Fmario%2Fmario.sm.2.png&w=256&q=80',
   '/_next/image?url=%2Fimages%2Fmario%2Fmario.sm.jump.png&w=256&q=80',
-  '/_next/image?url=%2Fimages%2Fme%2Fme.png&w=1920&q=90',
+  '/_next/image?url=%2Fimages%2Fme%2Fme.png&w=1920&q=80',
   '/_next/image?url=%2Fimages%2Fmushroom%2Fmushroom.png&w=256&q=80',
   '/_next/image?url=%2Fimages%2Fpipe%2Fpipe.0.png&w=384&q=80',
   '/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=80',
@@ -91,8 +92,8 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
       setTimeout(() => {
         setPosition(2)
         setIsInstructing(true)
-      }, 800)
-    }, 1000)
+      }, 600)
+    }, 900)
   }
 
   // Start preloading
@@ -113,11 +114,12 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
 
     setTimeout(() => {
       setIsLoading(false)
-    }, 800)
+    }, 900)
   }
 
   return (
     <Box
+      as={motion.div}
       zIndex={'overlay'}
       position={'fixed'}
       top={0}
@@ -127,9 +129,11 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
       overflowY={isInstructing ? 'scroll' : 'hidden'}
       onScroll={handleScroll}
       bg={'black'}
-      className={
-        styles.container + (!isLoading && ' animate__animated animate__slideOutDown') || ''
-      }>
+      className={styles.container}
+      {...(!isLoading && {
+        initial: { translateY: 0 },
+        animate: { translateY: 3000, transition: { duration: 0.8 } },
+      })}>
       <Flex
         w={'full'}
         height={isInstructing ? 'calc(100vh + 10px)' : 'full'}
@@ -137,30 +141,54 @@ const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
         justifyContent={'center'}>
         {(position == 1 && (
           <VStack
+            as={motion.div}
             spacing={2}
-            className={(!isPreloading && 'animate__animated animate__backOutDown') || ''}>
-            <Flex className={styles.preloader} />
+            {...(!isPreloading && {
+              initial: { translateY: 0 },
+              animate: { translateY: 2000, transition: { duration: 0.9 } },
+            })}>
+            <Flex w={'10px'} h={'10px'} mb={'48px'} className={styles.preloader} />
             <Text fontSize={'2xl'} color={'cyan.500'}>
               <strong>Loading...</strong>
             </Text>
           </VStack>
         )) || (
           <VStack
-            className={
-              (isInstructing && 'animate__animated animate__backInUp') ||
-              'animate__animated animate__backOutDown'
-            }>
+            as={motion.div}
+            {...((!isInstructing && {
+              initial: { translateY: 0 },
+              animate: { translateY: 2000, transition: { duration: 0.9 } },
+            }) || {
+              initial: { translateY: 2000 },
+              animate: { translateY: 0, transition: { duration: 0.9 } },
+            })}>
             <Flex
+              as={motion.div}
               w={'full'}
-              className={'animate__animated animate__fadeInUpBig ' + styles.instructions}
               alignItems={'center'}
-              justifyContent={'center'}>
+              justifyContent={'center'}
+              initial={{ translateY: 2000 }}
+              animate={{ translateY: 0, transition: { duration: 0.9 } }}>
               <VStack
+                as={motion.div}
+                spacing={0}
                 alignItems={'center'}
                 justifyContent={'center'}
                 p={1}
-                spacing={0}
-                className={'animate__animated animate__infinite animate__pulse'}>
+                initial={{ scale: 1 }}
+                whileInView={{
+                  scale: [1, 1.05, 1],
+                  transition: {
+                    type: 'keyframes',
+                    times: [0, 0.5, 1],
+                    delay: 0,
+                    duration: 1.6,
+                    ease: 'easeInOut',
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    repeatDelay: 0,
+                  },
+                }}>
                 <Text
                   fontSize={mobile ? '2xl' : '4xl'}
                   color={'cyan.500'}

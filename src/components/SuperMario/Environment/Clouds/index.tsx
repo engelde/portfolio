@@ -26,7 +26,7 @@ const Clouds: FC<Props> = ({}: Props) => {
   const clouds: CloudProps[] = [
     {
       y: 4,
-      scale: 0.75,
+      scale: 0.65,
       opacity: 0.45,
       duration: 90,
       delay: 0,
@@ -34,7 +34,7 @@ const Clouds: FC<Props> = ({}: Props) => {
     },
     {
       y: 33,
-      scale: 0.8,
+      scale: 0.7,
       opacity: 0.4,
       duration: 115,
       delay: 3,
@@ -42,7 +42,7 @@ const Clouds: FC<Props> = ({}: Props) => {
     },
     {
       y: 15,
-      scale: 0.9,
+      scale: 0.75,
       opacity: 0.45,
       duration: 140,
       delay: 14,
@@ -50,7 +50,7 @@ const Clouds: FC<Props> = ({}: Props) => {
     },
     {
       y: 42,
-      scale: 0.9,
+      scale: 0.75,
       opacity: 0.4,
       duration: 145,
       delay: 37,
@@ -58,7 +58,7 @@ const Clouds: FC<Props> = ({}: Props) => {
     },
     {
       y: 24,
-      scale: 0.8,
+      scale: 0.7,
       opacity: 0.5,
       duration: 140,
       delay: 66,
@@ -66,7 +66,7 @@ const Clouds: FC<Props> = ({}: Props) => {
     },
     {
       y: 20,
-      scale: 0.8,
+      scale: 0.7,
       opacity: 0.5,
       duration: 175,
       delay: 90,
@@ -74,7 +74,7 @@ const Clouds: FC<Props> = ({}: Props) => {
     },
     {
       y: 30,
-      scale: 0.85,
+      scale: 0.75,
       opacity: 0.4,
       duration: 115,
       delay: 140,
@@ -82,7 +82,7 @@ const Clouds: FC<Props> = ({}: Props) => {
     },
     {
       y: 14,
-      scale: 0.7,
+      scale: 0.6,
       opacity: 0.4,
       duration: 90,
       delay: 145,
@@ -104,7 +104,7 @@ const Clouds: FC<Props> = ({}: Props) => {
   }
 
   return (
-    <Box zIndex={-99} position={'fixed'} top={0} left={0} width={'100vw'}>
+    <Box zIndex={0} position={'fixed'} top={0} left={0} w={'100vw'}>
       {clouds.map((item, x) => (
         <Box
           key={x}
@@ -121,7 +121,7 @@ const Clouds: FC<Props> = ({}: Props) => {
               delay: item.delay,
               duration: item.duration,
               ease: 'linear',
-              repeat: 1,
+              repeat: Infinity,
               repeatType: 'loop',
               repeatDelay: 0,
             },
