@@ -3,18 +3,18 @@ import { Box, Heading } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 
-type Props = {
+export type ThanksProps = {
   xPos: number
   xMin: number
   xMax: number
   offset: number
 }
 
-const Thanks: FC<Props> = ({ xPos, xMin, xMax, offset }: Props) => {
+const Thanks: FC<ThanksProps> = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
   return (
     <Box
       as={motion.div}
-      zIndex={999}
+      zIndex={10}
       position={'fixed'}
       top={12}
       left={8}

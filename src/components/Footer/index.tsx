@@ -4,16 +4,16 @@ import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 import config from '@/utilities/config'
 
-type Props = {
+export type FooterProps = {
   dark?: boolean
 }
 
-const Footer: FC<Props> = ({ dark }: Props) => {
+const Footer: FC<FooterProps> = ({ dark }: FooterProps) => {
   const year = new Date().getFullYear()
 
   return (
     <HStack
-      zIndex={999}
+      zIndex={10}
       position={'fixed'}
       bottom={0}
       left={0}

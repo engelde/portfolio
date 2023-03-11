@@ -4,18 +4,18 @@ import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/f
 import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 
-type Props = {
+export type IntroProps = {
   xPos: number
   xMin: number
   xMax: number
   ip: string
 }
 
-const Intro: FC<Props> = ({ xPos, xMin, xMax, ip }: Props) => {
+const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
   return (
     <Box
       as={motion.div}
-      zIndex={999}
+      zIndex={10}
       position={'fixed'}
       top={8}
       left={4}

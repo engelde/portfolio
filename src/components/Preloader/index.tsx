@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Box, BoxProps, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
+import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import styles from './styles.module.css'
 
-type Props = BoxProps & {
+export type PreloaderProps = {
   isLoading: boolean
   setIsLoading: (status: boolean) => void
 }
@@ -67,7 +67,7 @@ const images = [
   '/_next/image?url=%2Fimages%2Fturtle%2Fturtle.2.png&w=256&q=75',
 ]
 
-const Preloader: FC<Props> = ({ isLoading, setIsLoading, ...rest }: Props) => {
+const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderProps) => {
   const [mobile] = useMediaQuery('(max-width: 36rem)')
   const [isPreloading, setIsPreloading] = useState(true)
   const [isInstructing, setIsInstructing] = useState(false)

@@ -21,14 +21,14 @@ import {
 import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 
-type Props = {
+export type SkillsProps = {
   xPos: number
   xMin: number
   xMax: number
   offset: number
 }
 
-const Skills: FC<Props> = ({ xPos, xMin, xMax, offset }: Props) => {
+const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
   const skillset = [
     {
       name: 'TypeScript',
@@ -131,7 +131,7 @@ const Skills: FC<Props> = ({ xPos, xMin, xMax, offset }: Props) => {
   return (
     <Box
       as={motion.div}
-      zIndex={999}
+      zIndex={10}
       position={'fixed'}
       top={8}
       left={6}

@@ -9,12 +9,12 @@ import ScrollIndicator from './ScrollIndicator'
 import Skills from './Skills'
 import Thanks from './Thanks'
 
-type Props = {
+export type OverlayProps = {
   xPos: number
   ip: string
 }
 
-const Overlay: FC<Props> = ({ xPos, ip }: Props) => {
+const Overlay: FC<OverlayProps> = ({ xPos, ip }: OverlayProps) => {
   return (
     <>
       <ScrollIndicator xPos={xPos} />
@@ -29,7 +29,7 @@ const Overlay: FC<Props> = ({ xPos, ip }: Props) => {
 
       <Dog xPos={xPos} xMin={11800} xMax={16000} offset={12780} />
 
-      <Box zIndex={9992} position={'absolute'} left={13080} bottom={'64px'} w={'410px'} h={'160px'}>
+      <Box zIndex={10} position={'absolute'} left={13080} bottom={'64px'} w={'410px'} h={'160px'}>
         <Pipe x={0} y={0} height={410} rotate={-90} />
       </Box>
 

@@ -1,10 +1,10 @@
-type Config = {
+type ConfigProps = {
   [key: string]: {
     [val: string]: string
   }
 }
 
-const config: Config = {
+const config: ConfigProps = {
   app: {
     name: process.env.NEXT_PUBLIC_APP_NAME || '',
     author: process.env.NEXT_PUBLIC_APP_AUTHOR || '',

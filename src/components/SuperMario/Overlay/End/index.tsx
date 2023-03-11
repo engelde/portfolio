@@ -5,14 +5,14 @@ import { Box, Flex, Heading, HStack, Link, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import config from '@/utilities/config'
 
-type Props = {
+export type EndProps = {
   x: number
 }
 
-const End: FC<Props> = ({ x }: Props) => {
+const End: FC<EndProps> = ({ x }: EndProps) => {
   return (
     <Box
-      zIndex={9999}
+      zIndex={20}
       position={'absolute'}
       left={x + 'px'}
       bottom={0}
@@ -80,7 +80,7 @@ const End: FC<Props> = ({ x }: Props) => {
 
           <Heading
             as={motion.div}
-            size={{ base: '2xl', md: '4xl' }}
+            size={{ base: '4xl', md: '4xl' }}
             fontSize={{ base: '86px', md: '100px' }}
             textAlign={'center'}
             lineHeight={0.7}

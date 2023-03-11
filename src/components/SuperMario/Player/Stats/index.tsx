@@ -3,7 +3,7 @@ import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import config from '@/utilities/config'
 
-type Props = {
+export type StatsProps = {
   xPos: number
   yPos: number
   lives: number
@@ -11,12 +11,12 @@ type Props = {
   timer: number
 }
 
-const Stats: FC<Props> = ({ xPos, yPos, lives, score, timer }: Props) => {
+const Stats: FC<StatsProps> = ({ xPos, yPos, lives, score, timer }: StatsProps) => {
   return (
     <Box
       as={motion.div}
       p={2}
-      zIndex={990}
+      zIndex={8}
       position={'fixed'}
       top={2}
       right={2}

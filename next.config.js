@@ -3,7 +3,7 @@
 const nextConfig = {
   productionBrowserSourceMaps: true,
   reactStrictMode: true,
-  // output: 'standalone',
+  output: 'standalone',
 }
 
 module.exports = nextConfig
