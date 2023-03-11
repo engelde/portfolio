@@ -3,9 +3,7 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {}
-
-const Sun: FC<Props> = ({}: Props) => {
+const Sun: FC = () => {
   return (
     <Box
       as={motion.div}

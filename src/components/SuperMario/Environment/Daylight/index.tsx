@@ -2,9 +2,7 @@ import { FC } from 'react'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-type Props = {}
-
-const Daylight: FC<Props> = ({}: Props) => {
+const Daylight: FC = () => {
   return (
     <Box
       as={motion.div}
