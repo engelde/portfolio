@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { Box, useEventListener, useMediaQuery } from '@chakra-ui/react'
 import { useScroll } from 'framer-motion'
 import { useWindowSize } from '@/hooks/useWindowSize'
+import config from '@/utilities/config'
 import Environment from './Environment'
 import Landscape from './Landscape'
 import Foreground from './Foreground'
@@ -107,11 +108,14 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         }
       }
 
-      setTimeout(() => {
-        setJump(false)
-        setJumping(false)
-        setJumpOffset(240)
-      }, 600)
+      setTimeout(
+        () => {
+          setJump(false)
+          setJumping(false)
+          setJumpOffset(240)
+        },
+        config.app.environment === 'development' ? 1800 : 600,
+      )
     }
   }, [x, y, xOffset, audioLevel, jump, jumping, mobile, setJump, setJumping])
 
