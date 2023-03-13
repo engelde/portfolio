@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 import Mario from './Mario'
 import Pause from './Pause'
 import Stats from './Stats'
@@ -6,17 +6,21 @@ import Stats from './Stats'
 export type PlayerProps = {
   x: number
   y: number
+  mobile: boolean
   forwards: boolean
   xPos: number
   yPos: number
-  maxX: number
+  length: number
+  maxScroll: number
   jump: boolean
   marioVariant: 1 | 2
   paused: boolean
   lives: number
   score: number
   timer: number
-  mobile: boolean
+  audioLevel: number
+  complete: boolean
+  setAudioLevel: (status: number) => void
   setPaused: (status: boolean) => void
   setXPos: (pos: number) => void
   setYPos: (pos: number) => void
@@ -25,34 +29,54 @@ export type PlayerProps = {
 const Player: FC<PlayerProps> = ({
   x,
   y,
+  mobile,
   forwards,
   xPos,
   yPos,
-  maxX,
+  length,
+  maxScroll,
   jump,
   marioVariant,
   paused,
   lives,
   score,
   timer,
-  mobile,
+  audioLevel,
+  complete,
+  setAudioLevel,
   setPaused,
   setXPos,
   setYPos,
 }: PlayerProps) => {
   return (
     <>
-      {xPos < 13360 && (
+      {xPos < length && (
         <>
           <Mario variant={marioVariant} x={x} y={y} xPos={xPos} forwards={forwards} jump={jump} />
         </>
       )}
 
-      {xPos < 13360 && !mobile && (
-        <Stats xPos={xPos} yPos={yPos} lives={lives} score={score} timer={timer} />
+      {xPos < length && !mobile && (
+        <Stats
+          xPos={xPos}
+          yPos={yPos}
+          lives={lives}
+          score={score}
+          timer={timer}
+          audioLevel={audioLevel}
+          complete={complete}
+        />
       )}
 
-      <Pause open={paused} setOpen={setPaused} setXPos={setXPos} setYPos={setYPos} maxX={maxX} />
+      <Pause
+        open={paused}
+        setOpen={setPaused}
+        setXPos={setXPos}
+        setYPos={setYPos}
+        audioLevel={audioLevel}
+        setAudioLevel={setAudioLevel}
+        maxScroll={maxScroll}
+      />
     </>
   )
 }

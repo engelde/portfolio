@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import config from '@/utilities/config'
@@ -9,9 +9,28 @@ export type StatsProps = {
   lives: number
   score: number
   timer: number
+  audioLevel: number
+  complete: boolean
 }
 
-const Stats: FC<StatsProps> = ({ xPos, yPos, lives, score, timer }: StatsProps) => {
+const Stats: FC<StatsProps> = ({
+  xPos,
+  yPos,
+  lives,
+  score,
+  timer,
+  audioLevel,
+  complete,
+}: StatsProps) => {
+  useEffect(() => {
+    if (!complete && timer === 60) {
+      if (audioLevel > 0) {
+        const sound = new Audio('/audio/hurry/hurry.mp3')
+        sound.volume = audioLevel / 100
+        sound.play()
+      }
+    }
+  }, [audioLevel, complete, timer])
   return (
     <Box
       as={motion.div}
@@ -38,7 +57,7 @@ const Stats: FC<StatsProps> = ({ xPos, yPos, lives, score, timer }: StatsProps) 
             <StatNumber
               fontSize={{ base: 'lg', md: '2xl' }}
               title={'Timer'}
-              {...(timer < 61 && { color: 'red.500' })}>
+              {...((complete && { color: 'green.500' }) || (timer < 61 && { color: 'red.500' }))}>
               {timer}
             </StatNumber>
           </Stat>
