@@ -66,7 +66,7 @@ const Overlay: FC<OverlayProps> = ({
         <Pipe x={0} y={0} height={410} rotate={-90} />
       </Box>
 
-      <End x={length - xOffset} />
+      <End x={length - xOffset} xPos={xPos} />
     </>
   )
 }

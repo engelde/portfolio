@@ -471,7 +471,6 @@ const Foreground: FC<ForegroundProps> = ({
         yPos > item.yRange[0] &&
         yPos < item.yRange[1]
       ) {
-        console.log('in range')
         if (item.boxStatus && !item.prizeStatus) {
           item.setPrizeStatus(true)
         }
