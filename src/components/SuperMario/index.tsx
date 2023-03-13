@@ -39,6 +39,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   const [walkOffset] = useState(0)
 
   const length = 13360
+  const [maxX, setMaxX] = useState(length - xOffset)
   const [maxScroll, setMaxScroll] = useState(length + height - xOffset - 24)
 
   const [marioVariant, setMarioVariant] = useState<1 | 2>(1)
@@ -211,7 +212,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     return scrollY.on('change', () => {
       if (!complete) {
         let val = scrollY.get()
-        let newPos = val <= maxScroll ? val : maxScroll
+        let newPos = val <= maxX ? val : maxX
 
         setForwards(val - oldX > 0 ? true : false)
         setOldX(val)
@@ -227,11 +228,11 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         }
       }
     })
-  }, [complete, forwards, maxScroll, oldX, scrollY, x])
+  }, [complete, forwards, maxX, oldX, scrollY, x])
 
   // Control Movements
   useEffect(() => {
-    if (!complete && !paused && x + xOffset <= maxScroll) {
+    if (!complete && !paused && x + xOffset <= maxX) {
       // move
       if (!mobile) {
         if (!moveRight && !moveLeft) {
@@ -246,21 +247,21 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           }
 
           // move left and right
-          if (moveRight && x + xSpeed < maxScroll) {
-            setOldX(x)
-            if (xOffset < walkOffset) {
-              setXOffset(xOffset + xSpeed)
-            } else {
+          if (moveRight) {
+            if (x + xSpeed <= maxX) {
+              setOldX(x)
               setX(x + xSpeed)
+            } else {
+              setOldX(maxX)
+              setX(maxX)
             }
-          } else if (moveLeft && x + xSpeed < maxScroll) {
-            setOldX(x)
-            if (x > 0) {
+          } else if (moveLeft) {
+            if (x - xSpeed >= x) {
+              setOldX(x)
               setX(x - xSpeed)
-            } else if (xOffset - xSpeed < walkOffset) {
-              if (xOffset > 0) {
-                setXOffset(xOffset - xSpeed)
-              }
+            } else {
+              setOldX(0)
+              setX(0)
             }
           }
         }
@@ -322,7 +323,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     setX,
     y,
     setY,
-    maxScroll,
+    maxX,
     xOffset,
     setXOffset,
     yOffset,
@@ -368,7 +369,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           yPos={y + yOffset}
           setYPos={setY}
           length={length}
-          maxScroll={maxScroll}
+          maxX={maxX}
           marioVariant={marioVariant}
           paused={paused}
           setPaused={setPaused}
@@ -381,6 +382,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         />
         <Overlay
           xPos={x + xOffset}
+          yPos={y + yOffset}
           forwards={forwards}
           audioLevel={audioLevel}
           length={length}

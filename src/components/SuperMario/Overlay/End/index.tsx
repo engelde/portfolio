@@ -22,13 +22,10 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
       bottom={0}
       p={0}
       h={'100vh'}
-      w={'100vw'}
+      w={'150vw'}
       alignItems={'center'}
       justifyContent={'center'}
-      bg={'url(/images/clear/clear.png) black'}
-      backgroundRepeat={'no-repeat'}
-      backgroundPosition={'bottom center'}
-      backgroundSize={'contain'}
+      bg={'black'}
       _after={{
         background:
           'linear-gradient(-45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(-135deg, #000 16px, transparent 0)',
@@ -44,72 +41,36 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
         height: '100%',
       }}>
       <Flex
-        as={motion.div}
         h={'100vh'}
         w={'100vw'}
+        bg={'url(/images/clear/clear.png)'}
+        backgroundRepeat={'no-repeat'}
+        backgroundPosition={'bottom center'}
+        backgroundSize={'contain'}
         alignItems={'center'}
-        justifyContent={'center'}
-        marginTop={'-2000px'}
-        {...(xPos >= x && {
-          initial: { marginTop: -2000 },
-          animate: { marginTop: 0, transition: { duration: 0.6 } },
-        })}>
-        <VStack spacing={0}>
-          <Box
-            as={motion.div}
-            w={'300px'}
-            h={'248px'}
-            mt={-16}
-            mb={4}
-            overflow={'hidden'}
-            borderRadius={'160px'}
-            initial={{ scale: 1 }}
-            whileInView={{
-              scale: [1, 1.06, 1],
-              transition: {
-                type: 'keyframes',
-                times: [0, 0.5, 1],
-                delay: 0,
-                duration: 1.6,
-                ease: 'easeInOut',
-                repeat: Infinity,
-                repeatType: 'loop',
-                repeatDelay: 0,
-              },
-            }}>
-            <NextImage
-              alt={'fireworks'}
-              src={'/media/fireworks/fireworks.webp'}
-              height={248}
-              width={300}
-              priority
-            />
+        justifyContent={'center'}>
+        <Box
+          as={motion.div}
+          alignItems={'center'}
+          justifyContent={'center'}
+          marginTop={'-2000px'}
+          {...(xPos >= x && {
+            initial: { marginTop: -2000 },
+            animate: { marginTop: 0, transition: { duration: 0.6 } },
+          })}>
+          <VStack spacing={0}>
             <Box
-              position={'absolute'}
-              left={0}
-              top={0}
-              w={'full'}
-              h={'full'}
+              as={motion.div}
+              w={'300px'}
+              h={'248px'}
+              mt={-16}
+              mb={4}
               borderRadius={'160px'}
               boxShadow={'0 0 25px 25px black inset'}
-            />
-          </Box>
-
-          <Box py={8}>
-            <Button
-              as={motion.div}
-              variant={'outline'}
-              colorScheme={'white'}
-              size={'lg'}
-              cursor={'pointer'}
-              _hover={{
-                bg: 'red.500',
-                color: 'white',
-                borderColor: 'red.500',
-              }}
+              overflow={'hidden'}
               initial={{ scale: 1 }}
               whileInView={{
-                scale: [1, 1.05, 1],
+                scale: [1, 1.06, 1],
                 transition: {
                   type: 'keyframes',
                   times: [0, 0.5, 1],
@@ -120,55 +81,31 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
                   repeatType: 'loop',
                   repeatDelay: 0,
                 },
-              }}
-              onClick={() => router.reload()}>
-              {'> Restart'}
-            </Button>
-          </Box>
+              }}>
+              <NextImage
+                alt={'fireworks'}
+                src={'/media/fireworks/fireworks.webp'}
+                height={248}
+                width={300}
+                priority
+              />
+            </Box>
 
-          <Heading
-            as={motion.div}
-            size={{ base: '4xl', md: '4xl' }}
-            fontSize={{ base: '86px', md: '100px' }}
-            textAlign={'center'}
-            lineHeight={0.7}
-            _hover={{ color: 'cyan.500' }}
-            initial={{ scale: 1 }}
-            whileInView={{
-              scale: [1, 1.06, 1],
-              transition: {
-                type: 'keyframes',
-                times: [0, 0.5, 1],
-                delay: 0,
-                duration: 1.6,
-                ease: 'easeInOut',
-                repeat: Infinity,
-                repeatType: 'loop',
-                repeatDelay: 0,
-              },
-            }}>
-            <Link as={NextLink} href={'https://github.com/engelde/portfolio'} target={'_blank'}>
-              {'> view source'}
-            </Link>
-          </Heading>
-
-          <Heading
-            size={{ base: 'xl', md: '2xl' }}
-            fontSize={{ base: '36px', md: '42px' }}
-            textAlign={'center'}
-            pt={6}>
-            {'© ' + config.app.author}
-          </Heading>
-
-          <HStack justifyContent={'center'} verticalAlign={'middle'} pt={8} spacing={4}>
-            <Link as={NextLink} href={'https://github.com/engelde'} target={'_blank'}>
-              <Box
+            <Box py={8}>
+              <Button
                 as={motion.div}
+                variant={'outline'}
+                colorScheme={'white'}
+                size={'lg'}
                 cursor={'pointer'}
-                _hover={{ filter: 'brightness(85%)' }}
+                _hover={{
+                  bg: 'red.500',
+                  color: 'white',
+                  borderColor: 'red.500',
+                }}
                 initial={{ scale: 1 }}
                 whileInView={{
-                  scale: [1, 1.06, 1],
+                  scale: [1, 1.05, 1],
                   transition: {
                     type: 'keyframes',
                     times: [0, 0.5, 1],
@@ -179,49 +116,109 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
                     repeatType: 'loop',
                     repeatDelay: 0,
                   },
-                }}>
-                <NextImage
-                  alt={'github'}
-                  title={'github'}
-                  src={'/images/github/github.png'}
-                  width={58}
-                  height={60}
-                  priority
-                />
-              </Box>
-            </Link>
+                }}
+                onClick={() => router.reload()}>
+                {'> Restart'}
+              </Button>
+            </Box>
 
-            <Link as={NextLink} href={'https://www.linkedin.com/in/engelde'} target={'_blank'}>
-              <Box
-                as={motion.div}
-                cursor={'pointer'}
-                _hover={{ filter: 'brightness(85%)' }}
-                initial={{ scale: 1 }}
-                whileInView={{
-                  scale: [1, 1.06, 1],
-                  transition: {
-                    type: 'keyframes',
-                    times: [0, 0.5, 1],
-                    delay: 0,
-                    duration: 1.6,
-                    ease: 'easeInOut',
-                    repeat: Infinity,
-                    repeatType: 'loop',
-                    repeatDelay: 0,
-                  },
-                }}>
-                <NextImage
-                  alt={'linkedin'}
-                  title={'linkedin'}
-                  src={'/images/linkedin/linkedin.png'}
-                  width={60}
-                  height={60}
-                  priority
-                />
-              </Box>
-            </Link>
-          </HStack>
-        </VStack>
+            <Heading
+              as={motion.div}
+              size={{ base: '4xl', md: '4xl' }}
+              fontSize={{ base: '86px', md: '100px' }}
+              textAlign={'center'}
+              lineHeight={0.7}
+              _hover={{ color: 'cyan.500' }}
+              initial={{ scale: 1 }}
+              whileInView={{
+                scale: [1, 1.06, 1],
+                transition: {
+                  type: 'keyframes',
+                  times: [0, 0.5, 1],
+                  delay: 0,
+                  duration: 1.6,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                  repeatDelay: 0,
+                },
+              }}>
+              <Link as={NextLink} href={'https://github.com/engelde/portfolio'} target={'_blank'}>
+                {'> view source'}
+              </Link>
+            </Heading>
+
+            <Heading
+              size={{ base: 'xl', md: '2xl' }}
+              fontSize={{ base: '36px', md: '42px' }}
+              textAlign={'center'}
+              pt={6}>
+              {'© ' + config.app.author}
+            </Heading>
+
+            <HStack justifyContent={'center'} verticalAlign={'middle'} pt={8} spacing={4}>
+              <Link as={NextLink} href={'https://github.com/engelde'} target={'_blank'}>
+                <Box
+                  as={motion.div}
+                  cursor={'pointer'}
+                  _hover={{ filter: 'brightness(85%)' }}
+                  initial={{ scale: 1 }}
+                  whileInView={{
+                    scale: [1, 1.06, 1],
+                    transition: {
+                      type: 'keyframes',
+                      times: [0, 0.5, 1],
+                      delay: 0,
+                      duration: 1.6,
+                      ease: 'easeInOut',
+                      repeat: Infinity,
+                      repeatType: 'loop',
+                      repeatDelay: 0,
+                    },
+                  }}>
+                  <NextImage
+                    alt={'github'}
+                    title={'github'}
+                    src={'/images/github/github.png'}
+                    width={58}
+                    height={60}
+                    priority
+                  />
+                </Box>
+              </Link>
+
+              <Link as={NextLink} href={'https://www.linkedin.com/in/engelde'} target={'_blank'}>
+                <Box
+                  as={motion.div}
+                  cursor={'pointer'}
+                  _hover={{ filter: 'brightness(85%)' }}
+                  initial={{ scale: 1 }}
+                  whileInView={{
+                    scale: [1, 1.06, 1],
+                    transition: {
+                      type: 'keyframes',
+                      times: [0, 0.5, 1],
+                      delay: 0,
+                      duration: 1.6,
+                      ease: 'easeInOut',
+                      repeat: Infinity,
+                      repeatType: 'loop',
+                      repeatDelay: 0,
+                    },
+                  }}>
+                  <NextImage
+                    alt={'linkedin'}
+                    title={'linkedin'}
+                    src={'/images/linkedin/linkedin.png'}
+                    width={60}
+                    height={60}
+                    priority
+                  />
+                </Box>
+              </Link>
+            </HStack>
+          </VStack>
+        </Box>
       </Flex>
     </Box>
   )
