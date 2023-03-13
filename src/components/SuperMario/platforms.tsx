@@ -55,73 +55,98 @@ export const platforms = [
   },
   // cube 1
   {
-    xMin: 1550,
+    xMin: 1540,
     xMax: 1800,
     height: 396 + smGroundHeight,
   },
   {
     xMin: 1380,
-    xMax: 1620,
+    xMax: 1640,
     height: 236 + smGroundHeight,
   },
   // pipe 1
   {
-    xMin: 1960,
-    xMax: 2140,
+    xMin: 1940,
+    xMax: 2120,
     height: 236 + smGroundHeight,
   },
   // cube 2
   {
     xMin: 2740,
-    xMax: 3100,
+    xMax: 3080,
     height: 560 + smGroundHeight,
   },
   {
     xMin: 2500,
-    xMax: 2860,
+    xMax: 2840,
     height: 396 + smGroundHeight,
   },
   {
-    xMin: 2200,
-    xMax: 2600,
+    xMin: 2180,
+    xMax: 2615,
     height: 236 + smGroundHeight,
   },
   {
-    xMin: 2740,
+    xMin: 2730,
     xMax: 3260,
     height: 158 + smGroundHeight,
   },
-  // box set 3
-  {
-    xMin: 3440,
-    xMax: 3540,
-    height: 80 + lgGroundHeight,
-  },
   // box set 4
   {
-    xMin: 3720,
-    xMax: 3820,
+    xMin: 3460,
+    xMax: 3570,
+    height: 80 + lgGroundHeight,
+  },
+  // box set 5
+  {
+    xMin: 3700,
+    xMax: 3810,
     height: 240 + lgGroundHeight,
   },
   // cube 3
   {
-    xMin: 6780,
-    xMax: 7340,
+    xMin: 6740,
+    xMax: 7330,
     height: 480 + smGroundHeight,
   },
   {
-    xMin: 6620,
+    xMin: 6580,
     xMax: 7180,
     height: 318 + smGroundHeight,
   },
   {
-    xMin: 6460,
-    xMax: 7000,
+    xMin: 6420,
+    xMax: 7010,
     height: 158 + smGroundHeight,
   },
+  // box set 6
   {
     xMin: 7460,
-    xMax: 7560,
+    xMax: 7570,
     height: 240 + smGroundHeight,
+  },
+  // rock set 1
+  {
+    xMin: 7620,
+    xMax: 7810,
+    height: 400 + smGroundHeight,
+  },
+  // pipe 2
+  {
+    xMin: 9140,
+    xMax: 9330,
+    height: 160 + smGroundHeight,
+  },
+  // pipe 3
+  {
+    xMin: 9460,
+    xMax: 9650,
+    height: 240 + smGroundHeight,
+  },
+  // pipe 4
+  {
+    xMin: 12880,
+    xMax: 13320,
+    height: 151 + smGroundHeight,
   },
 ]

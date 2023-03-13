@@ -381,6 +381,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         />
         <Overlay
           xPos={x + xOffset}
+          yPos={y + yOffset}
           forwards={forwards}
           audioLevel={audioLevel}
           length={length}
