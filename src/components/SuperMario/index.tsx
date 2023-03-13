@@ -3,6 +3,7 @@ import { Box, useEventListener, useMediaQuery } from '@chakra-ui/react'
 import { useScroll } from 'framer-motion'
 import { useWindowSize } from '@/hooks/useWindowSize'
 import config from '@/utilities/config'
+import { useStore } from '@/utilities/store'
 import Environment from './Environment'
 import Landscape from './Landscape'
 import Foreground from './Foreground'
@@ -16,10 +17,11 @@ export type SuperMarioProps = {
 }
 
 const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
+  const [store, updateStore] = useStore()
   const { width, height } = useWindowSize()
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const [paused, setPaused] = useState(false)
-  const [audioLevel, setAudioLevel] = useState(0)
+  const [audioLevel, setAudioLevel] = useState(store.audioLevel || 0)
   const [lives] = useState(1)
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(300)
@@ -48,6 +50,12 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   const [jumping, setJumping] = useState(false)
   const [jumpLock, setJumpLock] = useState(false)
   const [platform, setPlatform] = useState(false)
+
+  // Audio
+  useEffect(() => {
+    updateStore({ type: 'FETCH_AUDIO_LEVEL' })
+    setAudioLevel(store.audioLevel)
+  }, [setAudioLevel, store.audioLevel, updateStore])
 
   // Resize
   useEffect(() => {
