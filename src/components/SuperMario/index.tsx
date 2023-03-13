@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from 'react'
 import { Box, useEventListener, useMediaQuery } from '@chakra-ui/react'
 import { useScroll } from 'framer-motion'
+import { useWindowSize } from '@/hooks/useWindowSize'
+import config from '@/utilities/config'
 import Environment from './Environment'
 import Landscape from './Landscape'
 import Foreground from './Foreground'
@@ -14,26 +16,28 @@ export type SuperMarioProps = {
 }
 
 const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
+  const { width, height } = useWindowSize()
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const [paused, setPaused] = useState(false)
+  const [audioLevel, setAudioLevel] = useState(0)
   const [lives] = useState(1)
   const [score, setScore] = useState(0)
   const [timer, setTimer] = useState(300)
-
-  const length = 13340
-  const [maxX, setMaxX] = useState(length + window.innerHeight)
-  const [oldX, setOldX] = useState(0)
-  const [xSpeed, setXSpeed] = useState(12)
-  const [ySpeed] = useState(16)
-  const [jumpOffset, setJumpOffset] = useState(240)
-  const [walkOffset] = useState(0)
+  const [complete, setComplete] = useState(false)
 
   const { scrollY } = useScroll()
   const [x, setX] = useState(0)
   const [y, setY] = useState(64)
+  const [xSpeed, setXSpeed] = useState(12)
+  const [ySpeed] = useState(16)
+  const [oldX, setOldX] = useState(0)
   const [xOffset, setXOffset] = useState(80)
   const [yOffset, setYOffset] = useState(0)
-  const [platform, setPlatform] = useState(false)
+  const [jumpOffset, setJumpOffset] = useState(240)
+  const [walkOffset] = useState(0)
+
+  const length = 13360
+  const [maxScroll, setMaxScroll] = useState(length + height - xOffset - 24)
 
   const [marioVariant, setMarioVariant] = useState<1 | 2>(1)
   const [forwards, setForwards] = useState(true)
@@ -41,27 +45,29 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   const [moveRight, setMoveRight] = useState(false)
   const [moveLeft, setMoveLeft] = useState(false)
   const [jump, setJump] = useState(false)
+  const [jumping, setJumping] = useState(false)
   const [jumpLock, setJumpLock] = useState(false)
+  const [platform, setPlatform] = useState(false)
 
   // Resize
   useEffect(() => {
-    if (maxX !== length + window.innerHeight) {
-      setMaxX(length + window.innerHeight)
+    if (maxScroll !== length + height - xOffset - 24) {
+      setMaxScroll(length + height - xOffset - 24)
     }
-  }, [length, maxX])
+  }, [height, length, maxScroll, xOffset])
 
   // Timer
   useEffect(() => {
-    if (timer > 0) {
-      const timeout = setTimeout(() => setTimer(timer - 1), 1000)
+    if (!paused && !complete && timer > 0) {
+      const timeout = setTimeout(() => !paused && setTimer(timer - 1), 1000)
       return () => {
         clearTimeout(timeout)
       }
     }
     return () => {}
-  }, [timer])
+  }, [complete, , paused, timer])
 
-  // Puase
+  // Pause
   useEffect(() => {
     if (paused && moveLeft) {
       if (moving) {
@@ -77,15 +83,41 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     }
   }, [paused, moveLeft, setMoveLeft, moveRight, setMoveRight, moving, setMoving])
 
+  // Complete
+  useEffect(() => {
+    if (!complete && x >= length - xOffset) {
+      setComplete(true)
+
+      if (audioLevel > 0) {
+        const sound = new Audio('/audio/clear/clear.mp3')
+        sound.volume = audioLevel / 100
+        sound.play()
+      }
+    }
+  }, [audioLevel, complete, length, x, xOffset])
+
   // Jump
   useEffect(() => {
     if (!mobile && jump) {
-      setTimeout(() => {
-        setJump(false)
-        setJumpOffset(240)
-      }, 600)
+      if (!jumping) {
+        setJumping(true)
+        if (audioLevel > 0) {
+          const sound = new Audio('/audio/jump/jump.mp3')
+          sound.volume = audioLevel / 100
+          sound.play()
+        }
+      }
+
+      setTimeout(
+        () => {
+          setJump(false)
+          setJumping(false)
+          setJumpOffset(240)
+        },
+        config.app.environment === 'development' ? 1800 : 600,
+      )
     }
-  }, [x, y, xOffset, jump, mobile, setJump])
+  }, [x, y, xOffset, audioLevel, jump, jumping, mobile, setJump, setJumping])
 
   // Key Down Event
   useEventListener('keydown', (event) => {
@@ -121,7 +153,13 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
       if (event.code === 'Escape') {
         event.preventDefault()
         if (!paused) {
-          setPaused(!paused)
+          setPaused(true)
+
+          if (audioLevel > 0) {
+            const sound = new Audio('/audio/pause/pause.mp3')
+            sound.volume = audioLevel / 100
+            sound.play()
+          }
         }
       }
     }
@@ -163,27 +201,29 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   // Scroll Event
   useEffect(() => {
     return scrollY.on('change', () => {
-      let val = scrollY.get()
-      let newPos = val < maxX ? val : maxX
+      if (!complete) {
+        let val = scrollY.get()
+        let newPos = val <= maxScroll ? val : maxScroll
 
-      setForwards(val - oldX > 0 ? true : false)
-      setOldX(val)
+        setForwards(val - oldX > 0 ? true : false)
+        setOldX(val)
 
-      if (forwards) {
-        if (x != newPos) {
-          setX(newPos)
-        }
-      } else {
-        if (x > 0 && x != newPos) {
-          setX(newPos)
+        if (forwards) {
+          if (x != newPos) {
+            setX(newPos)
+          }
+        } else {
+          if (x > 0 && x != newPos) {
+            setX(newPos)
+          }
         }
       }
     })
-  }, [forwards, maxX, oldX, scrollY, x])
+  }, [complete, forwards, maxScroll, oldX, scrollY, x])
 
   // Control Movements
   useEffect(() => {
-    if (!paused && x + xOffset < length) {
+    if (!complete && !paused && x + xOffset <= maxScroll) {
       // move
       if (!mobile) {
         if (!moveRight && !moveLeft) {
@@ -198,14 +238,14 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           }
 
           // move left and right
-          if (moveRight && x + xSpeed < maxX) {
+          if (moveRight && x + xSpeed < maxScroll) {
             setOldX(x)
             if (xOffset < walkOffset) {
               setXOffset(xOffset + xSpeed)
             } else {
               setX(x + xSpeed)
             }
-          } else if (moveLeft && x + xSpeed < maxX) {
+          } else if (moveLeft && x + xSpeed < maxScroll) {
             setOldX(x)
             if (x > 0) {
               setX(x - xSpeed)
@@ -263,6 +303,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   }, [
     mobile,
     paused,
+    complete,
     length,
     jumpOffset,
     walkOffset,
@@ -273,7 +314,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     setX,
     y,
     setY,
-    maxX,
+    maxScroll,
     xOffset,
     setXOffset,
     yOffset,
@@ -285,7 +326,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   ])
 
   return (
-    <Box overflowY={'scroll'} overflowX={'hidden'} h={maxX + 'px'} w={'100vw'}>
+    <Box overflowY={'scroll'} overflowX={'hidden'} h={maxScroll + 'px'} w={'100vw'}>
       <Environment mobile={mobile} />
       <Box
         zIndex={1}
@@ -306,26 +347,38 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           setMarioVariant={setMarioVariant}
           score={score}
           setScore={setScore}
+          audioLevel={audioLevel}
         />
         <Player
           x={xOffset}
           y={y + yOffset}
+          mobile={mobile}
           forwards={forwards}
           jump={jump}
           xPos={x + xOffset}
           setXPos={setX}
           yPos={y + yOffset}
           setYPos={setY}
-          maxX={maxX}
+          length={length}
+          maxScroll={maxScroll}
           marioVariant={marioVariant}
           paused={paused}
+          setPaused={setPaused}
           lives={lives}
           score={score}
           timer={timer}
-          setPaused={setPaused}
-          mobile={mobile}
+          audioLevel={audioLevel}
+          setAudioLevel={setAudioLevel}
+          complete={complete}
         />
-        <Overlay xPos={x + xOffset} ip={ip} />
+        <Overlay
+          xPos={x + xOffset}
+          forwards={forwards}
+          audioLevel={audioLevel}
+          length={length}
+          xOffset={xOffset}
+          ip={ip}
+        />
       </Box>
     </Box>
   )

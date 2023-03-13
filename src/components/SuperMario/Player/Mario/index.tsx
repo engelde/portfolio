@@ -70,7 +70,7 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
   const [prevXPos, setPrevXPos] = useState(xPos)
   const [state, setState] = useState(1)
   const [steps, setSteps] = useState(1)
-  const speed = 6
+  const speed = 5
 
   useEffect(() => {
     if (xPos !== prevXPos) {

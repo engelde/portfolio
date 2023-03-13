@@ -9,6 +9,10 @@ import {
   Heading,
   HStack,
   IconButton,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
   Text,
   VStack,
 } from '@chakra-ui/react'
@@ -20,7 +24,9 @@ export type PauseProps = {
   setOpen: (status: boolean) => void
   setXPos: (pos: number) => void
   setYPos: (pos: number) => void
-  maxX: number
+  audioLevel: number
+  setAudioLevel: (status: number) => void
+  maxScroll: number
 }
 
 type MenuLink = {
@@ -30,12 +36,61 @@ type MenuLink = {
   y: number
 }
 
-const Pause: FC<PauseProps> = ({ open, setOpen, setXPos, setYPos, maxX }: PauseProps) => {
+const Pause: FC<PauseProps> = ({
+  open,
+  setOpen,
+  setXPos,
+  setYPos,
+  audioLevel,
+  setAudioLevel,
+  maxScroll,
+}: PauseProps) => {
   const links: MenuLink[] = [
-    { name: '.home()', color: 'cyan.300', x: 0, y: 64 },
-    { name: '.about()', color: 'cyan.300', x: 3520, y: 128 },
-    { name: '.contact()', color: 'cyan.300', x: maxX, y: 64 },
+    { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
+    { name: '.About()', color: 'cyan.300', x: 3520, y: 128 },
+    { name: '.Contact()', color: 'cyan.300', x: maxScroll, y: 64 },
   ]
+
+  const handleOpen = () => {
+    setOpen(true)
+
+    if (audioLevel > 0) {
+      const sound = new Audio('/audio/pause/pause.mp3')
+      sound.volume = audioLevel / 100
+      sound.play()
+    }
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+
+    if (audioLevel > 0) {
+      const sound = new Audio('/audio/stomp/stomp.mp3')
+      sound.volume = audioLevel / 100
+      sound.play()
+    }
+  }
+
+  const handleInventory = (x: number, y: number) => {
+    if (window.scrollY !== x) {
+      // @ts-ignore
+      window.scrollTo({ top: x, behavior: 'instant' })
+      setXPos(x)
+      setYPos(y)
+    }
+
+    setOpen(false)
+
+    if (audioLevel > 0) {
+      const sound = new Audio('/audio/inventory/inventory.mp3')
+      sound.volume = audioLevel / 100
+      sound.play()
+    }
+  }
+
+  const handleAudioLevel = (val: number) => {
+    setAudioLevel(val)
+  }
 
   return (
     <>
@@ -44,7 +99,7 @@ const Pause: FC<PauseProps> = ({ open, setOpen, setXPos, setYPos, maxX }: PauseP
           <IconButton
             as={motion.div}
             variant={'link'}
-            zIndex={99}
+            zIndex={15}
             position={'fixed'}
             top={0}
             left={0}
@@ -55,7 +110,7 @@ const Pause: FC<PauseProps> = ({ open, setOpen, setXPos, setYPos, maxX }: PauseP
             title={'Pause'}
             aria-label={'open menu'}
             icon={<CgMenuLeftAlt />}
-            onClick={() => setOpen(true)}
+            onClick={handleOpen}
             _active={{ color: 'cyan.300' }}
             initial={{ translateY: '-150%' }}
             animate={{ translateY: 0, transition: { delay: 1 } }}
@@ -63,7 +118,8 @@ const Pause: FC<PauseProps> = ({ open, setOpen, setXPos, setYPos, maxX }: PauseP
           />
         </HStack>
       </Flex>
-      <Drawer isOpen={open} placement={'left'} size={'md'} onClose={() => setOpen(false)}>
+
+      <Drawer isOpen={open} placement={'left'} size={'md'} onClose={handleClose}>
         <DrawerOverlay bg={'blackAlpha.800'} />
         <DrawerContent color={'white'} bg={'blackAlpha.900'}>
           <DrawerCloseButton
@@ -79,27 +135,40 @@ const Pause: FC<PauseProps> = ({ open, setOpen, setXPos, setYPos, maxX }: PauseP
                   David.Engel
                 </Heading>
                 <Heading fontSize={'4xl'} color={'white'}>
-                  paused
+                  PAUSED
                 </Heading>
 
-                <VStack spacing={0} alignItems={'left'} mb={4}>
+                <VStack spacing={0} alignItems={'center'} justifyContent={'center'} mb={4}>
                   {links.map((link, x) => (
                     <Text
                       key={x}
-                      fontSize={'1.75rem'}
+                      fontSize={'2xl'}
                       textAlign={'center'}
                       _hover={{ cursor: 'pointer', color: link.color }}
-                      onClick={() => {
-                        if (window.scrollY !== link.x)
-                          // @ts-ignore
-                          window.scrollTo({ top: link.x, behavior: 'instant' })
-                        setXPos(link.x)
-                        setYPos(link.y)
-                        setOpen(false)
-                      }}>
+                      onClick={() => handleInventory(link.x, link.y)}>
                       {link.name}
                     </Text>
                   ))}
+                </VStack>
+
+                <VStack spacing={2} mb={4} alignItems={'center'} justifyContent={'center'}>
+                  <Text fontSize={'2xl'} textAlign={'center'}>
+                    Audio
+                  </Text>
+
+                  <Slider
+                    aria-label={'audio-slider'}
+                    colorScheme={'red'}
+                    w={100}
+                    min={0}
+                    max={100}
+                    defaultValue={audioLevel}
+                    onChange={(val) => handleAudioLevel(val)}>
+                    <SliderTrack>
+                      <SliderFilledTrack />
+                    </SliderTrack>
+                    <SliderThumb />
+                  </Slider>
                 </VStack>
               </VStack>
             </Flex>
