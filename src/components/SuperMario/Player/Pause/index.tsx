@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import {
   Drawer,
   DrawerContent,
@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { CgMenuLeftAlt } from 'react-icons/cg'
 import { motion } from 'framer-motion'
+import { useStore } from '@/utilities/store'
 
 export type PauseProps = {
   open: boolean
@@ -45,6 +46,8 @@ const Pause: FC<PauseProps> = ({
   setAudioLevel,
   maxScroll,
 }: PauseProps) => {
+  const [store, updateStore] = useStore()
+
   const links: MenuLink[] = [
     { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
     { name: '.About()', color: 'cyan.300', x: 3520, y: 128 },
@@ -90,6 +93,7 @@ const Pause: FC<PauseProps> = ({
 
   const handleAudioLevel = (val: number) => {
     setAudioLevel(val)
+    updateStore({ type: 'UPDATE_AUDIO_LEVEL', payload: val })
   }
 
   return (
