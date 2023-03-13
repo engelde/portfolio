@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
 import About from './About'
 import Dog from './Dog'
@@ -11,10 +11,43 @@ import Thanks from './Thanks'
 
 export type OverlayProps = {
   xPos: number
+  forwards: boolean
+  audioLevel: number
+  length: number
+  xOffset: number
   ip: string
 }
 
-const Overlay: FC<OverlayProps> = ({ xPos, ip }: OverlayProps) => {
+const Overlay: FC<OverlayProps> = ({
+  xPos,
+  forwards,
+  audioLevel,
+  length,
+  xOffset,
+  ip,
+}: OverlayProps) => {
+  const [exited, setExited] = useState(false)
+  const [exiting, setExiting] = useState(false)
+
+  useEffect(() => {
+    if (!exited && !exiting && forwards && xPos >= 12900 && xPos < 13160) {
+      setExited(true)
+      setExiting(true)
+
+      if (audioLevel > 0) {
+        const sound = new Audio('/audio/pipe/pipe.mp3')
+        sound.volume = audioLevel / 100
+        sound.play()
+      }
+
+      setTimeout(() => setExiting(false), 1400)
+    }
+
+    if (exited && !exiting && xPos < 12900) {
+      setExited(false)
+    }
+  }, [audioLevel, exited, exiting, xPos, forwards])
+
   return (
     <>
       <ScrollIndicator xPos={xPos} />
@@ -33,7 +66,7 @@ const Overlay: FC<OverlayProps> = ({ xPos, ip }: OverlayProps) => {
         <Pipe x={0} y={0} height={410} rotate={-90} />
       </Box>
 
-      <End x={13360} />
+      <End x={length - xOffset} xPos={xPos} />
     </>
   )
 }

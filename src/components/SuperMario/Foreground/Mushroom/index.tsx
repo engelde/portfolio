@@ -13,6 +13,7 @@ export type MushroomProps = {
   setMarioVariant: (variant: 1 | 2) => void
   score: number
   setScore: (score: number) => void
+  audioLevel: number
 }
 
 const Mushroom: FC<MushroomProps> = ({
@@ -21,13 +22,27 @@ const Mushroom: FC<MushroomProps> = ({
   active,
   marioVariant,
   score,
+  audioLevel,
   setActive,
   setMarioVariant,
   setScore,
 }: MushroomProps) => {
+  const [appearing, setAppearing] = useState(true)
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const value = 1000
+
+  useEffect(() => {
+    if (appearing) {
+      if (audioLevel > 0) {
+        const sound = new Audio('/audio/mushroom/mushroom.mp3')
+        sound.volume = audioLevel / 100
+        sound.play()
+      }
+
+      setAppearing(false)
+    }
+  }, [appearing, audioLevel])
 
   useEffect(() => {
     if (active && !running) {
@@ -38,11 +53,17 @@ const Mushroom: FC<MushroomProps> = ({
         setMarioVariant(2)
       }
 
+      if (audioLevel > 0) {
+        const sound = new Audio('/audio/powerUp/powerUp.mp3')
+        sound.volume = audioLevel / 100
+        sound.play()
+      }
+
       setTimeout(() => {
         setDisabled(true)
       }, 150)
     }
-  }, [active, marioVariant, running, score, setMarioVariant, setScore])
+  }, [active, marioVariant, running, score, setMarioVariant, setScore, audioLevel])
 
   return (
     <>
