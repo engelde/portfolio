@@ -27,7 +27,7 @@ export type PauseProps = {
   setYPos: (pos: number) => void
   audioLevel: number
   setAudioLevel: (status: number) => void
-  maxScroll: number
+  maxX: number
 }
 
 type MenuLink = {
@@ -44,14 +44,14 @@ const Pause: FC<PauseProps> = ({
   setYPos,
   audioLevel,
   setAudioLevel,
-  maxScroll,
+  maxX,
 }: PauseProps) => {
   const [store, updateStore] = useStore()
 
   const links: MenuLink[] = [
     { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
     { name: '.About()', color: 'cyan.300', x: 3520, y: 128 },
-    { name: '.Contact()', color: 'cyan.300', x: maxScroll, y: 64 },
+    { name: '.Contact()', color: 'cyan.300', x: maxX, y: 64 },
   ]
 
   const handleOpen = () => {
@@ -128,6 +128,7 @@ const Pause: FC<PauseProps> = ({
         <DrawerContent color={'white'} bg={'blackAlpha.900'}>
           <DrawerCloseButton
             as={motion.div}
+            zIndex={15}
             _active={{ color: 'cyan.300' }}
             cursor={'pointer'}
             whileHover={{ color: '#76E4F7', scale: 1.25 }}

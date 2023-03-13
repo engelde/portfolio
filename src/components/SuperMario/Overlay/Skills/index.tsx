@@ -4,17 +4,21 @@ import {
   SiApollographql,
   SiAmazonaws,
   SiDocker,
+  SiFlask,
   SiGit,
   SiGraphql,
   SiJavascript,
+  SiLaravel,
   SiLinux,
   SiNextdotjs,
   SiMongodb,
   SiNodedotjs,
   SiPhp,
   SiPostgresql,
+  SiPrisma,
   SiPython,
   SiReact,
+  SiTrpc,
   SiTypescript,
   SiVuedotjs,
 } from 'react-icons/si'
@@ -40,31 +44,49 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       name: 'React',
       icon: SiReact,
       color: 'teal.300',
-      x: 7480,
+      x: 7440,
     },
     {
       name: 'Next.js',
       icon: SiNextdotjs,
       color: 'gray.800',
-      x: 7600,
+      x: 7520,
     },
     {
       name: 'GraphQL',
       icon: SiGraphql,
       color: 'pink.400',
-      x: 7720,
+      x: 7600,
     },
     {
       name: 'Apollo',
       icon: SiApollographql,
       color: 'purple.600',
-      x: 7840,
+      x: 7680,
     },
     {
       name: 'Node.js',
       icon: SiNodedotjs,
       color: 'green.600',
-      x: 7960,
+      x: 7760,
+    },
+    {
+      name: 'JavaScript',
+      icon: SiJavascript,
+      color: 'yellow.400',
+      x: 7840,
+    },
+    {
+      name: 'tRPC',
+      icon: SiTrpc,
+      color: 'blue.400',
+      x: 7920,
+    },
+    {
+      name: 'Prisma',
+      icon: SiPrisma,
+      color: 'purple.800',
+      x: 8000,
     },
     {
       name: 'Vue',
@@ -73,58 +95,64 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       x: 8080,
     },
     {
-      name: 'JavaScript',
-      icon: SiJavascript,
-      color: 'yellow.400',
-      x: 8200,
-    },
-    {
       name: 'Python',
       icon: SiPython,
       color: 'blue.500',
-      x: 8320,
+      x: 8160,
+    },
+    {
+      name: 'Flask',
+      icon: SiFlask,
+      color: 'green.300',
+      x: 8240,
     },
     {
       name: 'PHP',
       icon: SiPhp,
       color: 'purple.400',
-      x: 8440,
+      x: 8320,
+    },
+    {
+      name: 'Laravel',
+      icon: SiLaravel,
+      color: 'red.500',
+      x: 8400,
     },
     {
       name: 'AWS',
       icon: SiAmazonaws,
       color: 'orange.400',
-      x: 8560,
+      x: 8480,
     },
     {
       name: 'Docker',
       icon: SiDocker,
       color: 'blue.500',
-      x: 8680,
+      x: 8560,
     },
     {
       name: 'MongoDB',
       icon: SiMongodb,
       color: 'green.400',
-      x: 8800,
+      x: 8640,
     },
     {
       name: 'PostgreSQL',
       icon: SiPostgresql,
       color: 'blue.400',
-      x: 8920,
+      x: 8720,
     },
     {
       name: 'Git',
       icon: SiGit,
       color: 'orange.400',
-      x: 9040,
+      x: 8800,
     },
     {
       name: 'Linux',
       icon: SiLinux,
       color: 'gray.300',
-      x: 9160,
+      x: 8880,
     },
   ]
 
@@ -136,6 +164,7 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       top={8}
       left={6}
       maxW={'calc(100vw - 2rem)'}
+      minW={'300px'}
       py={3}
       ml={offset - xPos > 0 ? offset - xPos : 0 + 'px'}
       visibility={xPos < 2000 ? 'hidden' : 'visible'}
@@ -171,7 +200,11 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
           pr={{ base: 0, md: 1, lg: 2 }}
           alignItems={'top'}
           spacing={{ base: 2, md: 4, lg: 8 }}>
-          <Heading size={'2xl'} w={'full'} minW={300} maxW={920}>
+          <Heading
+            size={'2xl'}
+            w={'full'}
+            minW={{ base: 280, sm: 360, md: 440, lg: 520, xl: 500, '2xl': 580 }}
+            maxW={1020}>
             {skillset.map(
               (skill, x) =>
                 xPos > skill.x && (
@@ -187,8 +220,8 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                     <Icon
                       as={skill.icon}
                       title={skill.name}
-                      w={{ base: 12, md: 16, lg: 20 }}
-                      h={{ base: 12, md: 16, lg: 20 }}
+                      w={{ base: 10, sm: 12, md: 14, lg: 16 }}
+                      h={{ base: 10, sm: 12, md: 14, lg: 16 }}
                       m={{ base: 3, md: 4 }}
                       color={'white'}
                       cursor={'pointer'}

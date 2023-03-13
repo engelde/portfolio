@@ -11,6 +11,7 @@ import Thanks from './Thanks'
 
 export type OverlayProps = {
   xPos: number
+  yPos: number
   forwards: boolean
   audioLevel: number
   length: number
@@ -20,6 +21,7 @@ export type OverlayProps = {
 
 const Overlay: FC<OverlayProps> = ({
   xPos,
+  yPos,
   forwards,
   audioLevel,
   length,
@@ -30,7 +32,7 @@ const Overlay: FC<OverlayProps> = ({
   const [exiting, setExiting] = useState(false)
 
   useEffect(() => {
-    if (!exited && !exiting && forwards && xPos >= 12900 && xPos < 13160) {
+    if (!exited && !exiting && forwards && xPos >= 12900 && xPos < 13160 && yPos <= 144) {
       setExited(true)
       setExiting(true)
 
@@ -46,7 +48,7 @@ const Overlay: FC<OverlayProps> = ({
     if (exited && !exiting && xPos < 12900) {
       setExited(false)
     }
-  }, [audioLevel, exited, exiting, xPos, forwards])
+  }, [audioLevel, exited, exiting, xPos, yPos, forwards])
 
   return (
     <>
