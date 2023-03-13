@@ -11,7 +11,7 @@ export type PlayerProps = {
   xPos: number
   yPos: number
   length: number
-  maxScroll: number
+  maxX: number
   jump: boolean
   marioVariant: 1 | 2
   paused: boolean
@@ -34,7 +34,7 @@ const Player: FC<PlayerProps> = ({
   xPos,
   yPos,
   length,
-  maxScroll,
+  maxX,
   jump,
   marioVariant,
   paused,
@@ -75,7 +75,7 @@ const Player: FC<PlayerProps> = ({
         setYPos={setYPos}
         audioLevel={audioLevel}
         setAudioLevel={setAudioLevel}
-        maxScroll={maxScroll}
+        maxX={maxX}
       />
     </>
   )

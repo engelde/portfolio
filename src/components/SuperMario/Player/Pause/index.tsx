@@ -27,7 +27,7 @@ export type PauseProps = {
   setYPos: (pos: number) => void
   audioLevel: number
   setAudioLevel: (status: number) => void
-  maxScroll: number
+  maxX: number
 }
 
 type MenuLink = {
@@ -44,14 +44,14 @@ const Pause: FC<PauseProps> = ({
   setYPos,
   audioLevel,
   setAudioLevel,
-  maxScroll,
+  maxX,
 }: PauseProps) => {
   const [store, updateStore] = useStore()
 
   const links: MenuLink[] = [
     { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
     { name: '.About()', color: 'cyan.300', x: 3520, y: 128 },
-    { name: '.Contact()', color: 'cyan.300', x: maxScroll, y: 64 },
+    { name: '.Contact()', color: 'cyan.300', x: maxX, y: 64 },
   ]
 
   const handleOpen = () => {
