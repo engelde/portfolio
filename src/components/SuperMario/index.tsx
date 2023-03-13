@@ -256,7 +256,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
               setX(maxX)
             }
           } else if (moveLeft) {
-            if (x - xSpeed >= x) {
+            if (x - xSpeed >= 0) {
               setOldX(x)
               setX(x - xSpeed)
             } else {
