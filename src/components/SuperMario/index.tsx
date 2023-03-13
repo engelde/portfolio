@@ -94,7 +94,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
 
   // Complete
   useEffect(() => {
-    if (!complete && x >= length - xOffset) {
+    if (!complete && x >= maxX) {
       setComplete(true)
 
       if (audioLevel > 0) {
@@ -103,7 +103,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         sound.play()
       }
     }
-  }, [audioLevel, complete, length, x, xOffset])
+  }, [audioLevel, complete, length, maxX, x])
 
   // Jump
   useEffect(() => {

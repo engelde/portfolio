@@ -101,6 +101,10 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
         initial={{ opacity: 0, translateX: -2000 }}
         animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}>
         <HStack color={'black'} spacing={1}>
+          <Text color={'white'} pr={2}>
+            scroll or
+          </Text>
+
           <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
             <Icon as={FiArrowLeft} />
           </Kbd>

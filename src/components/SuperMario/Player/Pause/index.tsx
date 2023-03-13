@@ -128,6 +128,7 @@ const Pause: FC<PauseProps> = ({
         <DrawerContent color={'white'} bg={'blackAlpha.900'}>
           <DrawerCloseButton
             as={motion.div}
+            zIndex={15}
             _active={{ color: 'cyan.300' }}
             cursor={'pointer'}
             whileHover={{ color: '#76E4F7', scale: 1.25 }}
