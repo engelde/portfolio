@@ -453,24 +453,26 @@ const Foreground: FC<ForegroundProps> = ({
     () => [
       {
         xRange: [1690, 1790],
-        yRange: [460, 540],
+        yRange: [440, 540],
+        boxStatus: prizeBox4Prize,
         prizeStatus: mushroom1Active,
         setPrizeStatus: setMushroom1Active,
       },
     ],
-    [mushroom1Active],
+    [prizeBox4Prize, mushroom1Active],
   )
 
   // Power Up interactions
   useEffect(() => {
     powerUps.map((item) => {
       if (
-        xPos > item.xRange[1] &&
-        xPos < item.xRange[2] &&
-        yPos > item.yRange[1] &&
-        yPos < item.xRange[2]
+        xPos > item.xRange[0] &&
+        xPos < item.xRange[1] &&
+        yPos > item.yRange[0] &&
+        yPos < item.yRange[1]
       ) {
-        if (!item.prizeStatus) {
+        console.log('in range')
+        if (item.boxStatus && !item.prizeStatus) {
           item.setPrizeStatus(true)
         }
       }

@@ -30,7 +30,7 @@ const Overlay: FC<OverlayProps> = ({
   const [exiting, setExiting] = useState(false)
 
   useEffect(() => {
-    if (!exited && !exiting && forwards && xPos >= 12900 && xPos < length) {
+    if (!exited && !exiting && forwards && xPos >= 12900 && xPos < 13160) {
       setExited(true)
       setExiting(true)
 

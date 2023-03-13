@@ -63,7 +63,7 @@ const Mushroom: FC<MushroomProps> = ({
         setDisabled(true)
       }, 150)
     }
-  }, [active, marioVariant, running, score, setMarioVariant, setScore])
+  }, [active, marioVariant, running, score, setMarioVariant, setScore, audioLevel])
 
   return (
     <>
