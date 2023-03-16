@@ -76,7 +76,6 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
 
       if (audio > 0) {
         const sound = new Audio('/audio/clear/clear.mp3')
-        sound.muted = true
         sound.volume = audio / 100
         sound.play()
       }
