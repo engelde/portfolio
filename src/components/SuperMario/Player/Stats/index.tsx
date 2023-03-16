@@ -35,7 +35,7 @@ const Stats: FC<StatsProps> = ({
     <Box
       as={motion.div}
       p={2}
-      zIndex={8}
+      zIndex={15}
       position={'fixed'}
       top={2}
       right={2}

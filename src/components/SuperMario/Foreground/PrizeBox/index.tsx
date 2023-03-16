@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 export type PrizeBoxProps = {
   x: number
   y: number
-  jumpMax: number
   status: boolean
   setStatus: (status: boolean) => void
   active: boolean

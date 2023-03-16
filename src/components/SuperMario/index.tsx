@@ -39,15 +39,15 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     setScore,
   } = useSettings()
 
-  const { forwards, jump, maxYScroll, x, y, xOffset, yOffset } = useController({
+  const { forwards, jump, maxYScroll, x, y, xOffset, yOffset, setX, setY } = useController({
     active: !complete && !gameOver && !paused,
     audio: audio,
     mario: mario,
     maximum: {
       length: length,
+      marioOffset: marioOffset,
       xOffset: maxXOffset,
       yOffset: maxYOffset,
-      marioOffset: marioOffset,
     },
     mobile: mobile,
     pause: {
@@ -55,13 +55,13 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
       setPaused: setPaused,
     },
     position: {
-      x: 0,
-      y: 64,
-      xOffset: 0,
-      yOffset: 0,
       ceilingLevels: ceilingLevels,
       groundLevels: groundLevels,
       platformLevels: platformLevels,
+      x: 0,
+      xOffset: 0,
+      y: 64,
+      yOffset: 0,
     },
     speed: {
       x: 16,
@@ -76,6 +76,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
 
       if (audio > 0) {
         const sound = new Audio('/audio/clear/clear.mp3')
+        sound.muted = true
         sound.volume = audio / 100
         sound.play()
       }
@@ -96,44 +97,46 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         transition={'marginLeft .2s ease-in-out'}>
         <Landscape />
         <Foreground
-          xPos={x + xOffset}
-          yPos={y + yOffset}
+          audio={audio}
           jump={jump}
           mario={mario}
           marioOffset={marioOffset}
-          setMario={setMario}
           score={score}
-          setScore={setScore}
-          audio={audio}
-        />
-        <Player
           xPos={x + xOffset}
           yPos={y + yOffset}
-          xOffset={xOffset}
-          x={xOffset}
-          y={y + yOffset}
-          mobile={mobile}
+          setMario={setMario}
+          setScore={setScore}
+        />
+        <Player
+          audio={audio}
+          complete={complete}
           forwards={forwards}
           jump={jump}
           length={length}
-          mario={mario}
-          paused={paused}
-          setPaused={setPaused}
           lives={lives}
+          mario={mario}
+          mobile={mobile}
+          paused={paused}
           score={score}
           timer={timer}
-          audio={audio}
+          xOffset={xOffset}
+          x={xOffset}
+          xPos={x + xOffset}
+          y={y + yOffset}
+          yPos={y + yOffset}
           setAudio={setAudio}
-          complete={complete}
+          setPaused={setPaused}
+          setX={setX}
+          setY={setY}
         />
         <Overlay
+          audio={audio}
+          forwards={forwards}
+          ip={ip}
+          length={length}
+          xOffset={xOffset}
           xPos={x + xOffset}
           yPos={y + yOffset}
-          xOffset={xOffset}
-          forwards={forwards}
-          length={length}
-          audio={audio}
-          ip={ip}
         />
       </Box>
     </Box>

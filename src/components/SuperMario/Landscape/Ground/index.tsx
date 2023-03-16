@@ -9,7 +9,7 @@ export type GroundProps = {
 
 const Ground: FC<GroundProps> = ({ x, width, height }: GroundProps) => {
   return (
-    <Box zIndex={1} position={'absolute'} left={x + 'px'} bottom={0} w={width + 'px'}>
+    <Box zIndex={21} position={'absolute'} left={x + 'px'} bottom={0} w={width + 'px'}>
       <HStack spacing={0}>
         <Box
           w={'12px'}

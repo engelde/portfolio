@@ -8,25 +8,25 @@ import PrizeBox, { type PrizeBoxProps } from './PrizeBox'
 import Turtle, { type TurtleProps } from './Turtle'
 
 export type ForegroundProps = {
-  xPos: number
-  yPos: number
+  audio: number
   jump: boolean
   mario: 1 | 2
   marioOffset: number
   score: number
+  xPos: number
+  yPos: number
   setMario: (variant: 1 | 2) => void
   setScore: (score: number) => void
-  audio: number
 }
 
 const Foreground: FC<ForegroundProps> = ({
-  xPos,
-  yPos,
+  audio,
   jump,
   mario,
   marioOffset,
   score,
-  audio,
+  xPos,
+  yPos,
   setMario,
   setScore,
 }: ForegroundProps) => {
@@ -192,7 +192,6 @@ const Foreground: FC<ForegroundProps> = ({
       {
         x: 1120,
         y: 304,
-        jumpMax: 160,
         status: prizeBox1Status,
         setStatus: setPrizeBox1Status,
         active: prizeBox1Active,
@@ -217,7 +216,6 @@ const Foreground: FC<ForegroundProps> = ({
       {
         x: 1200,
         y: 304,
-        jumpMax: 160,
         status: prizeBox2Status,
         setStatus: setPrizeBox2Status,
         active: prizeBox2Active,
@@ -242,7 +240,6 @@ const Foreground: FC<ForegroundProps> = ({
       {
         x: 1360,
         y: 544,
-        jumpMax: 160,
         status: prizeBox3Status,
         setStatus: setPrizeBox3Status,
         active: prizeBox3Active,
@@ -267,7 +264,6 @@ const Foreground: FC<ForegroundProps> = ({
       {
         x: 1440,
         y: 544,
-        jumpMax: 160,
         status: prizeBox4Status,
         setStatus: setPrizeBox4Status,
         active: prizeBox4Active,
@@ -293,8 +289,7 @@ const Foreground: FC<ForegroundProps> = ({
       },
       {
         x: 2320,
-        y: 544,
-        jumpMax: 160,
+        y: 464,
         status: prizeBox5Status,
         setStatus: setPrizeBox5Status,
         active: prizeBox5Active,
@@ -319,7 +314,6 @@ const Foreground: FC<ForegroundProps> = ({
       {
         x: 3520,
         y: 128,
-        jumpMax: 80,
         status: prizeBox6Status,
         setStatus: setPrizeBox6Status,
         active: prizeBox6Active,
@@ -344,7 +338,6 @@ const Foreground: FC<ForegroundProps> = ({
       {
         x: 3760,
         y: 288,
-        jumpMax: 80,
         status: prizeBox7Status,
         setStatus: setPrizeBox7Status,
         active: prizeBox7Active,
@@ -369,7 +362,6 @@ const Foreground: FC<ForegroundProps> = ({
       {
         x: 7520,
         y: 224,
-        jumpMax: 20,
         status: prizeBox8Status,
         setStatus: setPrizeBox8Status,
         active: prizeBox8Active,
@@ -532,7 +524,6 @@ const Foreground: FC<ForegroundProps> = ({
           key={x}
           x={item.x}
           y={item.y}
-          jumpMax={item.jumpMax}
           status={item.status}
           setStatus={item.setStatus}
           active={item.active}
