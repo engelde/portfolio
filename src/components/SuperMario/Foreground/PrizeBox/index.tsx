@@ -15,7 +15,7 @@ export type PrizeBoxProps = {
   setPrizeActive: (active: boolean) => void
   prizeCount: number
   setPrizeCount: (count: number) => void
-  audioLevel: number
+  audio: number
   children: ReactNode
 }
 
@@ -36,7 +36,7 @@ const PrizeBox: FC<PrizeBoxProps> = ({
   setPrizeActive,
   prizeCount,
   setPrizeCount,
-  audioLevel,
+  audio,
   children,
 }: PrizeBoxProps) => {
   const variants: VariantProps = {
@@ -78,23 +78,26 @@ const PrizeBox: FC<PrizeBoxProps> = ({
       if (prizeCount > 0) {
         setPrizeCount(prizeCount - 1)
       } else {
-        if (audioLevel > 0) {
+        if (audio > 0) {
           const sound = new Audio('/audio/box/box.mp3')
-          sound.volume = audioLevel / 100
+          sound.volume = audio / 100
           sound.play()
         }
       }
 
       setTimeout(() => {
         setActive(false)
-        setRunning(false)
       }, 200)
+
+      setTimeout(() => {
+        setRunning(false)
+      }, 800)
     }
 
     if (status && prizeCount < 1) {
       setStatus(false)
     }
-  }, [active, audioLevel, prizeCount, setActive, setPrizeCount, setStatus, running, status])
+  }, [active, audio, prizeCount, setActive, setPrizeCount, setStatus, running, status])
 
   const handleAction = () => {
     setActive(true)

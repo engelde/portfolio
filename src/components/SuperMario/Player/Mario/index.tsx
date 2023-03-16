@@ -105,6 +105,7 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
         width={jump ? jumpVariants[variant][1].width : variants[variant][state].width}
         height={jump ? jumpVariants[variant][1].height : variants[variant][state].height}
         priority
+        style={{ position: 'absolute', bottom: 0, left: 0 }}
       />
     </Box>
   )

@@ -23,11 +23,10 @@ import { useStore } from '@/utilities/store'
 export type PauseProps = {
   open: boolean
   setOpen: (status: boolean) => void
-  setXPos: (pos: number) => void
-  setYPos: (pos: number) => void
-  audioLevel: number
-  setAudioLevel: (status: number) => void
-  maxX: number
+  audio: number
+  setAudio: (status: number) => void
+  length: number
+  xOffset: number
 }
 
 type MenuLink = {
@@ -37,29 +36,21 @@ type MenuLink = {
   y: number
 }
 
-const Pause: FC<PauseProps> = ({
-  open,
-  setOpen,
-  setXPos,
-  setYPos,
-  audioLevel,
-  setAudioLevel,
-  maxX,
-}: PauseProps) => {
+const Pause: FC<PauseProps> = ({ open, setOpen, audio, setAudio, length, xOffset }: PauseProps) => {
   const [store, updateStore] = useStore()
 
   const links: MenuLink[] = [
     { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
     { name: '.About()', color: 'cyan.300', x: 3520, y: 128 },
-    { name: '.Contact()', color: 'cyan.300', x: maxX, y: 64 },
+    { name: '.Contact()', color: 'cyan.300', x: length - xOffset, y: 64 },
   ]
 
   const handleOpen = () => {
     setOpen(true)
 
-    if (audioLevel > 0) {
+    if (audio > 0) {
       const sound = new Audio('/audio/pause/pause.mp3')
-      sound.volume = audioLevel / 100
+      sound.volume = audio / 100
       sound.play()
     }
   }
@@ -67,9 +58,9 @@ const Pause: FC<PauseProps> = ({
   const handleClose = () => {
     setOpen(false)
 
-    if (audioLevel > 0) {
+    if (audio > 0) {
       const sound = new Audio('/audio/stomp/stomp.mp3')
-      sound.volume = audioLevel / 100
+      sound.volume = audio / 100
       sound.play()
     }
   }
@@ -78,22 +69,20 @@ const Pause: FC<PauseProps> = ({
     if (window.scrollY !== x) {
       // @ts-ignore
       window.scrollTo({ top: x, behavior: 'instant' })
-      setXPos(x)
-      setYPos(y)
     }
 
     setOpen(false)
 
-    if (audioLevel > 0) {
+    if (audio > 0) {
       const sound = new Audio('/audio/inventory/inventory.mp3')
-      sound.volume = audioLevel / 100
+      sound.volume = audio / 100
       sound.play()
     }
   }
 
   const handleAudioLevel = (val: number) => {
-    setAudioLevel(val)
-    updateStore({ type: 'UPDATE_AUDIO_LEVEL', payload: val })
+    setAudio(val)
+    updateStore({ type: 'UPDATE_AUDIO', payload: val })
   }
 
   return (
@@ -167,7 +156,7 @@ const Pause: FC<PauseProps> = ({
                     w={100}
                     min={0}
                     max={100}
-                    defaultValue={audioLevel}
+                    defaultValue={audio}
                     onChange={(val) => handleAudioLevel(val)}>
                     <SliderTrack>
                       <SliderFilledTrack />

@@ -13,7 +13,7 @@ export type CoinProps = {
   setActive: (status: boolean) => void
   score: number
   setScore: (score: number) => void
-  audioLevel: number
+  audio: number
 }
 
 type VariantProps = {
@@ -31,7 +31,7 @@ const Coin: FC<CoinProps> = ({
   setActive,
   score,
   setScore,
-  audioLevel,
+  audio,
 }: CoinProps) => {
   const variants: VariantProps = {
     1: {
@@ -76,9 +76,9 @@ const Coin: FC<CoinProps> = ({
         setRunning(true)
       }
 
-      if (audioLevel > 0) {
+      if (audio > 0) {
         const sound = new Audio('/audio/coin/coin.mp3')
-        sound.volume = audioLevel / 100
+        sound.volume = audio / 100
         sound.play()
       }
 
@@ -86,7 +86,7 @@ const Coin: FC<CoinProps> = ({
         setRunning(false)
       }, 600)
     }
-  }, [active, audioLevel, disabled, score, setActive, setScore, running, setDisabled, setRunning])
+  }, [active, audio, disabled, score, setActive, setScore, running, setDisabled, setRunning])
 
   return (
     <>
@@ -98,9 +98,9 @@ const Coin: FC<CoinProps> = ({
           position={'absolute'}
           left={x + 'px'}
           bottom={y + 80 + 'px'}
-          w={'70px'}
-          h={'70px'}
-          pl={'5px'}
+          w={'72px'}
+          h={'72px'}
+          pl={'4px'}
           {...(clickable && !disabled && { cursor: 'pointer', onClick: () => setActive(true) })}
           _hover={{ filter: 'brightness(115%)' }}
           initial={{ opacity: 1, translateY: 0 }}
