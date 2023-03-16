@@ -9,9 +9,9 @@ type ControllerProps = {
   mario: 1 | 2
   maximum: {
     length: number
+    marioOffset: number
     xOffset: number
     yOffset: number
-    marioOffset: number
   }
   mobile: boolean
   pause: {
@@ -19,10 +19,6 @@ type ControllerProps = {
     setPaused: (val: boolean) => void
   }
   position: {
-    x: number
-    y: number
-    xOffset: number
-    yOffset: number
     ceilingLevels: {
       xMin: number
       xMax: number
@@ -38,6 +34,10 @@ type ControllerProps = {
       xMax: number
       height: number
     }[]
+    x: number
+    xOffset: number
+    y: number
+    yOffset: number
   }
   speed: {
     x: number
@@ -252,5 +252,5 @@ export const useController = ({
     xOffset,
   ])
 
-  return { forwards, jump, x, y, maxYScroll, xOffset, yOffset }
+  return { forwards, jump, x, y, maxYScroll, xOffset, yOffset, setX, setY }
 }

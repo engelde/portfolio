@@ -4,45 +4,49 @@ import Pause from './Pause'
 import Stats from './Stats'
 
 export type PlayerProps = {
-  x: number
-  y: number
-  mobile: boolean
-  forwards: boolean
-  xPos: number
-  yPos: number
-  xOffset: number
-  length: number
-  jump: boolean
-  mario: 1 | 2
-  paused: boolean
-  lives: number
-  score: number
-  timer: number
   audio: number
   complete: boolean
+  forwards: boolean
+  jump: boolean
+  length: number
+  lives: number
+  mario: 1 | 2
+  mobile: boolean
+  paused: boolean
+  score: number
+  timer: number
+  x: number
+  xOffset: number
+  xPos: number
+  y: number
+  yPos: number
   setAudio: (status: number) => void
   setPaused: (status: boolean) => void
+  setX: (status: number) => void
+  setY: (status: number) => void
 }
 
 const Player: FC<PlayerProps> = ({
-  x,
-  y,
-  mobile,
-  forwards,
-  xPos,
-  yPos,
-  xOffset,
-  length,
-  jump,
-  mario,
-  paused,
-  lives,
-  score,
-  timer,
   audio,
   complete,
+  forwards,
+  jump,
+  length,
+  lives,
+  mario,
+  mobile,
+  paused,
+  score,
+  timer,
+  x,
+  xOffset,
+  xPos,
+  y,
+  yPos,
   setAudio,
   setPaused,
+  setX,
+  setY,
 }: PlayerProps) => {
   return (
     <>
@@ -65,12 +69,14 @@ const Player: FC<PlayerProps> = ({
       )}
 
       <Pause
-        open={paused}
-        setOpen={setPaused}
         audio={audio}
-        setAudio={setAudio}
         length={length}
+        open={paused}
         xOffset={xOffset}
+        setAudio={setAudio}
+        setOpen={setPaused}
+        setX={setX}
+        setY={setY}
       />
     </>
   )

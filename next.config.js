@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
 
+const { version } = require('./package.json')
+
 const nextConfig = {
-  productionBrowserSourceMaps: true,
-  reactStrictMode: true,
   output: 'standalone',
+  productionBrowserSourceMaps: true,
+  publicRuntimeConfig: {
+    version,
+  },
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig
