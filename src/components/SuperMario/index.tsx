@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { Box } from '@chakra-ui/react'
 import { useController } from '@/hooks/useController'
 import { useSettings } from '@/hooks/useSettings'
@@ -50,6 +50,10 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
       marioOffset: marioOffset,
     },
     mobile: mobile,
+    pause: {
+      paused: paused,
+      setPaused: setPaused,
+    },
     position: {
       x: 0,
       y: 64,

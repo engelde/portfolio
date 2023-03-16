@@ -14,6 +14,10 @@ type ControllerProps = {
     marioOffset: number
   }
   mobile: boolean
+  pause: {
+    paused: boolean
+    setPaused: (val: boolean) => void
+  }
   position: {
     x: number
     y: number
@@ -47,6 +51,7 @@ export const useController = ({
   mario,
   mobile,
   maximum,
+  pause,
   position,
   speed,
 }: ControllerProps) => {
@@ -137,6 +142,19 @@ export const useController = ({
       setMaxYScroll(maximum.length + height - xOffset - 24)
     }
   }, [height, maximum.length, maxYScroll, xOffset])
+
+  // Pause
+  useEffect(() => {
+    if (!pause.paused && escape) {
+      pause.setPaused(true)
+
+      if (audio > 0) {
+        const sound = new Audio('/audio/pause/pause.mp3')
+        sound.volume = audio / 100
+        sound.play()
+      }
+    }
+  }, [audio, escape, pause])
 
   // Jump
   useEffect(() => {
