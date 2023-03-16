@@ -21,7 +21,7 @@ export const useSettings = () => {
   const ceilingLevels = [
     { xMin: 1060, xMax: 1240, height: 214 }, // box 1
     { xMin: 1300, xMax: 1480, height: 454 }, // box 2
-    { xMin: 2260, xMax: 2370, height: 454 }, // box 3
+    { xMin: 2260, xMax: 2370, height: 374 }, // box 3
     { xMin: 3700, xMax: 3810, height: 198 }, // box 5
     { xMin: 7460, xMax: 7570, height: 134 }, // box 6
     { xMin: 11460, xMax: 11650, height: 444 }, // pipe 4
@@ -34,7 +34,7 @@ export const useSettings = () => {
     { xMin: 1540, xMax: 1800, height: 460 }, // cube 1
     { xMin: 1380, xMax: 1640, height: 300 }, // cube 1
     { xMin: 1940, xMax: 2120, height: 300 }, // pipe 1
-    { xMin: 2260, xMax: 2370, height: 624 }, // box 3
+    { xMin: 2260, xMax: 2370, height: 544 }, // box 3
     { xMin: 2740, xMax: 3080, height: 624 }, // cube 2
     { xMin: 2500, xMax: 2840, height: 460 }, // cube 2
     { xMin: 2180, xMax: 2615, height: 300 }, // cube 2

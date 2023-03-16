@@ -21,12 +21,14 @@ import { motion } from 'framer-motion'
 import { useStore } from '@/utilities/store'
 
 export type PauseProps = {
-  open: boolean
-  setOpen: (status: boolean) => void
   audio: number
-  setAudio: (status: number) => void
   length: number
+  open: boolean
   xOffset: number
+  setOpen: (status: boolean) => void
+  setAudio: (status: number) => void
+  setX: (status: number) => void
+  setY: (status: number) => void
 }
 
 type MenuLink = {
@@ -36,7 +38,16 @@ type MenuLink = {
   y: number
 }
 
-const Pause: FC<PauseProps> = ({ open, setOpen, audio, setAudio, length, xOffset }: PauseProps) => {
+const Pause: FC<PauseProps> = ({
+  audio,
+  length,
+  open,
+  xOffset,
+  setOpen,
+  setAudio,
+  setX,
+  setY,
+}: PauseProps) => {
   const [store, updateStore] = useStore()
 
   const links: MenuLink[] = [
@@ -69,6 +80,8 @@ const Pause: FC<PauseProps> = ({ open, setOpen, audio, setAudio, length, xOffset
     if (window.scrollY !== x) {
       // @ts-ignore
       window.scrollTo({ top: x, behavior: 'instant' })
+      setX(x)
+      setY(y)
     }
 
     setOpen(false)

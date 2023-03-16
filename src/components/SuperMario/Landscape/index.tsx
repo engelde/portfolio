@@ -39,7 +39,7 @@ const Landscape: FC = () => {
     { x: 5920, width: 1760, height: 64 },
     { x: 7840, width: 400, height: 64 },
     { x: 8480, width: 2960, height: 64 },
-    { x: 11520, width: 1800, height: 64 },
+    { x: 11520, width: 9000, height: 64 },
   ]
 
   const rocks: RockProps[] = [

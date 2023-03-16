@@ -10,23 +10,23 @@ import Skills from './Skills'
 import Thanks from './Thanks'
 
 export type OverlayProps = {
-  xPos: number
-  yPos: number
-  forwards: boolean
   audio: number
+  ip: string
+  forwards: boolean
   length: number
   xOffset: number
-  ip: string
+  xPos: number
+  yPos: number
 }
 
 const Overlay: FC<OverlayProps> = ({
-  xPos,
-  yPos,
-  forwards,
   audio,
+  ip,
+  forwards,
   length,
   xOffset,
-  ip,
+  xPos,
+  yPos,
 }: OverlayProps) => {
   const [exited, setExited] = useState(false)
   const [exiting, setExiting] = useState(false)

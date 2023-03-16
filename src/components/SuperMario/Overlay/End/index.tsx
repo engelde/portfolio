@@ -22,11 +22,11 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
       bottom={0}
       p={0}
       h={'100vh'}
-      w={'150vw'}
+      w={'100vw'}
       alignItems={'center'}
       justifyContent={'center'}
       bg={'black'}
-      _after={{
+      _before={{
         background:
           'linear-gradient(-45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(-135deg, #000 16px, transparent 0)',
         backgroundRepeat: 'repeat-y',
@@ -40,22 +40,36 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
         width: '32px',
         height: '100%',
       }}>
-      <Flex
-        h={'100vh'}
-        w={'100vw'}
-        bg={'url(/images/clear/clear.png)'}
-        backgroundRepeat={'no-repeat'}
-        backgroundPosition={'bottom center'}
-        backgroundSize={'contain'}
-        alignItems={'center'}
-        justifyContent={'center'}>
+      <Flex h={'100vh'} w={'100vw'} alignItems={'center'} justifyContent={'center'}>
+        <Box
+          zIndex={'-1'}
+          position={'absolute'}
+          bottom={0}
+          left={0}
+          width={'100%'}
+          minHeight={'100%'}>
+          <NextImage
+            alt={'clear'}
+            src={'/images/clear/clear.png'}
+            height={820}
+            width={1204}
+            priority
+            style={{
+              position: 'absolute',
+              bottom: 64,
+              left: '50%',
+              margin: '0 auto',
+              transform: 'translateX(-50%)',
+            }}
+          />
+        </Box>
         <Box
           as={motion.div}
           alignItems={'center'}
           justifyContent={'center'}
-          marginTop={'-2000px'}
+          marginTop={'-3000px'}
           {...(xPos >= x && {
-            initial: { marginTop: -2000 },
+            initial: { marginTop: -3000 },
             animate: { marginTop: 0, transition: { duration: 0.6 } },
           })}>
           <VStack spacing={0}>
