@@ -11,23 +11,23 @@ export type ForegroundProps = {
   xPos: number
   yPos: number
   jump: boolean
-  marioVariant: 1 | 2
+  mario: 1 | 2
+  marioOffset: number
   score: number
-  setJumpOffset: (offset: number) => void
-  setMarioVariant: (variant: 1 | 2) => void
+  setMario: (variant: 1 | 2) => void
   setScore: (score: number) => void
-  audioLevel: number
+  audio: number
 }
 
 const Foreground: FC<ForegroundProps> = ({
   xPos,
   yPos,
   jump,
-  marioVariant,
+  mario,
+  marioOffset,
   score,
-  audioLevel,
-  setJumpOffset,
-  setMarioVariant,
+  audio,
+  setMario,
   setScore,
 }: ForegroundProps) => {
   const [prizeBox1Status, setPrizeBox1Status] = useState(true)
@@ -108,7 +108,7 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin1Active,
       score: score,
       setScore: setScore,
-      audioLevel: audioLevel,
+      audio: audio,
     },
     {
       x: 5760,
@@ -117,7 +117,7 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin2Active,
       score: score,
       setScore: setScore,
-      audioLevel: audioLevel,
+      audio: audio,
     },
     {
       x: 5920,
@@ -126,7 +126,7 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin3Active,
       score: score,
       setScore: setScore,
-      audioLevel: audioLevel,
+      audio: audio,
     },
     {
       x: 6080,
@@ -135,7 +135,7 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin4Active,
       score: score,
       setScore: setScore,
-      audioLevel: audioLevel,
+      audio: audio,
     },
     {
       x: 6240,
@@ -144,7 +144,7 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin5Active,
       score: score,
       setScore: setScore,
-      audioLevel: audioLevel,
+      audio: audio,
     },
   ]
 
@@ -179,10 +179,10 @@ const Foreground: FC<ForegroundProps> = ({
       plantVariant: 2,
       active: xPos < 9600,
     },
-    { x: 11560, y: 64, height: 240 },
-    { x: 11560, y: 624, height: 1120 },
-    { x: 11560, y: 544, height: 80 },
-    { x: 11880, y: 64, height: 160 },
+    { x: 11520, y: 64, height: 240 },
+    { x: 11520, y: 624, height: 1120 },
+    { x: 11520, y: 544, height: 80 },
+    { x: 11840, y: 64, height: 160 },
   ]
 
   const turtles: TurtleProps[] = [{ x: 3200, y: 224, offset: 400 }]
@@ -201,7 +201,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox1Prize,
         prizeCount: prizeBox1Count,
         setPrizeCount: setPrizeBox1Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Coin
             x={0}
@@ -210,7 +210,7 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox1Prize}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -226,7 +226,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox2Prize,
         prizeCount: prizeBox2Count,
         setPrizeCount: setPrizeBox2Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Coin
             x={0}
@@ -235,7 +235,7 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox2Prize}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -251,7 +251,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox3Prize,
         prizeCount: prizeBox3Count,
         setPrizeCount: setPrizeBox3Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Coin
             x={0}
@@ -260,7 +260,7 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox3Prize}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -276,18 +276,18 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox4Prize,
         prizeCount: prizeBox4Count,
         setPrizeCount: setPrizeBox4Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Mushroom
             x={0}
             y={0}
             active={mushroom1Active}
             setActive={setMushroom1Active}
-            marioVariant={marioVariant}
-            setMarioVariant={setMarioVariant}
+            mario={mario}
+            setMario={setMario}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -303,7 +303,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox5Prize,
         prizeCount: prizeBox5Count,
         setPrizeCount: setPrizeBox5Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Coin
             x={0}
@@ -312,7 +312,7 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox5Prize}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -328,7 +328,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox6Prize,
         prizeCount: prizeBox6Count,
         setPrizeCount: setPrizeBox6Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Coin
             x={0}
@@ -337,7 +337,7 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox6Prize}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -353,7 +353,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox7Prize,
         prizeCount: prizeBox7Count,
         setPrizeCount: setPrizeBox7Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Coin
             x={0}
@@ -362,7 +362,7 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox7Prize}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -378,7 +378,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox8Prize,
         prizeCount: prizeBox8Count,
         setPrizeCount: setPrizeBox8Count,
-        audioLevel: audioLevel,
+        audio: audio,
         children: (
           <Coin
             x={0}
@@ -387,7 +387,7 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox8Prize}
             score={score}
             setScore={setScore}
-            audioLevel={audioLevel}
+            audio={audio}
           />
         ),
       },
@@ -426,30 +426,15 @@ const Foreground: FC<ForegroundProps> = ({
       prizeBox8Count,
       prizeBox8Prize,
       mushroom1Active,
-      marioVariant,
-      setMarioVariant,
+      mario,
+      setMario,
       score,
       setScore,
-      audioLevel,
+      audio,
     ],
   )
 
-  // Prize Box interactions
-  useEffect(() => {
-    if (jump) {
-      prizeBoxes.map((item) => {
-        if (xPos > item.x - 55 && xPos < item.x + 45 && yPos > item.y - 100 && yPos < item.y) {
-          setJumpOffset(item.jumpMax - (marioVariant !== 1 ? 60 : 0))
-          item.setActive(true)
-          if (item.prizeCount > 0) {
-            item.setPrizeActive(true)
-          }
-        }
-      })
-    }
-  }, [prizeBoxes, jump, marioVariant, xPos, yPos, setJumpOffset])
-
-  const powerUps = useMemo(
+  const prizeInteractions = useMemo(
     () => [
       {
         xRange: [1690, 1790],
@@ -458,17 +443,43 @@ const Foreground: FC<ForegroundProps> = ({
         prizeStatus: mushroom1Active,
         setPrizeStatus: setMushroom1Active,
       },
+      {
+        xRange: [5540, 5620],
+        yRange: [304, 384],
+        boxStatus: !coin1Active,
+        prizeStatus: coin1Active,
+        setPrizeStatus: setCoin1Active,
+      },
     ],
-    [prizeBox4Prize, mushroom1Active],
+    [coin1Active, mushroom1Active, prizeBox4Prize],
   )
 
-  // Power Up interactions
+  // Prize Box interactions
   useEffect(() => {
-    powerUps.map((item) => {
+    if (jump) {
+      prizeBoxes.map((item) => {
+        if (
+          xPos > item.x - 55 &&
+          xPos < item.x + 45 &&
+          yPos >= item.y - 100 - (mario !== 1 ? marioOffset : 0) &&
+          yPos < item.y
+        ) {
+          item.setActive(true)
+          if (item.prizeCount > 0) {
+            item.setPrizeActive(true)
+          }
+        }
+      })
+    }
+  }, [prizeBoxes, jump, mario, marioOffset, xPos, yPos])
+
+  // Prize interactions
+  useEffect(() => {
+    prizeInteractions.map((item) => {
       if (
         xPos > item.xRange[0] &&
         xPos < item.xRange[1] &&
-        yPos > item.yRange[0] &&
+        yPos >= item.yRange[0] - (mario !== 1 ? marioOffset : 0) &&
         yPos < item.yRange[1]
       ) {
         if (item.boxStatus && !item.prizeStatus) {
@@ -476,7 +487,7 @@ const Foreground: FC<ForegroundProps> = ({
         }
       }
     })
-  }, [powerUps, xPos, yPos])
+  }, [mario, marioOffset, prizeInteractions, xPos, yPos])
 
   return (
     <>
@@ -495,7 +506,7 @@ const Foreground: FC<ForegroundProps> = ({
           setActive={item.setActive}
           score={score}
           setScore={setScore}
-          audioLevel={audioLevel}
+          audio={audio}
         />
       ))}
 
@@ -530,7 +541,7 @@ const Foreground: FC<ForegroundProps> = ({
           setPrizeActive={item.setPrizeActive}
           prizeCount={item.prizeCount}
           setPrizeCount={item.setPrizeCount}
-          audioLevel={item.audioLevel}>
+          audio={item.audio}>
           {item.children}
         </PrizeBox>
       ))}

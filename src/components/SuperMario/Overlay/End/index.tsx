@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 import NextImage from 'next/image'
 import { Box, Button, Flex, Heading, HStack, Link, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import config from '@/utilities/config'
+import { config } from '@/utilities/config'
 
 export type EndProps = {
   x: number

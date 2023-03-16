@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Box, HStack, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Code from '@/components/Code'
-import config from '@/utilities/config'
+import { config } from '@/utilities/config'
 
 export type FooterProps = {
   dark?: boolean

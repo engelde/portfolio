@@ -4,7 +4,7 @@ type ConfigProps = {
   }
 }
 
-const config: ConfigProps = {
+export const config: ConfigProps = {
   app: {
     name: process.env.NEXT_PUBLIC_APP_NAME || '',
     author: process.env.NEXT_PUBLIC_APP_AUTHOR || '',
@@ -13,5 +13,3 @@ const config: ConfigProps = {
     environment: process.env.NODE_ENV || '',
   },
 }
-
-export default config

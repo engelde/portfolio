@@ -4,7 +4,7 @@ import { Box, Container, ContainerProps } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Footer from '@/components/Footer'
 import Preloader from '@/components/Preloader'
-import config from '@/utilities/config'
+import { config } from '@/utilities/config'
 
 export type LayoutProps = ContainerProps & {
   title: String
