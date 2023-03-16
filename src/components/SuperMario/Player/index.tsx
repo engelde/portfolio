@@ -10,20 +10,18 @@ export type PlayerProps = {
   forwards: boolean
   xPos: number
   yPos: number
+  xOffset: number
   length: number
-  maxX: number
   jump: boolean
-  marioVariant: 1 | 2
+  mario: 1 | 2
   paused: boolean
   lives: number
   score: number
   timer: number
-  audioLevel: number
+  audio: number
   complete: boolean
-  setAudioLevel: (status: number) => void
+  setAudio: (status: number) => void
   setPaused: (status: boolean) => void
-  setXPos: (pos: number) => void
-  setYPos: (pos: number) => void
 }
 
 const Player: FC<PlayerProps> = ({
@@ -33,37 +31,35 @@ const Player: FC<PlayerProps> = ({
   forwards,
   xPos,
   yPos,
+  xOffset,
   length,
-  maxX,
   jump,
-  marioVariant,
+  mario,
   paused,
   lives,
   score,
   timer,
-  audioLevel,
+  audio,
   complete,
-  setAudioLevel,
+  setAudio,
   setPaused,
-  setXPos,
-  setYPos,
 }: PlayerProps) => {
   return (
     <>
       {xPos < length && (
         <>
-          <Mario variant={marioVariant} x={x} y={y} xPos={xPos} forwards={forwards} jump={jump} />
+          <Mario variant={mario} x={x} y={y} xPos={xPos} forwards={forwards} jump={jump} />
         </>
       )}
 
-      {xPos < length && !mobile && (
+      {!mobile && xPos < length - xOffset && (
         <Stats
           xPos={xPos}
           yPos={yPos}
           lives={lives}
           score={score}
           timer={timer}
-          audioLevel={audioLevel}
+          audio={audio}
           complete={complete}
         />
       )}
@@ -71,11 +67,10 @@ const Player: FC<PlayerProps> = ({
       <Pause
         open={paused}
         setOpen={setPaused}
-        setXPos={setXPos}
-        setYPos={setYPos}
-        audioLevel={audioLevel}
-        setAudioLevel={setAudioLevel}
-        maxX={maxX}
+        audio={audio}
+        setAudio={setAudio}
+        length={length}
+        xOffset={xOffset}
       />
     </>
   )

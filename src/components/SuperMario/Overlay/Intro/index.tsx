@@ -21,7 +21,7 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
       left={4}
       maxW={'calc(100vw - 2rem)'}
       py={3}
-      {...((xPos > xMin &&
+      {...((xPos >= xMin &&
         xPos < xMax && {
           initial: { opacity: 0, marginTop: -600 },
           animate: { opacity: 1, marginTop: 0 },

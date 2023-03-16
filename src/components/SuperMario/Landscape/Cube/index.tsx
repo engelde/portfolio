@@ -36,8 +36,8 @@ const Cube: FC<CubeProps> = ({ variant, x, y }: CubeProps) => {
     },
     4: {
       src: '/images/cube/cube.4.png',
-      width: 480,
-      height: 785,
+      width: 440,
+      height: 720,
     },
   }
 

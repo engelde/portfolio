@@ -38,8 +38,8 @@ const Landscape: FC = () => {
     { x: 3360, width: 2320, height: 128 },
     { x: 5920, width: 1760, height: 64 },
     { x: 7840, width: 400, height: 64 },
-    { x: 8480, width: 3000, height: 64 },
-    { x: 11560, width: 1800, height: 64 },
+    { x: 8480, width: 2960, height: 64 },
+    { x: 11520, width: 1800, height: 64 },
   ]
 
   const rocks: RockProps[] = [
@@ -57,10 +57,10 @@ const Landscape: FC = () => {
     { x: 8560, y: 64 },
     { x: 8560, y: 144 },
     { x: 8640, y: 64 },
-    { x: 11560, y: 224 },
-    { x: 11640, y: 224 },
-    { x: 11560, y: 544 },
-    { x: 11640, y: 544 },
+    { x: 11520, y: 224 },
+    { x: 11600, y: 224 },
+    { x: 11520, y: 544 },
+    { x: 11600, y: 544 },
   ]
 
   const trees: TreeProps[] = [
@@ -68,7 +68,7 @@ const Landscape: FC = () => {
     { variant: 2, x: 4320, y: 128 },
     { variant: 1, x: 4960, y: 128 },
     { variant: 1, x: 9680, y: 64 },
-    { variant: 3, x: 12120, y: 64 },
+    { variant: 3, x: 12080, y: 64 },
   ]
 
   return (

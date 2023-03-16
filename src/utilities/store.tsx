@@ -13,23 +13,21 @@ const StoreContext = createContext<StoreContext | undefined>(undefined)
 StoreContext.displayName = 'StoreContext'
 
 const initialState = {
-  audioLevel: 0,
+  audio: 0,
 }
 
 const reducer = (state: StoreState, action: StoreAction) => {
   switch (action.type) {
-    case 'FETCH_AUDIO_LEVEL':
-      state.audioLevel = parseInt(
-        localStorage.getItem('audioLevel') !== null
-          ? (localStorage.getItem('audioLevel') as string)
-          : '0',
+    case 'FETCH_AUDIO':
+      state.audio = parseInt(
+        localStorage.getItem('audio') !== null ? (localStorage.getItem('audio') as string) : '0',
         10,
       )
       return state
 
-    case 'UPDATE_AUDIO_LEVEL':
-      localStorage.setItem('audioLevel', action.payload as string)
-      state.audioLevel = action.payload
+    case 'UPDATE_AUDIO':
+      localStorage.setItem('audio', action.payload as string)
+      state.audio = action.payload
       return state
 
     default:
