@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useAudio } from '@/hooks/useAudio'
 import Points from '../Points'
 
 export type MushroomProps = {
@@ -13,7 +14,6 @@ export type MushroomProps = {
   setMario: (variant: 1 | 2) => void
   score: number
   setScore: (score: number) => void
-  audio: number
 }
 
 const Mushroom: FC<MushroomProps> = ({
@@ -22,11 +22,11 @@ const Mushroom: FC<MushroomProps> = ({
   active,
   mario,
   score,
-  audio,
   setActive,
   setMario,
   setScore,
 }: MushroomProps) => {
+  const { playAudio } = useAudio()
   const [appearing, setAppearing] = useState(true)
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)
@@ -34,36 +34,26 @@ const Mushroom: FC<MushroomProps> = ({
 
   useEffect(() => {
     if (appearing) {
-      if (audio > 0) {
-        const sound = new Audio('/audio/mushroom/mushroom.mp3')
-        sound.volume = audio / 100
-        sound.play()
-      }
-
+      playAudio('mushroom')
       setAppearing(false)
     }
-  }, [appearing, audio])
+  }, [appearing, playAudio])
 
   useEffect(() => {
     if (active && !running) {
       setRunning(true)
       setScore(score + value)
+      playAudio('powerUp')
 
       if (mario === 1) {
         setMario(2)
-      }
-
-      if (audio > 0) {
-        const sound = new Audio('/audio/powerUp/powerUp.mp3')
-        sound.volume = audio / 100
-        sound.play()
       }
 
       setTimeout(() => {
         setDisabled(true)
       }, 150)
     }
-  }, [active, mario, running, score, setMario, setScore, audio])
+  }, [active, mario, playAudio, running, score, setMario, setScore])
 
   return (
     <>

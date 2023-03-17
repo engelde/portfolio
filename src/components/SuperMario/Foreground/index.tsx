@@ -8,7 +8,6 @@ import PrizeBox, { type PrizeBoxProps } from './PrizeBox'
 import Turtle, { type TurtleProps } from './Turtle'
 
 export type ForegroundProps = {
-  audio: number
   jump: boolean
   mario: 1 | 2
   marioOffset: number
@@ -20,7 +19,6 @@ export type ForegroundProps = {
 }
 
 const Foreground: FC<ForegroundProps> = ({
-  audio,
   jump,
   mario,
   marioOffset,
@@ -108,7 +106,6 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin1Active,
       score: score,
       setScore: setScore,
-      audio: audio,
     },
     {
       x: 5760,
@@ -117,7 +114,6 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin2Active,
       score: score,
       setScore: setScore,
-      audio: audio,
     },
     {
       x: 5920,
@@ -126,7 +122,6 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin3Active,
       score: score,
       setScore: setScore,
-      audio: audio,
     },
     {
       x: 6080,
@@ -135,7 +130,6 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin4Active,
       score: score,
       setScore: setScore,
-      audio: audio,
     },
     {
       x: 6240,
@@ -144,7 +138,6 @@ const Foreground: FC<ForegroundProps> = ({
       setActive: setCoin5Active,
       score: score,
       setScore: setScore,
-      audio: audio,
     },
   ]
 
@@ -200,7 +193,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox1Prize,
         prizeCount: prizeBox1Count,
         setPrizeCount: setPrizeBox1Count,
-        audio: audio,
+
         children: (
           <Coin
             x={0}
@@ -209,7 +202,6 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox1Prize}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -224,7 +216,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox2Prize,
         prizeCount: prizeBox2Count,
         setPrizeCount: setPrizeBox2Count,
-        audio: audio,
+
         children: (
           <Coin
             x={0}
@@ -233,7 +225,6 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox2Prize}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -248,7 +239,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox3Prize,
         prizeCount: prizeBox3Count,
         setPrizeCount: setPrizeBox3Count,
-        audio: audio,
+
         children: (
           <Coin
             x={0}
@@ -257,7 +248,6 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox3Prize}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -272,7 +262,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox4Prize,
         prizeCount: prizeBox4Count,
         setPrizeCount: setPrizeBox4Count,
-        audio: audio,
+
         children: (
           <Mushroom
             x={0}
@@ -283,7 +273,6 @@ const Foreground: FC<ForegroundProps> = ({
             setMario={setMario}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -298,7 +287,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox5Prize,
         prizeCount: prizeBox5Count,
         setPrizeCount: setPrizeBox5Count,
-        audio: audio,
+
         children: (
           <Coin
             x={0}
@@ -307,7 +296,6 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox5Prize}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -322,7 +310,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox6Prize,
         prizeCount: prizeBox6Count,
         setPrizeCount: setPrizeBox6Count,
-        audio: audio,
+
         children: (
           <Coin
             x={0}
@@ -331,7 +319,6 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox6Prize}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -346,7 +333,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox7Prize,
         prizeCount: prizeBox7Count,
         setPrizeCount: setPrizeBox7Count,
-        audio: audio,
+
         children: (
           <Coin
             x={0}
@@ -355,7 +342,6 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox7Prize}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -370,7 +356,7 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox8Prize,
         prizeCount: prizeBox8Count,
         setPrizeCount: setPrizeBox8Count,
-        audio: audio,
+
         children: (
           <Coin
             x={0}
@@ -379,7 +365,6 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox8Prize}
             score={score}
             setScore={setScore}
-            audio={audio}
           />
         ),
       },
@@ -422,7 +407,6 @@ const Foreground: FC<ForegroundProps> = ({
       setMario,
       score,
       setScore,
-      audio,
     ],
   )
 
@@ -498,7 +482,6 @@ const Foreground: FC<ForegroundProps> = ({
           setActive={item.setActive}
           score={score}
           setScore={setScore}
-          audio={audio}
         />
       ))}
 
@@ -531,8 +514,7 @@ const Foreground: FC<ForegroundProps> = ({
           prizeActive={item.prizeActive}
           setPrizeActive={item.setPrizeActive}
           prizeCount={item.prizeCount}
-          setPrizeCount={item.setPrizeCount}
-          audio={item.audio}>
+          setPrizeCount={item.setPrizeCount}>
           {item.children}
         </PrizeBox>
       ))}

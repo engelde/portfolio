@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from '@chakra-ui/react'
-import { useStore } from '@/utilities/store'
 
 export const useSettings = () => {
-  const [store, updateStore] = useStore()
-  const [audio, setAudio] = useState(store.audio)
   const [complete, setComplete] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const length = 13320
@@ -71,12 +68,6 @@ export const useSettings = () => {
     { xMin: 5800, xMax: length, height: 64 },
   ]
 
-  // Audio
-  useEffect(() => {
-    updateStore({ type: 'FETCH_AUDIO' })
-    setAudio(store.audio)
-  }, [setAudio, store.audio, updateStore])
-
   // Timer
   useEffect(() => {
     if (!complete && !paused && timer > 0) {
@@ -89,7 +80,6 @@ export const useSettings = () => {
   }, [complete, paused, timer])
 
   return {
-    audio,
     ceilingLevels,
     complete,
     gameOver,
@@ -105,7 +95,6 @@ export const useSettings = () => {
     platformLevels,
     score,
     timer,
-    setAudio,
     setComplete,
     setGameOver,
     setLives,

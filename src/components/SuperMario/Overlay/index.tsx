@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
+import { useAudio } from '@/hooks/useAudio'
 import About from './About'
 import Dog from './Dog'
 import End from './End'
@@ -10,7 +11,6 @@ import Skills from './Skills'
 import Thanks from './Thanks'
 
 export type OverlayProps = {
-  audio: number
   ip: string
   forwards: boolean
   length: number
@@ -19,15 +19,8 @@ export type OverlayProps = {
   yPos: number
 }
 
-const Overlay: FC<OverlayProps> = ({
-  audio,
-  ip,
-  forwards,
-  length,
-  xOffset,
-  xPos,
-  yPos,
-}: OverlayProps) => {
+const Overlay: FC<OverlayProps> = ({ ip, forwards, length, xOffset, xPos, yPos }: OverlayProps) => {
+  const { playAudio } = useAudio()
   const [exited, setExited] = useState(false)
   const [exiting, setExiting] = useState(false)
 
@@ -35,12 +28,7 @@ const Overlay: FC<OverlayProps> = ({
     if (!exited && !exiting && forwards && xPos >= 12860 && xPos < 13120 && yPos <= 144) {
       setExited(true)
       setExiting(true)
-
-      if (audio > 0) {
-        const sound = new Audio('/audio/pipe/pipe.mp3')
-        sound.volume = audio / 100
-        sound.play()
-      }
+      playAudio('pipe')
 
       setTimeout(() => setExiting(false), 1400)
     }
@@ -48,7 +36,7 @@ const Overlay: FC<OverlayProps> = ({
     if (exited && !exiting && xPos < 12900) {
       setExited(false)
     }
-  }, [audio, exited, exiting, xPos, yPos, forwards])
+  }, [exited, exiting, forwards, xPos, yPos, playAudio])
 
   return (
     <>

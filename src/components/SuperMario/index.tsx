@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Box } from '@chakra-ui/react'
+import { useAudio } from '@/hooks/useAudio'
 import { useController } from '@/hooks/useController'
 import { useSettings } from '@/hooks/useSettings'
 import Environment from './Environment'
@@ -14,7 +15,6 @@ export type SuperMarioProps = {
 
 const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
   const {
-    audio,
     ceilingLevels,
     complete,
     gameOver,
@@ -30,7 +30,6 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     platformLevels,
     score,
     timer,
-    setAudio,
     setComplete,
     setGameOver,
     setLives,
@@ -41,7 +40,6 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
 
   const { forwards, jump, maxYScroll, x, y, xOffset, yOffset, setX, setY } = useController({
     active: !complete && !gameOver && !paused,
-    audio: audio,
     mario: mario,
     maximum: {
       length: length,
@@ -69,18 +67,22 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     },
   })
 
+  const { playAudio } = useAudio()
+
   // Complete
   useEffect(() => {
     if (!complete && x >= length - xOffset) {
       setComplete(true)
-
-      if (audio > 0) {
-        const sound = new Audio('/audio/clear/clear.mp3')
-        sound.volume = audio / 100
-        sound.play()
-      }
+      playAudio('clear')
     }
-  }, [audio, complete, length, x, xOffset, setComplete])
+  }, [complete, length, x, xOffset, playAudio, setComplete])
+
+  // Hurry
+  useEffect(() => {
+    if (!complete && timer === 60) {
+      playAudio('hurry')
+    }
+  }, [complete, timer, playAudio])
 
   return (
     <Box overflowY={'scroll'} overflowX={'hidden'} h={maxYScroll + 'px'} w={'100vw'}>
@@ -96,7 +98,6 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         transition={'marginLeft .2s ease-in-out'}>
         <Landscape />
         <Foreground
-          audio={audio}
           jump={jump}
           mario={mario}
           marioOffset={marioOffset}
@@ -107,7 +108,6 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           setScore={setScore}
         />
         <Player
-          audio={audio}
           complete={complete}
           forwards={forwards}
           jump={jump}
@@ -123,13 +123,11 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           xPos={x + xOffset}
           y={y + yOffset}
           yPos={y + yOffset}
-          setAudio={setAudio}
           setPaused={setPaused}
           setX={setX}
           setY={setY}
         />
         <Overlay
-          audio={audio}
           forwards={forwards}
           ip={ip}
           length={length}
