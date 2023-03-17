@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import {
   Drawer,
   DrawerContent,
@@ -18,15 +18,13 @@ import {
 } from '@chakra-ui/react'
 import { CgMenuLeftAlt } from 'react-icons/cg'
 import { motion } from 'framer-motion'
-import { useStore } from '@/utilities/store'
+import { useAudio } from '@/hooks/useAudio'
 
 export type PauseProps = {
-  audio: number
   length: number
   open: boolean
   xOffset: number
   setOpen: (status: boolean) => void
-  setAudio: (status: number) => void
   setX: (status: number) => void
   setY: (status: number) => void
 }
@@ -38,17 +36,8 @@ type MenuLink = {
   y: number
 }
 
-const Pause: FC<PauseProps> = ({
-  audio,
-  length,
-  open,
-  xOffset,
-  setOpen,
-  setAudio,
-  setX,
-  setY,
-}: PauseProps) => {
-  const [store, updateStore] = useStore()
+const Pause: FC<PauseProps> = ({ length, open, xOffset, setOpen, setX, setY }: PauseProps) => {
+  const { audio, playAudio, setAudio } = useAudio()
 
   const links: MenuLink[] = [
     { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
@@ -58,22 +47,12 @@ const Pause: FC<PauseProps> = ({
 
   const handleOpen = () => {
     setOpen(true)
-
-    if (audio > 0) {
-      const sound = new Audio('/audio/pause/pause.mp3')
-      sound.volume = audio / 100
-      sound.play()
-    }
+    playAudio('pause')
   }
 
   const handleClose = () => {
     setOpen(false)
-
-    if (audio > 0) {
-      const sound = new Audio('/audio/stomp/stomp.mp3')
-      sound.volume = audio / 100
-      sound.play()
-    }
+    playAudio('stomp')
   }
 
   const handleInventory = (x: number, y: number) => {
@@ -83,19 +62,12 @@ const Pause: FC<PauseProps> = ({
       setX(x)
       setY(y)
     }
-
     setOpen(false)
-
-    if (audio > 0) {
-      const sound = new Audio('/audio/inventory/inventory.mp3')
-      sound.volume = audio / 100
-      sound.play()
-    }
+    playAudio('inventory')
   }
 
   const handleAudioLevel = (val: number) => {
     setAudio(val)
-    updateStore({ type: 'UPDATE_AUDIO', payload: val })
   }
 
   return (
