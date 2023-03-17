@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useAudio } from '@/hooks/useAudio'
 import Points from '../Points'
 
 export type CoinProps = {
@@ -13,7 +14,6 @@ export type CoinProps = {
   setActive: (status: boolean) => void
   score: number
   setScore: (score: number) => void
-  audio: number
 }
 
 type VariantProps = {
@@ -31,7 +31,6 @@ const Coin: FC<CoinProps> = ({
   setActive,
   score,
   setScore,
-  audio,
 }: CoinProps) => {
   const variants: VariantProps = {
     1: {
@@ -51,6 +50,7 @@ const Coin: FC<CoinProps> = ({
     },
   }
 
+  const { playAudio } = useAudio()
   const [state, setState] = useState(1)
   const [running, setRunning] = useState(show)
   const [disabled, setDisabled] = useState(false)
@@ -71,22 +71,17 @@ const Coin: FC<CoinProps> = ({
     if (active && !disabled) {
       setDisabled(true)
       setScore(score + value)
+      playAudio('coin')
 
       if (!running) {
         setRunning(true)
-      }
-
-      if (audio > 0) {
-        const sound = new Audio('/audio/coin/coin.mp3')
-        sound.volume = audio / 100
-        sound.play()
       }
 
       setTimeout(() => {
         setRunning(false)
       }, 600)
     }
-  }, [active, audio, disabled, score, setActive, setScore, running, setDisabled, setRunning])
+  }, [active, disabled, playAudio, score, setActive, setScore, running, setDisabled, setRunning])
 
   return (
     <>

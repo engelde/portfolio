@@ -9,28 +9,10 @@ export type StatsProps = {
   lives: number
   score: number
   timer: number
-  audio: number
   complete: boolean
 }
 
-const Stats: FC<StatsProps> = ({
-  xPos,
-  yPos,
-  lives,
-  score,
-  timer,
-  audio,
-  complete,
-}: StatsProps) => {
-  useEffect(() => {
-    if (!complete && timer === 60) {
-      if (audio > 0) {
-        const sound = new Audio('/audio/hurry/hurry.mp3')
-        sound.volume = audio / 100
-        sound.play()
-      }
-    }
-  }, [audio, complete, timer])
+const Stats: FC<StatsProps> = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
   return (
     <Box
       as={motion.div}

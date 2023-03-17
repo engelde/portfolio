@@ -164,7 +164,7 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       top={8}
       left={6}
       maxW={'calc(100vw - 2rem)'}
-      minW={'300px'}
+      minW={'calc(100vw - 2rem)'}
       py={3}
       ml={offset - xPos > 0 ? offset - xPos : 0 + 'px'}
       visibility={xPos < 2000 ? 'hidden' : 'visible'}
@@ -200,11 +200,7 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
           pr={{ base: 0, md: 1, lg: 2 }}
           alignItems={'top'}
           spacing={{ base: 2, md: 4, lg: 8 }}>
-          <Heading
-            size={'2xl'}
-            w={'full'}
-            minW={{ base: 280, sm: 360, md: 440, lg: 520, xl: 500, '2xl': 580 }}
-            maxW={1020}>
+          <Heading size={'2xl'} w={'full'} maxW={960}>
             {skillset.map(
               (skill, x) =>
                 xPos > skill.x && (

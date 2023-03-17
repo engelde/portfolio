@@ -4,7 +4,6 @@ import Pause from './Pause'
 import Stats from './Stats'
 
 export type PlayerProps = {
-  audio: number
   complete: boolean
   forwards: boolean
   jump: boolean
@@ -20,14 +19,12 @@ export type PlayerProps = {
   xPos: number
   y: number
   yPos: number
-  setAudio: (status: number) => void
   setPaused: (status: boolean) => void
   setX: (status: number) => void
   setY: (status: number) => void
 }
 
 const Player: FC<PlayerProps> = ({
-  audio,
   complete,
   forwards,
   jump,
@@ -43,7 +40,6 @@ const Player: FC<PlayerProps> = ({
   xPos,
   y,
   yPos,
-  setAudio,
   setPaused,
   setX,
   setY,
@@ -63,17 +59,14 @@ const Player: FC<PlayerProps> = ({
           lives={lives}
           score={score}
           timer={timer}
-          audio={audio}
           complete={complete}
         />
       )}
 
       <Pause
-        audio={audio}
         length={length}
         open={paused}
         xOffset={xOffset}
-        setAudio={setAudio}
         setOpen={setPaused}
         setX={setX}
         setY={setY}

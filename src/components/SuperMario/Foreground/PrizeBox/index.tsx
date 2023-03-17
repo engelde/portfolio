@@ -2,6 +2,7 @@ import { FC, ReactNode, useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useAudio } from '@/hooks/useAudio'
 
 export type PrizeBoxProps = {
   x: number
@@ -14,7 +15,6 @@ export type PrizeBoxProps = {
   setPrizeActive: (active: boolean) => void
   prizeCount: number
   setPrizeCount: (count: number) => void
-  audio: number
   children: ReactNode
 }
 
@@ -35,7 +35,6 @@ const PrizeBox: FC<PrizeBoxProps> = ({
   setPrizeActive,
   prizeCount,
   setPrizeCount,
-  audio,
   children,
 }: PrizeBoxProps) => {
   const variants: VariantProps = {
@@ -56,6 +55,7 @@ const PrizeBox: FC<PrizeBoxProps> = ({
     },
   }
 
+  const { playAudio } = useAudio()
   const [state, setState] = useState(1)
   const [running, setRunning] = useState(false)
 
@@ -77,11 +77,7 @@ const PrizeBox: FC<PrizeBoxProps> = ({
       if (prizeCount > 0) {
         setPrizeCount(prizeCount - 1)
       } else {
-        if (audio > 0) {
-          const sound = new Audio('/audio/box/box.mp3')
-          sound.volume = audio / 100
-          sound.play()
-        }
+        playAudio('box')
       }
 
       setTimeout(() => {
@@ -96,7 +92,7 @@ const PrizeBox: FC<PrizeBoxProps> = ({
     if (status && prizeCount < 1) {
       setStatus(false)
     }
-  }, [active, audio, prizeCount, setActive, setPrizeCount, setStatus, running, status])
+  }, [active, playAudio, prizeCount, setActive, setPrizeCount, setStatus, running, status])
 
   const handleAction = () => {
     setActive(true)

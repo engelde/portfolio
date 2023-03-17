@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from '@chakra-ui/react'
-import { useStore } from '@/utilities/store'
 
 export const useSettings = () => {
-  const [store, updateStore] = useStore()
-  const [audio, setAudio] = useState(store.audio)
   const [complete, setComplete] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const length = 13320
   const [lives, setLives] = useState(1)
   const [mario, setMario] = useState<1 | 2>(1)
-  const marioOffset = 40
-  const maxXOffset = 80
-  const maxYOffset = 240
+  const offset = {
+    mario: 40,
+    x: 80,
+    y: 240,
+  }
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const [paused, setPaused] = useState(false)
   const [score, setScore] = useState(0)
+  const speed = {
+    x: 16,
+    y: 16,
+  }
   const [timer, setTimer] = useState(300)
 
   const ceilingLevels = [
@@ -71,12 +74,6 @@ export const useSettings = () => {
     { xMin: 5800, xMax: length, height: 64 },
   ]
 
-  // Audio
-  useEffect(() => {
-    updateStore({ type: 'FETCH_AUDIO' })
-    setAudio(store.audio)
-  }, [setAudio, store.audio, updateStore])
-
   // Timer
   useEffect(() => {
     if (!complete && !paused && timer > 0) {
@@ -89,7 +86,6 @@ export const useSettings = () => {
   }, [complete, paused, timer])
 
   return {
-    audio,
     ceilingLevels,
     complete,
     gameOver,
@@ -97,15 +93,13 @@ export const useSettings = () => {
     length,
     lives,
     mario,
-    marioOffset,
-    maxXOffset,
-    maxYOffset,
     mobile,
+    offset,
     paused,
     platformLevels,
     score,
+    speed,
     timer,
-    setAudio,
     setComplete,
     setGameOver,
     setLives,

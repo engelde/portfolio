@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useAudio } from '@/hooks/useAudio'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { useScroll } from '@/hooks/useScroll'
 import { useWindow } from '@/hooks/useWindow'
 
 type ControllerProps = {
   active: boolean
-  audio: number
   mario: 1 | 2
   maximum: {
     length: number
@@ -47,7 +47,6 @@ type ControllerProps = {
 
 export const useController = ({
   active,
-  audio,
   mario,
   mobile,
   maximum,
@@ -55,9 +54,10 @@ export const useController = ({
   position,
   speed,
 }: ControllerProps) => {
-  const { height } = useWindow()
+  const { playAudio } = useAudio()
   const { up, left, right, escape } = useKeyboard({ active: active })
   const { yScroll } = useScroll({ active: active })
+  const { height } = useWindow()
   const [forwards, setForwards] = useState(true)
   const [jump, setJump] = useState(false)
   const [jumpLock, setJumpLock] = useState(false)
@@ -147,14 +147,9 @@ export const useController = ({
   useEffect(() => {
     if (!pause.paused && escape) {
       pause.setPaused(true)
-
-      if (audio > 0) {
-        const sound = new Audio('/audio/pause/pause.mp3')
-        sound.volume = audio / 100
-        sound.play()
-      }
+      playAudio('pause')
     }
-  }, [audio, escape, pause])
+  }, [escape, pause, playAudio])
 
   // Jump
   useEffect(() => {
@@ -162,11 +157,7 @@ export const useController = ({
       if (up && !jumpLock && yOffset < maximum.yOffset) {
         if (!jump) {
           setJump(true)
-          if (audio > 0) {
-            const sound = new Audio('/audio/jump/jump.mp3')
-            sound.volume = audio / 100
-            sound.play()
-          }
+          playAudio('jump')
         }
         updateY()
       } else {
@@ -179,7 +170,7 @@ export const useController = ({
         }
       }
     }
-  }, [active, audio, jump, jumpLock, maximum.yOffset, mobile, speed.y, up, updateY, yOffset])
+  }, [active, jump, jumpLock, maximum.yOffset, mobile, playAudio, speed.y, up, updateY, yOffset])
 
   // Left
   useEffect(() => {
