@@ -7,12 +7,18 @@ export const useSettings = () => {
   const length = 13320
   const [lives, setLives] = useState(1)
   const [mario, setMario] = useState<1 | 2>(1)
-  const marioOffset = 40
-  const maxXOffset = 80
-  const maxYOffset = 240
+  const offset = {
+    mario: 40,
+    x: 80,
+    y: 240,
+  }
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const [paused, setPaused] = useState(false)
   const [score, setScore] = useState(0)
+  const speed = {
+    x: 16,
+    y: 16,
+  }
   const [timer, setTimer] = useState(300)
 
   const ceilingLevels = [
@@ -87,13 +93,12 @@ export const useSettings = () => {
     length,
     lives,
     mario,
-    marioOffset,
-    maxXOffset,
-    maxYOffset,
     mobile,
+    offset,
     paused,
     platformLevels,
     score,
+    speed,
     timer,
     setComplete,
     setGameOver,

@@ -22,13 +22,12 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     length,
     lives,
     mario,
-    marioOffset,
-    maxXOffset,
-    maxYOffset,
     mobile,
+    offset,
     paused,
     platformLevels,
     score,
+    speed,
     timer,
     setComplete,
     setGameOver,
@@ -43,9 +42,9 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     mario: mario,
     maximum: {
       length: length,
-      marioOffset: marioOffset,
-      xOffset: maxXOffset,
-      yOffset: maxYOffset,
+      marioOffset: offset.mario,
+      xOffset: offset.x,
+      yOffset: offset.y,
     },
     mobile: mobile,
     pause: {
@@ -62,8 +61,8 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
       yOffset: 0,
     },
     speed: {
-      x: 16,
-      y: 16,
+      x: speed.x,
+      y: speed.y,
     },
   })
 
@@ -100,7 +99,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         <Foreground
           jump={jump}
           mario={mario}
-          marioOffset={marioOffset}
+          marioOffset={offset.mario}
           score={score}
           xPos={x + xOffset}
           yPos={y + yOffset}
