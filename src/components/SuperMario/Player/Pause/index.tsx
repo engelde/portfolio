@@ -41,8 +41,8 @@ const Pause: FC<PauseProps> = ({ length, open, xOffset, setOpen, setX, setY }: P
 
   const links: MenuLink[] = [
     { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
-    { name: '.About()', color: 'cyan.300', x: 3520, y: 128 },
-    { name: '.Contact()', color: 'cyan.300', x: length - xOffset, y: 64 },
+    { name: '.About()', color: 'cyan.300', x: 3600, y: 128 },
+    { name: '.Contact()', color: 'cyan.300', x: length, y: 64 },
   ]
 
   const handleOpen = () => {
@@ -59,8 +59,10 @@ const Pause: FC<PauseProps> = ({ length, open, xOffset, setOpen, setX, setY }: P
     if (window.scrollY !== x) {
       // @ts-ignore
       window.scrollTo({ top: x, behavior: 'instant' })
-      setX(x)
-      setY(y)
+      setTimeout(() => {
+        setX(x)
+        setY(y)
+      }, 100)
     }
     setOpen(false)
     playAudio('inventory')

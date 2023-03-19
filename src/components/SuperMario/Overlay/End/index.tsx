@@ -67,10 +67,11 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
           as={motion.div}
           alignItems={'center'}
           justifyContent={'center'}
+          opacity={0}
           marginTop={'-3000px'}
           {...(xPos >= x && {
-            initial: { marginTop: -3000 },
-            animate: { marginTop: 0, transition: { duration: 0.6 } },
+            initial: { opacity: 0, marginTop: -3000 },
+            animate: { opacity: 1, marginTop: 0, transition: { duration: 0.6 } },
           })}>
           <VStack spacing={0}>
             <Box
