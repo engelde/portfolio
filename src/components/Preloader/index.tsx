@@ -103,6 +103,7 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
       ],
     }
 
+    // Images
     await Promise.all(
       files.images.map((src) => {
         return new Promise((resolve, reject) => {
@@ -114,19 +115,20 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
       }),
     )
 
-    await Promise.all(
-      files.audio.map((src) => {
-        return new Promise((resolve, reject) => {
-          const audio = new Audio()
-          audio.oncanplaythrough = () => resolve({ src, status: 'ok' })
-          audio.onerror = () => reject({ src, status: 'error' })
-          audio.src = src
-          audio.autoplay = false
-          audio.volume = 0
-          audio.preload
-        })
-      }),
-    )
+    // Audio
+    // await Promise.all(
+    //   files.audio.map((src) => {
+    //     return new Promise((resolve, reject) => {
+    //       const audio = new Audio()
+    //       audio.oncanplaythrough = () => resolve({ src, status: 'ok' })
+    //       audio.onerror = () => reject({ src, status: 'error' })
+    //       audio.src = src
+    //       audio.autoplay = false
+    //       audio.volume = 0
+    //       audio.preload
+    //     })
+    //   }),
+    // )
 
     setTimeout(() => {
       setIsPreloading(false)

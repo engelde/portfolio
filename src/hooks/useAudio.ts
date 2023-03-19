@@ -39,7 +39,7 @@ export const useAudio = () => {
     updateStore({ type: 'UPDATE_AUDIO', payload: val })
   }
 
-  // Play
+  // Play Audio
   const playAudio = (type: string) => {
     if (variants[type] && store.audio > 0) {
       const sound = new Audio(variants[type])
