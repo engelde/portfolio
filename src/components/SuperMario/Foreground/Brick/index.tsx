@@ -1,38 +1,46 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
 
 export type BrickProps = {
   x: number
   y: number
 }
 
+type VariantProps = {
+  [variant: number]: {
+    src: string
+  }
+}
+
 const Brick: FC<BrickProps> = ({ x, y }: BrickProps) => {
+  const variants: VariantProps = {
+    1: {
+      src: '/images/brick/brick.1.png',
+    },
+    2: {
+      src: '/images/brick/brick.2.png',
+    },
+    3: {
+      src: '/images/brick/brick.3.png',
+    },
+    4: {
+      src: '/images/brick/brick.4.png',
+    },
+  }
+
+  const [state, setState] = useState(1)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setState(state < 4 ? state + 1 : 1), 260)
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [state])
+
   return (
-    <Box
-      as={motion.div}
-      zIndex={1}
-      position={'absolute'}
-      left={x + 'px'}
-      bottom={y + 'px'}
-      w={'80px'}
-      h={'80px'}
-      initial={{ filter: 'brightness(100%)' }}
-      animate={{
-        filter: ['brightness(100%)', 'contrast(102.5%) brightness(102.5%)', 'brightness(100%)'],
-        transition: {
-          type: 'keyframes',
-          times: [0, 0.5, 1],
-          delay: 0,
-          duration: 0.8,
-          ease: 'easeInOut',
-          repeat: Infinity,
-          repeatType: 'loop',
-          repeatDelay: 0,
-        },
-      }}>
-      <NextImage alt={'brick'} src={'/images/brick/brick.png'} width={80} height={80} priority />
+    <Box zIndex={1} position={'absolute'} left={x + 'px'} bottom={y + 'px'} w={'80px'} h={'80px'}>
+      <NextImage alt={'brick'} src={variants[state].src} width={80} height={80} priority />
     </Box>
   )
 }
