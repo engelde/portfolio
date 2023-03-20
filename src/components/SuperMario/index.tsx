@@ -98,11 +98,13 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
         <Landscape />
         <Foreground
           jump={jump}
+          lives={lives}
           mario={mario}
           marioOffset={offset.mario}
           score={score}
           xPos={x + xOffset}
           yPos={y + yOffset}
+          setLives={setLives}
           setMario={setMario}
           setScore={setScore}
         />

@@ -90,12 +90,12 @@ const Clouds: FC = () => {
 
   const variants: VariantProps = {
     1: {
-      src: '/images/clouds/clouds.1.png',
+      src: '/images/cloud/cloud.1.png',
       width: 166,
       height: 120,
     },
     2: {
-      src: '/images/clouds/clouds.2.png',
+      src: '/images/cloud/cloud.2.png',
       width: 250,
       height: 120,
     },

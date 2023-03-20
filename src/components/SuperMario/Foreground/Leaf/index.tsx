@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useAudio } from '@/hooks/useAudio'
 import Points from '../Points'
 
-export type MushroomProps = {
+export type LeafProps = {
   x: number
   y: number
   active: boolean
@@ -16,7 +16,7 @@ export type MushroomProps = {
   setScore: (score: number) => void
 }
 
-const Mushroom: FC<MushroomProps> = ({
+const Leaf: FC<LeafProps> = ({
   x,
   y,
   active,
@@ -25,28 +25,20 @@ const Mushroom: FC<MushroomProps> = ({
   setActive,
   setMario,
   setScore,
-}: MushroomProps) => {
+}: LeafProps) => {
   const { playAudio } = useAudio()
-  const [appearing, setAppearing] = useState(true)
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const value = 1000
 
   useEffect(() => {
-    if (appearing) {
-      playAudio('mushroom')
-      setAppearing(false)
-    }
-  }, [appearing, playAudio])
-
-  useEffect(() => {
     if (active && !running) {
       setRunning(true)
       setScore(score + value)
-      playAudio('powerUp')
+      playAudio('leaf')
 
-      if (mario < 2) {
-        setMario(2)
+      if (mario < 3) {
+        setMario(3)
       }
 
       setTimeout(() => {
@@ -57,7 +49,7 @@ const Mushroom: FC<MushroomProps> = ({
 
   return (
     <>
-      {active && <Points x={x + 320} y={y - 40} total={value} />}
+      {active && <Points x={x} y={260} total={value} />}
       {!disabled && (
         <Box
           as={motion.div}
@@ -66,36 +58,29 @@ const Mushroom: FC<MushroomProps> = ({
           left={x + 'px'}
           bottom={y + 80 + 'px'}
           w={'80px'}
-          h={'80px'}
+          h={'160px'}
           p={0}
           cursor={'pointer'}
           opacity={active ? 0 : 1}
           transition={'opacity .1s ease-out'}
           _hover={{ cursor: 'pointer', filter: 'brightness(110%)' }}
           onClick={() => !running && setActive(true)}
-          initial={{ translateX: 0, translateY: 0 }}
+          initial={{ translateY: 0 }}
           animate={{
-            translateX: [0, 0, 80, 160, 240, 320],
-            translateY: [0, 0, 0, 80, 160, 160],
+            translateY: [0, -160],
             transition: {
               type: 'keyframes',
-              times: [0, 0.3, 1],
+              times: [0, 1],
               delay: 0,
-              duration: 1.4,
+              duration: 0.4,
               ease: 'easeInOut',
             },
           }}>
-          <NextImage
-            alt={'mushroom'}
-            src={'/images/mushroom/mushroom.png'}
-            width={80}
-            height={80}
-            priority
-          />
+          <NextImage alt={'leaf'} src={'/images/leaf/leaf.png'} width={80} height={80} priority />
         </Box>
       )}
     </>
   )
 }
 
-export default Mushroom
+export default Leaf
