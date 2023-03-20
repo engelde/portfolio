@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 export type PointsProps = {
   x: number
   y: number
-  total: number
+  total: number | string
 }
 
 const Points: FC<PointsProps> = ({ x, y, total }: PointsProps) => {

@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 export type CubeProps = {
-  variant: 1 | 2 | 3 | 4
+  variant: 1 | 2 | 3 | 4 | 5
   x: number
   y: number
 }
@@ -38,6 +38,11 @@ const Cube: FC<CubeProps> = ({ variant, x, y }: CubeProps) => {
       src: '/images/cube/cube.4.png',
       width: 440,
       height: 720,
+    },
+    5: {
+      src: '/images/cube/cube.5.png',
+      width: 360,
+      height: 200,
     },
   }
 

@@ -22,6 +22,7 @@ export const useAudio = () => {
     inventory: '/audio/inventory/inventory.mp3',
     jump: '/audio/jump/jump.mp3',
     kick: '/audio/kick/kick.mp3',
+    leaf: '/audio/leaf/leaf.mp3',
     mushroom: '/audio/mushroom/mushroom.mp3',
     pause: '/audio/pause/pause.mp3',
     pipe: '/audio/pipe/pipe.mp3',

@@ -2,29 +2,35 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import Brick, { type BrickProps } from './Brick'
 import Coin, { type CoinProps } from './Coin'
 import Goomba, { type GoombaProps } from './Goomba'
+import Leaf from './Leaf'
 import Mushroom from './Mushroom'
+import OneUp from './OneUp'
 import Pipe, { type PipeProps } from './Pipe'
 import PrizeBox, { type PrizeBoxProps } from './PrizeBox'
 import Turtle, { type TurtleProps } from './Turtle'
 
 export type ForegroundProps = {
   jump: boolean
-  mario: 1 | 2
+  lives: number
+  mario: 1 | 2 | 3
   marioOffset: number
   score: number
   xPos: number
   yPos: number
-  setMario: (variant: 1 | 2) => void
+  setLives: (lives: number) => void
+  setMario: (variant: 1 | 2 | 3) => void
   setScore: (score: number) => void
 }
 
 const Foreground: FC<ForegroundProps> = ({
   jump,
+  lives,
   mario,
   marioOffset,
   score,
   xPos,
   yPos,
+  setLives,
   setMario,
   setScore,
 }: ForegroundProps) => {
@@ -55,7 +61,7 @@ const Foreground: FC<ForegroundProps> = ({
 
   const [prizeBox6Status, setPrizeBox6Status] = useState(true)
   const [prizeBox6Active, setPrizeBox6Active] = useState(false)
-  const [prizeBox6Count, setPrizeBox6Count] = useState(0)
+  const [prizeBox6Count, setPrizeBox6Count] = useState(1)
   const [prizeBox6Prize, setPrizeBox6Prize] = useState(false)
 
   const [prizeBox7Status, setPrizeBox7Status] = useState(true)
@@ -68,13 +74,20 @@ const Foreground: FC<ForegroundProps> = ({
   const [prizeBox8Count, setPrizeBox8Count] = useState(1)
   const [prizeBox8Prize, setPrizeBox8Prize] = useState(false)
 
+  const [prizeBox9Status, setPrizeBox9Status] = useState(true)
+  const [prizeBox9Active, setPrizeBox9Active] = useState(false)
+  const [prizeBox9Count, setPrizeBox9Count] = useState(1)
+  const [prizeBox9Prize, setPrizeBox9Prize] = useState(false)
+
   const [coin1Active, setCoin1Active] = useState(false)
   const [coin2Active, setCoin2Active] = useState(false)
   const [coin3Active, setCoin3Active] = useState(false)
   const [coin4Active, setCoin4Active] = useState(false)
   const [coin5Active, setCoin5Active] = useState(false)
 
+  const [leaf1Active, setLeaf1Active] = useState(false)
   const [mushroom1Active, setMushroom1Active] = useState(false)
+  const [oneUp1Active, setOneUp1Active] = useState(false)
 
   const bricks: BrickProps[] = [
     { x: 10000, y: 64 },
@@ -193,7 +206,6 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox1Prize,
         prizeCount: prizeBox1Count,
         setPrizeCount: setPrizeBox1Count,
-
         children: (
           <Coin
             x={0}
@@ -216,7 +228,6 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox2Prize,
         prizeCount: prizeBox2Count,
         setPrizeCount: setPrizeBox2Count,
-
         children: (
           <Coin
             x={0}
@@ -239,7 +250,6 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox3Prize,
         prizeCount: prizeBox3Count,
         setPrizeCount: setPrizeBox3Count,
-
         children: (
           <Coin
             x={0}
@@ -262,7 +272,6 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox4Prize,
         prizeCount: prizeBox4Count,
         setPrizeCount: setPrizeBox4Count,
-
         children: (
           <Mushroom
             x={0}
@@ -287,7 +296,6 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox5Prize,
         prizeCount: prizeBox5Count,
         setPrizeCount: setPrizeBox5Count,
-
         children: (
           <Coin
             x={0}
@@ -310,13 +318,14 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox6Prize,
         prizeCount: prizeBox6Count,
         setPrizeCount: setPrizeBox6Count,
-
         children: (
-          <Coin
+          <Leaf
             x={0}
             y={0}
-            active={prizeBox6Prize}
-            setActive={setPrizeBox6Prize}
+            active={leaf1Active}
+            setActive={setLeaf1Active}
+            mario={mario}
+            setMario={setMario}
             score={score}
             setScore={setScore}
           />
@@ -333,7 +342,6 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox7Prize,
         prizeCount: prizeBox7Count,
         setPrizeCount: setPrizeBox7Count,
-
         children: (
           <Coin
             x={0}
@@ -356,7 +364,6 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeActive: setPrizeBox8Prize,
         prizeCount: prizeBox8Count,
         setPrizeCount: setPrizeBox8Count,
-
         children: (
           <Coin
             x={0}
@@ -365,6 +372,28 @@ const Foreground: FC<ForegroundProps> = ({
             setActive={setPrizeBox8Prize}
             score={score}
             setScore={setScore}
+          />
+        ),
+      },
+      {
+        x: 7360,
+        y: 1344,
+        status: prizeBox9Status,
+        setStatus: setPrizeBox9Status,
+        active: prizeBox9Active,
+        setActive: setPrizeBox9Active,
+        prizeActive: prizeBox9Prize,
+        setPrizeActive: setPrizeBox9Prize,
+        prizeCount: prizeBox9Count,
+        setPrizeCount: setPrizeBox9Count,
+        children: (
+          <OneUp
+            x={0}
+            y={0}
+            active={oneUp1Active}
+            lives={lives}
+            setActive={setOneUp1Active}
+            setLives={setLives}
           />
         ),
       },
@@ -402,10 +431,18 @@ const Foreground: FC<ForegroundProps> = ({
       prizeBox8Active,
       prizeBox8Count,
       prizeBox8Prize,
+      prizeBox9Status,
+      prizeBox9Active,
+      prizeBox9Count,
+      prizeBox9Prize,
+      leaf1Active,
       mushroom1Active,
+      oneUp1Active,
+      lives,
       mario,
-      setMario,
       score,
+      setLives,
+      setMario,
       setScore,
     ],
   )
@@ -420,14 +457,44 @@ const Foreground: FC<ForegroundProps> = ({
         setPrizeStatus: setMushroom1Active,
       },
       {
-        xRange: [5540, 5620],
+        xRange: [3460, 3560],
+        yRange: [444, 524],
+        boxStatus: prizeBox6Prize,
+        prizeStatus: leaf1Active,
+        setPrizeStatus: setLeaf1Active,
+      },
+      {
+        xRange: [5540, 5640],
         yRange: [304, 384],
         boxStatus: !coin1Active,
         prizeStatus: coin1Active,
         setPrizeStatus: setCoin1Active,
       },
+      {
+        xRange: [5700, 5800],
+        yRange: [464, 544],
+        boxStatus: !coin2Active,
+        prizeStatus: coin2Active,
+        setPrizeStatus: setCoin2Active,
+      },
+      {
+        xRange: [7320, 7420],
+        yRange: [1344, 1444],
+        boxStatus: prizeBox9Prize,
+        prizeStatus: oneUp1Active,
+        setPrizeStatus: setOneUp1Active,
+      },
     ],
-    [coin1Active, mushroom1Active, prizeBox4Prize],
+    [
+      coin1Active,
+      coin2Active,
+      leaf1Active,
+      mushroom1Active,
+      oneUp1Active,
+      prizeBox4Prize,
+      prizeBox6Prize,
+      prizeBox9Prize,
+    ],
   )
 
   // Prize Box interactions
