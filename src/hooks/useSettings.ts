@@ -6,18 +6,18 @@ export const useSettings = () => {
   const [gameOver, setGameOver] = useState(false)
   const length = 13320
   const [lives, setLives] = useState(1)
-  const [mario, setMario] = useState<1 | 2>(1)
+  const [mario, setMario] = useState<1 | 2 | 3>(1)
   const offset = {
     mario: 40,
     x: 80,
-    y: 240,
+    y: mario !== 3 ? 240 : 400,
   }
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const [paused, setPaused] = useState(false)
   const [score, setScore] = useState(0)
   const speed = {
     x: 16,
-    y: 16,
+    y: mario !== 3 ? 16 : 24,
   }
   const [timer, setTimer] = useState(300)
 

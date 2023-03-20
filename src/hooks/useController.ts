@@ -6,7 +6,7 @@ import { useWindow } from '@/hooks/useWindow'
 
 type ControllerProps = {
   active: boolean
-  mario: 1 | 2
+  mario: 1 | 2 | 3
   maximum: {
     length: number
     marioOffset: number

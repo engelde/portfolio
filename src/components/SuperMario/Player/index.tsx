@@ -9,7 +9,7 @@ export type PlayerProps = {
   jump: boolean
   length: number
   lives: number
-  mario: 1 | 2
+  mario: 1 | 2 | 3
   mobile: boolean
   paused: boolean
   score: number

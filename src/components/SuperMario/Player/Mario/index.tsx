@@ -3,7 +3,7 @@ import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 
 export type MarioProps = {
-  variant: 1 | 2
+  variant: 1 | 2 | 3
   x: number
   y: number
   xPos: number
@@ -25,25 +25,37 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
   const variants: VariantProps = {
     1: {
       1: {
-        src: '/images/mario/mario.sm.1.png',
+        src: '/images/mario/mario.regular.1.png',
         width: 100,
         height: 100,
       },
       2: {
-        src: '/images/mario/mario.sm.2.png',
+        src: '/images/mario/mario.regular.2.png',
         width: 100,
         height: 100,
       },
     },
     2: {
       1: {
-        src: '/images/mario/mario.lg.1.png',
+        src: '/images/mario/mario.super.1.png',
         width: 80,
         height: 160,
       },
       2: {
-        src: '/images/mario/mario.lg.2.png',
+        src: '/images/mario/mario.super.2.png',
         width: 80,
+        height: 160,
+      },
+    },
+    3: {
+      1: {
+        src: '/images/mario/mario.raccoon.1.png',
+        width: 120,
+        height: 160,
+      },
+      2: {
+        src: '/images/mario/mario.raccoon.2.png',
+        width: 120,
         height: 160,
       },
     },
@@ -52,15 +64,22 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
   const jumpVariants: VariantProps = {
     1: {
       1: {
-        src: '/images/mario/mario.sm.jump.png',
+        src: '/images/mario/mario.regular.jump.png',
         width: 100,
         height: 100,
       },
     },
     2: {
       1: {
-        src: '/images/mario/mario.lg.jump.png',
+        src: '/images/mario/mario.super.jump.png',
         width: 80,
+        height: 160,
+      },
+    },
+    3: {
+      1: {
+        src: '/images/mario/mario.raccoon.jump.png',
+        width: 120,
         height: 160,
       },
     },
@@ -94,7 +113,13 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
     <Box
       zIndex={9}
       position={'fixed'}
-      left={x + 'px'}
+      left={
+        x +
+        (forwards && variant !== 1
+          ? 80 - (jump ? jumpVariants[variant][1].width : variants[variant][state].width)
+          : 0) +
+        'px'
+      }
       bottom={y + 'px'}
       w={(jump ? jumpVariants[variant][1].width : variants[variant][state].width) + 'px'}
       h={(jump ? jumpVariants[variant][1].height : variants[variant][state].height) + 'px'}
@@ -105,7 +130,13 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
         width={jump ? jumpVariants[variant][1].width : variants[variant][state].width}
         height={jump ? jumpVariants[variant][1].height : variants[variant][state].height}
         priority
-        style={{ position: 'absolute', bottom: 0, left: 0 }}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          width: jump ? jumpVariants[variant][1].width : variants[variant][state].width,
+          height: jump ? jumpVariants[variant][1].height : variants[variant][state].height,
+        }}
       />
     </Box>
   )

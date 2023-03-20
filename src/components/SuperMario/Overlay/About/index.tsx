@@ -21,7 +21,7 @@ type VariantProps = {
 }
 
 const BioDescription = (
-  <VStack alignItems={'left'} spacing={0} mb={{ base: 4, md: 6 }}>
+  <VStack alignItems={'left'} spacing={0} mb={2}>
     {['Full Stack Software Engineer', 'Los Angeles, CA'].map((text, x) => (
       <Text
         key={x}
@@ -84,7 +84,7 @@ const BioContent = (
 const ExperienceDescription = (
   <Text
     as={motion.div}
-    mb={{ base: 4, md: 6 }}
+    mb={2}
     initial={{ translateX: 2400 }}
     animate={{ translateX: 0, transition: { duration: 0.6 } }}>
     <Code
@@ -307,7 +307,7 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
           </Box>
         </VStack>
 
-        <VStack alignItems={'top'} spacing={{ base: 4, md: 8 }}>
+        <VStack alignItems={'top'} spacing={4}>
           <Heading
             as={motion.div}
             size={'2xl'}

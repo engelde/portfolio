@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import Bush, { type BushProps } from './Bush'
+import Cloud, { type CloudProps } from './Cloud'
 import Cube, { type CubeProps } from './Cube'
 import Ground, { type GroundProps } from './Ground'
 import Rock, { type RockProps } from './Rock'
@@ -26,11 +27,32 @@ const Landscape: FC = () => {
     { x: 8960, y: 64 },
   ]
 
+  const clouds: CloudProps[] = [
+    { x: 7200, y: 1024 },
+    { x: 7280, y: 1024 },
+    { x: 7360, y: 1024 },
+    { x: 7440, y: 1024 },
+    { x: 7600, y: 1104 },
+    { x: 7680, y: 1104 },
+    { x: 7760, y: 1104 },
+    { x: 7840, y: 1104 },
+    { x: 7920, y: 1104 },
+    { x: 8000, y: 1104 },
+    { x: 8080, y: 1104 },
+    { x: 8160, y: 1104 },
+    { x: 8240, y: 1104 },
+    { x: 8320, y: 1104 },
+    { x: 8400, y: 1104 },
+    { x: 8480, y: 1104 },
+    { x: 8560, y: 1104 },
+  ]
+
   const cubes: CubeProps[] = [
     { variant: 1, x: 1440, y: 64 },
     { variant: 2, x: 2240, y: 64 },
     { variant: 3, x: 6480, y: 64 },
     { variant: 4, x: 10960, y: 64 },
+    { variant: 5, x: 6720, y: 1144 },
   ]
 
   const grounds: GroundProps[] = [
@@ -75,6 +97,10 @@ const Landscape: FC = () => {
     <>
       {bushes.map((item, x) => (
         <Bush key={x} x={item.x} y={item.y} />
+      ))}
+
+      {clouds.map((item, x) => (
+        <Cloud key={x} x={item.x} y={item.y} />
       ))}
 
       {cubes.map((item, x) => (
