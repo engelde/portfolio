@@ -59,7 +59,6 @@ const Stats: FC<StatsProps> = ({ xPos, yPos, lives, score, timer, complete }: St
           <Stat textAlign={'right'}>
             <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Score'}>
               {String(score).padStart(6, '0')}
-              {score}
             </StatNumber>
           </Stat>
         </StatGroup>
