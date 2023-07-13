@@ -20,25 +20,20 @@ Run the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Deployment
 
-Create a production build:
+Build and run the production server:
 
 ```bash
 pnpm build
-```
-
-Run the production server:
-
-```bash
 pnpm start
 ```
 
-Deploy with Docker:
+Build and run with Docker:
 
 ```bash
-docker build -t portfolio .
-docker run --name engelde -p 80:3000 -d portfolio
+docker build -t engelde/portfolio .
+docker run --name portfolio -p 80:3000 -d engelde/portfolio
 ```
