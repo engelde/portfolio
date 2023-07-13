@@ -3,10 +3,11 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - npm install -g pnpm
+        - pnpm install --frozen-lockfile
     build:
       commands:
-        - npm run build
+        - pnpm build
   artifacts:
     baseDirectory: .next
     files:
