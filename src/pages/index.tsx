@@ -6,7 +6,7 @@ type HomeProps = {
   ip: string
 }
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+export const getServerSideProps = (ctx: GetServerSidePropsContext) => {
   const forwarded = ctx.req.headers['x-forwarded-for']
   const ip = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : ctx.req.socket.remoteAddress
 

@@ -1,4 +1,5 @@
-import { FC, useEffect } from 'react'
+import type { FC } from 'react'
+import { useEffect } from 'react'
 import { Box } from '@chakra-ui/react'
 import { useAudio } from '@/hooks/useAudio'
 import { useController } from '@/hooks/useController'
@@ -30,7 +31,6 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     speed,
     timer,
     setComplete,
-    setGameOver,
     setLives,
     setMario,
     setPaused,

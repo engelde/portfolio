@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -112,7 +113,13 @@ const Coin: FC<CoinProps> = ({
               },
             }
           }>
-          <NextImage alt={'coin'} src={variants[state].src} width={80} height={80} priority />
+          <NextImage
+            alt={'coin'}
+            src={variants[state]?.src || ''}
+            width={80}
+            height={80}
+            priority
+          />
         </Box>
       )}
     </>

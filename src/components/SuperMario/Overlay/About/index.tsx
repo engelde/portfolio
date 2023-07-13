@@ -1,4 +1,4 @@
-import { FC, type ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import NextImage from 'next/image'
 import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -263,7 +263,7 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
       <Heading
         pb={6}
         size={'4xl'}
-        color={variants[variant].color}
+        color={variants[variant]?.color || 'white'}
         textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
         transition={'color .3s ease-in-out'}>
         <Code text={'<h1>'} />
@@ -299,7 +299,7 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
             }}>
             <NextImage
               alt={'about'}
-              src={variants[variant].image}
+              src={variants[variant]?.image || ''}
               width={300}
               height={300}
               priority
@@ -317,14 +317,14 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
             David Engel
           </Heading>
 
-          <Box>{variants[variant].description}</Box>
+          <Box>{variants[variant]?.description}</Box>
 
-          <Box display={{ base: 'none', md: 'block' }}>{variants[variant].content}</Box>
+          <Box display={{ base: 'none', md: 'block' }}>{variants[variant]?.content}</Box>
         </VStack>
       </HStack>
 
       <Box mt={2} display={{ base: 'block', md: 'none' }}>
-        {variants[variant].content}
+        {variants[variant]?.content}
       </Box>
     </Box>
   )

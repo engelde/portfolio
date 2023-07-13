@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import Mario from './Mario'
 import Pause from './Pause'
 import Stats from './Stats'
@@ -10,7 +10,7 @@ export type PlayerProps = {
   length: number
   lives: number
   mario: 1 | 2 | 3
-  mobile: boolean
+  mobile: boolean | undefined
   paused: boolean
   score: number
   timer: number
@@ -63,14 +63,7 @@ const Player: FC<PlayerProps> = ({
         />
       )}
 
-      <Pause
-        length={length}
-        open={paused}
-        xOffset={xOffset}
-        setOpen={setPaused}
-        setX={setX}
-        setY={setY}
-      />
+      <Pause length={length} open={paused} setOpen={setPaused} setX={setX} setY={setY} />
     </>
   )
 }

@@ -6,6 +6,7 @@ export type StoreState = typeof initialState
 
 export type StoreAction = {
   type: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any
 }
 
@@ -27,7 +28,7 @@ const reducer = (state: StoreState, action: StoreAction) => {
 
     case 'UPDATE_AUDIO':
       localStorage.setItem('audio', action.payload as string)
-      state.audio = action.payload
+      state.audio = action.payload as number
       return state
 
     default:

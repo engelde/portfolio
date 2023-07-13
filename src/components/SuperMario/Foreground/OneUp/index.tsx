@@ -1,4 +1,5 @@
-import { FC, useState, useEffect } from 'react'
+import type { FC } from 'react'
+import { useState, useEffect } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { useAudio } from '@/hooks/useAudio'

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import type { FC } from 'react'
 import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { config } from '@/utilities/config'
@@ -58,7 +58,7 @@ const Stats: FC<StatsProps> = ({ xPos, yPos, lives, score, timer, complete }: St
           </Stat>
           <Stat textAlign={'right'}>
             <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Score'}>
-              {[...Array(6 - score.toString().length)].map(() => 0)}
+              {String(score).padStart(6, '0')}
               {score}
             </StatNumber>
           </Stat>

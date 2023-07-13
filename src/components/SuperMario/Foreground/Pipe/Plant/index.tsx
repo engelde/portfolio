@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -100,7 +101,7 @@ const Plant: FC<PlantProps> = ({ variant, forwards, x, y }: PlantProps) => {
       }}>
       <NextImage
         alt={'plant'}
-        src={variants[variant][state].src}
+        src={variants[variant]?.[state]?.src || ''}
         width={80}
         height={160}
         priority

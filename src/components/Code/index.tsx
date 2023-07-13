@@ -1,8 +1,9 @@
-import { FC } from 'react'
-import { Code as CkCode, type CodeProps as CkCodeProps } from '@chakra-ui/react'
+import type { FC } from 'react'
+import type { CodeProps as CkCodeProps } from '@chakra-ui/react'
+import { Code as CkCode } from '@chakra-ui/react'
 
 export type CodeProps = CkCodeProps & {
-  text?: String
+  text?: string
 }
 
 const Code: FC<CodeProps> = ({ text, ...rest }: CodeProps) => {

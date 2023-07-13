@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'

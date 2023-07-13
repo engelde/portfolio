@@ -1,4 +1,5 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Brick, { type BrickProps } from './Brick'
 import Coin, { type CoinProps } from './Coin'
 import Goomba, { type GoombaProps } from './Goomba'
@@ -520,6 +521,10 @@ const Foreground: FC<ForegroundProps> = ({
   useEffect(() => {
     prizeInteractions.map((item) => {
       if (
+        item.xRange[0] &&
+        item.xRange[1] &&
+        item.yRange[0] &&
+        item.yRange[1] &&
         xPos > item.xRange[0] &&
         xPos < item.xRange[1] &&
         yPos >= item.yRange[0] - (mario !== 1 ? marioOffset : 0) &&
