@@ -9,7 +9,7 @@ This is my portfolio site! The site is a work in progress but feel free to look 
 Install dependencies:
 
 ```bash
-npm i
+pnpm i
 ```
 
 ## Development
@@ -17,7 +17,7 @@ npm i
 Run the development server:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser.
@@ -27,13 +27,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 Create a production build:
 
 ```bash
-npm run build
+pnpm build
 ```
 
 Run the production server:
 
 ```bash
-npm run start
+pnpm start
 ```
 
 Deploy with Docker:

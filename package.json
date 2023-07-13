@@ -10,6 +10,7 @@
     "url": "https://github.com/engelde/portfolio"
   },
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
