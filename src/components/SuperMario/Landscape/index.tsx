@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import Bush, { type BushProps } from './Bush'
 import Cloud, { type CloudProps } from './Cloud'
 import Cube, { type CubeProps } from './Cube'

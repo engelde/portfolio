@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 
@@ -116,26 +117,36 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
       left={
         x +
         (forwards && variant !== 1
-          ? 80 - (jump ? jumpVariants[variant][1].width : variants[variant][state].width)
+          ? 80 -
+            ((jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0)
           : 0) +
         'px'
       }
       bottom={y + 'px'}
-      w={(jump ? jumpVariants[variant][1].width : variants[variant][state].width) + 'px'}
-      h={(jump ? jumpVariants[variant][1].height : variants[variant][state].height) + 'px'}
+      w={
+        ((jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0) + 'px'
+      }
+      h={
+        ((jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0) +
+        'px'
+      }
       transform={!forwards ? 'scaleX(-1)' : ''}>
       <NextImage
         alt={'mario'}
-        src={jump ? jumpVariants[variant][1].src : variants[variant][state].src}
-        width={jump ? jumpVariants[variant][1].width : variants[variant][state].width}
-        height={jump ? jumpVariants[variant][1].height : variants[variant][state].height}
+        src={(jump ? jumpVariants[variant]?.[1]?.src : variants[variant]?.[state]?.src) || ''}
+        width={(jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0}
+        height={
+          (jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0
+        }
         priority
         style={{
           position: 'absolute',
           bottom: 0,
           right: 0,
-          width: jump ? jumpVariants[variant][1].width : variants[variant][state].width,
-          height: jump ? jumpVariants[variant][1].height : variants[variant][state].height,
+          width:
+            (jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0,
+          height:
+            (jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0,
         }}
       />
     </Box>

@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -157,7 +158,7 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
         setIsPreloading(false)
         setIsLoading(false)
       } else {
-        preload()
+        void preload()
       }
     }
   }, [isPreloading, setIsPreloading, setIsLoading, router])

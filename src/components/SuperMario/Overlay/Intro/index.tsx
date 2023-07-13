@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Kbd, Text, VStack } from '@chakra-ui/react'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 import { motion } from 'framer-motion'

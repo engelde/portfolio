@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -58,7 +59,7 @@ const Turtle: FC<TurtleProps> = ({ x, y, offset }: TurtleProps) => {
           repeatDelay: 0,
         },
       }}>
-      <NextImage alt={'turtle'} src={variants[state].src} width={80} height={160} priority />
+      <NextImage alt={'turtle'} src={variants[state]?.src || ''} width={80} height={160} priority />
     </Box>
   )
 }

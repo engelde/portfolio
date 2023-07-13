@@ -1,4 +1,4 @@
-import { FC, type ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import NextImage from 'next/image'
 import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -56,7 +56,7 @@ const BioContent = (
     whileInView={{ opacity: 1 }}>
     <Code text={'<p>'} />
     {
-      "I am a senior full stack software engineer with nearly 10 years of experience delivering successful projects to senior management, clients, and investors. I have a Master's in Software Engineering from DePaul University and I currently work at the University of Southern California. When I'm not creating things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
+      "I am a senior full stack software engineer with 10 years of experience delivering successful projects to senior management, clients, and investors. I have an MS in Software Engineering from Depaul University and I currently enjoy working with TypeScript, React, GraphQL, Python, Node.js, Docker and AWS. I currently work at the University of Southern California but, when I'm not creating things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
     }
     <Text
       as={motion.span}
@@ -263,7 +263,7 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
       <Heading
         pb={6}
         size={'4xl'}
-        color={variants[variant].color}
+        color={variants[variant]?.color || 'white'}
         textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
         transition={'color .3s ease-in-out'}>
         <Code text={'<h1>'} />
@@ -299,7 +299,7 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
             }}>
             <NextImage
               alt={'about'}
-              src={variants[variant].image}
+              src={variants[variant]?.image || ''}
               width={300}
               height={300}
               priority
@@ -317,14 +317,14 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
             David Engel
           </Heading>
 
-          <Box>{variants[variant].description}</Box>
+          <Box>{variants[variant]?.description}</Box>
 
-          <Box display={{ base: 'none', md: 'block' }}>{variants[variant].content}</Box>
+          <Box display={{ base: 'none', md: 'block' }}>{variants[variant]?.content}</Box>
         </VStack>
       </HStack>
 
       <Box mt={2} display={{ base: 'block', md: 'none' }}>
-        {variants[variant].content}
+        {variants[variant]?.content}
       </Box>
     </Box>
   )

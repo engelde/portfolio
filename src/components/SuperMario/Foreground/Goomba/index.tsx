@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -57,7 +58,7 @@ const Goomba: FC<GoombaProps> = ({ x, y, offset }: GoombaProps) => {
           repeatDelay: 0,
         },
       }}>
-      <NextImage alt={'goomba'} src={variants[state].src} width={80} height={80} priority />
+      <NextImage alt={'goomba'} src={variants[state]?.src || ''} width={80} height={80} priority />
     </Box>
   )
 }

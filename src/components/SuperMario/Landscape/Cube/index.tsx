@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -53,15 +53,15 @@ const Cube: FC<CubeProps> = ({ variant, x, y }: CubeProps) => {
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
-      w={variants[variant].width + 'px'}
-      h={variants[variant].height + 'px'}
+      w={(variants[variant]?.width || 0) + 'px'}
+      h={(variants[variant]?.height || 0) + 'px'}
       initial={{ translateY: '150%' }}
       animate={{ translateY: 0, transition: { delay: 0.3, ease: 'linear' } }}>
       <NextImage
         alt={'cube'}
-        src={variants[variant].src}
-        width={variants[variant].width}
-        height={variants[variant].height}
+        src={variants[variant]?.src || ''}
+        width={variants[variant]?.width || 0}
+        height={variants[variant]?.height || 0}
         priority
       />
     </Box>

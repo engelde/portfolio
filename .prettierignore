@@ -1,7 +1,10 @@
 .next
-next-env.d.ts
+.cache
+public
 node_modules
+next-env.d.ts
+next.config.js
 yarn.lock
 package-lock.json
-public
-data
+pnpm-lock.json
+LICENSE.md

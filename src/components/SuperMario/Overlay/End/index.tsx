@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
 import NextImage from 'next/image'
