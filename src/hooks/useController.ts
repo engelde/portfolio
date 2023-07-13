@@ -13,7 +13,7 @@ type ControllerProps = {
     xOffset: number
     yOffset: number
   }
-  mobile: boolean
+  mobile: boolean | undefined
   pause: {
     paused: boolean
     setPaused: (val: boolean) => void
@@ -73,7 +73,7 @@ export const useController = ({
     if (active) {
       if (jump) {
         // Ceiling levels
-        for (let i of position.ceilingLevels) {
+        for (const i of position.ceilingLevels) {
           if (
             x + xOffset > i.xMin &&
             x + xOffset < i.xMax &&
@@ -95,7 +95,7 @@ export const useController = ({
         }
         // Platform levels
         if (!mobile) {
-          for (let i of position.platformLevels) {
+          for (const i of position.platformLevels) {
             if (y + yOffset >= i.height && x + xOffset > i.xMin && x + xOffset < i.xMax) {
               if (y !== i.height) {
                 setY(i.height)
@@ -106,7 +106,7 @@ export const useController = ({
           }
         }
         // Ground levels
-        for (let i of position.groundLevels) {
+        for (const i of position.groundLevels) {
           if (x + xOffset > i.xMin && x + xOffset < i.xMax) {
             if (y !== i.height) {
               setYOffset(y + yOffset - i.height > 0 ? y + yOffset - i.height : 0)

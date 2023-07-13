@@ -1,4 +1,5 @@
-import { FC, ReactNode, useEffect, useState } from 'react'
+import type { FC, ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -130,7 +131,7 @@ const PrizeBox: FC<PrizeBoxProps> = ({
         onClick={handleAction}>
         <NextImage
           alt={'box'}
-          src={status ? variants[state].src : variants[0].src}
+          src={(status ? variants[state]?.src : variants[0]?.src) || ''}
           width={80}
           height={80}
           priority

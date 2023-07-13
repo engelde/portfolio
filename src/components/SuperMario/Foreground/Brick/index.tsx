@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 
@@ -40,7 +41,7 @@ const Brick: FC<BrickProps> = ({ x, y }: BrickProps) => {
 
   return (
     <Box zIndex={1} position={'absolute'} left={x + 'px'} bottom={y + 'px'} w={'80px'} h={'80px'}>
-      <NextImage alt={'brick'} src={variants[state].src} width={80} height={80} priority />
+      <NextImage alt={'brick'} src={variants[state]?.src || ''} width={80} height={80} priority />
     </Box>
   )
 }

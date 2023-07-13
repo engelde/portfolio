@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -126,9 +126,9 @@ const Clouds: FC = () => {
           }}>
           <NextImage
             alt={'cloud'}
-            src={variants[item.variant].src}
-            width={variants[item.variant].width}
-            height={variants[item.variant].height}
+            src={variants[item.variant]?.src || ''}
+            width={variants[item.variant]?.width || 0}
+            height={variants[item.variant]?.height || 0}
             style={{ transform: 'scale(' + item.scale + ')' }}
             priority
           />

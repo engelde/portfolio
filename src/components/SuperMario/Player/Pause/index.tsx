@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import {
   Drawer,
   DrawerContent,
@@ -23,7 +23,6 @@ import { useAudio } from '@/hooks/useAudio'
 export type PauseProps = {
   length: number
   open: boolean
-  xOffset: number
   setOpen: (status: boolean) => void
   setX: (status: number) => void
   setY: (status: number) => void
@@ -36,7 +35,7 @@ type MenuLink = {
   y: number
 }
 
-const Pause: FC<PauseProps> = ({ length, open, xOffset, setOpen, setX, setY }: PauseProps) => {
+const Pause: FC<PauseProps> = ({ length, open, setOpen, setX, setY }: PauseProps) => {
   const { audio, playAudio, setAudio } = useAudio()
 
   const links: MenuLink[] = [
@@ -57,7 +56,6 @@ const Pause: FC<PauseProps> = ({ length, open, xOffset, setOpen, setX, setY }: P
 
   const handleInventory = (x: number, y: number) => {
     if (window.scrollY !== x) {
-      // @ts-ignore
       window.scrollTo({ top: x, behavior: 'instant' })
       setTimeout(() => {
         setX(x)

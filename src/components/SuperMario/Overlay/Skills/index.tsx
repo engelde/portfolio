@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Text, VStack } from '@chakra-ui/react'
 import {
   SiApollographql,

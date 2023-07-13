@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -73,7 +74,7 @@ const Fire: FC<FireProps> = ({ x, y, forwards }: FireProps) => {
           },
         }
       }>
-      <NextImage alt={'fire'} src={variants[state].src} width={30} height={34} priority />
+      <NextImage alt={'fire'} src={variants[state]?.src || ''} width={30} height={34} priority />
     </Box>
   )
 }

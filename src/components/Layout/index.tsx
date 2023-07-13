@@ -1,13 +1,15 @@
-import { FC, ReactNode, useState } from 'react'
+import type { FC, ReactNode } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
-import { Box, Container, ContainerProps } from '@chakra-ui/react'
+import type { ContainerProps } from '@chakra-ui/react'
+import { Box, Container } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Footer from '@/components/Footer'
 import Preloader from '@/components/Preloader'
 import { config } from '@/utilities/config'
 
 export type LayoutProps = ContainerProps & {
-  title: String
+  title: string
   dark?: boolean
   children: ReactNode
 }

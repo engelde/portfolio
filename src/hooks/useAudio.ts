@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useStore } from '@/utilities/store'
 
 type AudioVariantsType = {
@@ -45,7 +45,7 @@ export const useAudio = () => {
     if (variants[type] && store.audio > 0) {
       const sound = new Audio(variants[type])
       sound.volume = store.audio / 100
-      sound.play()
+      void sound.play()
     }
   }
 

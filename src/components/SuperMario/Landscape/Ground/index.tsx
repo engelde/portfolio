@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { HStack, Box } from '@chakra-ui/react'
 
 export type GroundProps = {
