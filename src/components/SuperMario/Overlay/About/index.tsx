@@ -56,7 +56,7 @@ const BioContent = (
     whileInView={{ opacity: 1 }}>
     <Code text={'<p>'} />
     {
-      "I am a senior full stack software engineer with nearly 10 years of experience delivering successful projects to senior management, clients, and investors. I have a Master's in Software Engineering from DePaul University and I currently work at the University of Southern California. When I'm not creating things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
+      "I am a senior full stack software engineer with 10 years of experience delivering successful projects to senior management, clients, and investors. I have an MS in Software Engineering from Depaul University and I currently enjoy working with TypeScript, React, GraphQL, Python, Node.js, Docker and AWS. I currently work at the University of Southern California but, when I'm not creating things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
     }
     <Text
       as={motion.span}
