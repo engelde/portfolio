@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
-import NextLink from 'next/link'
 import NextImage from 'next/image'
+import NextLink from 'next/link'
 import { Box, Button, Flex, Heading, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Code from '@/components/Code'
