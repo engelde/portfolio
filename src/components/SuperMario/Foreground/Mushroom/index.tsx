@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'

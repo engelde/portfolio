@@ -1,7 +1,8 @@
 import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Kbd, Text, VStack } from '@chakra-ui/react'
-import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 import { motion } from 'framer-motion'
+import { BsMouseFill } from 'react-icons/bs'
+import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 import Code from '@/components/Code'
 
 export type IntroProps = {
@@ -95,28 +96,30 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
       <HStack
         as={motion.div}
         color={'black'}
-        spacing={8}
+        spacing={10}
         mt={8}
         display={{ base: 'none', lg: 'flex' }}
         initial={{ opacity: 0, translateX: -2000 }}
         animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}>
         <HStack color={'black'} spacing={1}>
+          <Icon as={BsMouseFill} boxSize={10} color={'white'} pr={1} title={'Scroll'} />
+
           <Text color={'white'} pr={2}>
-            scroll or
+            or
           </Text>
 
-          <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+          <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
             <Icon as={FiArrowLeft} />
           </Kbd>
           <VStack spacing={0.5}>
-            <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+            <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
               <Icon as={FiArrowUp} />
             </Kbd>
-            <Kbd bg={'white'} mb={''} borderColor={'blackAlpha.300'}>
+            <Kbd bg={'white'} mb={''} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
               <Icon as={FiArrowDown} />
             </Kbd>
           </VStack>
-          <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+          <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
             <Icon as={FiArrowRight} />
           </Kbd>
 
@@ -126,7 +129,7 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
         </HStack>
 
         <HStack color={'black'} spacing={1}>
-          <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+          <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Escape Key'}>
             esc
           </Kbd>
 

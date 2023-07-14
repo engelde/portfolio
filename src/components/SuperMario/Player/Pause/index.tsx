@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import {
   Drawer,
-  DrawerContent,
   DrawerBody,
   DrawerCloseButton,
+  DrawerContent,
   DrawerOverlay,
   Flex,
   Heading,
@@ -16,8 +16,8 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { CgMenuLeftAlt } from 'react-icons/cg'
 import { motion } from 'framer-motion'
+import { CgMenuLeftAlt } from 'react-icons/cg'
 import { useAudio } from '@/hooks/useAudio'
 
 export type PauseProps = {

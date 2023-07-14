@@ -1,8 +1,9 @@
 import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Text, VStack } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import {
-  SiApollographql,
   SiAmazonaws,
+  SiApollographql,
   SiDocker,
   SiFlask,
   SiGit,
@@ -10,8 +11,8 @@ import {
   SiJavascript,
   SiLaravel,
   SiLinux,
-  SiNextdotjs,
   SiMongodb,
+  SiNextdotjs,
   SiNodedotjs,
   SiPhp,
   SiPostgresql,
@@ -22,7 +23,6 @@ import {
   SiTypescript,
   SiVuedotjs,
 } from 'react-icons/si'
-import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 
 export type SkillsProps = {

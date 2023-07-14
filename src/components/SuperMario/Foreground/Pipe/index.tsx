@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import NextImage from 'next/image'
-import { VStack, Box } from '@chakra-ui/react'
+import { Box, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Fire from './Fire'
 import Plant from './Plant'
