@@ -54,7 +54,7 @@ const Pause: FC<PauseProps> = ({ length, open, setOpen, setX, setY }: PauseProps
     playAudio('stomp')
   }
 
-  const handleInventory = (x: number, y: number) => {
+  const handleLink = (x: number, y: number) => {
     if (window.scrollY !== x) {
       window.scrollTo({ top: x, behavior: 'instant' })
       setTimeout(() => {
@@ -124,7 +124,7 @@ const Pause: FC<PauseProps> = ({ length, open, setOpen, setX, setY }: PauseProps
                       fontSize={'2xl'}
                       textAlign={'center'}
                       _hover={{ cursor: 'pointer', color: link.color }}
-                      onClick={() => handleInventory(link.x, link.y)}>
+                      onClick={() => handleLink(link.x, link.y)}>
                       {link.name}
                     </Text>
                   ))}

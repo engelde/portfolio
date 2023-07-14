@@ -10,6 +10,7 @@ export type PlayerProps = {
   length: number
   lives: number
   mario: 1 | 2 | 3
+  maxXOffset: number
   mobile: boolean | undefined
   paused: boolean
   score: number
@@ -31,6 +32,7 @@ const Player: FC<PlayerProps> = ({
   length,
   lives,
   mario,
+  maxXOffset,
   mobile,
   paused,
   score,
@@ -63,7 +65,13 @@ const Player: FC<PlayerProps> = ({
         />
       )}
 
-      <Pause length={length} open={paused} setOpen={setPaused} setX={setX} setY={setY} />
+      <Pause
+        length={length - maxXOffset - xOffset}
+        open={paused}
+        setOpen={setPaused}
+        setX={setX}
+        setY={setY}
+      />
     </>
   )
 }
