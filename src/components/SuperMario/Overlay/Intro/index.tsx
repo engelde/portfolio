@@ -102,7 +102,7 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
         initial={{ opacity: 0, translateX: -2000 }}
         animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}>
         <HStack color={'black'} spacing={1}>
-          <Icon as={BsMouseFill} boxSize={10} color={'white'} pr={2} title={'Scroll'} />
+          <Icon as={BsMouseFill} boxSize={10} color={'white'} pr={1} title={'Scroll'} />
 
           <Text color={'white'} pr={2}>
             or
