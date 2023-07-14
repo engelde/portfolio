@@ -134,6 +134,7 @@ const PrizeBox: FC<PrizeBoxProps> = ({
           src={(status ? variants[state]?.src : variants[0]?.src) || ''}
           width={80}
           height={80}
+          draggable={false}
           priority
         />
       </Box>

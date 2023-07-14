@@ -104,6 +104,7 @@ const Plant: FC<PlantProps> = ({ variant, forwards, x, y }: PlantProps) => {
         src={variants[variant]?.[state]?.src || ''}
         width={80}
         height={160}
+        draggable={false}
         priority
         {...(!forwards && {
           style: {

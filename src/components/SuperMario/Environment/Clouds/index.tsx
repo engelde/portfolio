@@ -130,6 +130,7 @@ const Clouds: FC = () => {
             width={variants[item.variant]?.width || 0}
             height={variants[item.variant]?.height || 0}
             style={{ transform: 'scale(' + item.scale + ')' }}
+            draggable={false}
             priority
           />
         </Box>

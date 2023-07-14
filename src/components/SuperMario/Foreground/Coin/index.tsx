@@ -118,6 +118,7 @@ const Coin: FC<CoinProps> = ({
             src={variants[state]?.src || ''}
             width={80}
             height={80}
+            draggable={false}
             priority
           />
         </Box>

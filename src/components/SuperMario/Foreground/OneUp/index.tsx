@@ -57,7 +57,14 @@ const OneUp: FC<OneUpProps> = ({ x, y, active, lives, setActive, setLives }: One
           transition={'opacity .1s ease-out'}
           _hover={{ cursor: 'pointer', filter: 'brightness(110%)' }}
           onClick={() => !running && setActive(true)}>
-          <NextImage alt={'1up'} src={'/images/1up/1up.png'} width={80} height={80} priority />
+          <NextImage
+            alt={'1up'}
+            src={'/images/1up/1up.png'}
+            width={80}
+            height={80}
+            draggable={false}
+            priority
+          />
         </Box>
       )}
     </>

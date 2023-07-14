@@ -64,7 +64,14 @@ const Sun: FC = () => {
             repeatDelay: 0,
           },
         }}>
-        <NextImage alt={'sun'} src={'/images/sun/sun.png'} width={215} height={215} priority />
+        <NextImage
+          alt={'sun'}
+          src={'/images/sun/sun.png'}
+          width={215}
+          height={215}
+          draggable={false}
+          priority
+        />
       </Box>
     </Box>
   )
