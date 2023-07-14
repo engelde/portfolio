@@ -10,10 +10,10 @@ const ScrollIndicator: FC<ScrollIndicatorProps> = ({ xPos }: ScrollIndicatorProp
   return (
     <Flex
       as={motion.div}
-      zIndex={9}
+      zIndex={22}
       position={'fixed'}
       left={0}
-      bottom={0}
+      bottom={2}
       w={'full'}
       mb={2}
       alignItems={'center'}
@@ -49,6 +49,7 @@ const ScrollIndicator: FC<ScrollIndicatorProps> = ({ xPos }: ScrollIndicatorProp
           Scroll for more!
         </Text>
         <Text
+          mt={-3}
           fontSize={'4xl'}
           color={'white'}
           textShadow={'2px 2px rgba(0, 0, 0, 0.28)'}

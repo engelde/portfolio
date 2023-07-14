@@ -112,9 +112,10 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           complete={complete}
           forwards={forwards}
           jump={jump}
-          length={length}
+          length={length + xOffset}
           lives={lives}
           mario={mario}
+          maxXOffset={offset.x}
           mobile={mobile}
           paused={paused}
           score={score}
