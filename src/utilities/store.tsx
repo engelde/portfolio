@@ -15,8 +15,6 @@ export const useStore = create<State>()(
       }),
       {
         name: 'app',
-        // Hydrate in _app.tsx to fix localstorage mismatch
-        skipHydration: true,
       },
     ),
   ),
