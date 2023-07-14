@@ -138,6 +138,7 @@ const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioPro
         height={
           (jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0
         }
+        draggable={false}
         priority
         style={{
           position: 'absolute',

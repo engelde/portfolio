@@ -77,7 +77,14 @@ const Leaf: FC<LeafProps> = ({
               ease: 'easeInOut',
             },
           }}>
-          <NextImage alt={'leaf'} src={'/images/leaf/leaf.png'} width={80} height={80} priority />
+          <NextImage
+            alt={'leaf'}
+            src={'/images/leaf/leaf.png'}
+            width={80}
+            height={80}
+            draggable={false}
+            priority
+          />
         </Box>
       )}
     </>

@@ -20,7 +20,14 @@ const Bush: FC<BushProps> = ({ x, y }: BushProps) => {
       h={'80px'}
       initial={{ translateY: '150%' }}
       animate={{ translateY: 0, transition: { delay: 0.3, ease: 'linear' } }}>
-      <NextImage alt={'bush'} src={'/images/bush/bush.png'} width={80} height={80} priority />
+      <NextImage
+        alt={'bush'}
+        src={'/images/bush/bush.png'}
+        width={80}
+        height={80}
+        draggable={false}
+        priority
+      />
     </Box>
   )
 }

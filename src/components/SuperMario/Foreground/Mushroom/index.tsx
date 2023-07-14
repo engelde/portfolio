@@ -91,6 +91,7 @@ const Mushroom: FC<MushroomProps> = ({
             src={'/images/mushroom/mushroom.png'}
             width={80}
             height={80}
+            draggable={false}
             priority
           />
         </Box>

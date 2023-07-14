@@ -74,7 +74,14 @@ const Fire: FC<FireProps> = ({ x, y, forwards }: FireProps) => {
           },
         }
       }>
-      <NextImage alt={'fire'} src={variants[state]?.src || ''} width={30} height={34} priority />
+      <NextImage
+        alt={'fire'}
+        src={variants[state]?.src || ''}
+        width={30}
+        height={34}
+        draggable={false}
+        priority
+      />
     </Box>
   )
 }
