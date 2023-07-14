@@ -52,7 +52,14 @@ const Dog: FC<DogProps> = ({ xPos, xMin, xMax, offset }: DogProps) => {
             repeatDelay: 0,
           },
         }}>
-        <NextImage alt={'dog'} src={'/images/dog/dog.png'} width={300} height={300} priority />
+        <NextImage
+          alt={'dog'}
+          src={'/images/dog/dog.png'}
+          width={300}
+          height={300}
+          draggable={false}
+          priority
+        />
       </Box>
     </Box>
   )

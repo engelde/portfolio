@@ -59,7 +59,14 @@ const Turtle: FC<TurtleProps> = ({ x, y, offset }: TurtleProps) => {
           repeatDelay: 0,
         },
       }}>
-      <NextImage alt={'turtle'} src={variants[state]?.src || ''} width={80} height={160} priority />
+      <NextImage
+        alt={'turtle'}
+        src={variants[state]?.src || ''}
+        width={80}
+        height={160}
+        draggable={false}
+        priority
+      />
     </Box>
   )
 }

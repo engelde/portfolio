@@ -20,7 +20,14 @@ const Cloud: FC<CloudProps> = ({ x, y }: CloudProps) => {
       h={'80px'}
       initial={{ translateY: '150%' }}
       animate={{ translateY: 0, transition: { delay: 0.3, ease: 'linear' } }}>
-      <NextImage alt={'cloud'} src={'/images/cloud/cloud.3.png'} width={80} height={80} priority />
+      <NextImage
+        alt={'cloud'}
+        src={'/images/cloud/cloud.3.png'}
+        width={80}
+        height={80}
+        draggable={false}
+        priority
+      />
     </Box>
   )
 }

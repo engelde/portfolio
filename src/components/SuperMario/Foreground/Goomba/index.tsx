@@ -58,7 +58,14 @@ const Goomba: FC<GoombaProps> = ({ x, y, offset }: GoombaProps) => {
           repeatDelay: 0,
         },
       }}>
-      <NextImage alt={'goomba'} src={variants[state]?.src || ''} width={80} height={80} priority />
+      <NextImage
+        alt={'goomba'}
+        src={variants[state]?.src || ''}
+        width={80}
+        height={80}
+        draggable={false}
+        priority
+      />
     </Box>
   )
 }

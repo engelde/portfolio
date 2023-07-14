@@ -302,6 +302,7 @@ const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
               src={variants[variant]?.image || ''}
               width={300}
               height={300}
+              draggable={false}
               priority
             />
           </Box>

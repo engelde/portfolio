@@ -62,6 +62,7 @@ const Cube: FC<CubeProps> = ({ variant, x, y }: CubeProps) => {
         src={variants[variant]?.src || ''}
         width={variants[variant]?.width || 0}
         height={variants[variant]?.height || 0}
+        draggable={false}
         priority
       />
     </Box>

@@ -28,6 +28,7 @@ const Custom404: NextPage = () => {
                 src={'/media/gandalf/gandalf.webp'}
                 width={400}
                 height={230}
+                draggable={false}
                 priority
               />
             </Box>

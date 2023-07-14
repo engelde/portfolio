@@ -40,7 +40,14 @@ const Pipe: FC<PipeProps> = ({
         spacing={0}
         mb={rotate !== undefined ? '-' + (height / 2 - 76) + 'px' : '0px'}
         transform={'rotate(' + ((rotate !== undefined && rotate + 'deg') || '0deg') + ')'}>
-        <NextImage alt={'pipe'} src={'/images/pipe/pipe.0.png'} width={160} height={80} priority />
+        <NextImage
+          alt={'pipe'}
+          src={'/images/pipe/pipe.0.png'}
+          width={160}
+          height={80}
+          draggable={false}
+          priority
+        />
         <Box
           w={'160px'}
           h={height - 80 + 'px'}

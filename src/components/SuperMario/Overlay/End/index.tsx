@@ -53,6 +53,7 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
             src={'/images/clear/clear.png'}
             height={820}
             width={1204}
+            draggable={false}
             priority
             style={{
               position: 'absolute',
@@ -102,6 +103,7 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
                 src={'/media/fireworks/fireworks.webp'}
                 height={248}
                 width={300}
+                draggable={false}
                 priority
               />
             </Box>
@@ -197,6 +199,7 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
                     src={'/images/github/github.png'}
                     width={58}
                     height={60}
+                    draggable={false}
                     priority
                   />
                 </Box>
@@ -227,6 +230,7 @@ const End: FC<EndProps> = ({ x, xPos }: EndProps) => {
                     src={'/images/linkedin/linkedin.png'}
                     width={60}
                     height={60}
+                    draggable={false}
                     priority
                   />
                 </Box>
