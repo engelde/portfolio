@@ -1,17 +1,14 @@
 import type { AppProps, NextWebVitalsMetric } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import { theme } from '@/utilities/theme'
-import { StoreProvider } from '@/utilities/store'
 import '@fontsource/vt323/400.css'
 import '@/styles/globals.css'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <StoreProvider>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </StoreProvider>
+    <ChakraProvider theme={theme}>
+      <Component {...pageProps} />
+    </ChakraProvider>
   )
 }
 

@@ -29,7 +29,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
     "sharp": "^0.31.3",
-    "styled-components": "^5.3.11"
+    "styled-components": "^5.3.11",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@types/eslint": "^8.44.0",
@@ -40,6 +41,7 @@
     "@typescript-eslint/parser": "^6.0.0",
     "eslint-config-next": "13.2.3",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.3",
     "prettier": "^2.8.8",

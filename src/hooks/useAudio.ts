@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useStore } from '@/utilities/store'
 
 type AudioVariantsType = {
@@ -6,7 +5,7 @@ type AudioVariantsType = {
 }
 
 export const useAudio = () => {
-  const [store, updateStore] = useStore()
+  const [audio, setAudio] = useStore((state) => [state.audio, state.setAudio])
 
   const variants: AudioVariantsType = {
     '1up': '/audio/1up/1up.mp3',
@@ -30,28 +29,18 @@ export const useAudio = () => {
     stomp: '/audio/stomp/stomp.mp3',
   }
 
-  // Fetch Audio
-  useEffect(() => {
-    updateStore({ type: 'FETCH_AUDIO' })
-  }, [updateStore])
-
-  // Set Audio
-  const setAudio = (val: number) => {
-    updateStore({ type: 'UPDATE_AUDIO', payload: val })
-  }
-
   // Play Audio
   const playAudio = (type: string) => {
-    if (variants[type] && store.audio > 0) {
+    if (variants[type] && audio > 0) {
       const sound = new Audio(variants[type])
-      sound.volume = store.audio / 100
+      sound.volume = audio / 100
       void sound.play()
     }
   }
 
   return {
-    audio: store.audio,
+    audio: audio,
     playAudio,
-    setAudio,
+    setAudio: setAudio,
   }
 }
