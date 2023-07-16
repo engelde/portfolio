@@ -23,14 +23,13 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fireworks-js/react": "^2.10.7",
-    "@fontsource/vt323": "^4.5.10",
-    "framer-motion": "^10.12.20",
+    "@fontsource/vt323": "^5.0.5",
+    "framer-motion": "^10.12.21",
     "next": "13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
-    "sharp": "^0.31.3",
-    "styled-components": "^5.3.11",
+    "sharp": "^0.32.3",
     "zustand": "^4.3.9"
   },
   "devDependencies": {
