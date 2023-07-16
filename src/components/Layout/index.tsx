@@ -18,7 +18,14 @@ const Layout: FC<LayoutProps> = ({ title, dark, children, ...rest }: LayoutProps
   const [isLoading, setIsLoading] = useState(true)
 
   return (
-    <Container maxW={'full'} p={0} bg={'black'} {...rest}>
+    <Container
+      maxW={'full'}
+      p={0}
+      bg={'black'}
+      {...rest}
+      {...(config.app.environment === 'production' && {
+        onContextMenu: (e) => e.preventDefault(),
+      })}>
       <Head>
         <title>{config.app.name + ' | ' + title}</title>
       </Head>

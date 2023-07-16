@@ -39,9 +39,10 @@ const Pause: FC<PauseProps> = ({ length, open, setOpen, setX, setY }: PauseProps
   const { audio, playAudio, setAudio } = useAudio()
 
   const links: MenuLink[] = [
-    { name: '.Home()', color: 'cyan.300', x: 0, y: 64 },
-    { name: '.About()', color: 'cyan.300', x: 3600, y: 128 },
-    { name: '.Contact()', color: 'cyan.300', x: length, y: 64 },
+    { name: '.Home()', color: 'cyan.500', x: 0, y: 64 },
+    { name: '.About()', color: 'cyan.500', x: 3600, y: 128 },
+    { name: '.Skills()', color: 'cyan.500', x: 8880, y: 64 },
+    { name: '.Contact()', color: 'cyan.500', x: length, y: 64 },
   ]
 
   const handleOpen = () => {

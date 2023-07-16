@@ -22,6 +22,7 @@
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fireworks-js/react": "^2.10.7",
     "@fontsource/vt323": "^4.5.10",
     "framer-motion": "^10.12.20",
     "next": "13.4.2",

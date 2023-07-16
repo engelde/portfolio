@@ -5,6 +5,7 @@ import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 export type TurtleProps = {
+  relative?: boolean
   x: number
   y: number
   offset: number
@@ -16,7 +17,7 @@ type VariantProps = {
   }
 }
 
-const Turtle: FC<TurtleProps> = ({ x, y, offset }: TurtleProps) => {
+const Turtle: FC<TurtleProps> = ({ relative, x, y, offset }: TurtleProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/turtle/turtle.1.png',
@@ -39,7 +40,7 @@ const Turtle: FC<TurtleProps> = ({ x, y, offset }: TurtleProps) => {
     <Box
       as={motion.div}
       zIndex={2}
-      position={'absolute'}
+      position={relative ? 'relative' : 'absolute'}
       bottom={y + 'px'}
       left={x + 'px'}
       w={'80px'}
