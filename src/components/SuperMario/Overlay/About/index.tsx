@@ -48,7 +48,7 @@ const BioDescription = (
 const BioContent = (
   <Text
     as={motion.div}
-    maxW={680}
+    maxW={700}
     pb={2}
     fontSize={'xl'}
     textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
@@ -56,7 +56,7 @@ const BioContent = (
     whileInView={{ opacity: 1 }}>
     <Code text={'<p>'} />
     {
-      "I am a senior full stack software engineer with 10 years of experience delivering successful projects to senior management, clients, and investors. I have an MS in Software Engineering from Depaul University and I currently enjoy working with TypeScript, React, GraphQL, Python, Node.js, Docker and AWS. I currently work at the University of Southern California but, when I'm not creating things, I enjoy going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
+      "I am a full stack software engineer with 10 years of experience delivering successful projects to senior management, clients, and investors. I have an MS in Software Engineering from Depaul University and I currently enjoy working with TypeScript, React.js, Next.js, GraphQL, Python, Node.js, Docker and AWS. I work at the University of Southern California but, when I'm not creating things, I spend my time going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
     }
     <Text
       as={motion.span}
@@ -102,7 +102,7 @@ const ExperienceContent = (
         as={motion.div}
         pb={0}
         size={'2xl'}
-        color={'green.400'}
+        color={'green.500'}
         textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         whileInView={{
           scaleX: [1, 0.9, 0.9, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1],
@@ -162,7 +162,7 @@ const ExperienceContent = (
         as={motion.div}
         pb={0}
         size={'2xl'}
-        color={'orange.400'}
+        color={'orange.500'}
         textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         whileInView={{
           scaleX: [1, 0.9, 0.9, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1],
@@ -197,17 +197,17 @@ const ExperienceContent = (
             mt={0}
             size={'md'}
             color={'red.500'}
-            fontWeight={'500'}
+            fontWeight={'700'}
             display={'inline'}
             initial={{ opacity: 1 }}
             whileInView={{
-              opacity: [1, 0, 1, 0, 1],
+              opacity: [1, 0, 1],
               transition: {
                 type: 'keyframes',
-                times: [0, 0.25, 0.5, 0.75, 1],
+                times: [0, 0.5, 1],
                 delay: 0,
-                duration: 2,
-                ease: 'linear',
+                duration: 3,
+                ease: 'easeInOut',
                 repeat: Infinity,
                 repeatType: 'loop',
                 repeatDelay: 0,

@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Box, Heading, HStack, Icon, Kbd, Text, VStack } from '@chakra-ui/react'
+import { Box, Heading, HStack, Icon, Kbd, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { BsMouseFill } from 'react-icons/bs'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
@@ -63,13 +63,24 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
           initial={{ opacity: 0, translateX: -2000 }}
           animate={{ opacity: 1, translateX: 0, transition: { duration: 0.6 } }}>
           <Code text={'<p>'} />
-          Thanks for visiting my site,{' '}
+          {'Thanks for visiting my site, '}
           <Text as={'span'} color={'cyan.500'} fontWeight={'bold'}>
             {ip}
           </Text>
-          ! My name is David Engel and I am a software engineer. Here you can learn a little bit
-          about me and the type of work I like doing. This site was built with TypeScript and
-          Next.js. It&apos;s a work in progress but feel free to take a look around!
+          {
+            "! My name is David Engel and I'm a full stack software engineer based in Los Angeles. Here you can learn a little bit about me and the type of work I like doing. This site was built with TypeScript, Next.js and several cups of coffee. It's a work in progress but feel free to take a look around! The code repository can be viewed on "
+          }
+          <Link
+            href={'https://github.com/engelde/portfolio'}
+            target={'_blank'}
+            referrerPolicy={'no-referrer'}
+            rel={'noopener'}
+            color={'cyan.500'}
+            _hover={{ color: 'cyan.600' }}
+            _active={{ color: 'cyan.600' }}>
+            GitHub
+          </Link>
+          {'.'}
           <Text
             as={motion.span}
             display={'inline'}
@@ -102,26 +113,34 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
         initial={{ opacity: 0, translateX: -2000 }}
         animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}>
         <HStack color={'black'} spacing={1}>
-          <Icon as={BsMouseFill} boxSize={10} color={'white'} pr={1} title={'Scroll'} />
+          <Tooltip label={'Scroll'} bg={'black'}>
+            <Box>
+              <Icon as={BsMouseFill} boxSize={10} color={'white'} />
+            </Box>
+          </Tooltip>
 
           <Text color={'white'} pr={2}>
             or
           </Text>
 
-          <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
-            <Icon as={FiArrowLeft} />
-          </Kbd>
-          <VStack spacing={0.5}>
-            <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
-              <Icon as={FiArrowUp} />
-            </Kbd>
-            <Kbd bg={'white'} mb={''} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
-              <Icon as={FiArrowDown} />
-            </Kbd>
-          </VStack>
-          <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Arrow Keys'}>
-            <Icon as={FiArrowRight} />
-          </Kbd>
+          <Tooltip label={'Arrow Keys'} bg={'black'}>
+            <HStack>
+              <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+                <Icon as={FiArrowLeft} />
+              </Kbd>
+              <VStack spacing={0.5}>
+                <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+                  <Icon as={FiArrowUp} />
+                </Kbd>
+                <Kbd bg={'white'} mb={''} borderColor={'blackAlpha.300'}>
+                  <Icon as={FiArrowDown} />
+                </Kbd>
+              </VStack>
+              <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+                <Icon as={FiArrowRight} />
+              </Kbd>
+            </HStack>
+          </Tooltip>
 
           <Text color={'white'} pl={2}>
             to move
@@ -129,9 +148,11 @@ const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
         </HStack>
 
         <HStack color={'black'} spacing={1}>
-          <Kbd bg={'white'} borderColor={'blackAlpha.300'} title={'Escape Key'}>
-            esc
-          </Kbd>
+          <Tooltip label={'Escape Key'} bg={'black'}>
+            <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+              esc
+            </Kbd>
+          </Tooltip>
 
           <Text color={'white'} pl={2}>
             to pause

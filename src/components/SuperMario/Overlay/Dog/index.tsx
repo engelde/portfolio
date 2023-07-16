@@ -1,7 +1,8 @@
 import type { FC } from 'react'
 import NextImage from 'next/image'
-import { Box } from '@chakra-ui/react'
+import { Box, HStack, Icon, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { PiArrowElbowLeftUpBold } from 'react-icons/pi'
 
 export type DogProps = {
   xPos: number
@@ -61,6 +62,24 @@ const Dog: FC<DogProps> = ({ xPos, xMin, xMax, offset }: DogProps) => {
           priority
         />
       </Box>
+      <HStack
+        as={motion.div}
+        pl={4}
+        pt={2}
+        {...((xPos > xMin &&
+          xPos < xMax && {
+            initial: { opacity: 0, marginLeft: 1200 },
+            animate: { opacity: 1, marginLeft: 0, transition: { duration: 0.8, delay: 0.6 } },
+          }) || {
+          initial: { opacity: 1, marginLeft: 0 },
+          animate: { opacity: 1, marginLeft: 1200 },
+        })}>
+        <Icon as={PiArrowElbowLeftUpBold} boxSize={6} />
+
+        <Text fontSize={'2xl'} mt={2}>
+          {'Frodo'}
+        </Text>
+      </HStack>
     </Box>
   )
 }

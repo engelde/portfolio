@@ -32,7 +32,7 @@ const Thanks: FC<ThanksProps> = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
       })}>
       <Code text={'<h1>'} />
       <Heading
-        fontSize={{ base: '72px', md: '100px' }}
+        fontSize={{ base: '64px', md: '92px' }}
         color={'white'}
         textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         pb={2}>

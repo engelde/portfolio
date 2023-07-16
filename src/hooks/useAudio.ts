@@ -29,7 +29,6 @@ export const useAudio = () => {
     stomp: '/audio/stomp/stomp.mp3',
   }
 
-  // Play Audio
   const playAudio = (type: string) => {
     if (variants[type] && audio > 0) {
       const sound = new Audio(variants[type])

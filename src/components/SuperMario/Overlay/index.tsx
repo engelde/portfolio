@@ -12,6 +12,7 @@ import Skills from './Skills'
 import Thanks from './Thanks'
 
 export type OverlayProps = {
+  complete: boolean
   ip: string
   forwards: boolean
   length: number
@@ -20,7 +21,15 @@ export type OverlayProps = {
   yPos: number
 }
 
-const Overlay: FC<OverlayProps> = ({ ip, forwards, length, xOffset, xPos, yPos }: OverlayProps) => {
+const Overlay: FC<OverlayProps> = ({
+  complete,
+  ip,
+  forwards,
+  length,
+  xOffset,
+  xPos,
+  yPos,
+}: OverlayProps) => {
   const { playAudio } = useAudio()
   const [exited, setExited] = useState(false)
   const [exiting, setExiting] = useState(false)
@@ -57,7 +66,7 @@ const Overlay: FC<OverlayProps> = ({ ip, forwards, length, xOffset, xPos, yPos }
         <Pipe x={0} y={0} height={410} rotate={-90} />
       </Box>
 
-      <End x={length - xOffset} xPos={xPos} />
+      <End complete={complete} x={length - xOffset} xPos={xPos} />
     </>
   )
 }

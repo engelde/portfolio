@@ -11,7 +11,6 @@ export type PreloaderProps = {
 }
 
 type PreloadTypes = {
-  audio: string[]
   images: string[]
 }
 
@@ -25,27 +24,6 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
   // Preload
   const preload = async () => {
     const files: PreloadTypes = {
-      audio: [
-        '/audio/1up/1up.mp3',
-        '/audio/box/box.mp3',
-        '/audio/brick/brick.mp3',
-        '/audio/clear/clear.mp3',
-        '/audio/coin/coin.mp3',
-        '/audio/death/death.mp3',
-        '/audio/enter/enter.mp3',
-        '/audio/fire/fire.mp3',
-        '/audio/gameOver/gameOver.mp3',
-        '/audio/hurry/hurry.mp3',
-        '/audio/inventory/inventory.mp3',
-        '/audio/jump/jump.mp3',
-        '/audio/kick/kick.mp3',
-        '/audio/leaf/leaf.mp3',
-        '/audio/mushroom/mushroom.mp3',
-        '/audio/pause/pause.mp3',
-        '/audio/pipe/pipe.mp3',
-        '/audio/powerUp/powerUp.mp3',
-        '/audio/stomp/stomp.mp3',
-      ],
       images: [
         '/_next/image?url=%2Fimages%2F1up%2F1up.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fbox%2Fbox.0.png&w=256&q=75',
@@ -58,9 +36,11 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
         '/_next/image?url=%2Fimages%2Fbrick%2Fbrick.3.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fbrick%2Fbrick.4.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fbush%2Fbush.png&w=256&q=75',
+        '/_next/image?url=%2Fimages%2Fcastle%2Fcastle.png&w=750&q=75',
+        '/_next/image?url=%2Fimages%2Fclear%2Fclear.png&w=3840&q=75',
         '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.1.png&w=384&q=75',
-        '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.2.png&w=384&q=75',
-        '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.3.png&w=384&q=75',
+        '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.2.png&w=640&q=75',
+        '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.3.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.1.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.2.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.3.png&w=256&q=75',
@@ -70,21 +50,20 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
         '/_next/image?url=%2Fimages%2Fcube%2Fcube.2.png&w=3840&q=75',
         '/_next/image?url=%2Fimages%2Fcube%2Fcube.3.png&w=1920&q=75',
         '/_next/image?url=%2Fimages%2Fcube%2Fcube.4.png&w=1080&q=75',
-        '/_next/image?url=%2Fimages%2Fcube%2Fcube.5.png&w=1080&q=75',
-        '/_next/image?url=%2Fimages%2Fdog%2Fdog.png&w=1920&q=75',
-        '/_next/image?url=%2Fimages%2Ffamily%2Ffamily.png&w=1920&q=75',
+        '/_next/image?url=%2Fimages%2Fcube%2Fcube.5.png&w=750&q=75',
+        '/_next/image?url=%2Fimages%2Fdog%2Fdog.png&w=640&q=75',
+        '/_next/image?url=%2Fimages%2Ffamily%2Ffamily.png&w=640&q=75',
         '/_next/image?url=%2Fimages%2Ffire%2Ffire.1.png&w=64&q=75',
         '/_next/image?url=%2Fimages%2Ffire%2Ffire.2.png&w=64&q=75',
         '/_next/image?url=%2Fimages%2Ffire%2Ffire.3.png&w=64&q=75',
         '/_next/image?url=%2Fimages%2Ffire%2Ffire.4.png&w=64&q=75',
-        '/_next/image?url=%2Fmedia%2Ffireworks%2Ffireworks.webp&w=640&q=75',
         '/_next/image?url=%2Fimages%2Fgithub%2Fgithub.png&w=128&q=75',
         '/_next/image?url=%2Fimages%2Fgoomba%2Fgoomba.1.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fgoomba%2Fgoomba.2.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fground%2Fground.1.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fground%2Fground.2.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fground%2Fground.3.png&w=128&q=75',
-        '/_next/image?url=%2Fimages%2Fleaf%2Fleaf.png&w=128&q=75',
+        '/_next/image?url=%2Fimages%2Fleaf%2Fleaf.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Flinkedin%2Flinkedin.png&w=128&q=75',
         '/_next/image?url=%2Fimages%2Fmario%2Fmario.raccoon.1.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fmario%2Fmario.raccoon.2.png&w=256&q=75',
@@ -95,7 +74,7 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
         '/_next/image?url=%2Fimages%2Fmario%2Fmario.super.1.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fmario%2Fmario.super.2.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fmario%2Fmario.super.jump.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fme%2Fme.png&w=1920&q=75',
+        '/_next/image?url=%2Fimages%2Fme%2Fme.png&w=640&q=75',
         '/_next/image?url=%2Fimages%2Fmushroom%2Fmushroom.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fpipe%2Fpipe.0.png&w=384&q=75',
         '/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=75',
@@ -106,7 +85,7 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
         '/_next/image?url=%2Fimages%2Fplant%2Fplant.5.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Fplant%2Fplant.6.png&w=256&q=75',
         '/_next/image?url=%2Fimages%2Frock%2Frock.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fsun%2Fsun.png&w=384&q=75',
+        '/_next/image?url=%2Fimages%2Fsun%2Fsun.png&w=640&q=75',
         '/_next/image?url=%2Fimages%2Ftree%2Ftree.1.png&w=640&q=75',
         '/_next/image?url=%2Fimages%2Ftree%2Ftree.2.png&w=1920&q=75',
         '/_next/image?url=%2Fimages%2Ftree%2Ftree.3.png&w=1080&q=75',
@@ -126,21 +105,6 @@ const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderPro
         })
       }),
     )
-
-    // Audio
-    // await Promise.all(
-    //   files.audio.map((src) => {
-    //     return new Promise((resolve, reject) => {
-    //       const audio = new Audio()
-    //       audio.oncanplaythrough = () => resolve({ src, status: 'ok' })
-    //       audio.onerror = () => reject({ src, status: 'error' })
-    //       audio.src = src
-    //       audio.autoplay = false
-    //       audio.volume = 0
-    //       audio.preload
-    //     })
-    //   }),
-    // )
 
     setTimeout(() => {
       setIsPreloading(false)
