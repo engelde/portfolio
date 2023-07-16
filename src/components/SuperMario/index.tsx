@@ -66,6 +66,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
     },
   })
 
+  // Audio
   const { playAudio } = useAudio()
 
   // Complete
@@ -130,6 +131,7 @@ const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
           setY={setY}
         />
         <Overlay
+          complete={complete}
           forwards={forwards}
           ip={ip}
           length={length}

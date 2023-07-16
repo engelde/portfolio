@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
-import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { Box, Button, Flex, Heading, Text, useMediaQuery, VStack } from '@chakra-ui/react'
+import { Box, Flex, Heading, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Code from '@/components/Code'
 import Layout from '@/components/Layout'
+import Turtle from '@/components/SuperMario/Foreground/Turtle'
 
 const Custom404: NextPage = () => {
   const [mobile] = useMediaQuery('(max-width: 32rem)')
@@ -16,21 +16,11 @@ const Custom404: NextPage = () => {
           <Flex>
             <Box
               as={motion.div}
-              w={'400px'}
-              h={'230px'}
-              maxW={'90vw'}
+              width={500}
               mb={8}
-              overflow={'hidden'}
               initial={{ opacity: 0, translateY: -2000 }}
               animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}>
-              <NextImage
-                alt={'forbidden'}
-                src={'/media/gandalf/gandalf.webp'}
-                width={400}
-                height={230}
-                draggable={false}
-                priority
-              />
+              <Turtle relative={true} x={400} y={0} offset={400} />
             </Box>
           </Flex>
 
@@ -69,19 +59,14 @@ const Custom404: NextPage = () => {
             initial={{ opacity: 0, translateY: 2000 }}
             animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}>
             <NextLink href={'/'} passHref>
-              <Button
+              <Heading
                 as={motion.div}
-                variant={'outline'}
-                colorScheme={'white'}
-                size={'lg'}
-                _hover={{
-                  bg: 'red.500',
-                  color: 'white',
-                  borderColor: 'red.500',
-                }}
+                size={{ base: '2xl', md: '4xl' }}
+                textAlign={'center'}
+                cursor={'pointer'}
                 initial={{ scale: 1 }}
-                whileInView={{
-                  scale: [1, 1.05, 1],
+                animate={{
+                  scale: [1, 1.06, 1],
                   transition: {
                     type: 'keyframes',
                     times: [0, 0.5, 1],
@@ -92,9 +77,10 @@ const Custom404: NextPage = () => {
                     repeatType: 'loop',
                     repeatDelay: 0,
                   },
-                }}>
-                {'> Restart'}
-              </Button>
+                }}
+                _hover={{ color: 'cyan.500' }}>
+                {'> restart'}
+              </Heading>
             </NextLink>
           </Flex>
         </VStack>
