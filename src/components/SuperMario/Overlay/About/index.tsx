@@ -135,7 +135,7 @@ const ExperienceContent = (
           <br />
           Software Engineering
           <br />
-          <strong>Depaul University</strong>
+          <strong>DePaul University</strong>
           <br />
         </Heading>
 
@@ -151,7 +151,7 @@ const ExperienceContent = (
           <br />
           English
           <br />
-          <strong>University of Missouri KC</strong>
+          <strong>University of Missouri - Kansas City</strong>
           <br />
         </Heading>
       </HStack>
