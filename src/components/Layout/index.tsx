@@ -28,6 +28,7 @@ const Layout: FC<LayoutProps> = ({ title, dark, children, ...rest }: LayoutProps
       })}>
       <Head>
         <title>{config.app.name + ' | ' + title}</title>
+        <meta name='description' content={config.app.name} />
       </Head>
 
       <Preloader isLoading={isLoading} setIsLoading={setIsLoading} />
