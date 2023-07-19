@@ -24,6 +24,7 @@
     "@emotion/styled": "^11.11.0",
     "@fireworks-js/react": "^2.10.7",
     "@fontsource/vt323": "^5.0.5",
+    "@vercel/analytics": "^1.0.1",
     "framer-motion": "^10.12.21",
     "next": "13.4.2",
     "react": "18.2.0",
