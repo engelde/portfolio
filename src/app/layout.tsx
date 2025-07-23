@@ -1,5 +1,7 @@
 import { config } from '@/lib/config'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+
 import type { Metadata } from 'next'
 import { fonts } from './fonts'
 import './globals.css'
@@ -20,6 +22,7 @@ export default function RootLayout({
       <body className={`${fonts.sans.variable} ${fonts.mono.variable} antialiased`}>
         <Providers>{children}</Providers>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
