@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/engelde/portfolio/compare/v0.3.1...v0.3.2) (2025-07-23)
+
+### 🐛 Bug Fixes
+
+- **bug:** get version from package.json ([4a2fe97](https://github.com/engelde/portfolio/commit/4a2fe97871571bb67cc645d67875671193a0f3e4))
+
 ### [0.3.1](https://github.com/engelde/portfolio/compare/v0.2.6...v0.3.1) (2025-07-23)
 
 ### ✨ Features
