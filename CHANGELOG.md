@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.4](https://github.com/engelde/portfolio/compare/v0.3.3...v0.3.4) (2025-07-23)
+
+### 🐛 Bug Fixes
+
+- **bug:** add preview to readme ([e8162f6](https://github.com/engelde/portfolio/commit/e8162f656656900cbb97cdfa8fd88cbbb88db5c7))
+- **bug:** fix fireworks content area ([5c1adac](https://github.com/engelde/portfolio/commit/5c1adac4e546cc461b6bbd5c8694e9d8af59d059))
+
+### ✨ Features
+
+- **feature:** add robots.txt ([9a51b21](https://github.com/engelde/portfolio/commit/9a51b21dc9d6a4a02450082eab78971dd9343d49))
+
 ### [0.3.3](https://github.com/engelde/portfolio/compare/v0.3.2...v0.3.3) (2025-07-23)
 
 ### ✨ Features
