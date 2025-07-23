@@ -230,6 +230,8 @@ const ExperienceContent = (
           <br />
           <strong>Stanford University</strong>
           <br />
+          <strong>Hoover Instution</strong>
+          <br />
         </Heading>
 
         <Heading
