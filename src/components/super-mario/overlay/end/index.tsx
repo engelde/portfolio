@@ -85,6 +85,7 @@ const End: FC<EndProps> = ({ complete, x, xPos }: EndProps) => {
               className={'fireworks'}
             >
               <Fireworks
+                className="h-screen w-screen"
                 options={{
                   autoresize: true,
                   opacity: 0.6,
