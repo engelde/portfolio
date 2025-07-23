@@ -17,3 +17,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 - **refactor:** refactor source ([eea6a07](https://github.com/engelde/portfolio/commit/eea6a07786e07aa3e7cb9c3dc43320124daf64bc))
 - **refactor:** remove deprecated code ([c4d2416](https://github.com/engelde/portfolio/commit/c4d2416f8b18af0babf3880160e22debf23ee61e))
+- **release:** 0.3.1 ([807cd02](https://github.com/engelde/portfolio/commit/807cd028d754ade35f40fab9389a4cd3d8d97e69))
