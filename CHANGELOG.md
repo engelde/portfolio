@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/engelde/portfolio/compare/v0.3.2...v0.3.3) (2025-07-23)
+
+### ✨ Features
+
+- **feature:** update experience ([c65580d](https://github.com/engelde/portfolio/commit/c65580d777a26a038fa9f8f2918d94543ba1bd00))
+- **test:** add speed insights ([f98fc46](https://github.com/engelde/portfolio/commit/f98fc465a59c787fd8ac76a5ac7a28c8e5b23f7e))
+
 ### [0.3.2](https://github.com/engelde/portfolio/compare/v0.3.1...v0.3.2) (2025-07-23)
 
 ### 🐛 Bug Fixes
