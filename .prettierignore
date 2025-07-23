@@ -1,0 +1,7 @@
+# See https://prettier.io/docs/ignore for more about ignoring files.
+
+/node_modules/
+/build/
+/dist/
+/out/
+/.next/
