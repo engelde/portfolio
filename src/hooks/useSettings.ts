@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+'use client'
+
 import { useMediaQuery } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 
 export const useSettings = () => {
   const [complete, setComplete] = useState(false)
@@ -12,7 +14,7 @@ export const useSettings = () => {
     x: 80,
     y: mario !== 3 ? 240 : 400,
   }
-  const [mobile] = useMediaQuery('(max-width: 48rem)')
+  const [mobile] = useMediaQuery(['(max-width: 48rem)'])
   const [paused, setPaused] = useState(false)
   const [score, setScore] = useState(0)
   const speed = {

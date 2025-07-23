@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+'use client'
+
 import { useScroll as useFramerScroll } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 type ScrollProps = {
   active: boolean
