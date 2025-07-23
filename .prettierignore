@@ -1,10 +1,7 @@
-.next
-.cache
-public
-node_modules
-next-env.d.ts
-next.config.js
-yarn.lock
-package-lock.json
-pnpm-lock.json
-LICENSE.md
+# See https://prettier.io/docs/ignore for more about ignoring files.
+
+/node_modules/
+/build/
+/dist/
+/out/
+/.next/

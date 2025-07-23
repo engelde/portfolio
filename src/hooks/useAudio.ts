@@ -1,11 +1,19 @@
-import { useStore } from '@/utilities/store'
+'use client'
+
+import { useStore } from '@/lib/store'
+import { useShallow } from 'zustand/react/shallow'
 
 type AudioVariantsType = {
   [variant: string]: string
 }
 
 export const useAudio = () => {
-  const [audio, setAudio] = useStore((state) => [state.audio, state.setAudio])
+  const { audio, setAudio } = useStore(
+    useShallow((state) => ({
+      audio: state.audio,
+      setAudio: state.setAudio,
+    }))
+  )
 
   const variants: AudioVariantsType = {
     '1up': '/audio/1up/1up.mp3',
