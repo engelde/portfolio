@@ -60,7 +60,7 @@ const BioContent = (
   >
     <Code text={'<p>'} />
     {
-      "I am a full stack software engineer with 10 years of experience delivering successful projects to senior management, clients, and investors. I have an MS in Software Engineering from DePaul University and I currently enjoy working with TypeScript, React.js, Next.js, GraphQL, Python, Node.js, Docker and AWS. I work at the University of Southern California but, when I'm not creating things, I spend my time going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
+      "I am a full stack software engineer with 10 years of experience delivering successful projects to senior management, clients, and investors. I have an MS in Software Engineering from DePaul University and I currently enjoy working with TypeScript, React.js, Next.js, Python, Node.js, Docker and AWS. I work at Stanford University but, when I'm not making things, I spend my time going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
     }
     <Text
       as={motion.span}
