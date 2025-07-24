@@ -228,9 +228,9 @@ const ExperienceContent = (
             {' (current!)'}
           </Text>
           <br />
-          <strong>Stanford University</strong>
+          Hoover Institution
           <br />
-          <strong>Hoover Instution</strong>
+          <strong>Stanford University</strong>
           <br />
         </Heading>
 

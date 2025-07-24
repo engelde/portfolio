@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.5](https://github.com/engelde/portfolio/compare/v0.3.4...v0.3.5) (2025-07-24)
+
+### ✨ Features
+
+- **feature:** update intro ([1b10587](https://github.com/engelde/portfolio/commit/1b10587283f0eca338f6c1915d1b287340399722))
+
+### 🐛 Bug Fixes
+
+- **bug:** fix typos ([efd1846](https://github.com/engelde/portfolio/commit/efd1846156fa8f6e36996803e03421891918334e))
+- **bug:** ignore some files when using Docker ([98f2ace](https://github.com/engelde/portfolio/commit/98f2ace5551884bd7b8414d4ed2d74d5e15d3cb1))
+
+### 🚚 Chores
+
+- **config:** bump version ([a649866](https://github.com/engelde/portfolio/commit/a6498665dba27023d8f23f1524abe5092a5a7856))
+- **config:** bump version ([7bca505](https://github.com/engelde/portfolio/commit/7bca5051a3964303a4e95168aa78a372ef861e83))
+
 ### [0.3.4](https://github.com/engelde/portfolio/compare/v0.3.3...v0.3.4) (2025-07-23)
 
 ### 🐛 Bug Fixes

@@ -5,8 +5,8 @@ import { Box, Heading, HStack, Icon, Link, Text, Tooltip, VStack } from '@chakra
 import { motion } from 'framer-motion'
 import type { FC } from 'react'
 import {
+  SiAmazonwebservices,
   SiApollographql,
-  SiAwsorganizations,
   SiDocker,
   SiFlask,
   SiGit,
@@ -103,7 +103,7 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       name: 'Vue.js',
       icon: SiVuedotjs,
       color: 'green.400',
-      link: 'https://www.prisma.io',
+      link: 'https://vuejs.org',
       x: 8080,
     },
     {
@@ -136,7 +136,7 @@ const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
     },
     {
       name: 'AWS',
-      icon: SiAwsorganizations,
+      icon: SiAmazonwebservices,
       color: 'orange.400',
       link: 'https://aws.amazon.com',
       x: 8480,
