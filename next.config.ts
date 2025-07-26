@@ -7,7 +7,7 @@ const { version } = require('./package.json')
 const nextConfig: NextConfig = {
   /* config options here */
   env: {
-    version: version,
+    NEXT_PUBLIC_VERSION: version,
   },
 }
 
