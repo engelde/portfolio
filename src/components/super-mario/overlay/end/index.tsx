@@ -1,12 +1,12 @@
 'use client'
 
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
+import NextLink from 'next/link'
 import { Box, Flex, Heading, HStack, Link, Tooltip, VStack } from '@chakra-ui/react'
 import { Fireworks } from '@fireworks-js/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import NextLink from 'next/link'
-import type { FC } from 'react'
-import { useEffect, useState } from 'react'
 
 export type EndProps = {
   complete: boolean

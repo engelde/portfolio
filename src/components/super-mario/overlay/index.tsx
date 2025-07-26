@@ -1,9 +1,11 @@
 'use client'
 
-import { useAudio } from '@/hooks/useAudio'
-import { Box } from '@chakra-ui/react'
 import type { FC } from 'react'
 import { useEffect, useState } from 'react'
+import { Box } from '@chakra-ui/react'
+
+import { useAudio } from '@/hooks/useAudio'
+
 import Pipe from '../foreground/pipe'
 import About from './about'
 import Dog from './dog'

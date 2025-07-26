@@ -1,9 +1,9 @@
 'use client'
 
-import { Box } from '@chakra-ui/react'
-import NextImage from 'next/image'
 import type { FC } from 'react'
 import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
+import { Box } from '@chakra-ui/react'
 
 export type MarioProps = {
   variant: 1 | 2 | 3

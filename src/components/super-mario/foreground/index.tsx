@@ -2,6 +2,7 @@
 
 import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
+
 import Brick, { type BrickProps } from './brick'
 import Coin, { type CoinProps } from './coin'
 import Goomba, { type GoombaProps } from './goomba'

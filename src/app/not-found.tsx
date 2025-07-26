@@ -1,11 +1,12 @@
 'use client'
 
+import NextLink from 'next/link'
+import { Box, Flex, Heading, Text, useMediaQuery, VStack } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
+
 import Code from '@/components/code'
 import Layout from '@/components/layout'
 import Turtle from '@/components/super-mario/foreground/turtle'
-import { Box, Flex, Heading, Text, useMediaQuery, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import NextLink from 'next/link'
 
 export default function NotFound() {
   const [mobile] = useMediaQuery('(max-width: 32rem)')

@@ -1,6 +1,6 @@
+import type { FC } from 'react'
 import type { CodeProps as CkCodeProps } from '@chakra-ui/react'
 import { Code as CkCode } from '@chakra-ui/react'
-import type { FC } from 'react'
 
 export type CodeProps = CkCodeProps & {
   text?: string

@@ -1,9 +1,10 @@
 'use client'
 
-import { config } from '@/lib/config'
+import type { FC } from 'react'
 import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
+
+import { config } from '@/lib/config'
 
 export type StatsProps = {
   xPos: number

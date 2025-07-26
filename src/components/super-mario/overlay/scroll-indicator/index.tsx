@@ -1,8 +1,8 @@
 'use client'
 
+import type { FC } from 'react'
 import { Flex, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
 
 export type ScrollIndicatorProps = {
   xPos: number

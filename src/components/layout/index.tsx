@@ -1,14 +1,15 @@
 'use client'
 
-import Footer from '@/components/footer'
-import Preloader from '@/components/preloader'
-import { config } from '@/lib/config'
+import type { FC, ReactNode } from 'react'
+import { useState } from 'react'
+import Head from 'next/head'
 import type { ContainerProps } from '@chakra-ui/react'
 import { Box, Container } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import Head from 'next/head'
-import type { FC, ReactNode } from 'react'
-import { useState } from 'react'
+
+import Footer from '@/components/footer'
+import Preloader from '@/components/preloader'
+import { config } from '@/lib/config'
 
 export type LayoutProps = ContainerProps & {
   title: string

@@ -1,7 +1,7 @@
 'use client'
 
-import { Box } from '@chakra-ui/react'
 import type { FC } from 'react'
+import { Box } from '@chakra-ui/react'
 
 const Sky: FC = () => {
   return (

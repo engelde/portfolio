@@ -1,9 +1,10 @@
 'use client'
 
+import type { FC } from 'react'
+import NextImage from 'next/image'
 import { Box, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
+
 import Fire from './fire'
 import Plant from './plant'
 

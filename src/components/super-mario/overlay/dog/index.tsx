@@ -1,9 +1,9 @@
 'use client'
 
+import type { FC } from 'react'
+import NextImage from 'next/image'
 import { Box, HStack, Icon, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
 import { PiArrowElbowLeftUpBold } from 'react-icons/pi'
 
 export type DogProps = {

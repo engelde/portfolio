@@ -1,11 +1,12 @@
 'use client'
 
-import Code from '@/components/code'
+import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Kbd, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
 import { BsMouseFill } from 'react-icons/bs'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
+
+import Code from '@/components/code'
 
 export type IntroProps = {
   xPos: number

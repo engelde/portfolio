@@ -1,10 +1,11 @@
 'use client'
 
+import { useCallback, useEffect, useState } from 'react'
+
 import { useAudio } from '@/hooks/useAudio'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { useScroll } from '@/hooks/useScroll'
 import { useWindow } from '@/hooks/useWindow'
-import { useCallback, useEffect, useState } from 'react'
 
 type ControllerProps = {
   active: boolean

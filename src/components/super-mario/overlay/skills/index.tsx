@@ -1,9 +1,8 @@
 'use client'
 
-import Code from '@/components/code'
+import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
 import {
   SiAmazonwebservices,
   SiApollographql,
@@ -26,6 +25,8 @@ import {
   SiTypescript,
   SiVuedotjs,
 } from 'react-icons/si'
+
+import Code from '@/components/code'
 
 export type SkillsProps = {
   xPos: number

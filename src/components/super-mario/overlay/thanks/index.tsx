@@ -1,9 +1,10 @@
 'use client'
 
-import Code from '@/components/code'
+import type { FC } from 'react'
 import { Box, Heading } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
+
+import Code from '@/components/code'
 
 export type ThanksProps = {
   xPos: number

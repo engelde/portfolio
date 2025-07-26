@@ -1,8 +1,8 @@
 'use client'
 
+import type { FC } from 'react'
 import { Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
 
 export type PointsProps = {
   x: number

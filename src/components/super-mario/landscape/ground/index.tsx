@@ -1,7 +1,7 @@
 'use client'
 
-import { Box, HStack } from '@chakra-ui/react'
 import type { FC } from 'react'
+import { Box, HStack } from '@chakra-ui/react'
 
 export type GroundProps = {
   x: number

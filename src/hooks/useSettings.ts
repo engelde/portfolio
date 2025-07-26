@@ -1,7 +1,7 @@
 'use client'
 
-import { useMediaQuery } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useMediaQuery } from '@chakra-ui/react'
 
 export const useSettings = () => {
   const [complete, setComplete] = useState(false)

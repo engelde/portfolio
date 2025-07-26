@@ -1,7 +1,8 @@
 'use client'
 
-import { useStore } from '@/lib/store'
 import { useShallow } from 'zustand/react/shallow'
+
+import { useStore } from '@/lib/store'
 
 type AudioVariantsType = {
   [variant: string]: string

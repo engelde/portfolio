@@ -1,11 +1,12 @@
 'use client'
 
-import { useAudio } from '@/hooks/useAudio'
-import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import NextImage from 'next/image'
 import type { FC, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
+import { Box } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
+
+import { useAudio } from '@/hooks/useAudio'
 
 export type PrizeBoxProps = {
   x: number

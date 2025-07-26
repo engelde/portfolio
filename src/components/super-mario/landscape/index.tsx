@@ -1,6 +1,7 @@
 'use client'
 
 import type { FC } from 'react'
+
 import Bush, { type BushProps } from './bush'
 import Cloud, { type CloudProps } from './cloud'
 import Cube, { type CubeProps } from './cube'
