@@ -1,14 +1,14 @@
-import Code from '@/components/code'
-import { config } from '@/lib/config'
 import { Box, HStack, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
+
+import Code from '@/components/code'
+import { config } from '@/lib/config'
 
 export type FooterProps = {
   dark?: boolean
 }
 
-const Footer: FC<FooterProps> = ({ dark }: FooterProps) => {
+const Footer = ({ dark }: FooterProps) => {
   const year = new Date().getFullYear()
 
   return (

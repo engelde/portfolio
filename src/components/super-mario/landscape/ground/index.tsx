@@ -1,7 +1,6 @@
 'use client'
 
 import { Box, HStack } from '@chakra-ui/react'
-import type { FC } from 'react'
 
 export type GroundProps = {
   x: number
@@ -9,7 +8,7 @@ export type GroundProps = {
   height: number
 }
 
-const Ground: FC<GroundProps> = ({ x, width, height }: GroundProps) => {
+const Ground = ({ x, width, height }: GroundProps) => {
   return (
     <Box zIndex={21} position={'absolute'} left={x + 'px'} bottom={0} w={width + 'px'}>
       <HStack spacing={0}>

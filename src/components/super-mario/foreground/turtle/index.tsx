@@ -1,10 +1,9 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
-import { useEffect, useState } from 'react'
 
 export type TurtleProps = {
   relative?: boolean
@@ -19,7 +18,7 @@ type VariantProps = {
   }
 }
 
-const Turtle: FC<TurtleProps> = ({ relative, x, y, offset }: TurtleProps) => {
+const Turtle = ({ relative, x, y, offset }: TurtleProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/turtle/turtle.1.png',

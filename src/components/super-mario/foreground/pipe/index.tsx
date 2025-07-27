@@ -1,9 +1,9 @@
 'use client'
 
+import NextImage from 'next/image'
 import { Box, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
+
 import Fire from './fire'
 import Plant from './plant'
 
@@ -18,16 +18,7 @@ export type PipeProps = {
   active?: boolean
 }
 
-const Pipe: FC<PipeProps> = ({
-  xPos,
-  x,
-  y,
-  height,
-  rotate,
-  plant,
-  plantVariant,
-  active,
-}: PipeProps) => {
+const Pipe = ({ xPos, x, y, height, rotate, plant, plantVariant, active }: PipeProps) => {
   return (
     <Box
       as={motion.div}

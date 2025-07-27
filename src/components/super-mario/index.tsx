@@ -1,11 +1,12 @@
 'use client'
 
+import { useEffect } from 'react'
+import { Box } from '@chakra-ui/react'
+
 import { useAudio } from '@/hooks/useAudio'
 import { useController } from '@/hooks/useController'
 import { useSettings } from '@/hooks/useSettings'
-import { Box } from '@chakra-ui/react'
-import type { FC } from 'react'
-import { useEffect } from 'react'
+
 import Environment from './environment'
 import Foreground from './foreground'
 import Landscape from './landscape'
@@ -16,7 +17,7 @@ export type SuperMarioProps = {
   ip: string
 }
 
-const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
+const SuperMario = ({ ip }: SuperMarioProps) => {
   const {
     ceilingLevels,
     complete,

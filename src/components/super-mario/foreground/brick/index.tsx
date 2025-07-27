@@ -1,9 +1,8 @@
 'use client'
 
-import { Box } from '@chakra-ui/react'
-import NextImage from 'next/image'
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
+import { Box } from '@chakra-ui/react'
 
 export type BrickProps = {
   x: number
@@ -16,7 +15,7 @@ type VariantProps = {
   }
 }
 
-const Brick: FC<BrickProps> = ({ x, y }: BrickProps) => {
+const Brick = ({ x, y }: BrickProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/brick/brick.1.png',

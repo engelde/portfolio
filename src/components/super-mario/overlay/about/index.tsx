@@ -1,10 +1,11 @@
 'use client'
 
-import Code from '@/components/code'
+import type { ReactNode } from 'react'
+import NextImage from 'next/image'
 import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC, ReactNode } from 'react'
+
+import Code from '@/components/code'
 
 export type AboutProps = {
   xPos: number
@@ -277,7 +278,7 @@ const ExperienceContent = (
   </VStack>
 )
 
-const About: FC<AboutProps> = ({ xPos, xMin, xMax, variant }: AboutProps) => {
+const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
   const variants: VariantProps = {
     1: {
       color: 'blue.400',

@@ -1,6 +1,7 @@
+import { headers } from 'next/headers'
+
 import Layout from '@/components/layout'
 import SuperMario from '@/components/super-mario'
-import { headers } from 'next/headers'
 
 export default async function Home() {
   const headersList = await headers()

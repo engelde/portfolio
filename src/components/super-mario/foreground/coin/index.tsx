@@ -1,11 +1,12 @@
 'use client'
 
-import { useAudio } from '@/hooks/useAudio'
+import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
-import { useEffect, useState } from 'react'
+
+import { useAudio } from '@/hooks/useAudio'
+
 import Points from '../points'
 
 export type CoinProps = {
@@ -25,16 +26,7 @@ type VariantProps = {
   }
 }
 
-const Coin: FC<CoinProps> = ({
-  x,
-  y,
-  show,
-  clickable,
-  active,
-  setActive,
-  score,
-  setScore,
-}: CoinProps) => {
+const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: CoinProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/coin/coin.1.png',

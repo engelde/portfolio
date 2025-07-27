@@ -1,11 +1,12 @@
 'use client'
 
-import { useAudio } from '@/hooks/useAudio'
+import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
-import { useEffect, useState } from 'react'
+
+import { useAudio } from '@/hooks/useAudio'
+
 import Points from '../points'
 
 export type MushroomProps = {
@@ -19,16 +20,7 @@ export type MushroomProps = {
   setScore: (score: number) => void
 }
 
-const Mushroom: FC<MushroomProps> = ({
-  x,
-  y,
-  active,
-  mario,
-  score,
-  setActive,
-  setMario,
-  setScore,
-}: MushroomProps) => {
+const Mushroom = ({ x, y, active, mario, score, setActive, setMario, setScore }: MushroomProps) => {
   const { playAudio } = useAudio()
   const [appearing, setAppearing] = useState(true)
   const [running, setRunning] = useState(false)

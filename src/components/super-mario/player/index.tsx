@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import Mario from './mario'
 import Pause from './pause'
 import Stats from './stats'
@@ -27,7 +26,7 @@ export type PlayerProps = {
   setY: (status: number) => void
 }
 
-const Player: FC<PlayerProps> = ({
+const Player = ({
   complete,
   forwards,
   jump,

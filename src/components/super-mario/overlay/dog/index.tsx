@@ -1,9 +1,8 @@
 'use client'
 
+import NextImage from 'next/image'
 import { Box, HStack, Icon, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
 import { PiArrowElbowLeftUpBold } from 'react-icons/pi'
 
 export type DogProps = {
@@ -13,7 +12,7 @@ export type DogProps = {
   offset: number
 }
 
-const Dog: FC<DogProps> = ({ xPos, xMin, xMax, offset }: DogProps) => {
+const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
   return (
     <Box
       as={motion.div}

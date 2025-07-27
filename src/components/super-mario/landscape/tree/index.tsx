@@ -1,9 +1,8 @@
 'use client'
 
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
 
 export type TreeProps = {
   variant: 1 | 2 | 3
@@ -19,7 +18,7 @@ type VariantProps = {
   }
 }
 
-const Tree: FC<TreeProps> = ({ variant, x, y }: TreeProps) => {
+const Tree = ({ variant, x, y }: TreeProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/tree/tree.1.png',

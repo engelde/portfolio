@@ -1,10 +1,9 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
-import { useEffect, useState } from 'react'
 
 export type PlantProps = {
   variant: 1 | 2
@@ -21,7 +20,7 @@ type VariantProps = {
   }
 }
 
-const Plant: FC<PlantProps> = ({ variant, forwards, x, y }: PlantProps) => {
+const Plant = ({ variant, forwards, x, y }: PlantProps) => {
   const variants: VariantProps = {
     1: {
       1: {

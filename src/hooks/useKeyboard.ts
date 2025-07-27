@@ -1,7 +1,7 @@
 'use client'
 
-import { useEventListener } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useEventListener } from '@chakra-ui/react'
 
 type KeyboardProps = {
   active: boolean

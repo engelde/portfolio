@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import Bush, { type BushProps } from './bush'
 import Cloud, { type CloudProps } from './cloud'
 import Cube, { type CubeProps } from './cube'
@@ -8,7 +7,7 @@ import Ground, { type GroundProps } from './ground'
 import Rock, { type RockProps } from './rock'
 import Tree, { type TreeProps } from './tree'
 
-const Landscape: FC = () => {
+const Landscape = () => {
   const bushes: BushProps[] = [
     { x: 1040, y: 64 },
     { x: 1120, y: 64 },

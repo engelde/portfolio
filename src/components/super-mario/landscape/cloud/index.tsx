@@ -1,16 +1,15 @@
 'use client'
 
+import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import NextImage from 'next/image'
-import type { FC } from 'react'
 
 export type CloudProps = {
   x: number
   y: number
 }
 
-const Cloud: FC<CloudProps> = ({ x, y }: CloudProps) => {
+const Cloud = ({ x, y }: CloudProps) => {
   return (
     <Box
       as={motion.div}

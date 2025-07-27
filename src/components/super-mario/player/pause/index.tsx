@@ -1,6 +1,5 @@
 'use client'
 
-import { useAudio } from '@/hooks/useAudio'
 import {
   Drawer,
   DrawerBody,
@@ -19,8 +18,9 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
 import { CgMenuLeftAlt } from 'react-icons/cg'
+
+import { useAudio } from '@/hooks/useAudio'
 
 export type PauseProps = {
   length: number
@@ -37,7 +37,7 @@ type MenuLink = {
   y: number
 }
 
-const Pause: FC<PauseProps> = ({ length, open, setOpen, setX, setY }: PauseProps) => {
+const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
   const { audio, playAudio, setAudio } = useAudio()
 
   const links: MenuLink[] = [

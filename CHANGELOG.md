@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.6](https://github.com/engelde/portfolio/compare/v0.3.5...v0.3.6) (2025-07-27)
+
+
+### ✅ Testing
+
+* **test:** add PostHog ([58cf04f](https://github.com/engelde/portfolio/commit/58cf04f532a20983a1c8355dd14cf09f02fbc8e9))
+
+
+### 💄 Styling
+
+* **style:** add opinionated import order ([02cc7e0](https://github.com/engelde/portfolio/commit/02cc7e004abb61e626ce36ce327c3e4aadb6525f))
+
 ### [0.3.5](https://github.com/engelde/portfolio/compare/v0.3.4...v0.3.5) (2025-07-24)
 
 ### ✨ Features

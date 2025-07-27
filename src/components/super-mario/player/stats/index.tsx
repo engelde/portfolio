@@ -1,9 +1,9 @@
 'use client'
 
-import { config } from '@/lib/config'
 import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
+
+import { config } from '@/lib/config'
 
 export type StatsProps = {
   xPos: number
@@ -14,7 +14,7 @@ export type StatsProps = {
   complete: boolean
 }
 
-const Stats: FC<StatsProps> = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
+const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
   return (
     <Box
       as={motion.div}

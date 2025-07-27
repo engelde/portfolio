@@ -1,9 +1,9 @@
 'use client'
 
-import Code from '@/components/code'
 import { Box, Heading } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import type { FC } from 'react'
+
+import Code from '@/components/code'
 
 export type ThanksProps = {
   xPos: number
@@ -12,7 +12,7 @@ export type ThanksProps = {
   offset: number
 }
 
-const Thanks: FC<ThanksProps> = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
+const Thanks = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
   return (
     <Box
       as={motion.div}

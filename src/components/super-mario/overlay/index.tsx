@@ -1,9 +1,10 @@
 'use client'
 
-import { useAudio } from '@/hooks/useAudio'
-import { Box } from '@chakra-ui/react'
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
+import { Box } from '@chakra-ui/react'
+
+import { useAudio } from '@/hooks/useAudio'
+
 import Pipe from '../foreground/pipe'
 import About from './about'
 import Dog from './dog'
@@ -23,15 +24,7 @@ export type OverlayProps = {
   yPos: number
 }
 
-const Overlay: FC<OverlayProps> = ({
-  complete,
-  ip,
-  forwards,
-  length,
-  xOffset,
-  xPos,
-  yPos,
-}: OverlayProps) => {
+const Overlay = ({ complete, ip, forwards, length, xOffset, xPos, yPos }: OverlayProps) => {
   const { playAudio } = useAudio()
   const [exited, setExited] = useState(false)
   const [exiting, setExiting] = useState(false)
