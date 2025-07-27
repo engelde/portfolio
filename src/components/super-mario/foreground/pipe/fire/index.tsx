@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
@@ -18,7 +17,7 @@ type VariantProps = {
   }
 }
 
-const Fire: FC<FireProps> = ({ x, y, forwards }: FireProps) => {
+const Fire = ({ x, y, forwards }: FireProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/fire/fire.1.png',

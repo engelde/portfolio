@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import NextImage from 'next/image'
 import { Box, HStack, Icon, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -13,7 +12,7 @@ export type DogProps = {
   offset: number
 }
 
-const Dog: FC<DogProps> = ({ xPos, xMin, xMax, offset }: DogProps) => {
+const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
   return (
     <Box
       as={motion.div}

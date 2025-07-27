@@ -1,6 +1,6 @@
 'use client'
 
-import type { FC, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 import Head from 'next/head'
 import type { ContainerProps } from '@chakra-ui/react'
@@ -17,7 +17,7 @@ export type LayoutProps = ContainerProps & {
   children: ReactNode
 }
 
-const Layout: FC<LayoutProps> = ({ title, dark, children, ...rest }: LayoutProps) => {
+const Layout = ({ title, dark, children, ...rest }: LayoutProps) => {
   const [isLoading, setIsLoading] = useState(true)
 
   return (

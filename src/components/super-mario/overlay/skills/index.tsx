@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import {
@@ -35,7 +34,7 @@ export type SkillsProps = {
   offset: number
 }
 
-const Skills: FC<SkillsProps> = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
+const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
   const skillset = [
     {
       name: 'TypeScript',

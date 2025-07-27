@@ -1,10 +1,9 @@
 'use client'
 
-import type { FC } from 'react'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-const Daylight: FC = () => {
+const Daylight = () => {
   return (
     <Box
       as={motion.div}

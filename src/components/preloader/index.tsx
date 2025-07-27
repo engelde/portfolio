@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
@@ -17,7 +16,7 @@ type PreloadTypes = {
   images: string[]
 }
 
-const Preloader: FC<PreloaderProps> = ({ isLoading, setIsLoading }: PreloaderProps) => {
+const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
   const [mobile] = useMediaQuery('(max-width: 36rem)')
   const [isPreloading, setIsPreloading] = useState(true)
   const [isInstructing, setIsInstructing] = useState(false)

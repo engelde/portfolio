@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
@@ -24,7 +23,7 @@ type VariantProps = {
   }
 }
 
-const Mario: FC<MarioProps> = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
+const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
   const variants: VariantProps = {
     1: {
       1: {

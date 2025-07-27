@@ -1,9 +1,8 @@
 'use client'
 
-import type { FC } from 'react'
 import { Box } from '@chakra-ui/react'
 
-const Sky: FC = () => {
+const Sky = () => {
   return (
     <Box
       position={'fixed'}

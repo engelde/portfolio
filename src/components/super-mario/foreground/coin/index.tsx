@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
@@ -27,16 +26,7 @@ type VariantProps = {
   }
 }
 
-const Coin: FC<CoinProps> = ({
-  x,
-  y,
-  show,
-  clickable,
-  active,
-  setActive,
-  score,
-  setScore,
-}: CoinProps) => {
+const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: CoinProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/coin/coin.1.png',

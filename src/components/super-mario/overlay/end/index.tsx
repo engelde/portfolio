@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import NextLink from 'next/link'
@@ -14,7 +13,7 @@ export type EndProps = {
   xPos: number
 }
 
-const End: FC<EndProps> = ({ complete, x, xPos }: EndProps) => {
+const End = ({ complete, x, xPos }: EndProps) => {
   const [fireworks, setFireworks] = useState(false)
 
   useEffect(() => {

@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect } from 'react'
 import { Box } from '@chakra-ui/react'
 
@@ -18,7 +17,7 @@ export type SuperMarioProps = {
   ip: string
 }
 
-const SuperMario: FC<SuperMarioProps> = ({ ip }: SuperMarioProps) => {
+const SuperMario = ({ ip }: SuperMarioProps) => {
   const {
     ceilingLevels,
     complete,

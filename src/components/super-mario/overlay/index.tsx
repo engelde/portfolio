@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
 
@@ -25,15 +24,7 @@ export type OverlayProps = {
   yPos: number
 }
 
-const Overlay: FC<OverlayProps> = ({
-  complete,
-  ip,
-  forwards,
-  length,
-  xOffset,
-  xPos,
-  yPos,
-}: OverlayProps) => {
+const Overlay = ({ complete, ip, forwards, length, xOffset, xPos, yPos }: OverlayProps) => {
   const { playAudio } = useAudio()
   const [exited, setExited] = useState(false)
   const [exiting, setExiting] = useState(false)

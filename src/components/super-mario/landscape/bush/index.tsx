@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -10,7 +9,7 @@ export type BushProps = {
   y: number
 }
 
-const Bush: FC<BushProps> = ({ x, y }: BushProps) => {
+const Bush = ({ x, y }: BushProps) => {
   return (
     <Box
       as={motion.div}

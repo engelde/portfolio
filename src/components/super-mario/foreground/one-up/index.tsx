@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
@@ -18,7 +17,7 @@ export type OneUpProps = {
   setLives: (lives: number) => void
 }
 
-const OneUp: FC<OneUpProps> = ({ x, y, active, lives, setActive, setLives }: OneUpProps) => {
+const OneUp = ({ x, y, active, lives, setActive, setLives }: OneUpProps) => {
   const { playAudio } = useAudio()
   const [appearing, setAppearing] = useState(true)
   const [running, setRunning] = useState(false)

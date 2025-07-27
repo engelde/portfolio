@@ -1,7 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
-
 import Clouds from './clouds'
 import Daylight from './daylight'
 import Sky from './sky'
@@ -11,7 +9,7 @@ export type EnvironmentProps = {
   mobile: boolean | undefined
 }
 
-const Environment: FC<EnvironmentProps> = ({ mobile }: EnvironmentProps) => {
+const Environment = ({ mobile }: EnvironmentProps) => {
   return (
     <>
       <Sky />

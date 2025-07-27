@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
@@ -21,16 +20,7 @@ export type LeafProps = {
   setScore: (score: number) => void
 }
 
-const Leaf: FC<LeafProps> = ({
-  x,
-  y,
-  active,
-  mario,
-  score,
-  setActive,
-  setMario,
-  setScore,
-}: LeafProps) => {
+const Leaf = ({ x, y, active, mario, score, setActive, setMario, setScore }: LeafProps) => {
   const { playAudio } = useAudio()
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)

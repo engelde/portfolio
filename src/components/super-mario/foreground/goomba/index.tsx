@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
@@ -18,7 +17,7 @@ type VariantProps = {
   }
 }
 
-const Goomba: FC<GoombaProps> = ({ x, y, offset }: GoombaProps) => {
+const Goomba = ({ x, y, offset }: GoombaProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/goomba/goomba.1.png',

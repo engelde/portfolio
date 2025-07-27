@@ -1,6 +1,6 @@
 'use client'
 
-import type { FC, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
@@ -28,7 +28,7 @@ type VariantProps = {
   }
 }
 
-const PrizeBox: FC<PrizeBoxProps> = ({
+const PrizeBox = ({
   x,
   y,
   status,

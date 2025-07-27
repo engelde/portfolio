@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
@@ -10,7 +9,7 @@ export type PointsProps = {
   total: number | string
 }
 
-const Points: FC<PointsProps> = ({ x, y, total }: PointsProps) => {
+const Points = ({ x, y, total }: PointsProps) => {
   return (
     <Text
       as={motion.div}

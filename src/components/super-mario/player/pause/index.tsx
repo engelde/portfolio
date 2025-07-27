@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import {
   Drawer,
   DrawerBody,
@@ -38,7 +37,7 @@ type MenuLink = {
   y: number
 }
 
-const Pause: FC<PauseProps> = ({ length, open, setOpen, setX, setY }: PauseProps) => {
+const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
   const { audio, playAudio, setAudio } = useAudio()
 
   const links: MenuLink[] = [

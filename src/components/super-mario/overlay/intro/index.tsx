@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { Box, Heading, HStack, Icon, Kbd, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { BsMouseFill } from 'react-icons/bs'
@@ -15,7 +14,7 @@ export type IntroProps = {
   ip: string
 }
 
-const Intro: FC<IntroProps> = ({ xPos, xMin, xMax, ip }: IntroProps) => {
+const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
   return (
     <Box
       as={motion.div}

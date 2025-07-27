@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import Brick, { type BrickProps } from './brick'
@@ -26,7 +25,7 @@ export type ForegroundProps = {
   setScore: (score: number) => void
 }
 
-const Foreground: FC<ForegroundProps> = ({
+const Foreground = ({
   jump,
   lives,
   mario,

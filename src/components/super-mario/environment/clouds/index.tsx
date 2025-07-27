@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -22,7 +21,7 @@ type VariantProps = {
   }
 }
 
-const Clouds: FC = () => {
+const Clouds = () => {
   const clouds: CloudProps[] = [
     {
       y: 4,

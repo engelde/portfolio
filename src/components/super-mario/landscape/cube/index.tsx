@@ -1,6 +1,5 @@
 'use client'
 
-import type { FC } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -19,7 +18,7 @@ type VariantProps = {
   }
 }
 
-const Cube: FC<CubeProps> = ({ variant, x, y }: CubeProps) => {
+const Cube = ({ variant, x, y }: CubeProps) => {
   const variants: VariantProps = {
     1: {
       src: '/images/cube/cube.1.png',
