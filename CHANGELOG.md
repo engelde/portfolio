@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.8](https://github.com/engelde/portfolio/compare/v0.3.7...v0.3.8) (2025-12-05)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** patch CVE-2025-66478 ([bc1779c](https://github.com/engelde/portfolio/commit/bc1779c32e3de485b58723e16324cda71dc0eeb0))
+
 ### [0.3.7](https://github.com/engelde/portfolio/compare/v0.3.6...v0.3.7) (2025-12-05)
 
 
