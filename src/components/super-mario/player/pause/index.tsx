@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -9,7 +10,6 @@ import {
   Flex,
   Heading,
   HStack,
-  IconButton,
   Slider,
   SliderFilledTrack,
   SliderThumb,
@@ -18,7 +18,6 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import { CgMenuLeftAlt } from 'react-icons/cg'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -41,10 +40,10 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
   const { audio, playAudio, setAudio } = useAudio()
 
   const links: MenuLink[] = [
-    { name: '.Home()', color: 'cyan.500', x: 0, y: 64 },
-    { name: '.About()', color: 'cyan.500', x: 3600, y: 128 },
-    { name: '.Skills()', color: 'cyan.500', x: 8880, y: 64 },
-    { name: '.Contact()', color: 'cyan.500', x: length, y: 64 },
+    { name: 'Home()', color: 'cyan.500', x: 0, y: 64 },
+    { name: 'About()', color: 'cyan.500', x: 3600, y: 128 },
+    { name: 'Skills()', color: 'cyan.500', x: 8880, y: 64 },
+    { name: 'Contact()', color: 'cyan.500', x: length, y: 64 },
   ]
 
   const handleOpen = () => {
@@ -77,30 +76,34 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
     <>
       <Flex pr={{ base: 2, lg: 2 }} pl={{ base: 2, lg: 2 }}>
         <HStack>
-          <IconButton
+          <Button
             as={motion.div}
             variant={'link'}
             zIndex={15}
             position={'fixed'}
-            top={0}
-            left={0}
-            py={4}
-            size={'lg'}
+            top={4}
+            left={4}
+            p={1}
+            size={'sm'}
             color={'white'}
             cursor={'pointer'}
             title={'Pause'}
             aria-label={'open menu'}
-            icon={<CgMenuLeftAlt />}
             onClick={handleOpen}
-            _active={{ color: 'cyan.300' }}
-            initial={{ translateY: '-150%' }}
+            _active={{ color: 'cyan.500', borderColor: 'cyan.500' }}
+            _hover={{ color: 'cyan.500', borderColor: 'cyan.500' }}
+            initial={{ translateY: '-175%' }}
             animate={{ translateY: 0, transition: { delay: 1 } }}
             whileHover={{ color: '#76E4F7', scale: 1.25 }}
-          />
+            textDecoration={'none !important'}
+            border={'2px solid white'}
+          >
+            PAUSE
+          </Button>
         </HStack>
       </Flex>
 
-      <Drawer isOpen={open} placement={'left'} size={'md'} onClose={handleClose}>
+      <Drawer isOpen={open} placement={'left'} size={'lg'} onClose={handleClose}>
         <DrawerOverlay bg={'blackAlpha.800'} />
         <DrawerContent color={'white'} bg={'blackAlpha.900'}>
           <DrawerCloseButton
@@ -113,9 +116,6 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
           <DrawerBody>
             <Flex h={'80vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
               <VStack spacing={8}>
-                <Heading size={'4xl'} color={'cyan.500'}>
-                  David.Engel
-                </Heading>
                 <Heading fontSize={'4xl'} color={'white'}>
                   PAUSED
                 </Heading>

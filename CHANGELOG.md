@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.9](https://github.com/engelde/portfolio/compare/v0.3.8...v0.3.9) (2026-03-19)
+
+
+### ✨ Features
+
+* **feature:** add orcid ([94be3b7](https://github.com/engelde/portfolio/commit/94be3b7b94c7ddbc3e1d57981266f35d2d614e69))
+* **feature:** update menu and details ([174d38f](https://github.com/engelde/portfolio/commit/174d38f33ca9b372e93d9cfd6077a74506b2e9a6))
+
 ### [0.3.8](https://github.com/engelde/portfolio/compare/v0.3.7...v0.3.8) (2025-12-05)
 
 
