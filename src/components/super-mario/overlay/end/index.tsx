@@ -168,28 +168,34 @@ const End = ({ complete, x, xPos }: EndProps) => {
           })}
         >
           <VStack spacing={16}>
-            <Heading
-              as={motion.div}
-              size={{ base: '2xl', md: '4xl' }}
-              color={'white'}
-              letterSpacing={'4px'}
-              initial={{ scale: 1 }}
-              whileInView={{
-                scale: [1, 1.06, 1],
-                transition: {
-                  type: 'keyframes',
-                  times: [0, 0.5, 1],
-                  delay: 0,
-                  duration: 1.6,
-                  ease: 'easeInOut',
-                  repeat: Infinity,
-                  repeatType: 'loop',
-                  repeatDelay: 0,
-                },
-              }}
-            >
-              COURSE CLEAR!
-            </Heading>
+            <VStack spacing={4}>
+              <Heading size={{ base: '1xl', md: '3xl' }} color={'purple.500'} letterSpacing={'4px'}>
+                David Engel
+              </Heading>
+
+              <Heading
+                as={motion.div}
+                size={{ base: '2xl', md: '4xl' }}
+                color={'white'}
+                letterSpacing={'4px'}
+                initial={{ scale: 1 }}
+                whileInView={{
+                  scale: [1, 1.06, 1],
+                  transition: {
+                    type: 'keyframes',
+                    times: [0, 0.5, 1],
+                    delay: 0,
+                    duration: 1.6,
+                    ease: 'easeInOut',
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    repeatDelay: 0,
+                  },
+                }}
+              >
+                COURSE CLEAR!
+              </Heading>
+            </VStack>
 
             <VStack spacing={0}>
               <Heading
