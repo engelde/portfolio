@@ -266,6 +266,26 @@ const End = ({ complete, x, xPos }: EndProps) => {
                   </Box>
                 </Tooltip>
               </Link>
+
+              <Link as={NextLink} href={'https://orcid.org/0009-0001-0780-738X'} target={'_blank'}>
+                <Tooltip label={'ORCID'} bg={'black'}>
+                  <Box
+                    as={motion.div}
+                    cursor={'pointer'}
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.12 }}
+                  >
+                    <NextImage
+                      alt={'ORCID'}
+                      src={'/images/orcid/orcid.png'}
+                      width={50}
+                      height={50}
+                      draggable={false}
+                      priority
+                    />
+                  </Box>
+                </Tooltip>
+              </Link>
             </HStack>
           </VStack>
         </Box>
