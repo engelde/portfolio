@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.11](https://github.com/engelde/portfolio/compare/v0.3.10...v0.3.11) (2026-03-29)
+
+
+### ✨ Features
+
+* update dependencies and skills showcase ([05e57a0](https://github.com/engelde/portfolio/commit/05e57a07023b1f5c95afb57cf9300164a2668dae))
+
 ### [0.3.10](https://github.com/engelde/portfolio/compare/v0.3.9...v0.3.10) (2026-03-29)
 
 ### [0.3.9](https://github.com/engelde/portfolio/compare/v0.3.8...v0.3.9) (2026-03-19)
