@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.9](https://github.com/engelde/portfolio/compare/v0.3.8...v0.3.9) (2026-03-19)
+
+
+### ✨ Features
+
+* **feature:** add orcid ([94be3b7](https://github.com/engelde/portfolio/commit/94be3b7b94c7ddbc3e1d57981266f35d2d614e69))
+* **feature:** update menu and details ([174d38f](https://github.com/engelde/portfolio/commit/174d38f33ca9b372e93d9cfd6077a74506b2e9a6))
+
+### [0.3.8](https://github.com/engelde/portfolio/compare/v0.3.7...v0.3.8) (2025-12-05)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** patch CVE-2025-66478 ([bc1779c](https://github.com/engelde/portfolio/commit/bc1779c32e3de485b58723e16324cda71dc0eeb0))
+
+### [0.3.7](https://github.com/engelde/portfolio/compare/v0.3.6...v0.3.7) (2025-12-05)
+
+
+### ♻️ Code Refactoring
+
+* **refactor:** clean up components ([94462c1](https://github.com/engelde/portfolio/commit/94462c1c38fda6791e870ac0fc9efe102574aba1))
+
+
+### 🐛 Bug Fixes
+
+* **deps:** patch CVE-2025-66478 ([2ad3823](https://github.com/engelde/portfolio/commit/2ad3823fa2dca902afa87eb506213931a57c4661))
+
 ### [0.3.6](https://github.com/engelde/portfolio/compare/v0.3.5...v0.3.6) (2025-07-27)
 
 

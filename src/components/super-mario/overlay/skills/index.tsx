@@ -44,7 +44,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       x: 7360,
     },
     {
-      name: 'React.js',
+      name: 'React',
       icon: SiReact,
       color: 'teal.300',
       link: 'https://react.dev',
