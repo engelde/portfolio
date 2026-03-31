@@ -51,9 +51,9 @@ const Overlay = ({ complete, ip, forwards, length, xOffset, xPos, yPos }: Overla
 
       <About xPos={xPos} xMin={3040} xMax={7000} variant={xPos < 5100 ? 1 : 2} />
 
-      <Skills xPos={xPos} xMin={7240} xMax={9800} offset={8360} />
+      <Skills xPos={xPos} xMin={7240} xMax={10000} offset={8360} />
 
-      <Thanks xPos={xPos} xMin={10000} xMax={11960} offset={10680} />
+      <Thanks xPos={xPos} xMin={10200} xMax={11960} offset={10680} />
 
       <Dog xPos={xPos} xMin={11760} xMax={16000} offset={12780} />
 
