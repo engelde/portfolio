@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.13](https://github.com/engelde/portfolio/compare/v0.3.12...v0.3.13) (2026-03-31)
+
+
+### ✨ Features
+
+* **feature:** update skills ([1597e18](https://github.com/engelde/portfolio/commit/1597e182490a588ff19e39aa9c387aeb9ba872cc))
+
 ### [0.3.12](https://github.com/engelde/portfolio/compare/v0.3.11...v0.3.12) (2026-03-31)
 
 
