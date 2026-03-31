@@ -42,7 +42,7 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
   const links: MenuLink[] = [
     { name: 'Home()', color: 'cyan.500', x: 0, y: 64 },
     { name: 'About()', color: 'cyan.500', x: 3600, y: 128 },
-    { name: 'Skills()', color: 'cyan.500', x: 8880, y: 64 },
+    { name: 'Skills()', color: 'cyan.500', x: 9100, y: 64 },
     { name: 'Contact()', color: 'cyan.500', x: length, y: 64 },
   ]
 
