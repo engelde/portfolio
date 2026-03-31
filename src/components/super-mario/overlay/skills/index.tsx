@@ -13,8 +13,8 @@ import {
   SiGo,
   SiGraphql,
   SiHono,
-  SiHuggingface,
   SiJavascript,
+  SiKubernetes,
   SiLaravel,
   SiLinux,
   SiMongodb,
@@ -186,6 +186,13 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       x: 8500,
     },
     {
+      name: 'Kubernetes',
+      icon: SiKubernetes,
+      color: 'blue.600',
+      link: 'https://kubernetes.io',
+      x: 8540,
+    },
+    {
       name: 'PostgreSQL',
       icon: SiPostgresql,
       color: 'blue.400',
@@ -240,13 +247,6 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       color: 'purple.500',
       link: 'https://stripe.com',
       x: 8980,
-    },
-    {
-      name: 'Hugging Face',
-      icon: SiHuggingface,
-      color: 'orange.300',
-      link: 'https://huggingface.co',
-      x: 9040,
     },
     {
       name: 'Anthropic',
