@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.14](https://github.com/engelde/portfolio/compare/v0.3.13...v0.3.14) (2026-04-02)
+
+
+### 🚚 Chores
+
+* trigger deployment ([26c8164](https://github.com/engelde/portfolio/commit/26c816400bacd3c5a3f2f807c8bbf85e5c6676ca))
+
+
+### ✨ Features
+
+* **feature:** update skills ([cf536e8](https://github.com/engelde/portfolio/commit/cf536e80605590e20b65b01a33b5bc94c4840d89))
+
 ### [0.3.13](https://github.com/engelde/portfolio/compare/v0.3.12...v0.3.13) (2026-03-31)
 
 
