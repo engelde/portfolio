@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
+import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
 
 import { useAudio } from '@/hooks/useAudio'
@@ -20,47 +21,20 @@ export type CoinProps = {
   setScore: (score: number) => void
 }
 
-type VariantProps = {
-  [variant: number]: {
-    src: string
-  }
-}
+const coinSpin = keyframes`
+  0% { content: url('/images/coin/coin.1.png'); }
+  20% { content: url('/images/coin/coin.2.png'); }
+  40% { content: url('/images/coin/coin.3.png'); }
+  60% { content: url('/images/coin/coin.4.png'); }
+  80% { content: url('/images/coin/coin.5.png'); }
+  100% { content: url('/images/coin/coin.1.png'); }
+`
 
 const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: CoinProps) => {
-  const variants: VariantProps = {
-    1: {
-      src: '/images/coin/coin.1.png',
-    },
-    2: {
-      src: '/images/coin/coin.2.png',
-    },
-    3: {
-      src: '/images/coin/coin.3.png',
-    },
-    4: {
-      src: '/images/coin/coin.4.png',
-    },
-    5: {
-      src: '/images/coin/coin.5.png',
-    },
-  }
-
   const { playAudio } = useAudio()
-  const [state, setState] = useState(1)
   const [running, setRunning] = useState(show)
   const [disabled, setDisabled] = useState(false)
   const value = 100
-
-  useEffect(() => {
-    if (running) {
-      const timer = setTimeout(() => setState(state < 5 ? state + 1 : 1), 150)
-      return () => {
-        clearTimeout(timer)
-      }
-    } else {
-      return
-    }
-  }, [running, state])
 
   useEffect(() => {
     if (active && !disabled) {
@@ -107,10 +81,15 @@ const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: Coi
               },
             }
           }
+          sx={{
+            '& img': {
+              animation: `${coinSpin} 0.75s steps(1) infinite`,
+            },
+          }}
         >
           <NextImage
             alt={'coin'}
-            src={variants[state]?.src || ''}
+            src={'/images/coin/coin.1.png'}
             width={80}
             height={80}
             draggable={false}

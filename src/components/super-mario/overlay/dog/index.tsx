@@ -18,7 +18,7 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
       as={motion.div}
       zIndex={10}
       position={'fixed'}
-      top={40}
+      top={36}
       left={8}
       ml={(offset - xPos > 0 ? offset - xPos + (offset % xPos) / 2 : 0) + 'px'}
       visibility={xPos < 2000 ? 'hidden' : 'visible'}
@@ -30,6 +30,7 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
         initial: { opacity: 1, marginTop: 0 },
         animate: { opacity: 1, marginTop: -600 },
       })}
+      style={{ pointerEvents: 'none' }}
     >
       <Box
         as={motion.div}
@@ -38,7 +39,7 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
         border={4}
         borderStyle={'solid'}
         borderColor={'black'}
-        rounded={'lg'}
+        rounded={'none'}
         boxShadow={'2px 2px rgba(0,0,0,.2)'}
         overflow={'hidden'}
         initial={{ scale: 1 }}

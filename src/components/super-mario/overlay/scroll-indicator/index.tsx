@@ -14,7 +14,7 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
       zIndex={22}
       position={'fixed'}
       left={0}
-      bottom={2}
+      bottom={3}
       w={'full'}
       mb={2}
       alignItems={'center'}
@@ -26,6 +26,7 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
         initial: { translateY: '150%' },
         animate: { translateY: 0, transition: { delay: 0.3 } },
       })}
+      style={{ pointerEvents: 'none' }}
     >
       <VStack
         as={motion.div}
@@ -35,7 +36,7 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
         justifyContent={'center'}
         initial={{ scale: 1 }}
         whileInView={{
-          scale: [1, 1.05, 1],
+          scale: [1, 1.04, 1],
           transition: {
             type: 'keyframes',
             times: [0, 0.5, 1],
@@ -52,7 +53,7 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
           Scroll for more!
         </Text>
         <Text
-          mt={-3}
+          mt={-4}
           fontSize={'4xl'}
           color={'white'}
           textShadow={'2px 2px rgba(0, 0, 0, 0.28)'}

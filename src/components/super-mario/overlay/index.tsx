@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
 
 import { useAudio } from '@/hooks/useAudio'
@@ -13,6 +13,16 @@ import Intro from './intro'
 import ScrollIndicator from './scroll-indicator'
 import Skills from './skills'
 import Thanks from './thanks'
+
+// Memoize overlay sections
+const MemoizedIntro = React.memo(Intro)
+const MemoizedAbout = React.memo(About)
+const MemoizedSkills = React.memo(Skills)
+const MemoizedThanks = React.memo(Thanks)
+const MemoizedDog = React.memo(Dog)
+const MemoizedEnd = React.memo(End)
+const MemoizedPipe = React.memo(Pipe)
+const MemoizedScrollIndicator = React.memo(ScrollIndicator)
 
 export type OverlayProps = {
   complete: boolean
@@ -45,23 +55,23 @@ const Overlay = ({ complete, ip, forwards, length, xOffset, xPos, yPos }: Overla
 
   return (
     <>
-      <ScrollIndicator xPos={xPos} />
+      <MemoizedScrollIndicator xPos={xPos} />
 
-      <Intro xPos={xPos} xMin={0} xMax={2620} ip={ip} />
+      <MemoizedIntro xPos={xPos} xMin={0} xMax={2420} ip={ip} />
 
-      <About xPos={xPos} xMin={3040} xMax={7000} variant={xPos < 5100 ? 1 : 2} />
+      <MemoizedAbout xPos={xPos} xMin={2840} xMax={7000} variant={xPos < 4900 ? 1 : 2} />
 
-      <Skills xPos={xPos} xMin={7240} xMax={10000} offset={8360} />
+      <MemoizedSkills xPos={xPos} xMin={7240} xMax={10000} offset={8360} />
 
-      <Thanks xPos={xPos} xMin={10200} xMax={11960} offset={10680} />
+      <MemoizedThanks xPos={xPos} xMin={10200} xMax={11960} offset={10680} />
 
-      <Dog xPos={xPos} xMin={11760} xMax={16000} offset={12780} />
+      <MemoizedDog xPos={xPos} xMin={11760} xMax={16000} offset={12780} />
 
       <Box zIndex={10} position={'absolute'} left={13040} bottom={'64px'} w={'410px'} h={'160px'}>
-        <Pipe x={0} y={0} height={410} rotate={-90} />
+        <MemoizedPipe x={0} y={0} height={410} rotate={-90} />
       </Box>
 
-      <End complete={complete} x={length - xOffset} xPos={xPos} />
+      <MemoizedEnd complete={complete} x={length - xOffset} xPos={xPos} />
     </>
   )
 }

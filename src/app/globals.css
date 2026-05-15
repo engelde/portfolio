@@ -33,7 +33,6 @@ body {
   user-select: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  scroll-behavior: smooth;
   overscroll-behavior-y: none;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;

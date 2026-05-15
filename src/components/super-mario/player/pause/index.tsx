@@ -15,10 +15,12 @@ import {
   SliderThumb,
   SliderTrack,
   Text,
+  useEventListener,
   VStack,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
+import Wordmark from '@/components/wordmark'
 import { useAudio } from '@/hooks/useAudio'
 
 export type PauseProps = {
@@ -72,31 +74,45 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
     setAudio(val)
   }
 
+  useEventListener(typeof window !== 'undefined' ? window : null, 'keydown', (event) => {
+    if (open && event.code === 'Escape') {
+      event.preventDefault()
+      event.stopPropagation()
+      handleClose()
+    }
+  })
+
   return (
     <>
       <Flex pr={{ base: 2, lg: 2 }} pl={{ base: 2, lg: 2 }}>
         <HStack>
           <Button
-            as={motion.div}
+            as={motion.p}
+            title={'Pause'}
+            aria-label={'open menu'}
             variant={'link'}
             zIndex={15}
             position={'fixed'}
             top={4}
             left={4}
-            p={1}
+            py={1.5}
+            px={2}
             size={'sm'}
             color={'white'}
+            background={'black'}
+            borderRadius={0}
             cursor={'pointer'}
-            title={'Pause'}
-            aria-label={'open menu'}
-            onClick={handleOpen}
-            _active={{ color: 'cyan.500', borderColor: 'cyan.500' }}
-            _hover={{ color: 'cyan.500', borderColor: 'cyan.500' }}
+            fontSize={'14px'}
+            letterSpacing={'1px'}
+            textDecoration={'none !important'}
+            textTransform={'uppercase'}
+            opacity={0.9}
+            _active={{ opacity: 1, color: 'cyan.500' }}
+            _hover={{ opacity: 1, color: 'cyan.500' }}
             initial={{ translateY: '-175%' }}
             animate={{ translateY: 0, transition: { delay: 1 } }}
-            whileHover={{ color: '#76E4F7', scale: 1.25 }}
-            textDecoration={'none !important'}
-            border={'2px solid white'}
+            whileHover={{ color: '#76E4F7', opacity: 1 }}
+            onClick={handleOpen}
           >
             PAUSE
           </Button>
@@ -105,22 +121,52 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
 
       <Drawer isOpen={open} placement={'left'} size={'lg'} onClose={handleClose}>
         <DrawerOverlay bg={'blackAlpha.800'} />
-        <DrawerContent color={'white'} bg={'blackAlpha.900'}>
+        <DrawerContent
+          color={'white'}
+          bg={'blackAlpha.900'}
+          overflow={'visible'}
+          _after={{
+            background:
+              'linear-gradient(45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(135deg, #000 16px, transparent 0)',
+            backgroundRepeat: 'repeat-y',
+            backgroundPosition: 'right top',
+            backgroundSize: '32px 32px',
+            content: '""',
+            display: 'block',
+            position: 'absolute',
+            right: '-26px',
+            bottom: 0,
+            width: '32px',
+            height: '100%',
+            opacity: 0.9,
+          }}
+        >
           <DrawerCloseButton
             as={motion.div}
             zIndex={15}
             _active={{ color: 'cyan.300' }}
+            _hover={{ color: 'cyan.300' }}
             cursor={'pointer'}
             whileHover={{ color: '#76E4F7', scale: 1.25 }}
-          />
+            fontFamily={'VT323'}
+            fontSize={'36px'}
+            transformOrigin={'center'}
+            initial={{ scaleY: 0.55 }}
+          >
+            X
+          </DrawerCloseButton>
           <DrawerBody>
-            <Flex h={'80vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
-              <VStack spacing={8}>
-                <Heading fontSize={'4xl'} color={'white'}>
-                  PAUSED
-                </Heading>
+            <Flex h={'90vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
+              <VStack spacing={12}>
+                <VStack spacing={8} alignItems={'center'} justifyContent={'center'}>
+                  <Wordmark textAlign={'center'} fontSize={'5px'} />
 
-                <VStack spacing={0} alignItems={'center'} justifyContent={'center'} mb={4}>
+                  <Heading fontSize={'4xl'} color={'white'}>
+                    PAUSED
+                  </Heading>
+                </VStack>
+
+                <VStack spacing={0} alignItems={'center'} justifyContent={'center'}>
                   {links.map((link, x) => (
                     <Text
                       key={x}
@@ -134,14 +180,14 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
                   ))}
                 </VStack>
 
-                <VStack spacing={2} mb={4} alignItems={'center'} justifyContent={'center'}>
+                <VStack spacing={2} alignItems={'center'} justifyContent={'center'}>
                   <Text fontSize={'2xl'} textAlign={'center'}>
                     Audio
                   </Text>
 
                   <Slider
                     aria-label={'audio-slider'}
-                    colorScheme={'red'}
+                    colorScheme={'cyan'}
                     w={100}
                     min={0}
                     max={100}

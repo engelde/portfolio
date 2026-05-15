@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useEventListener } from '@chakra-ui/react'
 
 type KeyboardProps = {
@@ -14,8 +14,12 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
   const [right, setRight] = useState(false)
   const [escape, setEscape] = useState(false)
 
+  const keys = useRef<Set<string>>(new Set())
+
   useEventListener(window, 'keydown', (event) => {
     if (active && event.code) {
+      keys.current.add(event.code)
+
       if (event.code === 'ArrowUp' || event.code === 'Space') {
         event.preventDefault()
         if (!up) setUp(true)
@@ -41,6 +45,8 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
 
   useEventListener(window, 'keyup', (event) => {
     if (active && event.code) {
+      keys.current.delete(event.code)
+
       if (event.code === 'ArrowUp' || event.code === 'Space') {
         event.preventDefault()
 
@@ -60,13 +66,14 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
 
       if (event.code === 'Escape') {
         event.preventDefault()
-        if (escape) setEscape(false)
+        setEscape(!!escape)
       }
     }
   })
 
   useEffect(() => {
     if (!active) {
+      keys.current.clear()
       if (up) setUp(false)
       if (down) setDown(false)
       if (left) setLeft(false)
@@ -75,5 +82,5 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
     }
   }, [active, up, down, left, right, escape])
 
-  return { up, down, left, right, escape }
+  return { up, down, left, right, escape, keys }
 }

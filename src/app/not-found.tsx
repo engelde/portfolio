@@ -36,7 +36,6 @@ export default function NotFound() {
             initial={{ opacity: 0, translateY: -2000 }}
             animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}
           >
-            <Code text={'<h1>'} />
             {'404('}
             <Text
               as={'span'}
@@ -47,7 +46,6 @@ export default function NotFound() {
               {"'NOT FOUND'"}
             </Text>
             {')'}
-            <Code text={'</h1>'} />
           </Heading>
 
           <Text

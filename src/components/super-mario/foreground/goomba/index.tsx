@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
+import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
 
 export type GoombaProps = {
@@ -11,31 +11,13 @@ export type GoombaProps = {
   offset: number
 }
 
-type VariantProps = {
-  [variant: number]: {
-    src: string
-  }
-}
+const walkAnimation = keyframes`
+  0% { content: url('/images/goomba/goomba.1.png'); }
+  50% { content: url('/images/goomba/goomba.2.png'); }
+  100% { content: url('/images/goomba/goomba.1.png'); }
+`
 
 const Goomba = ({ x, y, offset }: GoombaProps) => {
-  const variants: VariantProps = {
-    1: {
-      src: '/images/goomba/goomba.1.png',
-    },
-    2: {
-      src: '/images/goomba/goomba.2.png',
-    },
-  }
-
-  const [state, setState] = useState(1)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setState(state === 1 ? 2 : 1), 400)
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [state])
-
   return (
     <Box
       as={motion.div}
@@ -60,14 +42,25 @@ const Goomba = ({ x, y, offset }: GoombaProps) => {
         },
       }}
     >
-      <NextImage
-        alt={'goomba'}
-        src={variants[state]?.src || ''}
-        width={80}
-        height={80}
-        draggable={false}
-        priority
-      />
+      <Box
+        as="div"
+        w="80px"
+        h="80px"
+        sx={{
+          '& img': {
+            animation: `${walkAnimation} 0.8s steps(1) infinite`,
+          },
+        }}
+      >
+        <NextImage
+          alt={'goomba'}
+          src={'/images/goomba/goomba.1.png'}
+          width={80}
+          height={80}
+          draggable={false}
+          priority
+        />
+      </Box>
     </Box>
   )
 }

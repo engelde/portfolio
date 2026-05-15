@@ -6,12 +6,10 @@ import SuperMario from '@/components/super-mario'
 export default async function Home() {
   const headersList = await headers()
   const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip')
-  const clientIp = ip || '127.0.0.1'
-
-  const pageTitle = 'Software Engineer'
+  const clientIp = ip && ip !== '::1' ? ip : '127.0.0.1'
 
   return (
-    <Layout title={pageTitle} bg={'black'} dark={true}>
+    <Layout bg={'black'} dark={true}>
       <SuperMario ip={clientIp} />
     </Layout>
   )

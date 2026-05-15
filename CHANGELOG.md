@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.15](https://github.com/engelde/portfolio/compare/v0.3.14...v0.3.15) (2026-05-14)
+
+
+### ✨ Features
+
+* improve jump mechanics and stylize end screen name ([603d4aa](https://github.com/engelde/portfolio/commit/603d4aa94440175403c8dbd83c8b4b13832de452))
+* solid ascii name art shared across intro and end screens ([5e1d769](https://github.com/engelde/portfolio/commit/5e1d769ca159217fff26f5a25f5223f1d62a8825))
+
 ### [0.3.14](https://github.com/engelde/portfolio/compare/v0.3.13...v0.3.14) (2026-04-02)
 
 

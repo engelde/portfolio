@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
+import Wordmark from '@/components/wordmark'
+
 import styles from './styles.module.css'
 
 export type PreloaderProps = {
@@ -196,44 +198,48 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
               initial={{ translateY: 2000 }}
               animate={{ translateY: 0, transition: { duration: 0.9 } }}
             >
-              <VStack
-                as={motion.div}
-                spacing={0}
-                alignItems={'center'}
-                justifyContent={'center'}
-                p={1}
-                initial={{ scale: 1 }}
-                whileInView={{
-                  scale: [1, 1.05, 1],
-                  transition: {
-                    type: 'keyframes',
-                    times: [0, 0.5, 1],
-                    delay: 0,
-                    duration: 1.6,
-                    ease: 'easeInOut',
-                    repeat: Infinity,
-                    repeatType: 'loop',
-                    repeatDelay: 0,
-                  },
-                }}
-              >
-                <Text
-                  fontSize={mobile ? '2xl' : '4xl'}
-                  color={'cyan.500'}
-                  mb={3}
-                  textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
+              <VStack spacing={16}>
+                <Wordmark textAlign={'center'} />
+
+                <VStack
+                  as={motion.div}
+                  spacing={0}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  p={1}
+                  initial={{ scale: 1 }}
+                  whileInView={{
+                    scale: [1, 1.05, 1],
+                    transition: {
+                      type: 'keyframes',
+                      times: [0, 0.5, 1],
+                      delay: 0,
+                      duration: 1.6,
+                      ease: 'easeInOut',
+                      repeat: Infinity,
+                      repeatType: 'loop',
+                      repeatDelay: 0,
+                    },
+                  }}
                 >
-                  <strong>Scroll down to start!</strong>
-                </Text>
-                <Text
-                  fontSize={'4xl'}
-                  color={'cyan.500'}
-                  mb={3}
-                  transform={'rotate(90deg)'}
-                  textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
-                >
-                  <strong>{'>'}</strong>
-                </Text>
+                  <Text
+                    fontSize={mobile ? '2xl' : '4xl'}
+                    color={'cyan.500'}
+                    mb={3}
+                    textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
+                  >
+                    <strong>Scroll to start!</strong>
+                  </Text>
+                  <Text
+                    fontSize={'4xl'}
+                    color={'cyan.500'}
+                    mb={3}
+                    transform={'rotate(90deg)'}
+                    textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
+                  >
+                    <strong>{'>'}</strong>
+                  </Text>
+                </VStack>
               </VStack>
             </Flex>
           </VStack>

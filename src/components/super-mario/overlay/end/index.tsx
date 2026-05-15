@@ -7,6 +7,8 @@ import { Box, Flex, Heading, HStack, Link, Tooltip, VStack } from '@chakra-ui/re
 import { Fireworks } from '@fireworks-js/react'
 import { motion } from 'framer-motion'
 
+import Wordmark from '@/components/wordmark'
+
 export type EndProps = {
   complete: boolean
   x: number
@@ -168,34 +170,31 @@ const End = ({ complete, x, xPos }: EndProps) => {
           })}
         >
           <VStack spacing={16}>
-            <VStack spacing={4}>
-              <Heading size={{ base: '1xl', md: '3xl' }} color={'purple.500'} letterSpacing={'4px'}>
-                David Engel
-              </Heading>
+            <Wordmark textAlign={'center'} />
 
-              <Heading
-                as={motion.div}
-                size={{ base: '2xl', md: '4xl' }}
-                color={'white'}
-                letterSpacing={'4px'}
-                initial={{ scale: 1 }}
-                whileInView={{
-                  scale: [1, 1.06, 1],
-                  transition: {
-                    type: 'keyframes',
-                    times: [0, 0.5, 1],
-                    delay: 0,
-                    duration: 1.6,
-                    ease: 'easeInOut',
-                    repeat: Infinity,
-                    repeatType: 'loop',
-                    repeatDelay: 0,
-                  },
-                }}
-              >
-                COURSE CLEAR!
-              </Heading>
-            </VStack>
+            <Heading
+              as={motion.div}
+              size={{ base: '2xl', md: '4xl' }}
+              color={'white'}
+              letterSpacing={'4px'}
+              textTransform={'uppercase'}
+              initial={{ scale: 1 }}
+              whileInView={{
+                scale: [1.06, 1.12, 1.06],
+                transition: {
+                  type: 'keyframes',
+                  times: [0, 0.5, 1],
+                  delay: 0,
+                  duration: 1.8,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                  repeatDelay: 0,
+                },
+              }}
+            >
+              COURSE CLEAR!
+            </Heading>
 
             <VStack spacing={0}>
               <Heading

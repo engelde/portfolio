@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
+import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
 
 import { useAudio } from '@/hooks/useAudio'
@@ -22,11 +23,13 @@ export type PrizeBoxProps = {
   children: ReactNode
 }
 
-type VariantProps = {
-  [variant: number]: {
-    src: string
-  }
-}
+const boxAnimation = keyframes`
+  0% { content: url('/images/box/box.1.png'); }
+  25% { content: url('/images/box/box.2.png'); }
+  50% { content: url('/images/box/box.3.png'); }
+  75% { content: url('/images/box/box.4.png'); }
+  100% { content: url('/images/box/box.1.png'); }
+`
 
 const PrizeBox = ({
   x,
@@ -41,38 +44,8 @@ const PrizeBox = ({
   setPrizeCount,
   children,
 }: PrizeBoxProps) => {
-  const variants: VariantProps = {
-    0: {
-      src: '/images/box/box.0.png',
-    },
-    1: {
-      src: '/images/box/box.1.png',
-    },
-    2: {
-      src: '/images/box/box.2.png',
-    },
-    3: {
-      src: '/images/box/box.3.png',
-    },
-    4: {
-      src: '/images/box/box.4.png',
-    },
-  }
-
   const { playAudio } = useAudio()
-  const [state, setState] = useState(1)
   const [running, setRunning] = useState(false)
-
-  useEffect(() => {
-    if (status) {
-      const timer = setTimeout(() => setState(state < 4 ? state + 1 : 1), 130)
-      return () => {
-        clearTimeout(timer)
-      }
-    } else {
-      return
-    }
-  }, [status, state])
 
   useEffect(() => {
     if (active && !running) {
@@ -134,10 +107,15 @@ const PrizeBox = ({
         cursor={status ? 'pointer' : 'default'}
         _hover={{ filter: status ? 'brightness(115%)' : 'brightness(100%)' }}
         onClick={handleAction}
+        sx={{
+          '& img': {
+            animation: status ? `${boxAnimation} 0.52s steps(1) infinite` : 'none',
+          },
+        }}
       >
         <NextImage
           alt={'box'}
-          src={(status ? variants[state]?.src : variants[0]?.src) || ''}
+          src={status ? '/images/box/box.1.png' : '/images/box/box.0.png'}
           width={80}
           height={80}
           draggable={false}

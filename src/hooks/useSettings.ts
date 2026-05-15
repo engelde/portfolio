@@ -71,9 +71,9 @@ export const useSettings = () => {
   ]
 
   const groundLevels = [
-    { xMin: 0, xMax: 3272, height: 64 },
-    { xMin: 3278, xMax: 5800, height: 128 },
-    { xMin: 5800, xMax: length, height: 64 },
+    { xMin: -100, xMax: 3278, height: 64 },
+    { xMin: 3270, xMax: 5800, height: 128 },
+    { xMin: 5790, xMax: length + 100, height: 64 },
   ]
 
   // Timer

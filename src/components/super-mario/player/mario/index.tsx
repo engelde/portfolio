@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 
@@ -26,90 +25,28 @@ type VariantProps = {
 const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
   const variants: VariantProps = {
     1: {
-      1: {
-        src: '/images/mario/mario.regular.1.png',
-        width: 100,
-        height: 100,
-      },
-      2: {
-        src: '/images/mario/mario.regular.2.png',
-        width: 100,
-        height: 100,
-      },
+      1: { src: '/images/mario/mario.regular.1.png', width: 100, height: 100 },
+      2: { src: '/images/mario/mario.regular.2.png', width: 100, height: 100 },
     },
     2: {
-      1: {
-        src: '/images/mario/mario.super.1.png',
-        width: 80,
-        height: 160,
-      },
-      2: {
-        src: '/images/mario/mario.super.2.png',
-        width: 80,
-        height: 160,
-      },
+      1: { src: '/images/mario/mario.super.1.png', width: 80, height: 160 },
+      2: { src: '/images/mario/mario.super.2.png', width: 80, height: 160 },
     },
     3: {
-      1: {
-        src: '/images/mario/mario.raccoon.1.png',
-        width: 120,
-        height: 160,
-      },
-      2: {
-        src: '/images/mario/mario.raccoon.2.png',
-        width: 120,
-        height: 160,
-      },
+      1: { src: '/images/mario/mario.raccoon.1.png', width: 120, height: 160 },
+      2: { src: '/images/mario/mario.raccoon.2.png', width: 120, height: 160 },
     },
   }
 
   const jumpVariants: VariantProps = {
-    1: {
-      1: {
-        src: '/images/mario/mario.regular.jump.png',
-        width: 100,
-        height: 100,
-      },
-    },
-    2: {
-      1: {
-        src: '/images/mario/mario.super.jump.png',
-        width: 80,
-        height: 160,
-      },
-    },
-    3: {
-      1: {
-        src: '/images/mario/mario.raccoon.jump.png',
-        width: 120,
-        height: 160,
-      },
-    },
+    1: { 1: { src: '/images/mario/mario.regular.jump.png', width: 100, height: 100 } },
+    2: { 1: { src: '/images/mario/mario.super.jump.png', width: 80, height: 160 } },
+    3: { 1: { src: '/images/mario/mario.raccoon.jump.png', width: 120, height: 160 } },
   }
 
-  const [prevDirection, setPrevDirection] = useState(forwards)
-  const [prevXPos, setPrevXPos] = useState(xPos)
-  const [state, setState] = useState(1)
-  const [steps, setSteps] = useState(1)
-  const speed = 5
-
-  useEffect(() => {
-    if (xPos !== prevXPos) {
-      if (forwards !== prevDirection) {
-        setPrevDirection(forwards)
-        setSteps(steps + 1)
-      }
-
-      setSteps(steps + 1)
-
-      if (steps >= speed) {
-        setSteps(1)
-        setState(state < 2 ? state + 1 : 1)
-      }
-
-      setPrevXPos(xPos)
-    }
-  }, [forwards, state, steps, xPos, prevDirection, prevXPos])
+  // Derive animation state mathematically from xPos
+  const walkScale = 80 // Pixels per walk cycle
+  const state = Math.floor(Math.abs(xPos) / walkScale) % 2 === 0 ? 1 : 2
 
   return (
     <Box

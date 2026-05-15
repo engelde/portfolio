@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import Brick, { type BrickProps } from './brick'
 import Coin, { type CoinProps } from './coin'
@@ -11,6 +11,17 @@ import OneUp from './one-up'
 import Pipe, { type PipeProps } from './pipe'
 import PrizeBox, { type PrizeBoxProps } from './prize-box'
 import Turtle, { type TurtleProps } from './turtle'
+
+// Wrap child components in React.memo for performance
+const MemoizedBrick = React.memo(Brick)
+const MemoizedCoin = React.memo(Coin)
+const MemoizedGoomba = React.memo(Goomba)
+const MemoizedLeaf = React.memo(Leaf)
+const MemoizedMushroom = React.memo(Mushroom)
+const MemoizedOneUp = React.memo(OneUp)
+const MemoizedPipe = React.memo(Pipe)
+const MemoizedPrizeBox = React.memo(PrizeBox)
+const MemoizedTurtle = React.memo(Turtle)
 
 export type ForegroundProps = {
   jump: boolean
@@ -25,6 +36,23 @@ export type ForegroundProps = {
   setScore: (score: number) => void
 }
 
+type PrizeBoxState = {
+  status: boolean
+  active: boolean
+  count: number
+  prize: boolean
+}
+
+type DynamicObjectsState = {
+  prizeBoxes: { [key: number]: PrizeBoxState }
+  coins: { [key: number]: boolean }
+  items: {
+    leaf1: boolean
+    mushroom1: boolean
+    oneUp1: boolean
+  }
+}
+
 const Foreground = ({
   jump,
   lives,
@@ -37,60 +65,97 @@ const Foreground = ({
   setMario,
   setScore,
 }: ForegroundProps) => {
-  const [prizeBox1Status, setPrizeBox1Status] = useState(true)
-  const [prizeBox1Active, setPrizeBox1Active] = useState(false)
-  const [prizeBox1Count, setPrizeBox1Count] = useState(1)
-  const [prizeBox1Prize, setPrizeBox1Prize] = useState(false)
+  // Initial state for all dynamic objects
+  const [dynamicObjects, setDynamicObjects] = useState<DynamicObjectsState>({
+    prizeBoxes: {
+      1: { status: true, active: false, count: 1, prize: false },
+      2: { status: true, active: false, count: 1, prize: false },
+      3: { status: true, active: false, count: 1, prize: false },
+      4: { status: true, active: false, count: 1, prize: false },
+      5: { status: true, active: false, count: 1, prize: false },
+      6: { status: true, active: false, count: 1, prize: false },
+      7: { status: true, active: false, count: 1, prize: false },
+      8: { status: true, active: false, count: 1, prize: false },
+      9: { status: true, active: false, count: 1, prize: false },
+    },
+    coins: {
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+      5: false,
+    },
+    items: {
+      leaf1: false,
+      mushroom1: false,
+      oneUp1: false,
+    },
+  })
 
-  const [prizeBox2Status, setPrizeBox2Status] = useState(true)
-  const [prizeBox2Active, setPrizeBox2Active] = useState(false)
-  const [prizeBox2Count, setPrizeBox2Count] = useState(1)
-  const [prizeBox2Prize, setPrizeBox2Prize] = useState(false)
+  // State update helpers
+  const setPrizeBoxState = useCallback(
+    <K extends keyof PrizeBoxState>(id: number, key: K, val: PrizeBoxState[K]) => {
+      setDynamicObjects((prev) => ({
+        ...prev,
+        prizeBoxes: {
+          ...prev.prizeBoxes,
+          [id]: { ...prev.prizeBoxes[id], [key]: val },
+        },
+      }))
+    },
+    []
+  )
 
-  const [prizeBox3Status, setPrizeBox3Status] = useState(true)
-  const [prizeBox3Active, setPrizeBox3Active] = useState(false)
-  const [prizeBox3Count, setPrizeBox3Count] = useState(1)
-  const [prizeBox3Prize, setPrizeBox3Prize] = useState(false)
+  const setCoinActive = useCallback((id: number, active: boolean) => {
+    setDynamicObjects((prev) => ({
+      ...prev,
+      coins: { ...prev.coins, [id]: active },
+    }))
+  }, [])
 
-  const [prizeBox4Status, setPrizeBox4Status] = useState(true)
-  const [prizeBox4Active, setPrizeBox4Active] = useState(false)
-  const [prizeBox4Count, setPrizeBox4Count] = useState(1)
-  const [prizeBox4Prize, setPrizeBox4Prize] = useState(false)
+  const setItemActive = useCallback((key: keyof DynamicObjectsState['items'], active: boolean) => {
+    setDynamicObjects((prev) => ({
+      ...prev,
+      items: { ...prev.items, [key]: active },
+    }))
+  }, [])
 
-  const [prizeBox5Status, setPrizeBox5Status] = useState(true)
-  const [prizeBox5Active, setPrizeBox5Active] = useState(false)
-  const [prizeBox5Count, setPrizeBox5Count] = useState(1)
-  const [prizeBox5Prize, setPrizeBox5Prize] = useState(false)
+  // Create stable handlers for prize boxes and coins to ensure React.memo works
+  const prizeBoxHandlers = useMemo(() => {
+    const handlers: {
+      [key: number]: {
+        setStatus: (val: boolean) => void
+        setActive: (val: boolean) => void
+        setPrizeActive: (val: boolean) => void
+        setPrizeCount: (val: number) => void
+      }
+    } = {}
+    for (let i = 1; i <= 9; i++) {
+      handlers[i] = {
+        setStatus: (val: boolean) => setPrizeBoxState(i, 'status', val),
+        setActive: (val: boolean) => setPrizeBoxState(i, 'active', val),
+        setPrizeActive: (val: boolean) => setPrizeBoxState(i, 'prize', val),
+        setPrizeCount: (val: number) => setPrizeBoxState(i, 'count', val),
+      }
+    }
+    return handlers
+  }, [setPrizeBoxState])
 
-  const [prizeBox6Status, setPrizeBox6Status] = useState(true)
-  const [prizeBox6Active, setPrizeBox6Active] = useState(false)
-  const [prizeBox6Count, setPrizeBox6Count] = useState(1)
-  const [prizeBox6Prize, setPrizeBox6Prize] = useState(false)
+  const coinHandlers = useMemo(() => {
+    const handlers: { [key: number]: (val: boolean) => void } = {}
+    for (let i = 1; i <= 5; i++) {
+      handlers[i] = (val: boolean) => setCoinActive(i, val)
+    }
+    return handlers
+  }, [setCoinActive])
 
-  const [prizeBox7Status, setPrizeBox7Status] = useState(true)
-  const [prizeBox7Active, setPrizeBox7Active] = useState(false)
-  const [prizeBox7Count, setPrizeBox7Count] = useState(1)
-  const [prizeBox7Prize, setPrizeBox7Prize] = useState(false)
-
-  const [prizeBox8Status, setPrizeBox8Status] = useState(true)
-  const [prizeBox8Active, setPrizeBox8Active] = useState(false)
-  const [prizeBox8Count, setPrizeBox8Count] = useState(1)
-  const [prizeBox8Prize, setPrizeBox8Prize] = useState(false)
-
-  const [prizeBox9Status, setPrizeBox9Status] = useState(true)
-  const [prizeBox9Active, setPrizeBox9Active] = useState(false)
-  const [prizeBox9Count, setPrizeBox9Count] = useState(1)
-  const [prizeBox9Prize, setPrizeBox9Prize] = useState(false)
-
-  const [coin1Active, setCoin1Active] = useState(false)
-  const [coin2Active, setCoin2Active] = useState(false)
-  const [coin3Active, setCoin3Active] = useState(false)
-  const [coin4Active, setCoin4Active] = useState(false)
-  const [coin5Active, setCoin5Active] = useState(false)
-
-  const [leaf1Active, setLeaf1Active] = useState(false)
-  const [mushroom1Active, setMushroom1Active] = useState(false)
-  const [oneUp1Active, setOneUp1Active] = useState(false)
+  const itemHandlers = useMemo(() => {
+    return {
+      leaf1: (val: boolean) => setItemActive('leaf1', val),
+      mushroom1: (val: boolean) => setItemActive('mushroom1', val),
+      oneUp1: (val: boolean) => setItemActive('oneUp1', val),
+    }
+  }, [setItemActive])
 
   const bricks: BrickProps[] = [
     { x: 10000, y: 64 },
@@ -114,44 +179,49 @@ const Foreground = ({
     { x: 10800, y: 64 },
   ]
 
-  const coins: CoinProps[] = [
+  const coins: (CoinProps & { id: number })[] = [
     {
+      id: 1,
       x: 5600,
       y: 308,
-      active: coin1Active,
-      setActive: setCoin1Active,
+      active: dynamicObjects.coins[1],
+      setActive: coinHandlers[1],
       score: score,
       setScore: setScore,
     },
     {
+      id: 2,
       x: 5760,
       y: 468,
-      active: coin2Active,
-      setActive: setCoin2Active,
+      active: dynamicObjects.coins[2],
+      setActive: coinHandlers[2],
       score: score,
       setScore: setScore,
     },
     {
+      id: 3,
       x: 5920,
       y: 628,
-      active: coin3Active,
-      setActive: setCoin3Active,
+      active: dynamicObjects.coins[3],
+      setActive: coinHandlers[3],
       score: score,
       setScore: setScore,
     },
     {
+      id: 4,
       x: 6080,
       y: 788,
-      active: coin4Active,
-      setActive: setCoin4Active,
+      active: dynamicObjects.coins[4],
+      setActive: coinHandlers[4],
       score: score,
       setScore: setScore,
     },
     {
+      id: 5,
       x: 6240,
       y: 948,
-      active: coin5Active,
-      setActive: setCoin5Active,
+      active: dynamicObjects.coins[5],
+      setActive: coinHandlers[5],
       score: score,
       setScore: setScore,
     },
@@ -201,20 +271,20 @@ const Foreground = ({
       {
         x: 1120,
         y: 304,
-        status: prizeBox1Status,
-        setStatus: setPrizeBox1Status,
-        active: prizeBox1Active,
-        setActive: setPrizeBox1Active,
-        prizeActive: prizeBox1Prize,
-        setPrizeActive: setPrizeBox1Prize,
-        prizeCount: prizeBox1Count,
-        setPrizeCount: setPrizeBox1Count,
+        status: dynamicObjects.prizeBoxes[1].status,
+        setStatus: prizeBoxHandlers[1].setStatus,
+        active: dynamicObjects.prizeBoxes[1].active,
+        setActive: prizeBoxHandlers[1].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[1].prize,
+        setPrizeActive: prizeBoxHandlers[1].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[1].count,
+        setPrizeCount: prizeBoxHandlers[1].setPrizeCount,
         children: (
-          <Coin
+          <MemoizedCoin
             x={0}
             y={0}
-            active={prizeBox1Prize}
-            setActive={setPrizeBox1Prize}
+            active={dynamicObjects.prizeBoxes[1].prize}
+            setActive={prizeBoxHandlers[1].setPrizeActive}
             score={score}
             setScore={setScore}
           />
@@ -223,20 +293,20 @@ const Foreground = ({
       {
         x: 1200,
         y: 304,
-        status: prizeBox2Status,
-        setStatus: setPrizeBox2Status,
-        active: prizeBox2Active,
-        setActive: setPrizeBox2Active,
-        prizeActive: prizeBox2Prize,
-        setPrizeActive: setPrizeBox2Prize,
-        prizeCount: prizeBox2Count,
-        setPrizeCount: setPrizeBox2Count,
+        status: dynamicObjects.prizeBoxes[2].status,
+        setStatus: prizeBoxHandlers[2].setStatus,
+        active: dynamicObjects.prizeBoxes[2].active,
+        setActive: prizeBoxHandlers[2].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[2].prize,
+        setPrizeActive: prizeBoxHandlers[2].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[2].count,
+        setPrizeCount: prizeBoxHandlers[2].setPrizeCount,
         children: (
-          <Coin
+          <MemoizedCoin
             x={0}
             y={0}
-            active={prizeBox2Prize}
-            setActive={setPrizeBox2Prize}
+            active={dynamicObjects.prizeBoxes[2].prize}
+            setActive={prizeBoxHandlers[2].setPrizeActive}
             score={score}
             setScore={setScore}
           />
@@ -245,20 +315,20 @@ const Foreground = ({
       {
         x: 1360,
         y: 544,
-        status: prizeBox3Status,
-        setStatus: setPrizeBox3Status,
-        active: prizeBox3Active,
-        setActive: setPrizeBox3Active,
-        prizeActive: prizeBox3Prize,
-        setPrizeActive: setPrizeBox3Prize,
-        prizeCount: prizeBox3Count,
-        setPrizeCount: setPrizeBox3Count,
+        status: dynamicObjects.prizeBoxes[3].status,
+        setStatus: prizeBoxHandlers[3].setStatus,
+        active: dynamicObjects.prizeBoxes[3].active,
+        setActive: prizeBoxHandlers[3].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[3].prize,
+        setPrizeActive: prizeBoxHandlers[3].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[3].count,
+        setPrizeCount: prizeBoxHandlers[3].setPrizeCount,
         children: (
-          <Coin
+          <MemoizedCoin
             x={0}
             y={0}
-            active={prizeBox3Prize}
-            setActive={setPrizeBox3Prize}
+            active={dynamicObjects.prizeBoxes[3].prize}
+            setActive={prizeBoxHandlers[3].setPrizeActive}
             score={score}
             setScore={setScore}
           />
@@ -267,20 +337,20 @@ const Foreground = ({
       {
         x: 1440,
         y: 544,
-        status: prizeBox4Status,
-        setStatus: setPrizeBox4Status,
-        active: prizeBox4Active,
-        setActive: setPrizeBox4Active,
-        prizeActive: prizeBox4Prize,
-        setPrizeActive: setPrizeBox4Prize,
-        prizeCount: prizeBox4Count,
-        setPrizeCount: setPrizeBox4Count,
+        status: dynamicObjects.prizeBoxes[4].status,
+        setStatus: prizeBoxHandlers[4].setStatus,
+        active: dynamicObjects.prizeBoxes[4].active,
+        setActive: prizeBoxHandlers[4].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[4].prize,
+        setPrizeActive: prizeBoxHandlers[4].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[4].count,
+        setPrizeCount: prizeBoxHandlers[4].setPrizeCount,
         children: (
-          <Mushroom
+          <MemoizedMushroom
             x={0}
             y={0}
-            active={mushroom1Active}
-            setActive={setMushroom1Active}
+            active={dynamicObjects.items.mushroom1}
+            setActive={itemHandlers.mushroom1}
             mario={mario}
             setMario={setMario}
             score={score}
@@ -291,20 +361,20 @@ const Foreground = ({
       {
         x: 2320,
         y: 464,
-        status: prizeBox5Status,
-        setStatus: setPrizeBox5Status,
-        active: prizeBox5Active,
-        setActive: setPrizeBox5Active,
-        prizeActive: prizeBox5Prize,
-        setPrizeActive: setPrizeBox5Prize,
-        prizeCount: prizeBox5Count,
-        setPrizeCount: setPrizeBox5Count,
+        status: dynamicObjects.prizeBoxes[5].status,
+        setStatus: prizeBoxHandlers[5].setStatus,
+        active: dynamicObjects.prizeBoxes[5].active,
+        setActive: prizeBoxHandlers[5].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[5].prize,
+        setPrizeActive: prizeBoxHandlers[5].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[5].count,
+        setPrizeCount: prizeBoxHandlers[5].setPrizeCount,
         children: (
-          <Coin
+          <MemoizedCoin
             x={0}
             y={0}
-            active={prizeBox5Prize}
-            setActive={setPrizeBox5Prize}
+            active={dynamicObjects.prizeBoxes[5].prize}
+            setActive={prizeBoxHandlers[5].setPrizeActive}
             score={score}
             setScore={setScore}
           />
@@ -313,20 +383,20 @@ const Foreground = ({
       {
         x: 3520,
         y: 128,
-        status: prizeBox6Status,
-        setStatus: setPrizeBox6Status,
-        active: prizeBox6Active,
-        setActive: setPrizeBox6Active,
-        prizeActive: prizeBox6Prize,
-        setPrizeActive: setPrizeBox6Prize,
-        prizeCount: prizeBox6Count,
-        setPrizeCount: setPrizeBox6Count,
+        status: dynamicObjects.prizeBoxes[6].status,
+        setStatus: prizeBoxHandlers[6].setStatus,
+        active: dynamicObjects.prizeBoxes[6].active,
+        setActive: prizeBoxHandlers[6].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[6].prize,
+        setPrizeActive: prizeBoxHandlers[6].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[6].count,
+        setPrizeCount: prizeBoxHandlers[6].setPrizeCount,
         children: (
-          <Leaf
+          <MemoizedLeaf
             x={0}
             y={0}
-            active={leaf1Active}
-            setActive={setLeaf1Active}
+            active={dynamicObjects.items.leaf1}
+            setActive={itemHandlers.leaf1}
             mario={mario}
             setMario={setMario}
             score={score}
@@ -337,20 +407,20 @@ const Foreground = ({
       {
         x: 3760,
         y: 288,
-        status: prizeBox7Status,
-        setStatus: setPrizeBox7Status,
-        active: prizeBox7Active,
-        setActive: setPrizeBox7Active,
-        prizeActive: prizeBox7Prize,
-        setPrizeActive: setPrizeBox7Prize,
-        prizeCount: prizeBox7Count,
-        setPrizeCount: setPrizeBox7Count,
+        status: dynamicObjects.prizeBoxes[7].status,
+        setStatus: prizeBoxHandlers[7].setStatus,
+        active: dynamicObjects.prizeBoxes[7].active,
+        setActive: prizeBoxHandlers[7].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[7].prize,
+        setPrizeActive: prizeBoxHandlers[7].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[7].count,
+        setPrizeCount: prizeBoxHandlers[7].setPrizeCount,
         children: (
-          <Coin
+          <MemoizedCoin
             x={0}
             y={0}
-            active={prizeBox7Prize}
-            setActive={setPrizeBox7Prize}
+            active={dynamicObjects.prizeBoxes[7].prize}
+            setActive={prizeBoxHandlers[7].setPrizeActive}
             score={score}
             setScore={setScore}
           />
@@ -359,20 +429,20 @@ const Foreground = ({
       {
         x: 7520,
         y: 224,
-        status: prizeBox8Status,
-        setStatus: setPrizeBox8Status,
-        active: prizeBox8Active,
-        setActive: setPrizeBox8Active,
-        prizeActive: prizeBox8Prize,
-        setPrizeActive: setPrizeBox8Prize,
-        prizeCount: prizeBox8Count,
-        setPrizeCount: setPrizeBox8Count,
+        status: dynamicObjects.prizeBoxes[8].status,
+        setStatus: prizeBoxHandlers[8].setStatus,
+        active: dynamicObjects.prizeBoxes[8].active,
+        setActive: prizeBoxHandlers[8].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[8].prize,
+        setPrizeActive: prizeBoxHandlers[8].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[8].count,
+        setPrizeCount: prizeBoxHandlers[8].setPrizeCount,
         children: (
-          <Coin
+          <MemoizedCoin
             x={0}
             y={0}
-            active={prizeBox8Prize}
-            setActive={setPrizeBox8Prize}
+            active={dynamicObjects.prizeBoxes[8].prize}
+            setActive={prizeBoxHandlers[8].setPrizeActive}
             score={score}
             setScore={setScore}
           />
@@ -381,72 +451,36 @@ const Foreground = ({
       {
         x: 7360,
         y: 1344,
-        status: prizeBox9Status,
-        setStatus: setPrizeBox9Status,
-        active: prizeBox9Active,
-        setActive: setPrizeBox9Active,
-        prizeActive: prizeBox9Prize,
-        setPrizeActive: setPrizeBox9Prize,
-        prizeCount: prizeBox9Count,
-        setPrizeCount: setPrizeBox9Count,
+        status: dynamicObjects.prizeBoxes[9].status,
+        setStatus: prizeBoxHandlers[9].setStatus,
+        active: dynamicObjects.prizeBoxes[9].active,
+        setActive: prizeBoxHandlers[9].setActive,
+        prizeActive: dynamicObjects.prizeBoxes[9].prize,
+        setPrizeActive: prizeBoxHandlers[9].setPrizeActive,
+        prizeCount: dynamicObjects.prizeBoxes[9].count,
+        setPrizeCount: prizeBoxHandlers[9].setPrizeCount,
         children: (
-          <OneUp
+          <MemoizedOneUp
             x={0}
             y={0}
-            active={oneUp1Active}
+            active={dynamicObjects.items.oneUp1}
             lives={lives}
-            setActive={setOneUp1Active}
+            setActive={itemHandlers.oneUp1}
             setLives={setLives}
           />
         ),
       },
     ],
     [
-      prizeBox1Status,
-      prizeBox1Active,
-      prizeBox1Count,
-      prizeBox1Prize,
-      prizeBox2Status,
-      prizeBox2Active,
-      prizeBox2Count,
-      prizeBox2Prize,
-      prizeBox3Status,
-      prizeBox3Active,
-      prizeBox3Count,
-      prizeBox3Prize,
-      prizeBox4Status,
-      prizeBox4Active,
-      prizeBox4Count,
-      prizeBox4Prize,
-      prizeBox5Status,
-      prizeBox5Active,
-      prizeBox5Count,
-      prizeBox5Prize,
-      prizeBox6Status,
-      prizeBox6Active,
-      prizeBox6Count,
-      prizeBox6Prize,
-      prizeBox7Status,
-      prizeBox7Active,
-      prizeBox7Count,
-      prizeBox7Prize,
-      prizeBox8Status,
-      prizeBox8Active,
-      prizeBox8Count,
-      prizeBox8Prize,
-      prizeBox9Status,
-      prizeBox9Active,
-      prizeBox9Count,
-      prizeBox9Prize,
-      leaf1Active,
-      mushroom1Active,
-      oneUp1Active,
-      lives,
+      dynamicObjects,
       mario,
+      lives,
       score,
       setLives,
       setMario,
       setScore,
+      itemHandlers,
+      prizeBoxHandlers,
     ]
   )
 
@@ -455,64 +489,57 @@ const Foreground = ({
       {
         xRange: [1690, 1790],
         yRange: [440, 540],
-        boxStatus: prizeBox4Prize,
-        prizeStatus: mushroom1Active,
-        setPrizeStatus: setMushroom1Active,
+        boxStatus: dynamicObjects.prizeBoxes[4].prize,
+        prizeStatus: dynamicObjects.items.mushroom1,
+        setPrizeStatus: itemHandlers.mushroom1,
       },
       {
         xRange: [3460, 3560],
         yRange: [444, 524],
-        boxStatus: prizeBox6Prize,
-        prizeStatus: leaf1Active,
-        setPrizeStatus: setLeaf1Active,
+        boxStatus: dynamicObjects.prizeBoxes[6].prize,
+        prizeStatus: dynamicObjects.items.leaf1,
+        setPrizeStatus: itemHandlers.leaf1,
       },
       {
         xRange: [5540, 5640],
         yRange: [304, 384],
-        boxStatus: !coin1Active,
-        prizeStatus: coin1Active,
-        setPrizeStatus: setCoin1Active,
+        boxStatus: !dynamicObjects.coins[1],
+        prizeStatus: dynamicObjects.coins[1],
+        setPrizeStatus: coinHandlers[1],
       },
       {
         xRange: [5700, 5800],
         yRange: [464, 544],
-        boxStatus: !coin2Active,
-        prizeStatus: coin2Active,
-        setPrizeStatus: setCoin2Active,
+        boxStatus: !dynamicObjects.coins[2],
+        prizeStatus: dynamicObjects.coins[2],
+        setPrizeStatus: coinHandlers[2],
       },
       {
         xRange: [7320, 7420],
         yRange: [1344, 1444],
-        boxStatus: prizeBox9Prize,
-        prizeStatus: oneUp1Active,
-        setPrizeStatus: setOneUp1Active,
+        boxStatus: dynamicObjects.prizeBoxes[9].prize,
+        prizeStatus: dynamicObjects.items.oneUp1,
+        setPrizeStatus: itemHandlers.oneUp1,
       },
     ],
-    [
-      coin1Active,
-      coin2Active,
-      leaf1Active,
-      mushroom1Active,
-      oneUp1Active,
-      prizeBox4Prize,
-      prizeBox6Prize,
-      prizeBox9Prize,
-    ]
+    [dynamicObjects, coinHandlers, itemHandlers]
   )
 
   // Prize Box interactions
   useEffect(() => {
     if (jump) {
-      prizeBoxes.map((item) => {
+      prizeBoxes.forEach((item) => {
         if (
           xPos > item.x - 55 &&
           xPos < item.x + 45 &&
           yPos >= item.y - 100 - (mario !== 1 ? marioOffset : 0) &&
           yPos < item.y
         ) {
-          item.setActive(true)
-          if (item.prizeCount > 0) {
-            item.setPrizeActive(true)
+          if (!item.active) {
+            item.setActive(true)
+            if (item.prizeCount > 0) {
+              item.setPrizeActive(true)
+            }
           }
         }
       })
@@ -521,7 +548,7 @@ const Foreground = ({
 
   // Prize interactions
   useEffect(() => {
-    prizeInteractions.map((item) => {
+    prizeInteractions.forEach((item) => {
       if (
         item.xRange[0] &&
         item.xRange[1] &&
@@ -542,12 +569,12 @@ const Foreground = ({
   return (
     <>
       {bricks.map((item, x) => (
-        <Brick key={x} x={item.x} y={item.y} />
+        <MemoizedBrick key={x} x={item.x} y={item.y} />
       ))}
 
-      {coins.map((item, x) => (
-        <Coin
-          key={x}
+      {coins.map((item) => (
+        <MemoizedCoin
+          key={item.id}
           x={item.x}
           y={item.y}
           show={true}
@@ -560,11 +587,11 @@ const Foreground = ({
       ))}
 
       {goombas.map((item, x) => (
-        <Goomba key={x} x={item.x} y={item.y} offset={item.offset} />
+        <MemoizedGoomba key={x} x={item.x} y={item.y} offset={item.offset} />
       ))}
 
       {pipes.map((item, x) => (
-        <Pipe
+        <MemoizedPipe
           key={x}
           xPos={xPos}
           x={item.x}
@@ -577,7 +604,7 @@ const Foreground = ({
       ))}
 
       {prizeBoxes.map((item, x) => (
-        <PrizeBox
+        <MemoizedPrizeBox
           key={x}
           x={item.x}
           y={item.y}
@@ -591,11 +618,11 @@ const Foreground = ({
           setPrizeCount={item.setPrizeCount}
         >
           {item.children}
-        </PrizeBox>
+        </MemoizedPrizeBox>
       ))}
 
       {turtles.map((item, x) => (
-        <Turtle key={x} x={item.x} y={item.y} offset={item.offset} />
+        <MemoizedTurtle key={x} x={item.x} y={item.y} offset={item.offset} />
       ))}
     </>
   )

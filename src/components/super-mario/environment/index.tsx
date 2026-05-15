@@ -2,6 +2,7 @@
 
 import Clouds from './clouds'
 import Daylight from './daylight'
+import Overlay from './overlay'
 import Sky from './sky'
 import Sun from './sun'
 
@@ -16,6 +17,7 @@ const Environment = ({ mobile }: EnvironmentProps) => {
       {!mobile && <Daylight />}
       {!mobile && <Sun />}
       {!mobile && <Clouds />}
+      <Overlay />
     </>
   )
 }
