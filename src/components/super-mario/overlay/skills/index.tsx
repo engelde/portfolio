@@ -13,6 +13,7 @@ import {
   SiGo,
   SiGraphql,
   SiHono,
+  SiHuggingface,
   SiJavascript,
   SiKubernetes,
   SiLaravel,
@@ -21,7 +22,6 @@ import {
   SiMysql,
   SiNextdotjs,
   SiNodedotjs,
-  SiOllama,
   SiPhp,
   SiPostgresql,
   SiPython,
@@ -55,7 +55,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
     {
       name: 'React',
       icon: SiReact,
-      color: 'teal.300',
+      color: 'cyan.300',
       link: 'https://react.dev',
       x: 7420,
     },
@@ -242,10 +242,10 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       x: 8920,
     },
     {
-      name: 'Ollama',
-      icon: SiOllama,
-      color: 'gray.200',
-      link: 'https://ollama.com',
+      name: 'Hugging Face',
+      icon: SiHuggingface,
+      color: 'yellow.500',
+      link: 'https://huggingface.co',
       x: 8980,
     },
     {
@@ -263,11 +263,11 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
       zIndex={10}
       position={'fixed'}
       top={8}
-      left={6}
+      left={4}
       maxW={'calc(100vw - 2rem)'}
       minW={'calc(100vw - 2rem)'}
       py={3}
-      ml={offset - xPos > 0 ? offset - xPos : 0 + 'px'}
+      ml={(offset - xPos > 0 ? offset - xPos : 0) + 'px'}
       visibility={xPos < 2000 ? 'hidden' : 'visible'}
       {...((xPos > xMin &&
         xPos < xMax && {
@@ -278,9 +278,27 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
         animate: { opacity: 0, marginTop: -600 },
       })}
     >
-      <Heading size={'4xl'} color={'red.500'} pb={2} textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}>
+      <Heading
+        as={motion.div}
+        size={'4xl'}
+        color={'red.500'}
+        pb={2}
+        textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
+        initial={{ scale: 1 }}
+        whileInView={{
+          scale: [1, 1.04, 1],
+          transformOrigin: 'left',
+          transition: {
+            type: 'keyframes',
+            times: [0, 0.5, 1],
+            delay: 0,
+            duration: 1,
+            ease: 'linear',
+          },
+        }}
+      >
         <Code text={'<h1>'} />
-        Skills()
+        Skills
         <Code text={'</h1>'} />
       </Heading>
 
@@ -304,7 +322,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
           alignItems={'top'}
           spacing={{ base: 2, md: 4, lg: 8 }}
         >
-          <Heading size={'2xl'} w={'full'} maxW={960}>
+          <Heading size={'2xl'} w={'full'} minW={'240px'} maxW={960}>
             {skillset.map(
               (skill, x) =>
                 xPos > skill.x && (
@@ -315,16 +333,16 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                     display={'inline'}
                     alignItems={'center'}
                     justifyContent={'center'}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { duration: 0.5 } }}
+                    initial={{ visibility: 'hidden' }}
+                    animate={{ visibility: 'visible' }}
                   >
-                    <Tooltip label={skill.name} bg={'black'} mt={-4}>
-                      <Link
-                        href={skill.link}
-                        target={'_blank'}
-                        referrerPolicy={'no-referrer'}
-                        rel={'noopener'}
-                      >
+                    <Link
+                      href={skill.link}
+                      target={'_blank'}
+                      referrerPolicy={'no-referrer'}
+                      rel={'noopener'}
+                    >
+                      <Tooltip label={skill.name} bg={'black'}>
                         <Icon
                           as={skill.icon}
                           w={{ base: 10, sm: 12, md: 14, lg: 16 }}
@@ -338,8 +356,8 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                             transition: 'color .1s ease-in-out, transform .1s ease-in-out',
                           }}
                         />
-                      </Link>
-                    </Tooltip>
+                      </Tooltip>
+                    </Link>
                   </Box>
                 )
             )}

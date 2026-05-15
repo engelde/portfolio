@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Box } from '@chakra-ui/react'
 
 import { useAudio } from '@/hooks/useAudio'
@@ -16,6 +16,13 @@ import Player from './player'
 export type SuperMarioProps = {
   ip: string
 }
+
+// Memoize sub-components for maximum performance
+const MemoizedEnvironment = React.memo(Environment)
+const MemoizedForeground = React.memo(Foreground)
+const MemoizedLandscape = React.memo(Landscape)
+const MemoizedOverlay = React.memo(Overlay)
+const MemoizedPlayer = React.memo(Player)
 
 const SuperMario = ({ ip }: SuperMarioProps) => {
   const {
@@ -40,7 +47,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     setScore,
   } = useSettings()
 
-  const { forwards, jump, maxYScroll, x, y, xOffset, yOffset, setX, setY } = useController({
+  const { down, forwards, jump, maxYScroll, x, y, xOffset, yOffset, setX, setY } = useController({
     active: !complete && !gameOver && !paused,
     mario: mario,
     maximum: {
@@ -89,7 +96,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
 
   return (
     <Box overflowY={'scroll'} overflowX={'hidden'} h={maxYScroll + 'px'} w={'100vw'}>
-      <Environment mobile={mobile} />
+      <MemoizedEnvironment mobile={mobile} />
       <Box
         zIndex={1}
         position={'fixed'}
@@ -100,8 +107,9 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
         ml={'-' + x + 'px'}
         transition={'marginLeft .2s ease-in-out'}
       >
-        <Landscape />
-        <Foreground
+        <MemoizedLandscape />
+        <MemoizedForeground
+          down={down}
           jump={jump}
           lives={lives}
           mario={mario}
@@ -113,7 +121,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           setMario={setMario}
           setScore={setScore}
         />
-        <Player
+        <MemoizedPlayer
           complete={complete}
           forwards={forwards}
           jump={jump}
@@ -134,7 +142,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           setX={setX}
           setY={setY}
         />
-        <Overlay
+        <MemoizedOverlay
           complete={complete}
           forwards={forwards}
           ip={ip}

@@ -19,7 +19,7 @@ const Thanks = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
       zIndex={10}
       position={'fixed'}
       top={12}
-      left={8}
+      left={4}
       maxW={'calc(100vw - 2rem)'}
       py={3}
       ml={(offset - xPos > 0 ? offset - xPos : 0) + 'px'}
@@ -32,12 +32,15 @@ const Thanks = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
         initial: { opacity: 1, marginTop: 0 },
         animate: { opacity: 0, marginTop: -600 },
       })}
+      style={{ pointerEvents: 'none' }}
     >
       <Code text={'<h1>'} />
       <Heading
-        fontSize={{ base: '64px', md: '92px' }}
+        fontSize={{ base: '64px', md: '92px', xl: '104px' }}
         color={'white'}
+        textTransform={'uppercase'}
         textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
+        lineHeight={1}
         pb={2}
       >
         THANKS FOR

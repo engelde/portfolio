@@ -1,11 +1,20 @@
 'use client'
 
+import React from 'react'
+
 import Bush, { type BushProps } from './bush'
 import Cloud, { type CloudProps } from './cloud'
 import Cube, { type CubeProps } from './cube'
 import Ground, { type GroundProps } from './ground'
 import Rock, { type RockProps } from './rock'
 import Tree, { type TreeProps } from './tree'
+
+const MemoizedBush = React.memo(Bush)
+const MemoizedCloud = React.memo(Cloud)
+const MemoizedCube = React.memo(Cube)
+const MemoizedGround = React.memo(Ground)
+const MemoizedRock = React.memo(Rock)
+const MemoizedTree = React.memo(Tree)
 
 const Landscape = () => {
   const bushes: BushProps[] = [
@@ -97,27 +106,27 @@ const Landscape = () => {
   return (
     <>
       {bushes.map((item, x) => (
-        <Bush key={x} x={item.x} y={item.y} />
+        <MemoizedBush key={x} x={item.x} y={item.y} />
       ))}
 
       {clouds.map((item, x) => (
-        <Cloud key={x} x={item.x} y={item.y} />
+        <MemoizedCloud key={x} x={item.x} y={item.y} />
       ))}
 
       {cubes.map((item, x) => (
-        <Cube key={x} variant={item.variant} x={item.x} y={item.y} />
+        <MemoizedCube key={x} variant={item.variant} x={item.x} y={item.y} />
       ))}
 
       {grounds.map((item, x) => (
-        <Ground key={x} x={item.x} width={item.width} height={item.height} />
+        <MemoizedGround key={x} x={item.x} width={item.width} height={item.height} />
       ))}
 
       {rocks.map((item, x) => (
-        <Rock key={x} x={item.x} y={item.y} />
+        <MemoizedRock key={x} x={item.x} y={item.y} />
       ))}
 
       {trees.map((item, x) => (
-        <Tree key={x} variant={item.variant} x={item.x} y={item.y} />
+        <MemoizedTree key={x} variant={item.variant} x={item.x} y={item.y} />
       ))}
     </>
   )

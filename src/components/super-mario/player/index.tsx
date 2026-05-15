@@ -1,5 +1,7 @@
 'use client'
 
+import { VStack } from '@chakra-ui/react'
+
 import Mario from './mario'
 import Pause from './pause'
 import Stats from './stats'
@@ -55,24 +57,26 @@ const Player = ({
         </>
       )}
 
-      {!mobile && xPos < length - xOffset && (
-        <Stats
-          xPos={xPos}
-          yPos={yPos}
-          lives={lives}
-          score={score}
-          timer={timer}
-          complete={complete}
-        />
-      )}
+      <VStack>
+        {!mobile && xPos < length - xOffset && (
+          <Stats
+            xPos={xPos}
+            yPos={yPos}
+            lives={lives}
+            score={score}
+            timer={timer}
+            complete={complete}
+          />
+        )}
 
-      <Pause
-        length={length - maxXOffset - xOffset}
-        open={paused}
-        setOpen={setPaused}
-        setX={setX}
-        setY={setY}
-      />
+        <Pause
+          length={length - maxXOffset - xOffset}
+          open={paused}
+          setOpen={setPaused}
+          setX={setX}
+          setY={setY}
+        />
+      </VStack>
     </>
   )
 }

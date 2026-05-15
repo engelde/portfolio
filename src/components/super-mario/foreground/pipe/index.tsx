@@ -1,11 +1,15 @@
 'use client'
 
+import React from 'react'
 import NextImage from 'next/image'
 import { Box, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import Fire from './fire'
 import Plant from './plant'
+
+const MemoizedFire = React.memo(Fire)
+const MemoizedPlant = React.memo(Plant)
 
 export type PipeProps = {
   xPos?: number
@@ -53,14 +57,18 @@ const Pipe = ({ xPos, x, y, height, rotate, plant, plantVariant, active }: PipeP
       </VStack>
       {plant && (
         <>
-          <Plant
+          <MemoizedPlant
             x={40}
             y={height}
             variant={plantVariant !== undefined ? plantVariant : 1}
             forwards={xPos !== undefined ? xPos < x + 80 : true}
           />
           {plantVariant === 2 && active && (
-            <Fire x={40} y={height + 80} forwards={xPos !== undefined ? xPos < x + 80 : true} />
+            <MemoizedFire
+              x={40}
+              y={height + 80}
+              forwards={xPos !== undefined ? xPos < x + 80 : true}
+            />
           )}
         </>
       )}

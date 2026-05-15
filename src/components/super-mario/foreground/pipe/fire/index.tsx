@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
+import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
 
 export type FireProps = {
@@ -11,43 +11,15 @@ export type FireProps = {
   forwards: boolean
 }
 
-type VariantProps = {
-  [variant: number]: {
-    src: string
-  }
-}
+const fireAnimation = keyframes`
+  0% { content: url('/images/fire/fire.1.png'); }
+  25% { content: url('/images/fire/fire.2.png'); }
+  50% { content: url('/images/fire/fire.3.png'); }
+  75% { content: url('/images/fire/fire.4.png'); }
+  100% { content: url('/images/fire/fire.1.png'); }
+`
 
 const Fire = ({ x, y, forwards }: FireProps) => {
-  const variants: VariantProps = {
-    1: {
-      src: '/images/fire/fire.1.png',
-    },
-    2: {
-      src: '/images/fire/fire.2.png',
-    },
-    3: {
-      src: '/images/fire/fire.3.png',
-    },
-    4: {
-      src: '/images/fire/fire.4.png',
-    },
-    5: {
-      src: '/images/fire/fire.3.png',
-    },
-    6: {
-      src: '/images/fire/fire.2.png',
-    },
-  }
-
-  const [state, setState] = useState(1)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setState(state < 6 ? state + 1 : 1), 250)
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [state])
-
   return (
     <Box
       as={motion.div}
@@ -75,10 +47,15 @@ const Fire = ({ x, y, forwards }: FireProps) => {
           },
         }
       }
+      sx={{
+        '& img': {
+          animation: `${fireAnimation} 0.5s steps(1) infinite`,
+        },
+      }}
     >
       <NextImage
         alt={'fire'}
-        src={variants[state]?.src || ''}
+        src={'/images/fire/fire.1.png'}
         width={30}
         height={34}
         draggable={false}

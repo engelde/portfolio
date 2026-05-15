@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
+import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
 
 export type PlantProps = {
@@ -12,67 +12,23 @@ export type PlantProps = {
   y: number
 }
 
-type VariantProps = {
-  [variant: number]: {
-    [state: number]: {
-      src: string
-    }
-  }
-}
+const animation1 = keyframes`
+  0% { content: url('/images/plant/plant.1.png'); }
+  50% { content: url('/images/plant/plant.2.png'); }
+  100% { content: url('/images/plant/plant.1.png'); }
+`
+
+const animation2 = keyframes`
+  0% { content: url('/images/plant/plant.3.png'); }
+  16.6% { content: url('/images/plant/plant.4.png'); }
+  33.3% { content: url('/images/plant/plant.5.png'); }
+  50% { content: url('/images/plant/plant.6.png'); }
+  66.6% { content: url('/images/plant/plant.5.png'); }
+  83.3% { content: url('/images/plant/plant.4.png'); }
+  100% { content: url('/images/plant/plant.3.png'); }
+`
 
 const Plant = ({ variant, forwards, x, y }: PlantProps) => {
-  const variants: VariantProps = {
-    1: {
-      1: {
-        src: '/images/plant/plant.1.png',
-      },
-      2: {
-        src: '/images/plant/plant.2.png',
-      },
-      3: {
-        src: '/images/plant/plant.1.png',
-      },
-      4: {
-        src: '/images/plant/plant.2.png',
-      },
-      5: {
-        src: '/images/plant/plant.1.png',
-      },
-      6: {
-        src: '/images/plant/plant.2.png',
-      },
-    },
-    2: {
-      1: {
-        src: '/images/plant/plant.3.png',
-      },
-      2: {
-        src: '/images/plant/plant.4.png',
-      },
-      3: {
-        src: '/images/plant/plant.5.png',
-      },
-      4: {
-        src: '/images/plant/plant.6.png',
-      },
-      5: {
-        src: '/images/plant/plant.5.png',
-      },
-      6: {
-        src: '/images/plant/plant.4.png',
-      },
-    },
-  }
-
-  const [state, setState] = useState(1)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setState(state < 6 ? state + 1 : 1), 400)
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [state])
-
   return (
     <Box
       as={motion.div}
@@ -100,10 +56,18 @@ const Plant = ({ variant, forwards, x, y }: PlantProps) => {
           repeatDelay: 0,
         },
       }}
+      sx={{
+        '& img': {
+          animation:
+            variant === 1
+              ? `${animation1} 0.8s steps(1) infinite`
+              : `${animation2} 2.4s steps(1) infinite`,
+        },
+      }}
     >
       <NextImage
         alt={'plant'}
-        src={variants[variant]?.[state]?.src || ''}
+        src={variant === 1 ? '/images/plant/plant.1.png' : '/images/plant/plant.3.png'}
         width={80}
         height={160}
         draggable={false}
