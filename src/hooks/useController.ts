@@ -234,7 +234,7 @@ export const useController = ({
           // initiate flight. Window brackets the upward 5-coin chain (x=5600..6240) with a
           // small lead-in and a longer trailing buffer for late jump presses.
           const worldX = xRef.current + xOffsetRef.current
-          const inFlightWindow = worldX >= 5400 && worldX <= 6500
+          const inFlightWindow = worldX >= 4400 && worldX <= 7400
           if (mario === 3 && runChargeRef.current >= 60 && inFlightWindow) {
             flyingRef.current = true
             flyTimeRef.current = 0
