@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/engelde/portfolio/compare/v0.3.14...v1.0.0) (2026-05-15)
+
+
+### ✨ Features
+
+* pause drawer escape close, jagged border, plus refactor and ui polish ([2c40d69](https://github.com/engelde/portfolio/commit/2c40d69160111dfb1858161399b12f656c048573))
+
 ### [0.3.15](https://github.com/engelde/portfolio/compare/v0.3.14...v0.3.15) (2026-05-14)
 
 
