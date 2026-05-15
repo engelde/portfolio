@@ -1,7 +1,9 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
+import { motion, useAnimationControls } from 'framer-motion'
 
 export type MarioProps = {
   variant: 1 | 2 | 3
@@ -48,6 +50,23 @@ const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
   const walkScale = 80 // Pixels per walk cycle
   const state = Math.floor(Math.abs(xPos) / walkScale) % 2 === 0 ? 1 : 2
 
+  // Brief pulsate on variant change
+  const pulseControls = useAnimationControls()
+  const prevVariantRef = useRef(variant)
+  useEffect(() => {
+    if (prevVariantRef.current !== variant) {
+      prevVariantRef.current = variant
+      pulseControls.start({
+        scale: [1, 1.18, 0.94, 1.08, 1],
+        transition: {
+          duration: 0.55,
+          ease: 'easeInOut',
+          times: [0, 0.25, 0.5, 0.75, 1],
+        },
+      })
+    }
+  }, [variant, pulseControls])
+
   return (
     <Box
       zIndex={9}
@@ -70,6 +89,16 @@ const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
       }
       transform={!forwards ? 'scaleX(-1)' : ''}
     >
+      <Box
+        as={motion.div}
+        animate={pulseControls}
+        style={{
+          transformOrigin: 'bottom center',
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+        }}
+      >
       <NextImage
         alt={'mario'}
         src={(jump ? jumpVariants[variant]?.[1]?.src : variants[variant]?.[state]?.src) || ''}
@@ -89,6 +118,7 @@ const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
             (jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0,
         }}
       />
+      </Box>
     </Box>
   )
 }

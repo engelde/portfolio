@@ -47,7 +47,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     setScore,
   } = useSettings()
 
-  const { forwards, jump, maxYScroll, x, y, xOffset, yOffset, setX, setY } = useController({
+  const { down, forwards, jump, maxYScroll, x, y, xOffset, yOffset, setX, setY } = useController({
     active: !complete && !gameOver && !paused,
     mario: mario,
     maximum: {
@@ -109,6 +109,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       >
         <MemoizedLandscape />
         <MemoizedForeground
+          down={down}
           jump={jump}
           lives={lives}
           mario={mario}

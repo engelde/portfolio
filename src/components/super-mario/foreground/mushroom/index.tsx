@@ -70,14 +70,21 @@ const Mushroom = ({ x, y, active, mario, score, setActive, setMario, setScore }:
           onClick={() => !running && setActive(true)}
           initial={{ translateX: 0, translateY: 0 }}
           animate={{
-            translateX: [0, 0, 80, 160, 240, 320],
-            translateY: [0, 0, 0, 80, 160, 160],
+            translateX: [0, 0, 320],
+            translateY: [0, 0, 160],
             transition: {
-              type: 'keyframes',
-              times: [0, 0.3, 1],
-              delay: 0,
-              duration: 1.4,
-              ease: 'easeInOut',
+              translateX: {
+                type: 'tween',
+                ease: 'linear',
+                duration: 1.4,
+                times: [0, 0.28, 1],
+              },
+              translateY: {
+                type: 'tween',
+                ease: [0.55, 0, 0.85, 0.4],
+                duration: 1.4,
+                times: [0, 0.28, 1],
+              },
             },
           }}
         >

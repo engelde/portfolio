@@ -29,6 +29,7 @@ export const useSettings = () => {
     { xMin: 2260, xMax: 2370, height: 374 }, // box 3
     { xMin: 3700, xMax: 3810, height: 198 }, // box 5
     { xMin: 7460, xMax: 7570, height: 134 }, // box 6
+    { xMin: 7360, xMax: 7440, height: 1254 }, // box 9 (1-up sky box)
     { xMin: 11460, xMax: 11650, height: 444 }, // pipe 4
     { xMin: 12850, xMax: length, height: 104 }, // pipe 6
   ]
@@ -68,6 +69,10 @@ export const useSettings = () => {
     { xMin: 11460, xMax: 11650, height: 304 }, // pipe 4
     { xMin: 11780, xMax: 11970, height: 224 }, // pipe 5
     { xMin: 12840, xMax: 13280, height: 215 }, // pipe 6
+    { xMin: 6620, xMax: 7140, height: 1344 }, // sky cube
+    { xMin: 7190, xMax: 7530, height: 1104 }, // sky cloud 1
+    { xMin: 7360, xMax: 7440, height: 1424 }, // box 9 (1-up sky box)
+    { xMin: 7590, xMax: 8650, height: 1184 }, // sky cloud 2
   ]
 
   const groundLevels = [

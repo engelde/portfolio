@@ -58,7 +58,7 @@ export const useController = ({
   speed,
 }: ControllerProps) => {
   const { playAudio } = useAudio()
-  const { keys, escape } = useKeyboard({ active: active })
+  const { keys, down, escape } = useKeyboard({ active: active })
   const { scrollY } = useScroll()
   const { height } = useWindow()
 
@@ -72,6 +72,10 @@ export const useController = ({
   const jumpRef = useRef(false)
   const jumpLockRef = useRef(false)
   const jumpHeldRef = useRef(false)
+  const jumpDisplayRef = useRef(false)
+  const runChargeRef = useRef(0)
+  const flyingRef = useRef(false)
+  const flyTimeRef = useRef(0)
   const lastYScrollRef = useRef(scrollY.get())
 
   // React state for rendering
@@ -95,7 +99,7 @@ export const useController = ({
         prev.xOffset === xOffsetRef.current &&
         prev.yOffset === yOffsetRef.current &&
         prev.forwards === forwardsRef.current &&
-        prev.jump === jumpRef.current
+        prev.jump === jumpDisplayRef.current
       ) {
         return prev
       }
@@ -105,7 +109,7 @@ export const useController = ({
         xOffset: xOffsetRef.current,
         yOffset: yOffsetRef.current,
         forwards: forwardsRef.current,
-        jump: jumpRef.current,
+        jump: jumpDisplayRef.current,
       }
     })
 
@@ -139,11 +143,18 @@ export const useController = ({
       // Ceiling levels check
       if (velocityYRef.current < 0) {
         for (const i of position.ceilingLevels) {
+          // Compute previous absolute feet position (before this frame's gravity step)
+          // gravity already applied: vel = oldVel + g; yOffset = oldYOffset - vel
+          // therefore: oldYOffset = yOffset + vel  =>  previousFeet = yRef + yOffset + vel
+          const previousFeet = yRef.current + yOffsetRef.current + velocityYRef.current
+          const currentFeet = yRef.current + yOffsetRef.current
+          const ceilingY = i.height - (mario !== 1 ? maximum.marioOffset : 0)
           if (
             xRef.current + xOffsetRef.current > i.xMin &&
             xRef.current + xOffsetRef.current < i.xMax &&
             yRef.current <= i.height &&
-            yRef.current + yOffsetRef.current >= i.height - (mario !== 1 ? maximum.marioOffset : 0)
+            previousFeet < ceilingY && // Was strictly below the ceiling last frame
+            currentFeet >= ceilingY // Has now crossed up into it
           ) {
             yOffsetRef.current = i.height - yRef.current - (mario !== 1 ? maximum.marioOffset : 0)
             velocityYRef.current = 0
@@ -219,9 +230,19 @@ export const useController = ({
       // Jump Logic
       if (!mobile) {
         if (up && !jumpHeldRef.current && !jumpLockRef.current && yOffsetRef.current === 0) {
+          // Raccoon flight: if P-meter is charged AND we're in the coin-chain launch window,
+          // initiate flight. Window brackets the upward 5-coin chain (x=5600..6240) with a
+          // small lead-in and a longer trailing buffer for late jump presses.
+          const worldX = xRef.current + xOffsetRef.current
+          const inFlightWindow = worldX >= 5400 && worldX <= 6500
+          if (mario === 3 && runChargeRef.current >= 60 && inFlightWindow) {
+            flyingRef.current = true
+            flyTimeRef.current = 0
+          }
           velocityYRef.current = mario !== 3 ? -30 : -36
           jumpRef.current = true
           jumpHeldRef.current = true
+          jumpDisplayRef.current = true
           playAudio('jump')
           moved = true
         } else if (!up && jumpRef.current) {
@@ -237,10 +258,40 @@ export const useController = ({
           jumpHeldRef.current = false
         }
 
+        // Clear jump display once apex reached so held button doesn't keep jump pose
+        if (jumpDisplayRef.current && velocityYRef.current >= 0) {
+          jumpDisplayRef.current = false
+          moved = true
+        }
+
         if (up && jumpLockRef.current && yOffsetRef.current === 0) {
           // Stay locked until button released
         } else if (!up && jumpLockRef.current && yOffsetRef.current === 0) {
           jumpLockRef.current = false
+        }
+
+        // Raccoon Mario abilities
+        if (mario === 3) {
+          // Slow descent: hold jump while falling -> tail float
+          if (up && velocityYRef.current > 4 && yOffsetRef.current !== 0) {
+            velocityYRef.current = 4
+            moved = true
+          }
+
+          // Flight: while charged, holding jump after takeoff sustains lift (SMB3 tail flap)
+          if (flyingRef.current) {
+            if (up && flyTimeRef.current < 180) {
+              // Sustain a steady upward climb while in flight
+              if (velocityYRef.current > -9) {
+                velocityYRef.current = -9
+              }
+              flyTimeRef.current += 1
+              moved = true
+            } else {
+              flyingRef.current = false
+              flyTimeRef.current = 0
+            }
+          }
         }
       }
 
@@ -272,6 +323,16 @@ export const useController = ({
         const newTotal = xRef.current + xOffsetRef.current
         window.scrollTo({ top: newTotal, behavior: 'auto' })
         moved = true
+
+        // Charge raccoon P-meter while running on ground
+        if (mario === 3 && yOffsetRef.current === 0 && !flyingRef.current) {
+          if (runChargeRef.current < 60) runChargeRef.current += 1
+        }
+      } else if (!flyingRef.current) {
+        // Decay run-charge when not actively running right (preserve while flying)
+        if (runChargeRef.current > 0 && yOffsetRef.current === 0) {
+          runChargeRef.current = Math.max(0, runChargeRef.current - 2)
+        }
       }
 
       // Scroll Logic (sync with React-driven scroll)
@@ -344,6 +405,7 @@ export const useController = ({
   }, [escape, pause, playAudio])
 
   return {
+    down,
     forwards: renderState.forwards,
     jump: renderState.jump,
     x: renderState.x,

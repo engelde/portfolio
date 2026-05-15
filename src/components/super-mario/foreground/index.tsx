@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useAudio } from '@/hooks/useAudio'
+
 import Brick, { type BrickProps } from './brick'
 import Coin, { type CoinProps } from './coin'
 import Goomba, { type GoombaProps } from './goomba'
@@ -24,6 +26,7 @@ const MemoizedPrizeBox = React.memo(PrizeBox)
 const MemoizedTurtle = React.memo(Turtle)
 
 export type ForegroundProps = {
+  down: boolean
   jump: boolean
   lives: number
   mario: 1 | 2 | 3
@@ -54,6 +57,7 @@ type DynamicObjectsState = {
 }
 
 const Foreground = ({
+  down,
   jump,
   lives,
   mario,
@@ -65,6 +69,8 @@ const Foreground = ({
   setMario,
   setScore,
 }: ForegroundProps) => {
+  const { playAudio } = useAudio()
+
   // Initial state for all dynamic objects
   const [dynamicObjects, setDynamicObjects] = useState<DynamicObjectsState>({
     prizeBoxes: {
@@ -515,6 +521,27 @@ const Foreground = ({
         setPrizeStatus: coinHandlers[2],
       },
       {
+        xRange: [5860, 5960],
+        yRange: [624, 704],
+        boxStatus: !dynamicObjects.coins[3],
+        prizeStatus: dynamicObjects.coins[3],
+        setPrizeStatus: coinHandlers[3],
+      },
+      {
+        xRange: [6020, 6120],
+        yRange: [784, 864],
+        boxStatus: !dynamicObjects.coins[4],
+        prizeStatus: dynamicObjects.coins[4],
+        setPrizeStatus: coinHandlers[4],
+      },
+      {
+        xRange: [6180, 6280],
+        yRange: [944, 1024],
+        boxStatus: !dynamicObjects.coins[5],
+        prizeStatus: dynamicObjects.coins[5],
+        setPrizeStatus: coinHandlers[5],
+      },
+      {
         xRange: [7320, 7420],
         yRange: [1344, 1444],
         boxStatus: dynamicObjects.prizeBoxes[9].prize,
@@ -545,6 +572,20 @@ const Foreground = ({
       })
     }
   }, [prizeBoxes, jump, mario, marioOffset, xPos, yPos])
+
+  // Down arrow over the leaf prize box releases the leaf
+  useEffect(() => {
+    if (!down) return
+    const leafBox = prizeBoxes.find((b) => b.x === 3520 && b.y === 128)
+    if (!leafBox) return
+    if (leafBox.active || !leafBox.status || leafBox.prizeCount === 0) return
+    // Standing on top of the box (platform top at y=208 from useSettings)
+    if (xPos > 3460 && xPos < 3570 && yPos >= 200 && yPos <= 240) {
+      leafBox.setActive(true)
+      leafBox.setPrizeActive(true)
+      playAudio('stomp')
+    }
+  }, [down, playAudio, prizeBoxes, xPos, yPos])
 
   // Prize interactions
   useEffect(() => {
