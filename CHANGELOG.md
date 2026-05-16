@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/engelde/portfolio/compare/v1.1.1...v1.1.2) (2026-05-16)
+
+
+### 🐛 Bug Fixes
+
+* stabilize readme wordmark rendering ([f1bbae6](https://github.com/engelde/portfolio/commit/f1bbae6edd049ace543ff86ef6effaf1a0f22a0b))
+
 ### [1.1.1](https://github.com/engelde/portfolio/compare/v1.1.0...v1.1.1) (2026-05-16)
 
 
