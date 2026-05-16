@@ -1,0 +1,13 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="700"
+  height="78"
+  viewBox="0 0 700 78"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">David Engel</title>
+  <desc id="desc">ANSI wordmark for David Engel</desc>
+  <!-- prettier-ignore -->
+  <text x="0" y="13" fill="#805AD5" font-family="Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" font-size="14" font-weight="700" xml:space="preserve"><tspan x="0" dy="0">██████╗  █████╗ ██╗   ██╗██╗██████╗     ███████╗███╗   ██╗ ██████╗ ███████╗██╗</tspan><tspan x="0" dy="12">██╔══██╗██╔══██╗██║   ██║██║██╔══██╗    ██╔════╝████╗  ██║██╔════╝ ██╔════╝██║</tspan><tspan x="0" dy="12">██║  ██║███████║██║   ██║██║██║  ██║    █████╗  ██╔██╗ ██║██║  ███╗█████╗  ██║</tspan><tspan x="0" dy="12">██║  ██║██╔══██║╚██╗ ██╔╝██║██║  ██║    ██╔══╝  ██║╚██╗██║██║   ██║██╔══╝  ██║</tspan><tspan x="0" dy="12">██████╔╝██║  ██║ ╚████╔╝ ██║██████╔╝    ███████╗██║ ╚████║╚██████╔╝███████╗███████╗</tspan><tspan x="0" dy="12">╚═════╝ ╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚══════╝</tspan></text>
+</svg>
