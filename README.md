@@ -1,8 +1,12 @@
+<div align="center">
+
+![David Engel](/resources/wordmark.svg)
+
+</div>
+
 # David Engel's Portfolio Site
 
 This is my portfolio site! The site is a work in progress but feel free to look around.
-
-![David Engel ANSI wordmark](/resources/wordmark.svg)
 
 ![Preview](/resources/preview.png)
 
