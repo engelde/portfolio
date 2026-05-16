@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/engelde/portfolio/compare/v1.1.0...v1.1.1) (2026-05-16)
+
+
+### 📝 Documentation
+
+* add readme wordmark ([5beabee](https://github.com/engelde/portfolio/commit/5beabeed9f6efee76e94415087737f9be19d18d8))
+* center readme wordmark ([b945808](https://github.com/engelde/portfolio/commit/b9458089ac55e061a555b5c42ac0e82535971acb))
+
 ## [1.1.0](https://github.com/engelde/portfolio/compare/v1.0.0...v1.1.0) (2026-05-15)
 
 
