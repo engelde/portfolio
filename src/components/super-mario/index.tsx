@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
 
 import { useAudio } from '@/hooks/useAudio'
@@ -9,8 +9,10 @@ import { useSettings } from '@/hooks/useSettings'
 
 import Environment from './environment'
 import Foreground from './foreground'
+import Pipe from './foreground/pipe'
 import Landscape from './landscape'
 import Overlay from './overlay'
+import End from './overlay/end'
 import Player from './player'
 
 export type SuperMarioProps = {
@@ -19,10 +21,13 @@ export type SuperMarioProps = {
 
 // Memoize sub-components for maximum performance
 const MemoizedEnvironment = React.memo(Environment)
+const MemoizedEnd = React.memo(End)
 const MemoizedForeground = React.memo(Foreground)
 const MemoizedLandscape = React.memo(Landscape)
 const MemoizedOverlay = React.memo(Overlay)
+const MemoizedPipe = React.memo(Pipe)
 const MemoizedPlayer = React.memo(Player)
+const finalPipeX = 13040
 
 const SuperMario = ({ ip }: SuperMarioProps) => {
   const {
@@ -78,14 +83,34 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
 
   // Audio
   const { playAudio } = useAudio()
+  const finishTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Complete
   useEffect(() => {
-    if (!complete && x >= length - xOffset) {
-      setComplete(true)
-      playAudio('clear')
+    if (complete) return
+
+    if (x + xOffset >= length) {
+      if (finishTimeoutRef.current) return
+
+      finishTimeoutRef.current = setTimeout(() => {
+        finishTimeoutRef.current = null
+        setComplete(true)
+        playAudio('clear')
+      }, 650)
+      return
+    }
+
+    if (finishTimeoutRef.current) {
+      clearTimeout(finishTimeoutRef.current)
+      finishTimeoutRef.current = null
     }
   }, [complete, length, x, xOffset, playAudio, setComplete])
+
+  useEffect(() => {
+    return () => {
+      if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current)
+    }
+  }, [])
 
   // Hurry
   useEffect(() => {
@@ -104,8 +129,8 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
         bottom={0}
         h={'100vh'}
         w={'100vw'}
-        ml={'-' + x + 'px'}
-        transition={'marginLeft .2s ease-in-out'}
+        transform={`translate3d(${-x}px, 0, 0)`}
+        willChange={'transform'}
       >
         <MemoizedLandscape />
         <MemoizedForeground
@@ -121,8 +146,42 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           setMario={setMario}
           setScore={setScore}
         />
+      </Box>
+
+      <Box
+        zIndex={10}
+        position={'fixed'}
+        left={0}
+        bottom={0}
+        h={'100vh'}
+        w={'100vw'}
+        pointerEvents={'none'}
+        transform={`translate3d(${-x}px, 0, 0)`}
+        willChange={'transform'}
+      >
+        <Box position={'absolute'} left={finalPipeX} bottom={'64px'} w={'410px'} h={'160px'}>
+          <MemoizedPipe x={0} y={0} height={410} rotate={-90} />
+        </Box>
+      </Box>
+
+      <Box
+        zIndex={30}
+        position={'fixed'}
+        left={0}
+        bottom={0}
+        h={'100vh'}
+        w={'100vw'}
+        pointerEvents={complete ? 'auto' : 'none'}
+        transform={`translate3d(${-x}px, 0, 0)`}
+        willChange={'transform'}
+      >
+        <MemoizedEnd complete={complete} x={length - offset.x} xPos={x + xOffset} />
+      </Box>
+
+      {!complete && (
         <MemoizedPlayer
           complete={complete}
+          down={down}
           forwards={forwards}
           jump={jump}
           length={length + xOffset}
@@ -130,6 +189,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           mario={mario}
           maxXOffset={offset.x}
           mobile={mobile}
+          marioZIndex={9}
           paused={paused}
           score={score}
           timer={timer}
@@ -142,16 +202,11 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           setX={setX}
           setY={setY}
         />
-        <MemoizedOverlay
-          complete={complete}
-          forwards={forwards}
-          ip={ip}
-          length={length}
-          xOffset={xOffset}
-          xPos={x + xOffset}
-          yPos={y + yOffset}
-        />
-      </Box>
+      )}
+
+      {!complete && (
+        <MemoizedOverlay forwards={forwards} ip={ip} xPos={x + xOffset} yPos={y + yOffset} />
+      )}
     </Box>
   )
 }

@@ -8,6 +8,7 @@ import Stats from './stats'
 
 export type PlayerProps = {
   complete: boolean
+  down: boolean
   forwards: boolean
   jump: boolean
   length: number
@@ -15,6 +16,7 @@ export type PlayerProps = {
   mario: 1 | 2 | 3
   maxXOffset: number
   mobile: boolean | undefined
+  marioZIndex?: number
   paused: boolean
   score: number
   timer: number
@@ -30,6 +32,7 @@ export type PlayerProps = {
 
 const Player = ({
   complete,
+  down,
   forwards,
   jump,
   length,
@@ -37,6 +40,7 @@ const Player = ({
   mario,
   maxXOffset,
   mobile,
+  marioZIndex = 9,
   paused,
   score,
   timer,
@@ -53,7 +57,16 @@ const Player = ({
     <>
       {xPos < length && (
         <>
-          <Mario variant={mario} x={x} y={y} xPos={xPos} forwards={forwards} jump={jump} />
+          <Mario
+            down={down}
+            variant={mario}
+            x={x}
+            y={y}
+            xPos={xPos}
+            forwards={forwards}
+            jump={jump}
+            zIndex={marioZIndex}
+          />
         </>
       )}
 

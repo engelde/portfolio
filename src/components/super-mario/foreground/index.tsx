@@ -288,7 +288,7 @@ const Foreground = ({
         children: (
           <MemoizedCoin
             x={0}
-            y={0}
+            y={16}
             active={dynamicObjects.prizeBoxes[1].prize}
             setActive={prizeBoxHandlers[1].setPrizeActive}
             score={score}
@@ -310,7 +310,7 @@ const Foreground = ({
         children: (
           <MemoizedCoin
             x={0}
-            y={0}
+            y={16}
             active={dynamicObjects.prizeBoxes[2].prize}
             setActive={prizeBoxHandlers[2].setPrizeActive}
             score={score}
@@ -332,7 +332,7 @@ const Foreground = ({
         children: (
           <MemoizedCoin
             x={0}
-            y={0}
+            y={16}
             active={dynamicObjects.prizeBoxes[3].prize}
             setActive={prizeBoxHandlers[3].setPrizeActive}
             score={score}
@@ -378,7 +378,7 @@ const Foreground = ({
         children: (
           <MemoizedCoin
             x={0}
-            y={0}
+            y={16}
             active={dynamicObjects.prizeBoxes[5].prize}
             setActive={prizeBoxHandlers[5].setPrizeActive}
             score={score}
@@ -424,7 +424,7 @@ const Foreground = ({
         children: (
           <MemoizedCoin
             x={0}
-            y={0}
+            y={16}
             active={dynamicObjects.prizeBoxes[7].prize}
             setActive={prizeBoxHandlers[7].setPrizeActive}
             score={score}
@@ -446,7 +446,7 @@ const Foreground = ({
         children: (
           <MemoizedCoin
             x={0}
-            y={0}
+            y={16}
             active={dynamicObjects.prizeBoxes[8].prize}
             setActive={prizeBoxHandlers[8].setPrizeActive}
             score={score}
@@ -628,13 +628,22 @@ const Foreground = ({
       ))}
 
       {goombas.map((item, x) => (
-        <MemoizedGoomba key={x} x={item.x} y={item.y} offset={item.offset} />
+        <MemoizedGoomba
+          key={x}
+          x={item.x}
+          y={item.y}
+          offset={item.offset}
+          jump={jump}
+          xPos={xPos}
+          yPos={yPos}
+        />
       ))}
 
       {pipes.map((item, x) => (
         <MemoizedPipe
           key={x}
           xPos={xPos}
+          yPos={yPos}
           x={item.x}
           y={item.y}
           height={item.height}
@@ -657,13 +666,22 @@ const Foreground = ({
           setPrizeActive={item.setPrizeActive}
           prizeCount={item.prizeCount}
           setPrizeCount={item.setPrizeCount}
+          viewportActive={Math.abs(item.x - xPos) < 1400}
         >
           {item.children}
         </MemoizedPrizeBox>
       ))}
 
       {turtles.map((item, x) => (
-        <MemoizedTurtle key={x} x={item.x} y={item.y} offset={item.offset} />
+        <MemoizedTurtle
+          key={x}
+          x={item.x}
+          y={item.y}
+          offset={item.offset}
+          jump={jump}
+          xPos={xPos}
+          yPos={yPos}
+        />
       ))}
     </>
   )

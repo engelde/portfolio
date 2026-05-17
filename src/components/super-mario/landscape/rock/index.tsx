@@ -17,7 +17,7 @@ const Rock = ({ x, y }: RockProps) => {
         width={80}
         height={80}
         draggable={false}
-        priority
+        unoptimized
       />
     </Box>
   )

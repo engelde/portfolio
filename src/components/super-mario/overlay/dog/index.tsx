@@ -16,7 +16,7 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
   return (
     <Box
       as={motion.div}
-      zIndex={10}
+      zIndex={xPos > xMin ? 0 : 10}
       position={'fixed'}
       top={36}
       left={8}
@@ -63,7 +63,7 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
           width={300}
           height={300}
           draggable={false}
-          priority
+          unoptimized
         />
       </Box>
       <HStack

@@ -306,7 +306,7 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
               width={300}
               height={300}
               draggable={false}
-              priority
+              unoptimized
             />
           </Box>
         </VStack>

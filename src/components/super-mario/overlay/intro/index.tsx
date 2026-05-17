@@ -81,6 +81,9 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             color={'cyan.500'}
             _hover={{ color: 'cyan.600' }}
             _active={{ color: 'cyan.600' }}
+            style={{
+              pointerEvents: 'auto',
+            }}
           >
             GitHub
           </Link>

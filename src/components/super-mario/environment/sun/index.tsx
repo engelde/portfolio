@@ -40,7 +40,7 @@ const Sun = () => {
           },
         }}
       >
-        <NextImage alt={'sun'} src={'/images/sun/sun.png'} width={240} height={240} priority />
+        <NextImage alt={'sun'} src={'/images/sun/sun.png'} width={240} height={240} unoptimized />
       </Box>
 
       <Box
@@ -74,7 +74,7 @@ const Sun = () => {
           width={215}
           height={215}
           draggable={false}
-          priority
+          unoptimized
         />
       </Box>
     </Box>

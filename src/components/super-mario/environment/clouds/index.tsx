@@ -133,7 +133,7 @@ const Clouds = () => {
             height={variants[item.variant]?.height || 0}
             style={{ transform: 'scale(' + item.scale + ')' }}
             draggable={false}
-            priority
+            unoptimized
           />
         </Box>
       ))}

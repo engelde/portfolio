@@ -94,7 +94,7 @@ const Mushroom = ({ x, y, active, mario, score, setActive, setMario, setScore }:
             width={80}
             height={80}
             draggable={false}
-            priority
+            unoptimized
           />
         </Box>
       )}

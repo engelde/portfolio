@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
@@ -22,12 +21,12 @@ export type CoinProps = {
 }
 
 const coinSpin = keyframes`
-  0% { content: url('/images/coin/coin.1.png'); }
-  20% { content: url('/images/coin/coin.2.png'); }
-  40% { content: url('/images/coin/coin.3.png'); }
-  60% { content: url('/images/coin/coin.4.png'); }
-  80% { content: url('/images/coin/coin.5.png'); }
-  100% { content: url('/images/coin/coin.1.png'); }
+  0% { background-position: 0 0; }
+  20% { background-position: -80px 0; }
+  40% { background-position: -160px 0; }
+  60% { background-position: -240px 0; }
+  80% { background-position: -320px 0; }
+  100% { background-position: 0 0; }
 `
 
 const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: CoinProps) => {
@@ -81,19 +80,20 @@ const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: Coi
               },
             }
           }
-          sx={{
-            '& img': {
-              animation: `${coinSpin} 0.75s steps(1) infinite`,
-            },
-          }}
         >
-          <NextImage
-            alt={'coin'}
-            src={'/images/coin/coin.1.png'}
-            width={80}
-            height={80}
-            draggable={false}
-            priority
+          <Box
+            aria-label={'coin'}
+            role={'img'}
+            w={'80px'}
+            h={'80px'}
+            bgImage={'url("/images/coin/coin.sprite.png")'}
+            bgPosition={'0 0'}
+            bgRepeat={'no-repeat'}
+            bgSize={'400px 80px'}
+            sx={{
+              animation: `${coinSpin} 0.75s steps(1) infinite`,
+              imageRendering: 'pixelated',
+            }}
           />
         </Box>
       )}

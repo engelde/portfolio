@@ -58,7 +58,7 @@ export const useController = ({
   speed,
 }: ControllerProps) => {
   const { playAudio } = useAudio()
-  const { keys, down, escape } = useKeyboard({ active: active })
+  const { keys, down, escape, up, left, right } = useKeyboard({ active: active })
   const { scrollY } = useScroll()
   const { height } = useWindow()
 
@@ -73,10 +73,12 @@ export const useController = ({
   const jumpLockRef = useRef(false)
   const jumpHeldRef = useRef(false)
   const jumpDisplayRef = useRef(false)
+  const groundedRef = useRef(true)
   const runChargeRef = useRef(0)
   const flyingRef = useRef(false)
   const flyTimeRef = useRef(0)
   const lastYScrollRef = useRef(scrollY.get())
+  const programmaticScrollTargetRef = useRef<number | null>(null)
 
   // React state for rendering
   const [renderState, setRenderState] = useState({
@@ -87,11 +89,33 @@ export const useController = ({
     forwards: true,
     jump: false,
   })
+  const [forwards, setForwards] = useState(true)
+  const [loopWake, setLoopWake] = useState(0)
 
-  const [maxYScroll, setMaxYScroll] = useState(maximum.length + height - 24)
+  const [maxYScroll, setMaxYScroll] = useState(maximum.length + height)
+
+  const updateForwards = useCallback((nextForwards: boolean) => {
+    forwardsRef.current = nextForwards
+    setForwards((prev) => (prev === nextForwards ? prev : nextForwards))
+  }, [])
+
+  const getGroundHeight = useCallback(
+    (worldX: number) => {
+      for (const i of position.groundLevels) {
+        if (worldX > i.xMin && worldX < i.xMax) {
+          return i.height
+        }
+      }
+
+      return 0
+    },
+    [position.groundLevels]
+  )
 
   // Helper to sync refs to state
   const syncState = useCallback(() => {
+    setForwards((prev) => (prev === forwardsRef.current ? prev : forwardsRef.current))
+
     setRenderState((prev) => {
       if (
         prev.x === xRef.current &&
@@ -113,11 +137,159 @@ export const useController = ({
       }
     })
 
-    const newMaxYScroll = maximum.length + height - 24
+    const newMaxYScroll = maximum.length + height
     if (maxYScroll !== newMaxYScroll) {
       setMaxYScroll(newMaxYScroll)
     }
   }, [height, maximum.length, maxYScroll])
+
+  const startJump = useCallback(
+    (force = false) => {
+      if (mobile || (!force && (jumpHeldRef.current || jumpLockRef.current))) {
+        return false
+      }
+
+      const worldX = xRef.current + xOffsetRef.current
+      const recoverSurface =
+        force &&
+        !jumpDisplayRef.current &&
+        velocityYRef.current === 0 &&
+        (groundedRef.current || yOffsetRef.current !== 0)
+
+      if (!groundedRef.current && !recoverSurface) {
+        return false
+      }
+
+      if (recoverSurface) {
+        yRef.current += yOffsetRef.current
+        yOffsetRef.current = 0
+      }
+
+      const inFlightWindow = worldX >= 4400 && worldX <= 7400
+      if (mario === 3 && runChargeRef.current >= 60 && inFlightWindow) {
+        flyingRef.current = true
+        flyTimeRef.current = 0
+      }
+
+      velocityYRef.current = mario !== 3 ? -30 : -36
+      groundedRef.current = false
+      jumpRef.current = true
+      jumpHeldRef.current = true
+      jumpDisplayRef.current = true
+      playAudio('jump')
+      syncState()
+      return true
+    },
+    [mario, mobile, playAudio, syncState]
+  )
+
+  useEffect(() => {
+    if (!active || mobile) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === 'ArrowUp' || event.code === 'Space') {
+        event.preventDefault()
+        if (!event.repeat && startJump(true)) {
+          setLoopWake((val) => val + 1)
+        }
+        return
+      }
+
+      if (event.code !== 'ArrowLeft' && event.code !== 'ArrowRight') return
+      event.preventDefault()
+
+      const nextForwards = event.code === 'ArrowRight'
+      updateForwards(nextForwards)
+      syncState()
+    }
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.code !== 'ArrowUp' && event.code !== 'Space') return
+      event.preventDefault()
+
+      jumpHeldRef.current = false
+      if (jumpRef.current && velocityYRef.current < -11) {
+        velocityYRef.current = -11
+      }
+      jumpRef.current = false
+      if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
+        jumpLockRef.current = false
+        groundedRef.current = true
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [active, mobile, startJump, syncState, updateForwards])
+
+  useEffect(() => {
+    if (up) return
+
+    jumpHeldRef.current = false
+    if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
+      jumpRef.current = false
+      jumpLockRef.current = false
+      groundedRef.current = true
+    }
+  }, [up])
+
+  const syncScrollPosition = useCallback(
+    (currentYScroll: number) => {
+      if (!active) return
+
+      const target = programmaticScrollTargetRef.current
+      if (target !== null && Math.abs(currentYScroll - target) < 1) {
+        lastYScrollRef.current = currentYScroll
+        programmaticScrollTargetRef.current = null
+        return
+      }
+
+      if (!mobile && (keys.current.has('ArrowLeft') || keys.current.has('ArrowRight'))) {
+        lastYScrollRef.current = currentYScroll
+        return
+      }
+
+      if (lastYScrollRef.current === currentYScroll) return
+
+      const total = Math.max(0, Math.min(maximum.length, currentYScroll))
+
+      if (total < maximum.xOffset) {
+        xOffsetRef.current = total
+        xRef.current = 0
+      } else {
+        xOffsetRef.current = maximum.xOffset
+        xRef.current = total - maximum.xOffset
+      }
+
+      if (currentYScroll > lastYScrollRef.current) {
+        updateForwards(true)
+      } else if (currentYScroll < lastYScrollRef.current) {
+        updateForwards(false)
+      }
+
+      if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
+        yRef.current = getGroundHeight(total)
+        groundedRef.current = true
+      }
+
+      lastYScrollRef.current = currentYScroll
+      syncState()
+    },
+    [
+      active,
+      getGroundHeight,
+      keys,
+      maximum.length,
+      maximum.xOffset,
+      mobile,
+      syncState,
+      updateForwards,
+    ]
+  )
 
   // Adjust Y Positioning logic (now uses velocity for parabolic motion)
   const updateY = useCallback(() => {
@@ -125,20 +297,14 @@ export const useController = ({
       const gravity = 1.6
 
       // Determine ground height at current X
-      let groundHeight = 0
-      for (const i of position.groundLevels) {
-        if (
-          xRef.current + xOffsetRef.current > i.xMin &&
-          xRef.current + xOffsetRef.current < i.xMax
-        ) {
-          groundHeight = i.height
-          break
-        }
-      }
+      const groundHeight = getGroundHeight(xRef.current + xOffsetRef.current)
 
       // Apply Gravity
       velocityYRef.current += gravity
       yOffsetRef.current -= velocityYRef.current
+      if (velocityYRef.current !== 0 || yOffsetRef.current !== 0) {
+        groundedRef.current = false
+      }
 
       // Ceiling levels check
       if (velocityYRef.current < 0) {
@@ -158,6 +324,7 @@ export const useController = ({
           ) {
             yOffsetRef.current = i.height - yRef.current - (mario !== 1 ? maximum.marioOffset : 0)
             velocityYRef.current = 0
+            groundedRef.current = false
             jumpLockRef.current = true
             return true
           }
@@ -181,6 +348,7 @@ export const useController = ({
               yRef.current = i.height
               yOffsetRef.current = 0
               velocityYRef.current = 0
+              groundedRef.current = true
               return true
             }
           }
@@ -191,6 +359,7 @@ export const useController = ({
           yRef.current = groundHeight
           yOffsetRef.current = 0
           velocityYRef.current = 0
+          groundedRef.current = true
           return true
         }
       }
@@ -203,49 +372,48 @@ export const useController = ({
           // Still falling, adjust yRef and yOffset to maintain absolute height
           yOffsetRef.current = yRef.current + yOffsetRef.current - groundHeight
           yRef.current = groundHeight
+          groundedRef.current = false
         } else {
           // Hit the ground
           yRef.current = groundHeight
           yOffsetRef.current = 0
           velocityYRef.current = 0
+          groundedRef.current = true
+          return true
         }
       }
     }
     return false
-  }, [active, mario, maximum.marioOffset, mobile, position])
+  }, [active, getGroundHeight, mario, maximum.marioOffset, mobile, position])
 
   // Game Loop
   useEffect(() => {
-    if (!active) return
+    if (!active || mobile) return
 
     let rafId: number
+
+    const shouldTick = () =>
+      keys.current.has('ArrowUp') ||
+      keys.current.has('Space') ||
+      keys.current.has('ArrowLeft') ||
+      keys.current.has('ArrowRight') ||
+      yOffsetRef.current !== 0 ||
+      velocityYRef.current !== 0 ||
+      jumpDisplayRef.current ||
+      flyingRef.current
 
     const tick = () => {
       let moved = false
 
-      const up = keys.current.has('ArrowUp') || keys.current.has('Space')
-      const left = keys.current.has('ArrowLeft')
-      const right = keys.current.has('ArrowRight')
+      const upPressed = keys.current.has('ArrowUp') || keys.current.has('Space')
+      const leftPressed = keys.current.has('ArrowLeft')
+      const rightPressed = keys.current.has('ArrowRight')
 
       // Jump Logic
       if (!mobile) {
-        if (up && !jumpHeldRef.current && !jumpLockRef.current && yOffsetRef.current === 0) {
-          // Raccoon flight: if P-meter is charged AND we're in the coin-chain launch window,
-          // initiate flight. Window brackets the upward 5-coin chain (x=5600..6240) with a
-          // small lead-in and a longer trailing buffer for late jump presses.
-          const worldX = xRef.current + xOffsetRef.current
-          const inFlightWindow = worldX >= 4400 && worldX <= 7400
-          if (mario === 3 && runChargeRef.current >= 60 && inFlightWindow) {
-            flyingRef.current = true
-            flyTimeRef.current = 0
-          }
-          velocityYRef.current = mario !== 3 ? -30 : -36
-          jumpRef.current = true
-          jumpHeldRef.current = true
-          jumpDisplayRef.current = true
-          playAudio('jump')
+        if (upPressed && startJump()) {
           moved = true
-        } else if (!up && jumpRef.current) {
+        } else if (!upPressed && jumpRef.current) {
           // Variable jump height: cut velocity if button released early
           if (velocityYRef.current < -11) {
             velocityYRef.current = -11
@@ -254,7 +422,7 @@ export const useController = ({
           moved = true
         }
 
-        if (!up) {
+        if (!upPressed) {
           jumpHeldRef.current = false
         }
 
@@ -264,23 +432,23 @@ export const useController = ({
           moved = true
         }
 
-        if (up && jumpLockRef.current && yOffsetRef.current === 0) {
+        if (upPressed && jumpLockRef.current && yOffsetRef.current === 0) {
           // Stay locked until button released
-        } else if (!up && jumpLockRef.current && yOffsetRef.current === 0) {
+        } else if (!upPressed && jumpLockRef.current && yOffsetRef.current === 0) {
           jumpLockRef.current = false
         }
 
         // Raccoon Mario abilities
         if (mario === 3) {
           // Slow descent: hold jump while falling -> tail float
-          if (up && velocityYRef.current > 4 && yOffsetRef.current !== 0) {
+          if (upPressed && velocityYRef.current > 4 && yOffsetRef.current !== 0) {
             velocityYRef.current = 4
             moved = true
           }
 
           // Flight: while charged, holding jump after takeoff sustains lift (SMB3 tail flap)
           if (flyingRef.current) {
-            if (up && flyTimeRef.current < 180) {
+            if (upPressed && flyTimeRef.current < 180) {
               // Sustain a steady upward climb while in flight
               if (velocityYRef.current > -9) {
                 velocityYRef.current = -9
@@ -296,31 +464,40 @@ export const useController = ({
       }
 
       // Left Logic
-      if (!mobile && !right && left && xRef.current + xOffsetRef.current > 0) {
+      if (!mobile && !rightPressed && leftPressed && xRef.current + xOffsetRef.current > 0) {
         if (xRef.current === 0 && xOffsetRef.current > 0) {
           xOffsetRef.current = Math.max(0, xOffsetRef.current - speed.x)
         } else {
           xRef.current = Math.max(0, xRef.current - speed.x)
         }
-        if (forwardsRef.current) forwardsRef.current = false
+        if (forwardsRef.current) updateForwards(false)
 
         // Sync scroll
         const newTotal = xRef.current + xOffsetRef.current
+        lastYScrollRef.current = newTotal
+        programmaticScrollTargetRef.current = newTotal
         window.scrollTo({ top: newTotal, behavior: 'auto' })
         moved = true
       }
 
       // Right Logic
-      if (!mobile && !left && right && xRef.current + xOffsetRef.current < maximum.length) {
+      if (
+        !mobile &&
+        !leftPressed &&
+        rightPressed &&
+        xRef.current + xOffsetRef.current < maximum.length
+      ) {
         if (xOffsetRef.current < maximum.xOffset) {
           xOffsetRef.current = Math.min(maximum.xOffset, xOffsetRef.current + speed.x)
         } else {
           xRef.current = Math.min(maximum.length - xOffsetRef.current, xRef.current + speed.x)
         }
-        if (!forwardsRef.current) forwardsRef.current = true
+        if (!forwardsRef.current) updateForwards(true)
 
         // Sync scroll
         const newTotal = xRef.current + xOffsetRef.current
+        lastYScrollRef.current = newTotal
+        programmaticScrollTargetRef.current = newTotal
         window.scrollTo({ top: newTotal, behavior: 'auto' })
         moved = true
 
@@ -335,29 +512,6 @@ export const useController = ({
         }
       }
 
-      // Scroll Logic (sync with React-driven scroll)
-      const currentYScroll = scrollY.get()
-      if (!left && !right && lastYScrollRef.current !== currentYScroll) {
-        const total = Math.max(0, Math.min(maximum.length, currentYScroll))
-
-        if (total < maximum.xOffset) {
-          xOffsetRef.current = total
-          xRef.current = 0
-        } else {
-          xOffsetRef.current = maximum.xOffset
-          xRef.current = total - maximum.xOffset
-        }
-
-        if (currentYScroll > lastYScrollRef.current) {
-          if (!forwardsRef.current) forwardsRef.current = true
-        } else if (currentYScroll < lastYScrollRef.current) {
-          if (forwardsRef.current) forwardsRef.current = false
-        }
-
-        lastYScrollRef.current = currentYScroll
-        moved = true
-      }
-
       // Always update physics
       if (updateY()) {
         moved = true
@@ -369,28 +523,42 @@ export const useController = ({
         syncState()
       }
 
-      rafId = requestAnimationFrame(tick)
+      if (shouldTick()) {
+        rafId = requestAnimationFrame(tick)
+      }
     }
+
+    if (!shouldTick()) return
 
     rafId = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafId)
   }, [
     active,
     keys,
+    left,
+    loopWake,
     mario,
     maximum.length,
     maximum.xOffset,
     mobile,
-    playAudio,
+    right,
     speed.x,
+    startJump,
     syncState,
     updateY,
-    scrollY,
+    updateForwards,
+    up,
   ])
+
+  useEffect(() => {
+    const unsubscribe = scrollY.on('change', syncScrollPosition)
+    syncScrollPosition(scrollY.get())
+    return () => unsubscribe()
+  }, [scrollY, syncScrollPosition])
 
   // Resize
   useEffect(() => {
-    const newMaxYScroll = maximum.length + height - xOffsetRef.current - 24
+    const newMaxYScroll = maximum.length + height
     if (maxYScroll !== newMaxYScroll) {
       setMaxYScroll(newMaxYScroll)
     }
@@ -406,7 +574,7 @@ export const useController = ({
 
   return {
     down,
-    forwards: renderState.forwards,
+    forwards,
     jump: renderState.jump,
     x: renderState.x,
     y: renderState.y,

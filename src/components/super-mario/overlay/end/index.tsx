@@ -1,13 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { Box, Flex, Heading, HStack, Link, Tooltip, VStack } from '@chakra-ui/react'
-import { Fireworks } from '@fireworks-js/react'
+import { Box, Flex, Heading, HStack, Link, Tooltip, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import Wordmark from '@/components/wordmark'
+
+const Fireworks = dynamic(() => import('@fireworks-js/react').then((mod) => mod.Fireworks), {
+  ssr: false,
+})
 
 export type EndProps = {
   complete: boolean
@@ -17,12 +21,19 @@ export type EndProps = {
 
 const End = ({ complete, x, xPos }: EndProps) => {
   const [fireworks, setFireworks] = useState(false)
+  const [mobile] = useMediaQuery('(max-width: 48rem)')
 
   useEffect(() => {
     if (complete && !fireworks) {
       setFireworks(true)
     }
   }, [complete, fireworks])
+
+  useEffect(() => {
+    if (xPos > x - 1600) {
+      void import('@fireworks-js/react')
+    }
+  }, [x, xPos])
 
   return (
     <Box
@@ -31,8 +42,10 @@ const End = ({ complete, x, xPos }: EndProps) => {
       left={x + 'px'}
       bottom={0}
       p={0}
-      h={'100vh'}
-      w={'100vw'}
+      h={'100dvh'}
+      minH={'100vh'}
+      w={'100dvw'}
+      minW={'100vw'}
       alignItems={'center'}
       justifyContent={'center'}
       bg={'black'}
@@ -51,7 +64,13 @@ const End = ({ complete, x, xPos }: EndProps) => {
         height: '100%',
       }}
     >
-      <Flex h={'100vh'} w={'100vw'} alignItems={'center'} justifyContent={'center'}>
+      <Flex
+        h={'100dvh'}
+        minH={'100vh'}
+        w={'100dvw'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
         <Box
           zIndex={'-1'}
           position={'absolute'}
@@ -66,7 +85,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
             height={700}
             width={1028}
             draggable={false}
-            priority
+            unoptimized
             style={{
               position: 'absolute',
               bottom: 64,
@@ -93,11 +112,11 @@ const End = ({ complete, x, xPos }: EndProps) => {
                   acceleration: 1,
                   friction: 0.97,
                   gravity: 1.5,
-                  particles: 50,
-                  traceLength: 2,
-                  traceSpeed: 6,
-                  explosion: 7,
-                  intensity: 5,
+                  particles: mobile ? 20 : 50,
+                  traceLength: mobile ? 1 : 2,
+                  traceSpeed: mobile ? 4 : 6,
+                  explosion: mobile ? 4 : 7,
+                  intensity: mobile ? 2 : 5,
                   flickering: 50,
                   lineStyle: 'round',
                   hue: {
@@ -153,7 +172,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
               width={360}
               height={420}
               draggable={false}
-              priority
+              unoptimized
             />
           </Box>
         </Box>
@@ -163,20 +182,23 @@ const End = ({ complete, x, xPos }: EndProps) => {
           alignItems={'center'}
           justifyContent={'center'}
           opacity={0}
-          marginTop={'-3000px'}
-          {...(xPos >= x && {
-            initial: { opacity: 0, marginTop: -3000 },
-            animate: { opacity: 1, marginTop: 0, transition: { duration: 0.6 } },
-          })}
+          px={4}
+          maxW={'100%'}
+          initial={false}
+          animate={
+            complete || xPos >= x
+              ? { opacity: 1, translateY: 0, transition: { duration: 0.6 } }
+              : { opacity: 0, translateY: -300 }
+          }
         >
-          <VStack spacing={16}>
-            <Wordmark textAlign={'center'} />
+          <VStack spacing={{ base: 8, md: 16 }} maxW={'100%'}>
+            <Wordmark textAlign={'center'} w={{ base: '320px', md: '700px' }} />
 
             <Heading
               as={motion.div}
-              size={{ base: '2xl', md: '4xl' }}
+              size={{ base: 'xl', md: '4xl' }}
               color={'white'}
-              letterSpacing={'4px'}
+              letterSpacing={{ base: '2px', md: '4px' }}
               textTransform={'uppercase'}
               initial={{ scale: 1 }}
               whileInView={{
@@ -199,8 +221,9 @@ const End = ({ complete, x, xPos }: EndProps) => {
             <VStack spacing={0}>
               <Heading
                 as={motion.div}
-                size={{ base: '2xl', md: '4xl' }}
+                size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
+                color={'white'}
                 cursor={'pointer'}
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.08 }}
@@ -212,20 +235,27 @@ const End = ({ complete, x, xPos }: EndProps) => {
 
               <Heading
                 as={motion.div}
-                size={{ base: '2xl', md: '4xl' }}
+                size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
+                color={'white'}
                 cursor={'pointer'}
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.08 }}
                 _hover={{ color: 'cyan.500' }}
               >
-                <Link as={NextLink} href={'https://github.com/engelde/portfolio'} target={'_blank'}>
+                <Link
+                  as={NextLink}
+                  color={'white'}
+                  href={'https://github.com/engelde/portfolio'}
+                  target={'_blank'}
+                  _hover={{ color: 'cyan.500' }}
+                >
                   {'> view source'}
                 </Link>
               </Heading>
             </VStack>
 
-            <HStack justifyContent={'center'} verticalAlign={'middle'} spacing={8}>
+            <HStack justifyContent={'center'} verticalAlign={'middle'} spacing={{ base: 5, md: 8 }}>
               <Link
                 as={NextLink}
                 href={'https://github.com/engelde'}
@@ -246,7 +276,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
                       width={49}
                       height={50}
                       draggable={false}
-                      priority
+                      unoptimized
                     />
                   </Box>
                 </Tooltip>
@@ -266,7 +296,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
                       width={50}
                       height={50}
                       draggable={false}
-                      priority
+                      unoptimized
                     />
                   </Box>
                 </Tooltip>
@@ -286,7 +316,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
                       width={50}
                       height={50}
                       draggable={false}
-                      priority
+                      unoptimized
                     />
                   </Box>
                 </Tooltip>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -18,6 +18,29 @@ type PreloadTypes = {
   images: string[]
 }
 
+const preloadImage = (src: string) =>
+  new Promise<{ src: string; status: 'ok' }>((resolve, reject) => {
+    const img = new Image()
+    img.onload = async () => {
+      try {
+        if ('decode' in img) {
+          await img.decode()
+        }
+        resolve({ src, status: 'ok' })
+      } catch {
+        resolve({ src, status: 'ok' })
+      }
+    }
+    img.onerror = () => reject({ src, status: 'error' })
+    img.src = src
+  })
+
+const preloadImages = async (images: string[], batchSize = 8) => {
+  for (let i = 0; i < images.length; i += batchSize) {
+    await Promise.allSettled(images.slice(i, i + batchSize).map(preloadImage))
+  }
+}
+
 const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
   const [mobile] = useMediaQuery('(max-width: 36rem)')
   const [isPreloading, setIsPreloading] = useState(true)
@@ -30,86 +53,52 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
   const preload = async () => {
     const files: PreloadTypes = {
       images: [
-        '/_next/image?url=%2Fimages%2F1up%2F1up.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbox%2Fbox.0.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbox%2Fbox.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbox%2Fbox.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbox%2Fbox.3.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbox%2Fbox.4.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbrick%2Fbrick.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbrick%2Fbrick.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbrick%2Fbrick.3.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbrick%2Fbrick.4.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fbush%2Fbush.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fcastle%2Fcastle.png&w=750&q=75',
-        '/_next/image?url=%2Fimages%2Fclear%2Fclear.png&w=3840&q=75',
-        '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.1.png&w=384&q=75',
-        '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.2.png&w=640&q=75',
-        '/_next/image?url=%2Fimages%2Fcloud%2Fcloud.3.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.3.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.4.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fcoin%2Fcoin.5.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fcube%2Fcube.1.png&w=1080&q=75',
-        '/_next/image?url=%2Fimages%2Fcube%2Fcube.2.png&w=3840&q=75',
-        '/_next/image?url=%2Fimages%2Fcube%2Fcube.3.png&w=1920&q=75',
-        '/_next/image?url=%2Fimages%2Fcube%2Fcube.4.png&w=1080&q=75',
-        '/_next/image?url=%2Fimages%2Fcube%2Fcube.5.png&w=750&q=75',
-        '/_next/image?url=%2Fimages%2Fdog%2Fdog.png&w=640&q=75',
-        '/_next/image?url=%2Fimages%2Ffamily%2Ffamily.png&w=640&q=75',
-        '/_next/image?url=%2Fimages%2Ffire%2Ffire.1.png&w=64&q=75',
-        '/_next/image?url=%2Fimages%2Ffire%2Ffire.2.png&w=64&q=75',
-        '/_next/image?url=%2Fimages%2Ffire%2Ffire.3.png&w=64&q=75',
-        '/_next/image?url=%2Fimages%2Ffire%2Ffire.4.png&w=64&q=75',
-        '/_next/image?url=%2Fimages%2Fgithub%2Fgithub.png&w=128&q=75',
-        '/_next/image?url=%2Fimages%2Fgoomba%2Fgoomba.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fgoomba%2Fgoomba.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fground%2Fground.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fground%2Fground.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fground%2Fground.3.png&w=128&q=75',
-        '/_next/image?url=%2Fimages%2Fleaf%2Fleaf.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Flinkedin%2Flinkedin.png&w=128&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.raccoon.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.raccoon.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.raccoon.jump.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.regular.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.regular.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.regular.jump.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.super.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.super.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fmario%2Fmario.super.jump.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fme%2Fme.png&w=640&q=75',
-        '/_next/image?url=%2Fimages%2Fmushroom%2Fmushroom.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fpipe%2Fpipe.0.png&w=384&q=75',
-        '/_next/image?url=%2Fimages%2Fpipe%2Fpipe.1.png&w=384&q=75',
-        '/_next/image?url=%2Fimages%2Fplant%2Fplant.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fplant%2Fplant.2.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fplant%2Fplant.3.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fplant%2Fplant.4.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fplant%2Fplant.5.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fplant%2Fplant.6.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Frock%2Frock.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fsun%2Fsun.png&w=640&q=75',
-        '/_next/image?url=%2Fimages%2Ftree%2Ftree.1.png&w=640&q=75',
-        '/_next/image?url=%2Fimages%2Ftree%2Ftree.2.png&w=1920&q=75',
-        '/_next/image?url=%2Fimages%2Ftree%2Ftree.3.png&w=1080&q=75',
-        '/_next/image?url=%2Fimages%2Fturtle%2Fturtle.1.png&w=256&q=75',
-        '/_next/image?url=%2Fimages%2Fturtle%2Fturtle.2.png&w=256&q=75',
+        '/images/1up/1up.png',
+        '/images/box/box.sprite.png',
+        '/images/brick/brick.sprite.png',
+        '/images/bush/bush.png',
+        '/images/castle/castle.png',
+        '/images/clear/clear.png',
+        '/images/cloud/cloud.1.png',
+        '/images/cloud/cloud.2.png',
+        '/images/cloud/cloud.3.png',
+        '/images/coin/coin.sprite.png',
+        '/images/cube/cube.1.png',
+        '/images/cube/cube.2.png',
+        '/images/cube/cube.3.png',
+        '/images/cube/cube.4.png',
+        '/images/cube/cube.5.png',
+        '/images/dog/dog.png',
+        '/images/family/family.png',
+        '/images/fire/fire.sprite.png',
+        '/images/github/github.png',
+        '/images/goomba/goomba.sprite.png',
+        '/images/ground/ground.1.png',
+        '/images/ground/ground.2.png',
+        '/images/ground/ground.3.png',
+        '/images/leaf/leaf.png',
+        '/images/linkedin/linkedin.png',
+        '/images/mario/mario.raccoon.sprite.png',
+        '/images/mario/mario.regular.sprite.png',
+        '/images/mario/mario.super.sprite.png',
+        '/images/me/me.png',
+        '/images/mushroom/mushroom.png',
+        '/images/orcid/orcid.png',
+        '/images/pipe/pipe.0.png',
+        '/images/pipe/pipe.1.png',
+        '/images/plant/plant.sprite.png',
+        '/images/rock/rock.png',
+        '/images/sun/sun.png',
+        '/images/tree/tree.1.png',
+        '/images/tree/tree.2.png',
+        '/images/tree/tree.3.png',
+        '/images/turtle/turtle.sprite.png',
+        '/images/wordmark/wordmark.svg',
       ],
     }
 
     // Images
-    await Promise.all(
-      files.images.map((src) => {
-        return new Promise((resolve, reject) => {
-          const img = new Image()
-          img.onload = () => resolve({ src, status: 'ok' })
-          img.onerror = () => reject({ src, status: 'error' })
-          img.src = src
-        })
-      })
-    )
+    await preloadImages(files.images)
 
     setTimeout(() => {
       setIsPreloading(false)
@@ -133,13 +122,33 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
   }, [isPreloading, pathname, setIsPreloading, setIsLoading, router])
 
   // Scroll to start
-  const handleScroll = () => {
+  const handleStart = useCallback(() => {
+    if (!isInstructing) return
+
     setIsInstructing(false)
 
     setTimeout(() => {
       setIsLoading(false)
     }, 900)
+  }, [isInstructing, setIsLoading])
+
+  const handleScroll = () => {
+    handleStart()
   }
+
+  useEffect(() => {
+    if (!isLoading || !isInstructing) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === 'ArrowDown') {
+        event.preventDefault()
+        handleStart()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handleStart, isInstructing, isLoading])
 
   return (
     <Box

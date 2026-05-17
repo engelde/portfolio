@@ -28,7 +28,7 @@ const Cloud = ({ x, y }: CloudProps) => {
         width={80}
         height={80}
         draggable={false}
-        priority
+        unoptimized
       />
     </Box>
   )

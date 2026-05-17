@@ -55,7 +55,7 @@ const Tree = ({ variant, x, y }: TreeProps) => {
         width={variants[variant]?.width || 0}
         height={variants[variant]?.height || 0}
         draggable={false}
-        priority
+        unoptimized
       />
     </Box>
   )
