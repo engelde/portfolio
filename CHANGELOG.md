@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/engelde/portfolio/compare/v1.1.3...v1.2.0) (2026-05-17)
+
+
+### 🐛 Bug Fixes
+
+* improve mario controls and sprite loading ([db49635](https://github.com/engelde/portfolio/commit/db49635194ea759f10211b167b2d3200e9f051c3))
+* polish mario gameplay animations ([8d24a3e](https://github.com/engelde/portfolio/commit/8d24a3e0b48e5116a2a009c2be4163f228b29c49))
+* polish shell and pipe fire interactions ([16a4bb9](https://github.com/engelde/portfolio/commit/16a4bb9836eb61a58efe90f10733acdb9682556a))
+* stabilize mario gameplay interactions ([132fb26](https://github.com/engelde/portfolio/commit/132fb269f4d45bad64836a8c1ca41b523d8af803))
+
 ### [1.1.3](https://github.com/engelde/portfolio/compare/v1.1.2...v1.1.3) (2026-05-17)
 
 
