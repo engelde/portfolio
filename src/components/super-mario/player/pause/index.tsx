@@ -108,7 +108,7 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
             top={4}
             left={4}
             py={1.5}
-            px={2}
+            px={2.5}
             size={'sm'}
             color={'white'}
             background={'black'}

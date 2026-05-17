@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/engelde/portfolio/compare/v1.3.0...v1.4.0) (2026-05-17)
+
+
+### ✨ Features
+
+* add player selection and polish mario sprites ([8bd9837](https://github.com/engelde/portfolio/commit/8bd98370465bea8170674503739c81c254d7d529))
+
 ## [1.3.0](https://github.com/engelde/portfolio/compare/v1.2.0...v1.3.0) (2026-05-17)
 
 
