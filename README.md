@@ -1,6 +1,6 @@
 <div align="center">
 
-![David Engel](/resources/wordmark.svg)
+![David Engel](/public/images/wordmark/wordmark.svg)
 
 </div>
 
