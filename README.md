@@ -46,4 +46,4 @@ docker run --name portfolio -p 80:3000 -d engelde/portfolio
 
 ## Asset Credits
 
-Super Mario Bros. 3 and its related character, item, environment, and visual assets are owned by Nintendo. The Mario-inspired assets on this site are used as a fan-made homage with love and appreciation for Nintendo's work; I do not claim ownership of them.
+Super Mario Bros. 3 and all related character, item, environment, visual, and audio assets are owned by Nintendo. I do not claim ownership of those assets, and this site is not affiliated with, sponsored by, or endorsed by Nintendo.

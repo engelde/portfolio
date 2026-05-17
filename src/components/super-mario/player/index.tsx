@@ -2,11 +2,14 @@
 
 import { VStack } from '@chakra-ui/react'
 
+import type { PlayerCharacter } from '@/lib/store'
+
 import Mario from './mario'
 import Pause from './pause'
 import Stats from './stats'
 
 export type PlayerProps = {
+  character: PlayerCharacter
   complete: boolean
   down: boolean
   dying: boolean
@@ -32,6 +35,7 @@ export type PlayerProps = {
 }
 
 const Player = ({
+  character,
   complete,
   down,
   dying,
@@ -60,6 +64,7 @@ const Player = ({
       {xPos < length && (
         <>
           <Mario
+            character={character}
             down={down}
             dying={dying}
             variant={mario}

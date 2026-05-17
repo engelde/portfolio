@@ -31,7 +31,14 @@ const MemoizedOverlay = React.memo(Overlay)
 const MemoizedPipe = React.memo(Pipe)
 const MemoizedPlayer = React.memo(Player)
 const autoFinishDistance = 520
+const autoFinishCatchupSeconds = 0.42
 const autoFinishPixelsPerSecond = 640
+const autoFinishMaxPixelsPerSecond = 2600
+
+type AutoFinishSample = {
+  time: number
+  x: number
+}
 
 const SuperMario = ({ ip }: SuperMarioProps) => {
   const {
@@ -45,6 +52,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     mobile,
     offset,
     paused,
+    playerCharacter,
     platformLevels,
     score,
     speed,
@@ -69,6 +77,8 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const animationRootRef = useRef<HTMLDivElement | null>(null)
   const setXRef = useRef<((val: number) => void) | null>(null)
   const autoFinishFrameRef = useRef<number | null>(null)
+  const autoFinishSampleRef = useRef<AutoFinishSample | null>(null)
+  const autoFinishSpeedRef = useRef(autoFinishPixelsPerSecond)
   const deathTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const {
@@ -128,6 +138,37 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     setXRef.current = setX
   }, [setX])
 
+  useEffect(() => {
+    if (complete || gameOver || dying || paused || autoFinishing) {
+      autoFinishSampleRef.current = null
+
+      if (complete || gameOver) {
+        autoFinishSpeedRef.current = autoFinishPixelsPerSecond
+      }
+
+      return
+    }
+
+    const now = performance.now()
+    const previous = autoFinishSampleRef.current
+
+    if (previous) {
+      const deltaX = worldX - previous.x
+      const deltaSeconds = Math.max(0.001, (now - previous.time) / 1000)
+
+      if (deltaX > 0) {
+        autoFinishSpeedRef.current = Math.max(
+          autoFinishPixelsPerSecond,
+          Math.min(autoFinishMaxPixelsPerSecond, deltaX / deltaSeconds)
+        )
+      } else if (deltaX < -4) {
+        autoFinishSpeedRef.current = autoFinishPixelsPerSecond
+      }
+    }
+
+    autoFinishSampleRef.current = { time: now, x: worldX }
+  }, [autoFinishing, complete, dying, gameOver, paused, worldX])
+
   const handleDeath = React.useCallback(() => {
     if (complete || gameOver || dying) return
 
@@ -150,7 +191,14 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     const htmlOverflow = document.documentElement.style.overflow
     const bodyOverflow = document.body.style.overflow
     let restoringScroll = false
-    const preventDefault = (event: Event) => event.preventDefault()
+    const allowsScrollLockGesture = (event: Event) =>
+      event.target instanceof Element &&
+      Boolean(event.target.closest('[data-allow-scroll-lock-gesture="true"]'))
+    const preventDefault = (event: Event) => {
+      if (allowsScrollLockGesture(event)) return
+
+      event.preventDefault()
+    }
     const preventMovementKeys = (event: KeyboardEvent) => {
       if (
         [
@@ -207,7 +255,16 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       lastFrame = time
 
       const current = window.scrollY
-      const next = Math.min(target, current + autoFinishPixelsPerSecond * deltaSeconds)
+      const remaining = Math.max(0, target - current)
+      const finishSpeed = Math.min(
+        autoFinishMaxPixelsPerSecond,
+        Math.max(
+          autoFinishPixelsPerSecond,
+          autoFinishSpeedRef.current,
+          remaining / autoFinishCatchupSeconds
+        )
+      )
+      const next = Math.min(target, current + finishSpeed * deltaSeconds)
       window.scrollTo({ top: next, behavior: 'auto' })
 
       if (target - next <= 0.5) {
@@ -237,6 +294,11 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     if (complete || gameOver || dying || autoFinishing) return
 
     if (worldX >= length - autoFinishDistance) {
+      const remaining = Math.max(0, length - window.scrollY)
+      autoFinishSpeedRef.current = Math.max(
+        autoFinishSpeedRef.current,
+        Math.min(autoFinishMaxPixelsPerSecond, remaining / autoFinishCatchupSeconds)
+      )
       setAutoFinishing(true)
     }
   }, [autoFinishing, complete, dying, gameOver, length, worldX])
@@ -380,6 +442,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
 
         {!complete && !gameOver && (
           <MemoizedPlayer
+            character={playerCharacter}
             complete={complete}
             down={down}
             dying={dying}

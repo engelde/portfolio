@@ -18,22 +18,21 @@ const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
   return (
     <Box
       as={motion.div}
-      p={2}
       zIndex={15}
       position={'fixed'}
       top={2}
       right={2}
+      px={4}
+      py={2}
+      bg={'black'}
+      display={'flex'}
+      alignItems={'center'}
+      justifyContent={'center'}
       initial={{ translateX: '150%' }}
       animate={{ translateX: 0, transition: { delay: 1 } }}
     >
-      <VStack spacing={0}>
-        <StatGroup
-          w={{ base: '140px', md: '200px' }}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          bg={'black'}
-          px={4}
-        >
+      <VStack spacing={0} w={{ base: '160px', md: '200px' }}>
+        <StatGroup w={'full'} alignItems={'center'} justifyContent={'space-between'}>
           <Stat textAlign={'left'}>
             <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Level'}>
               World 1
@@ -50,13 +49,7 @@ const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
           </Stat>
         </StatGroup>
 
-        <StatGroup
-          w={{ base: '140px', md: '200px' }}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          bg={'black'}
-          px={4}
-        >
+        <StatGroup w={'full'} alignItems={'center'} justifyContent={'space-between'}>
           <Stat textAlign={'left'}>
             <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Lives'}>
               M x {lives}
@@ -70,13 +63,7 @@ const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
         </StatGroup>
 
         {config.app.environment === 'development' && (
-          <StatGroup
-            w={{ base: '160px', md: '200px' }}
-            alignItems={'center'}
-            justifyContent={'space-between'}
-            bg={'black'}
-            px={4}
-          >
+          <StatGroup w={'full'} alignItems={'center'} justifyContent={'space-between'}>
             <Stat textAlign={'left'}>
               <StatNumber fontSize={'lg'} title={'X'}>
                 x: {Math.round(xPos)}

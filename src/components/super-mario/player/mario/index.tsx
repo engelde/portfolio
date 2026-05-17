@@ -4,7 +4,10 @@ import { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
 import { motion, useAnimationControls } from 'framer-motion'
 
+import type { PlayerCharacter } from '@/lib/store'
+
 export type MarioProps = {
+  character: PlayerCharacter
   down: boolean
   dying: boolean
   variant: 1 | 2 | 3
@@ -17,17 +20,28 @@ export type MarioProps = {
 }
 
 type VariantProps = {
-  sprite: string
+  name: 'regular' | 'super' | 'raccoon'
   width: number
   height: number
   frames: number
 }
 
-const Mario = ({ down, dying, variant, x, y, xPos, forwards, jump, zIndex = 9 }: MarioProps) => {
+const Mario = ({
+  character,
+  down,
+  dying,
+  variant,
+  x,
+  y,
+  xPos,
+  forwards,
+  jump,
+  zIndex = 9,
+}: MarioProps) => {
   const variants = {
-    1: { sprite: '/images/mario/mario.regular.sprite.png', width: 100, height: 100, frames: 3 },
-    2: { sprite: '/images/mario/mario.super.sprite.png', width: 80, height: 160, frames: 4 },
-    3: { sprite: '/images/mario/mario.raccoon.sprite.png', width: 120, height: 160, frames: 4 },
+    1: { name: 'regular', width: 100, height: 100, frames: 3 },
+    2: { name: 'super', width: 80, height: 160, frames: 4 },
+    3: { name: 'raccoon', width: 120, height: 160, frames: 4 },
   } satisfies Record<MarioProps['variant'], VariantProps>
 
   // Derive animation state mathematically from xPos
@@ -83,14 +97,14 @@ const Mario = ({ down, dying, variant, x, y, xPos, forwards, jump, zIndex = 9 }:
         }}
       >
         <Box
-          aria-label={'mario'}
+          aria-label={character}
           role={'img'}
           position={'absolute'}
           right={0}
           bottom={0}
           w={currentVariant.width + 'px'}
           h={currentVariant.height + 'px'}
-          bgImage={`url("${currentVariant.sprite}")`}
+          bgImage={`url("/images/${character}/${character}.${currentVariant.name}.sprite.png")`}
           bgPosition={`-${frame * currentVariant.width}px 0`}
           bgRepeat={'no-repeat'}
           bgSize={`${currentVariant.width * currentVariant.frames}px ${currentVariant.height}px`}

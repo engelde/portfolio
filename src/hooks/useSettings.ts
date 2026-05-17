@@ -8,6 +8,7 @@ import {
   collisionSurfaces,
   levelLength,
 } from '@/components/super-mario/level-map'
+import { useStore } from '@/lib/store'
 
 export const useSettings = () => {
   const [complete, setComplete] = useState(false)
@@ -15,6 +16,7 @@ export const useSettings = () => {
   const length = levelLength
   const [lives, setLives] = useState(1)
   const [mario, setMario] = useState<1 | 2 | 3>(1)
+  const playerCharacter = useStore((state) => state.playerCharacter)
   const offset = {
     mario: 40,
     x: 80,
@@ -59,6 +61,7 @@ export const useSettings = () => {
     mobile,
     offset,
     paused,
+    playerCharacter,
     platformLevels,
     score,
     speed,
