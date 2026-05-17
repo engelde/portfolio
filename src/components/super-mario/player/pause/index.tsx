@@ -59,15 +59,19 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
   }
 
   const handleLink = (x: number, y: number) => {
-    if (window.scrollY !== x) {
-      window.scrollTo({ top: x, behavior: 'instant' })
+    setOpen(false)
+    playAudio('inventory')
+
+    setTimeout(() => {
+      if (window.scrollY !== x) {
+        window.scrollTo({ top: x, behavior: 'instant' })
+      }
+
       setTimeout(() => {
         setX(x)
         setY(y)
       }, 100)
-    }
-    setOpen(false)
-    playAudio('inventory')
+    }, 50)
   }
 
   const handleAudioLevel = (val: number) => {

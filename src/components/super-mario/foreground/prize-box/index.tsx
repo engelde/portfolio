@@ -19,7 +19,6 @@ export type PrizeBoxProps = {
   setPrizeActive: (active: boolean) => void
   prizeCount: number
   setPrizeCount: (count: number) => void
-  viewportActive?: boolean
   children: ReactNode
 }
 
@@ -47,7 +46,6 @@ const PrizeBox = ({
   setPrizeActive,
   prizeCount,
   setPrizeCount,
-  viewportActive = true,
   children,
 }: PrizeBoxProps) => {
   const { playAudio } = useAudio()
@@ -122,7 +120,7 @@ const PrizeBox = ({
         _hover={{ filter: status ? 'brightness(115%)' : 'brightness(100%)' }}
         onClick={handleAction}
         sx={{
-          animation: status && viewportActive ? `${boxAnimation} 0.52s steps(1) infinite` : 'none',
+          animation: status ? `${boxAnimation} 0.52s steps(1) infinite` : 'none',
           imageRendering: 'pixelated',
         }}
       />

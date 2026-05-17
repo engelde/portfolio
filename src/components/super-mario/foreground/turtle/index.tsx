@@ -1,6 +1,14 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type MouseEvent,
+  type SetStateAction,
+} from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 
@@ -52,6 +60,14 @@ const moveAnimation = keyframes`
   100% {
     transform: translateX(calc(var(--enemy-offset) * -1)) scaleX(1);
   }
+`
+
+const shellAnimation = keyframes`
+  0%, 24.99% { background-position: -160px -80px; }
+  25%, 49.99% { background-position: -240px -80px; }
+  50%, 74.99% { background-position: -320px -80px; }
+  75%, 99.99% { background-position: -400px -80px; }
+  100% { background-position: -160px -80px; }
 `
 
 const Turtle = ({
@@ -140,6 +156,22 @@ const Turtle = ({
     [defeatState, onStomp, playAudio, setScore, y]
   )
 
+  const defeatShell = useCallback(
+    (stompMario = false) => {
+      if (defeatState !== 'shell') return
+
+      if (shellFrameRef.current !== null) {
+        cancelAnimationFrame(shellFrameRef.current)
+        shellFrameRef.current = null
+      }
+
+      if (stompMario) onStomp?.()
+      playAudio('stomp')
+      setDefeatState('gone')
+    },
+    [defeatState, onStomp, playAudio]
+  )
+
   useEffect(() => {
     playerMotionRef.current = {
       falling,
@@ -154,6 +186,14 @@ const Turtle = ({
 
     defeatToShell(x + getTranslateX(), false)
   }, [defeatState, defeatToShell, getTranslateX, x])
+
+  const handleShellClick = useCallback(
+    (event: MouseEvent<HTMLDivElement>) => {
+      event.stopPropagation()
+      defeatShell(false)
+    },
+    [defeatShell]
+  )
 
   useEffect(() => {
     return () => {
@@ -265,10 +305,7 @@ const Turtle = ({
         const descendingHit = playerMotion.falling === true && playerMotion.yPos <= previousY
 
         if (horizontalOverlap >= 24 && verticalHit && descendingHit) {
-          onStomp?.()
-          playAudio('stomp')
-          shellFrameRef.current = null
-          setDefeatState('gone')
+          defeatShell(true)
           return
         }
       }
@@ -314,11 +351,11 @@ const Turtle = ({
     defeatState,
     animationsPaused,
     defeatedX,
+    defeatShell,
     getGoombaX,
     getShellPose,
     onShellGoombaHit,
     onShellPrizeHit,
-    onStomp,
     playAudio,
     prizeHitX,
     shellTargets,
@@ -337,6 +374,8 @@ const Turtle = ({
           left={shellPose.x + 'px'}
           w={'80px'}
           h={'80px'}
+          cursor={'pointer'}
+          onClick={handleShellClick}
           style={{
             transform: `scaleX(${shellPose.scaleX}) translateZ(0)`,
           }}
@@ -349,8 +388,11 @@ const Turtle = ({
             bgImage={'url("/images/turtle/turtle.sprite.png")'}
             bgPosition={'-160px -80px'}
             bgRepeat={'no-repeat'}
-            bgSize={'240px 160px'}
-            sx={{ imageRendering: 'pixelated' }}
+            bgSize={'480px 160px'}
+            sx={{
+              animation: `${shellAnimation} 0.36s steps(1) infinite`,
+              imageRendering: 'pixelated',
+            }}
           />
         </Box>
       </>
@@ -380,7 +422,7 @@ const Turtle = ({
         bgImage={'url("/images/turtle/turtle.sprite.png")'}
         bgPosition={'0 0'}
         bgRepeat={'no-repeat'}
-        bgSize={'240px 160px'}
+        bgSize={'480px 160px'}
         sx={{
           animation: `${walkAnimation} 0.9s steps(1) infinite`,
           imageRendering: 'pixelated',

@@ -723,7 +723,6 @@ const Foreground = ({
           prizeCount={item.prizeCount}
           setPrizeCount={item.setPrizeCount}
           animationsPaused={animationsPaused}
-          viewportActive={Math.abs(item.x - xPos) < 1400}
         >
           {item.children}
         </MemoizedPrizeBox>

@@ -21,11 +21,11 @@ export type CoinProps = {
 }
 
 const coinSpin = keyframes`
-  0% { background-position: 0 0; }
-  20% { background-position: -80px 0; }
-  40% { background-position: -160px 0; }
-  60% { background-position: -240px 0; }
-  80% { background-position: -320px 0; }
+  0%, 19.99% { background-position: 0 0; }
+  20%, 39.99% { background-position: -80px 0; }
+  40%, 59.99% { background-position: -160px 0; }
+  60%, 79.99% { background-position: -240px 0; }
+  80%, 99.99% { background-position: -320px 0; }
   100% { background-position: 0 0; }
 `
 
@@ -98,7 +98,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
             bgRepeat={'no-repeat'}
             bgSize={'400px 80px'}
             sx={{
-              animation: `${coinSpin} 0.75s steps(1) infinite`,
+              animation: `${coinSpin} 0.52s steps(1) infinite`,
               imageRendering: 'pixelated',
             }}
           />

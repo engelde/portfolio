@@ -1,5 +1,6 @@
 'use client'
 
+import type { MouseEventHandler } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 
@@ -9,6 +10,7 @@ export type PlantProps = {
   x: number
   y: number
   defeated?: boolean
+  onClick?: MouseEventHandler<HTMLDivElement>
 }
 
 const animation1 = keyframes`
@@ -48,7 +50,7 @@ const plantDefeat = keyframes`
   }
 `
 
-const Plant = ({ variant, forwards, x, y, defeated = false }: PlantProps) => {
+const Plant = ({ variant, forwards, x, y, defeated = false, onClick }: PlantProps) => {
   return (
     <Box
       zIndex={-1}
@@ -57,6 +59,8 @@ const Plant = ({ variant, forwards, x, y, defeated = false }: PlantProps) => {
       bottom={y + 'px'}
       w={80}
       h={160}
+      cursor={defeated ? 'default' : 'pointer'}
+      onClick={defeated ? undefined : onClick}
       sx={{
         animation: defeated
           ? `${plantDefeat} 0.42s ease-in forwards`

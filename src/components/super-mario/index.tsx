@@ -63,6 +63,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const [gameOverBanner, setGameOverBanner] = useState(false)
   const [stompBounceSignal, setStompBounceSignal] = useState(0)
   const endLocked = complete || gameOver
+  const scrollLocked = paused || endLocked || dying
   const { playAudio } = useAudio()
   const playAudioRef = useRef(playAudio)
   const animationRootRef = useRef<HTMLDivElement | null>(null)
@@ -143,9 +144,12 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   }, [complete, dying, gameOver, playAudio, setGameOver])
 
   useEffect(() => {
-    if (!endLocked && !dying) return
+    if (!scrollLocked) return
 
     const lockedY = window.scrollY
+    const htmlOverflow = document.documentElement.style.overflow
+    const bodyOverflow = document.body.style.overflow
+    let restoringScroll = false
     const preventDefault = (event: Event) => event.preventDefault()
     const preventMovementKeys = (event: KeyboardEvent) => {
       if (
@@ -164,6 +168,15 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
         event.preventDefault()
       }
     }
+    const restoreScroll = () => {
+      if (restoringScroll || window.scrollY === lockedY) return
+
+      restoringScroll = true
+      window.scrollTo({ top: lockedY, behavior: 'auto' })
+      window.requestAnimationFrame(() => {
+        restoringScroll = false
+      })
+    }
 
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
@@ -171,15 +184,17 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     window.addEventListener('wheel', preventDefault, { passive: false })
     window.addEventListener('touchmove', preventDefault, { passive: false })
     window.addEventListener('keydown', preventMovementKeys, { passive: false })
+    window.addEventListener('scroll', restoreScroll, { passive: true })
 
     return () => {
-      document.documentElement.style.overflow = ''
-      document.body.style.overflow = ''
+      document.documentElement.style.overflow = htmlOverflow
+      document.body.style.overflow = bodyOverflow
       window.removeEventListener('wheel', preventDefault)
       window.removeEventListener('touchmove', preventDefault)
       window.removeEventListener('keydown', preventMovementKeys)
+      window.removeEventListener('scroll', restoreScroll)
     }
-  }, [dying, endLocked])
+  }, [scrollLocked])
 
   useEffect(() => {
     if (!autoFinishing) return

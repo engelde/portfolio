@@ -35,6 +35,12 @@ const pipeEnter = keyframes`
   100% { transform: translateY(0); }
 `
 
+const plantHitboxTravel = keyframes`
+  0%, 5% { transform: translateY(160px); }
+  30%, 60% { transform: translateY(0); }
+  95%, 100% { transform: translateY(160px); }
+`
+
 const plantCycleSeconds = 8
 const firePeakWindowStart = 0.41
 const firePeakWindowEnd = 0.49
@@ -111,6 +117,31 @@ const Pipe = ({
     cooldownUntilRef.current = performance.now() + 1800
     setFireShot(null)
   }, [])
+
+  const defeatPlant = useCallback(
+    (stompMario: boolean) => {
+      if (plantState !== 'alive') return
+
+      setPlantState('hit')
+      setFireShot(null)
+      setScore?.((current) => current + plantValue)
+      if (stompMario) onStomp?.()
+      playAudio('stomp')
+      if (plantHitTimeoutRef.current) clearTimeout(plantHitTimeoutRef.current)
+      plantHitTimeoutRef.current = setTimeout(() => setPlantState('gone'), 820)
+    },
+    [onStomp, plantState, playAudio, setScore]
+  )
+
+  const handlePlantClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.stopPropagation()
+      if (getPlantTranslateY(plantStartedAtRef.current) > 128) return
+
+      defeatPlant(false)
+    },
+    [defeatPlant]
+  )
 
   const launchFireShot = useCallback(() => {
     if (
@@ -217,27 +248,9 @@ const Pipe = ({
     const abovePipe = yPos > y + height + 24
 
     if (horizontalHit && verticalHit && descendingHit && abovePipe) {
-      setPlantState('hit')
-      setFireShot(null)
-      setScore?.((current) => current + plantValue)
-      onStomp?.()
-      playAudio('stomp')
-      plantHitTimeoutRef.current = setTimeout(() => setPlantState('gone'), 820)
+      defeatPlant(true)
     }
-  }, [
-    animationsPaused,
-    falling,
-    height,
-    onStomp,
-    plant,
-    plantState,
-    playAudio,
-    setScore,
-    x,
-    xPos,
-    y,
-    yPos,
-  ])
+  }, [animationsPaused, defeatPlant, falling, height, plant, plantState, x, xPos, y, yPos])
 
   return (
     <Box
@@ -290,6 +303,23 @@ const Pipe = ({
               variant={plantVariant !== undefined ? plantVariant : 1}
               forwards={plantForwards}
               defeated={plantState === 'hit'}
+              onClick={handlePlantClick}
+            />
+          )}
+          {plantState === 'alive' && (
+            <Box
+              aria-hidden={'true'}
+              zIndex={2}
+              position={'absolute'}
+              left={'40px'}
+              bottom={height + 'px'}
+              w={'80px'}
+              h={'160px'}
+              cursor={'pointer'}
+              onClick={handlePlantClick}
+              sx={{
+                animation: `${plantHitboxTravel} ${plantCycleSeconds}s linear infinite`,
+              }}
             />
           )}
         </>
