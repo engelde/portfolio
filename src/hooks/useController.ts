@@ -3,10 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
+  collisionEdgeTolerance,
   findLandingSurface,
   findStepSurface,
   findSupportSurface,
   getLowestGroundHeight,
+  getMarioFootprint,
   type CollisionCeiling,
   type CollisionSurface,
 } from '@/components/super-mario/level-map'
@@ -43,19 +45,46 @@ type ControllerProps = {
     x: number
     y: number
   }
+  movementLocked?: boolean
+  stompBounceSignal?: number
+}
+
+export type CeilingHit = {
+  id: string
+  owner: string
+  xMin: number
+  xMax: number
+  height: number
+  footprintLeft: number
+  footprintRight: number
+  worldX: number
+  signal: number
+}
+
+type ControllerRenderState = {
+  x: number
+  y: number
+  xOffset: number
+  yOffset: number
+  forwards: boolean
+  falling: boolean
+  jump: boolean
+  ceilingHit: CeilingHit | null
 }
 
 export const useController = ({
   active,
   mario,
+  movementLocked = false,
   mobile,
   maximum,
   pause,
   position,
   speed,
+  stompBounceSignal = 0,
 }: ControllerProps) => {
   const { playAudio } = useAudio()
-  const { keys, down, escape, up, left, right } = useKeyboard({ active: active })
+  const { keys, down, escape, up, left, right } = useKeyboard({ active: active && !movementLocked })
   const { scrollY } = useScroll()
   const { height } = useWindow()
 
@@ -77,9 +106,11 @@ export const useController = ({
   const lastYScrollRef = useRef(scrollY.get())
   const keyboardDirectionLockUntilRef = useRef(0)
   const programmaticScrollTargetRef = useRef<number | null>(null)
+  const lastStompBounceSignalRef = useRef(stompBounceSignal)
+  const ceilingHitRef = useRef<CeilingHit | null>(null)
 
   // React state for rendering
-  const [renderState, setRenderState] = useState({
+  const [renderState, setRenderState] = useState<ControllerRenderState>({
     x: position.x,
     y: position.y,
     xOffset: position.xOffset,
@@ -87,6 +118,7 @@ export const useController = ({
     forwards: true,
     falling: false,
     jump: false,
+    ceilingHit: null,
   })
   const [forwards, setForwards] = useState(true)
   const [loopWake, setLoopWake] = useState(0)
@@ -119,7 +151,8 @@ export const useController = ({
         prev.yOffset === yOffsetRef.current &&
         prev.forwards === forwardsRef.current &&
         prev.falling === velocityYRef.current > 0 &&
-        prev.jump === jumpDisplayRef.current
+        prev.jump === jumpDisplayRef.current &&
+        prev.ceilingHit === ceilingHitRef.current
       ) {
         return prev
       }
@@ -131,6 +164,7 @@ export const useController = ({
         forwards: forwardsRef.current,
         falling: velocityYRef.current > 0,
         jump: jumpDisplayRef.current,
+        ceilingHit: ceilingHitRef.current,
       }
     })
 
@@ -181,7 +215,7 @@ export const useController = ({
   )
 
   useEffect(() => {
-    if (!active || mobile) return
+    if (!active || mobile || movementLocked) return
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === 'ArrowUp' || event.code === 'Space') {
@@ -210,8 +244,8 @@ export const useController = ({
         velocityYRef.current = -11
       }
       jumpRef.current = false
+      jumpLockRef.current = false
       if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
-        jumpLockRef.current = false
         groundedRef.current = true
       }
     }
@@ -222,15 +256,23 @@ export const useController = ({
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
     }
-  }, [active, markKeyboardDirectionInput, mobile, startJump, syncState, updateForwards])
+  }, [
+    active,
+    markKeyboardDirectionInput,
+    mobile,
+    movementLocked,
+    startJump,
+    syncState,
+    updateForwards,
+  ])
 
   useEffect(() => {
     if (up) return
 
     jumpHeldRef.current = false
+    jumpLockRef.current = false
     if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
       jumpRef.current = false
-      jumpLockRef.current = false
       groundedRef.current = true
     }
   }, [up])
@@ -299,8 +341,17 @@ export const useController = ({
           yRef.current = stepSurface.height
           groundedRef.current = true
         } else {
-          groundedRef.current = false
-          setLoopWake((val) => val + 1)
+          yRef.current =
+            getLowestGroundHeight(
+              position.surfaceLevels,
+              total,
+              mario,
+              forwardsRef.current,
+              isCrouching()
+            ) || position.y
+          yOffsetRef.current = 0
+          velocityYRef.current = 0
+          groundedRef.current = true
         }
       }
 
@@ -315,6 +366,7 @@ export const useController = ({
       maximum.length,
       maximum.xOffset,
       mobile,
+      position.y,
       position.surfaceLevels,
       syncState,
       updateForwards,
@@ -339,11 +391,17 @@ export const useController = ({
 
       // Ceiling levels check
       if (velocityYRef.current < 0) {
+        const footprint = getMarioFootprint(worldX, mario, forwardsRef.current, crouching)
         for (const i of position.ceilingLevels) {
           const ceilingY = i.height - (mario !== 1 ? maximum.marioOffset : 0)
+          const overlap = Math.max(
+            0,
+            Math.min(i.xMax + collisionEdgeTolerance, footprint.right) -
+              Math.max(i.xMin - collisionEdgeTolerance, footprint.left)
+          )
+          const overlapsCeiling = overlap / footprint.width >= 0.25
           if (
-            worldX > i.xMin &&
-            worldX < i.xMax &&
+            overlapsCeiling &&
             yRef.current <= i.height &&
             previousFeet < ceilingY && // Was strictly below the ceiling last frame
             currentFeet >= ceilingY // Has now crossed up into it
@@ -352,10 +410,30 @@ export const useController = ({
             velocityYRef.current = 0
             groundedRef.current = false
             jumpLockRef.current = true
+            ceilingHitRef.current = {
+              id: i.id,
+              owner: i.owner,
+              xMin: i.xMin,
+              xMax: i.xMax,
+              height: i.height,
+              footprintLeft: footprint.left,
+              footprintRight: footprint.right,
+              worldX,
+              signal: performance.now(),
+            }
             return true
           }
         }
       }
+
+      const lowestGroundHeight = getLowestGroundHeight(
+        position.surfaceLevels,
+        worldX,
+        mario,
+        forwardsRef.current,
+        crouching
+      )
+      const fallbackGroundHeight = lowestGroundHeight || position.y
 
       // Ground/Platform levels check (only when falling or on ground)
       if (velocityYRef.current >= 0) {
@@ -374,20 +452,22 @@ export const useController = ({
           yOffsetRef.current = 0
           velocityYRef.current = 0
           groundedRef.current = true
+          jumpLockRef.current = false
+          return true
+        }
+
+        if (previousFeet >= fallbackGroundHeight && currentFeet <= fallbackGroundHeight) {
+          yRef.current = fallbackGroundHeight
+          yOffsetRef.current = 0
+          velocityYRef.current = 0
+          groundedRef.current = true
+          jumpLockRef.current = false
           return true
         }
       }
 
-      const lowestGroundHeight = getLowestGroundHeight(
-        position.surfaceLevels,
-        worldX,
-        mario,
-        forwardsRef.current,
-        crouching
-      )
-
-      if (currentFeet < lowestGroundHeight - 260) {
-        yRef.current = lowestGroundHeight
+      if (currentFeet < fallbackGroundHeight - 260) {
+        yRef.current = fallbackGroundHeight
         yOffsetRef.current = 0
         velocityYRef.current = 0
         groundedRef.current = true
@@ -402,11 +482,29 @@ export const useController = ({
     maximum.marioOffset,
     position.ceilingLevels,
     position.surfaceLevels,
+    position.y,
   ])
+
+  useEffect(() => {
+    if (stompBounceSignal === lastStompBounceSignalRef.current || mobile || !active) return
+
+    lastStompBounceSignalRef.current = stompBounceSignal
+    const currentFeet = yRef.current + yOffsetRef.current
+    yRef.current = currentFeet
+    yOffsetRef.current = 0
+    velocityYRef.current = -18
+    groundedRef.current = false
+    jumpRef.current = false
+    jumpHeldRef.current = false
+    jumpLockRef.current = false
+    jumpDisplayRef.current = true
+    syncState()
+    setLoopWake((val) => val + 1)
+  }, [active, mobile, stompBounceSignal, syncState])
 
   // Game Loop
   useEffect(() => {
-    if (!active || mobile) return
+    if (!active || mobile || movementLocked) return
 
     let rafId: number
 
@@ -427,6 +525,19 @@ export const useController = ({
       const leftPressed = keys.current.has('ArrowLeft')
       const rightPressed = keys.current.has('ArrowRight')
       const crouching = isCrouching()
+      const previousWorldX = xRef.current + xOffsetRef.current
+      const previousSupport =
+        yOffsetRef.current === 0 && velocityYRef.current === 0
+          ? findSupportSurface(
+              position.surfaceLevels,
+              previousWorldX,
+              yRef.current,
+              mario,
+              forwardsRef.current,
+              crouching
+            )
+          : undefined
+      let keyboardMoved = false
 
       // Jump Logic
       if (!mobile) {
@@ -503,6 +614,7 @@ export const useController = ({
         lastYScrollRef.current = newTotal
         programmaticScrollTargetRef.current = newTotal
         window.scrollTo({ top: newTotal, behavior: 'auto' })
+        keyboardMoved = true
         moved = true
       }
 
@@ -527,6 +639,7 @@ export const useController = ({
         lastYScrollRef.current = newTotal
         programmaticScrollTargetRef.current = newTotal
         window.scrollTo({ top: newTotal, behavior: 'auto' })
+        keyboardMoved = true
         moved = true
 
         // Charge raccoon P-meter while running on ground
@@ -541,6 +654,39 @@ export const useController = ({
       }
 
       // Always update physics
+      if (keyboardMoved && yOffsetRef.current === 0 && velocityYRef.current === 0) {
+        const support = findSupportSurface(
+          position.surfaceLevels,
+          xRef.current + xOffsetRef.current,
+          yRef.current,
+          mario,
+          forwardsRef.current,
+          crouching
+        )
+        if (!support) {
+          const lowestGroundHeight = getLowestGroundHeight(
+            position.surfaceLevels,
+            xRef.current + xOffsetRef.current,
+            mario,
+            forwardsRef.current,
+            crouching
+          )
+          const fallbackGroundHeight = lowestGroundHeight || position.y
+
+          if (!previousSupport || previousSupport.kind === 'ground') {
+            yRef.current = fallbackGroundHeight
+            yOffsetRef.current = 0
+            velocityYRef.current = 0
+            groundedRef.current = true
+            jumpDisplayRef.current = false
+            jumpLockRef.current = false
+          } else {
+            groundedRef.current = false
+            velocityYRef.current = Math.max(velocityYRef.current, 0)
+          }
+        }
+      }
+
       if (updateY()) {
         moved = true
       } else if (yOffsetRef.current > 0 || velocityYRef.current !== 0) {
@@ -571,6 +717,7 @@ export const useController = ({
     maximum.length,
     maximum.xOffset,
     mobile,
+    movementLocked,
     right,
     speed.x,
     startJump,
@@ -578,6 +725,8 @@ export const useController = ({
     updateY,
     updateForwards,
     up,
+    position.y,
+    position.surfaceLevels,
   ])
 
   useEffect(() => {
@@ -604,6 +753,7 @@ export const useController = ({
 
   return {
     down,
+    ceilingHit: renderState.ceilingHit,
     falling: renderState.falling,
     forwards,
     jump: renderState.jump,

@@ -3,7 +3,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -13,12 +13,18 @@ export type LeafProps = {
   x: number
   y: number
   active: boolean
+  animationsPaused?: boolean
   setActive: (status: boolean) => void
   mario: 1 | 2 | 3
   setMario: (variant: 1 | 2 | 3) => void
   score: number
   setScore: Dispatch<SetStateAction<number>>
 }
+
+const leafRise = keyframes`
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-160px); }
+`
 
 const Leaf = ({ x, y, active, mario, setActive, setMario, setScore }: LeafProps) => {
   const { playAudio } = useAudio()
@@ -47,7 +53,6 @@ const Leaf = ({ x, y, active, mario, setActive, setMario, setScore }: LeafProps)
       {active && <Points x={x} y={260} total={value} />}
       {!disabled && (
         <Box
-          as={motion.div}
           zIndex={-1}
           position={'absolute'}
           left={x + 'px'}
@@ -60,16 +65,8 @@ const Leaf = ({ x, y, active, mario, setActive, setMario, setScore }: LeafProps)
           transition={'opacity .1s ease-out'}
           _hover={{ cursor: 'pointer', filter: 'brightness(110%)' }}
           onClick={() => !running && setActive(true)}
-          initial={{ translateY: 0 }}
-          animate={{
-            translateY: [0, -160],
-            transition: {
-              type: 'keyframes',
-              times: [0, 1],
-              delay: 0,
-              duration: 0.4,
-              ease: 'easeInOut',
-            },
+          sx={{
+            animation: `${leafRise} 0.4s ease-in-out forwards`,
           }}
         >
           <NextImage

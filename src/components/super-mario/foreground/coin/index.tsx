@@ -3,7 +3,6 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { motion } from 'framer-motion'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -15,6 +14,7 @@ export type CoinProps = {
   show?: boolean
   clickable?: boolean
   active: boolean
+  animationsPaused?: boolean
   setActive: (status: boolean) => void
   score: number
   setScore: Dispatch<SetStateAction<number>>
@@ -27,6 +27,25 @@ const coinSpin = keyframes`
   60% { background-position: -240px 0; }
   80% { background-position: -320px 0; }
   100% { background-position: 0 0; }
+`
+
+const coinCollect = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  40%, 60% {
+    opacity: 1;
+    transform: translateY(-200px);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
 `
 
 const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps) => {
@@ -44,10 +63,6 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
       if (!running) {
         setRunning(true)
       }
-
-      setTimeout(() => {
-        setRunning(false)
-      }, 600)
     }
   }, [active, disabled, playAudio, setActive, setScore, running, setDisabled, setRunning])
 
@@ -56,7 +71,6 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
       {active && <Points x={x} y={y + 260} total={value} />}
       {running && (
         <Box
-          as={motion.div}
           zIndex={-1}
           position={'absolute'}
           left={x + 'px'}
@@ -66,20 +80,13 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
           pl={'4px'}
           {...(clickable && !disabled && { cursor: 'pointer', onClick: () => setActive(true) })}
           _hover={{ filter: 'brightness(115%)' }}
-          initial={{ opacity: 1, translateY: 0 }}
-          animate={
-            active && {
-              opacity: [1, 1, 1, 1, 0],
-              translateY: [0, -200, -200, 0, 0],
-              transition: {
-                type: 'keyframes',
-                times: [0, 0.4, 0.6, 0.8, 1],
-                delay: 0,
-                duration: 0.6,
-                ease: 'easeInOut',
-              },
-            }
-          }
+          sx={{
+            animation: active ? `${coinCollect} 0.6s ease-in-out forwards` : 'none',
+          }}
+          onAnimationEnd={(event) => {
+            if (event.currentTarget !== event.target || !active) return
+            setRunning(false)
+          }}
         >
           <Box
             aria-label={'coin'}

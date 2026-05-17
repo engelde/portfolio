@@ -42,7 +42,7 @@ const Mario = ({ down, dying, variant, x, y, xPos, forwards, jump, zIndex = 9 }:
         opacity: [1, 1, 0],
         rotate: [0, 0, 26],
         translateY: [0, -150, 520],
-        transition: { duration: 1.9, ease: 'easeInOut', times: [0, 0.28, 1] },
+        transition: { duration: 1.05, ease: 'easeInOut', times: [0, 0.28, 1] },
       }
     : pulseControls
 

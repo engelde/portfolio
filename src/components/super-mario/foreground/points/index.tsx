@@ -1,7 +1,7 @@
 'use client'
 
 import { Text } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { keyframes } from '@emotion/react'
 
 export type PointsProps = {
   x: number
@@ -9,10 +9,24 @@ export type PointsProps = {
   total: number | string
 }
 
+const pointsFloat = keyframes`
+  0%, 20% {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  30%, 70% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90%, 100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+`
+
 const Points = ({ x, y, total }: PointsProps) => {
   return (
     <Text
-      as={motion.div}
       zIndex={3}
       position={'absolute'}
       left={x + 'px'}
@@ -24,17 +38,8 @@ const Points = ({ x, y, total }: PointsProps) => {
       textShadow={'3px 3px rgba(0, 0, 0, 0.8)'}
       fontSize={'4xl'}
       p={0}
-      initial={{ opacity: 0, translateY: 0 }}
-      animate={{
-        opacity: [0, 0, 1, 1, 0, 0],
-        translateY: [80, 80, 0, 0, -20, -20],
-        transition: {
-          type: 'keyframes',
-          times: [0, 0.2, 0.3, 0.7, 0.9, 1],
-          delay: 0,
-          duration: 0.8,
-          ease: 'easeInOut',
-        },
+      sx={{
+        animation: `${pointsFloat} 0.8s ease-in-out forwards`,
       }}
     >
       {total}

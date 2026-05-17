@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { motion } from 'framer-motion'
 
 import { useAudio } from '@/hooks/useAudio'
 
 import Points from '../points'
 
 export type GoombaProps = {
+  id?: string
+  animationsPaused?: boolean
   x: number
   y: number
   offset: number
@@ -17,6 +18,12 @@ export type GoombaProps = {
   xPos?: number
   yPos?: number
   setScore?: Dispatch<SetStateAction<number>>
+  onStomp?: () => void
+  onDefeat?: (id: string) => void
+  shellDefeat?: {
+    signal: number
+    x: number
+  }
 }
 
 type DefeatState = 'alive' | 'squished' | 'gone'
@@ -27,21 +34,73 @@ const walkAnimation = keyframes`
   100% { background-position: 0 0; }
 `
 
-const Goomba = ({ x, y, offset, falling, xPos, yPos, setScore }: GoombaProps) => {
+const moveAnimation = keyframes`
+  0% { transform: translateX(calc(var(--enemy-offset) * -1)); }
+  50% { transform: translateX(0); }
+  100% { transform: translateX(calc(var(--enemy-offset) * -1)); }
+`
+
+const Goomba = ({
+  id,
+  animationsPaused = false,
+  x,
+  y,
+  offset,
+  falling,
+  xPos,
+  yPos,
+  setScore,
+  onStomp,
+  onDefeat,
+  shellDefeat,
+}: GoombaProps) => {
   const { playAudio } = useAudio()
   const startedAtRef = useRef(Date.now())
   const previousYRef = useRef(yPos)
+  const pausedAtRef = useRef<number | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastShellDefeatSignalRef = useRef(0)
   const [defeatState, setDefeatState] = useState<DefeatState>('alive')
   const [defeatedX, setDefeatedX] = useState(x - offset)
   const value = 100
   const duration = (offset / 90) * 2
+
+  const defeat = useCallback(
+    (nextX: number, stompMario: boolean) => {
+      setDefeatedX(nextX)
+      setDefeatState('squished')
+      setScore?.((current) => current + value)
+      if (stompMario) onStomp?.()
+      if (id) onDefeat?.(id)
+      playAudio('stomp')
+      timeoutRef.current = setTimeout(() => setDefeatState('gone'), 360)
+    },
+    [id, onDefeat, onStomp, playAudio, setScore]
+  )
 
   const getTranslateX = useCallback(() => {
     const progress = (((Date.now() - startedAtRef.current) / 1000) % duration) / duration
     if (progress <= 0.5) return -offset + offset * (progress / 0.5)
     return -offset * ((progress - 0.5) / 0.5)
   }, [duration, offset])
+
+  useEffect(() => {
+    if (animationsPaused && pausedAtRef.current === null) {
+      pausedAtRef.current = Date.now()
+      return
+    }
+
+    if (!animationsPaused && pausedAtRef.current !== null) {
+      startedAtRef.current += Date.now() - pausedAtRef.current
+      pausedAtRef.current = null
+    }
+  }, [animationsPaused])
+
+  const handleClick = useCallback(() => {
+    if (defeatState !== 'alive') return
+
+    defeat(x + getTranslateX(), false)
+  }, [defeat, defeatState, getTranslateX, x])
 
   useEffect(() => {
     return () => {
@@ -66,13 +125,17 @@ const Goomba = ({ x, y, offset, falling, xPos, yPos, setScore }: GoombaProps) =>
     const descendingHit = falling === true && yPos <= previousY
 
     if (horizontalHit && verticalHit && descendingHit) {
-      setDefeatedX(currentX)
-      setDefeatState('squished')
-      setScore?.((current) => current + value)
-      playAudio('stomp')
-      timeoutRef.current = setTimeout(() => setDefeatState('gone'), 360)
+      defeat(currentX, true)
     }
-  }, [defeatState, falling, getTranslateX, playAudio, setScore, x, xPos, y, yPos])
+  }, [defeat, defeatState, falling, getTranslateX, x, xPos, y, yPos])
+
+  useEffect(() => {
+    if (!shellDefeat || defeatState !== 'alive') return
+    if (shellDefeat.signal === lastShellDefeatSignalRef.current) return
+
+    lastShellDefeatSignalRef.current = shellDefeat.signal
+    defeat(shellDefeat.x, false)
+  }, [defeat, defeatState, shellDefeat])
 
   if (defeatState === 'gone') return null
 
@@ -106,26 +169,17 @@ const Goomba = ({ x, y, offset, falling, xPos, yPos, setScore }: GoombaProps) =>
 
   return (
     <Box
-      as={motion.div}
       zIndex={2}
       position={'absolute'}
       bottom={y + 'px'}
       left={x + 'px'}
       w={'80px'}
       h={'80px'}
-      initial={{ translateX: '-' + offset + 'px' }}
-      animate={{
-        translateX: ['-' + offset + 'px', '0px', '-' + offset + 'px'],
-        transition: {
-          type: 'keyframes',
-          times: [0, 0.5, 1],
-          delay: 0,
-          duration: (offset / 90) * 2,
-          ease: 'linear',
-          repeat: Infinity,
-          repeatType: 'loop',
-          repeatDelay: 0,
-        },
+      cursor={'pointer'}
+      onClick={handleClick}
+      sx={{
+        '--enemy-offset': `${offset}px`,
+        animation: `${moveAnimation} ${duration}s linear infinite`,
       }}
     >
       <Box

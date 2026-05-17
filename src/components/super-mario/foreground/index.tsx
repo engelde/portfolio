@@ -4,16 +4,20 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type Dispatch,
   type SetStateAction,
 } from 'react'
 
 import { useAudio } from '@/hooks/useAudio'
+import type { CeilingHit } from '@/hooks/useController'
 
 import {
   brickSegments,
   coinSegments,
+  collisionCeilings,
+  collisionEdgeTolerance,
   goombaSegments,
   pipeSegments,
   turtleSegments,
@@ -40,7 +44,9 @@ const MemoizedPrizeBox = React.memo(PrizeBox)
 const MemoizedTurtle = React.memo(Turtle)
 
 export type ForegroundProps = {
+  animationsPaused?: boolean
   down: boolean
+  ceilingHit?: CeilingHit | null
   falling: boolean
   jump: boolean
   lives: number
@@ -52,6 +58,7 @@ export type ForegroundProps = {
   setLives: (lives: number) => void
   setMario: (variant: 1 | 2 | 3) => void
   setScore: Dispatch<SetStateAction<number>>
+  onStomp?: () => void
 }
 
 type PrizeBoxState = {
@@ -71,8 +78,38 @@ type DynamicObjectsState = {
   }
 }
 
+type ShellDefeat = {
+  signal: number
+  x: number
+}
+
+const prizeBoxWidth = 80
+
+const getPrizeBoxIdsForOwner = (owner: string) => {
+  const exactMatch = owner.match(/^prize-box-(\d+)$/)
+  if (exactMatch) return [Number(exactMatch[1])]
+
+  const groupMatch = owner.match(/^prize-boxes-([\d-]+)$/)
+  if (!groupMatch) return []
+
+  return groupMatch[1].split('-').map(Number)
+}
+
+const ceilingPrizeBoxIds = new Set(
+  collisionCeilings.flatMap((ceiling) => getPrizeBoxIdsForOwner(ceiling.owner))
+)
+
+const getPrizeBoxCeilingOverlap = (item: PrizeBoxProps, ceilingHit: CeilingHit) =>
+  Math.max(
+    0,
+    Math.min(item.x + prizeBoxWidth + collisionEdgeTolerance, ceilingHit.footprintRight) -
+      Math.max(item.x - collisionEdgeTolerance, ceilingHit.footprintLeft)
+  )
+
 const Foreground = ({
+  animationsPaused = false,
   down,
+  ceilingHit,
   falling,
   jump,
   lives,
@@ -84,8 +121,12 @@ const Foreground = ({
   setLives,
   setMario,
   setScore,
+  onStomp,
 }: ForegroundProps) => {
   const { playAudio } = useAudio()
+  const processedCeilingHitRef = useRef<number | null>(null)
+  const [defeatedGoombas, setDefeatedGoombas] = useState<Record<string, true>>({})
+  const [shellDefeats, setShellDefeats] = useState<Record<string, ShellDefeat>>({})
 
   // Initial state for all dynamic objects
   const [dynamicObjects, setDynamicObjects] = useState<DynamicObjectsState>({
@@ -179,6 +220,30 @@ const Foreground = ({
     }
   }, [setItemActive])
 
+  const triggerLeafPrizeBox = useCallback(() => {
+    const leafBox = dynamicObjects.prizeBoxes[6]
+    if (!leafBox?.status || leafBox.active || leafBox.count <= 0) return
+
+    prizeBoxHandlers[6].setActive(true)
+    prizeBoxHandlers[6].setPrizeActive(true)
+    playAudio('box')
+  }, [dynamicObjects.prizeBoxes, playAudio, prizeBoxHandlers])
+
+  const markGoombaDefeated = useCallback((id: string) => {
+    setDefeatedGoombas((prev) => (prev[id] ? prev : { ...prev, [id]: true }))
+  }, [])
+
+  const handleShellGoombaHit = useCallback((id: string, shellX: number) => {
+    setDefeatedGoombas((prev) => (prev[id] ? prev : { ...prev, [id]: true }))
+    setShellDefeats((prev) => ({
+      ...prev,
+      [id]: {
+        signal: (prev[id]?.signal ?? 0) + 1,
+        x: shellX,
+      },
+    }))
+  }, [])
+
   const bricks: BrickProps[] = brickSegments
 
   const coins: (CoinProps & { id: number })[] = [
@@ -199,6 +264,10 @@ const Foreground = ({
   }))
 
   const turtles: TurtleProps[] = turtleSegments
+  const shellTargets = useMemo(
+    () => goombaSegments.filter((goomba) => !defeatedGoombas[goomba.id]),
+    [defeatedGoombas]
+  )
 
   const prizeBoxes = useMemo<PrizeBoxProps[]>(
     () => [
@@ -218,6 +287,7 @@ const Foreground = ({
             x={0}
             y={16}
             active={dynamicObjects.prizeBoxes[1].prize}
+            animationsPaused={animationsPaused}
             setActive={prizeBoxHandlers[1].setPrizeActive}
             score={score}
             setScore={setScore}
@@ -240,6 +310,7 @@ const Foreground = ({
             x={0}
             y={16}
             active={dynamicObjects.prizeBoxes[2].prize}
+            animationsPaused={animationsPaused}
             setActive={prizeBoxHandlers[2].setPrizeActive}
             score={score}
             setScore={setScore}
@@ -262,6 +333,7 @@ const Foreground = ({
             x={0}
             y={16}
             active={dynamicObjects.prizeBoxes[3].prize}
+            animationsPaused={animationsPaused}
             setActive={prizeBoxHandlers[3].setPrizeActive}
             score={score}
             setScore={setScore}
@@ -284,11 +356,16 @@ const Foreground = ({
             x={0}
             y={0}
             active={dynamicObjects.items.mushroom1}
+            animationsPaused={animationsPaused}
             setActive={itemHandlers.mushroom1}
             mario={mario}
             setMario={setMario}
             score={score}
             setScore={setScore}
+            worldX={1440}
+            worldY={544}
+            xPos={xPos}
+            yPos={yPos}
           />
         ),
       },
@@ -308,6 +385,7 @@ const Foreground = ({
             x={0}
             y={16}
             active={dynamicObjects.prizeBoxes[5].prize}
+            animationsPaused={animationsPaused}
             setActive={prizeBoxHandlers[5].setPrizeActive}
             score={score}
             setScore={setScore}
@@ -330,6 +408,7 @@ const Foreground = ({
             x={0}
             y={0}
             active={dynamicObjects.items.leaf1}
+            animationsPaused={animationsPaused}
             setActive={itemHandlers.leaf1}
             mario={mario}
             setMario={setMario}
@@ -354,6 +433,7 @@ const Foreground = ({
             x={0}
             y={16}
             active={dynamicObjects.prizeBoxes[7].prize}
+            animationsPaused={animationsPaused}
             setActive={prizeBoxHandlers[7].setPrizeActive}
             score={score}
             setScore={setScore}
@@ -376,6 +456,7 @@ const Foreground = ({
             x={0}
             y={16}
             active={dynamicObjects.prizeBoxes[8].prize}
+            animationsPaused={animationsPaused}
             setActive={prizeBoxHandlers[8].setPrizeActive}
             score={score}
             setScore={setScore}
@@ -398,6 +479,7 @@ const Foreground = ({
             x={0}
             y={0}
             active={dynamicObjects.items.oneUp1}
+            animationsPaused={animationsPaused}
             lives={lives}
             setActive={itemHandlers.oneUp1}
             setLives={setLives}
@@ -407,6 +489,7 @@ const Foreground = ({
     ],
     [
       dynamicObjects,
+      animationsPaused,
       mario,
       lives,
       score,
@@ -415,6 +498,8 @@ const Foreground = ({
       setScore,
       itemHandlers,
       prizeBoxHandlers,
+      xPos,
+      yPos,
     ]
   )
 
@@ -480,26 +565,58 @@ const Foreground = ({
     [dynamicObjects, coinHandlers, itemHandlers]
   )
 
-  // Prize Box interactions
+  const triggerPrizeBox = useCallback((item: PrizeBoxProps) => {
+    if (item.active) return
+
+    item.setActive(true)
+    if (item.prizeCount > 0) {
+      item.setPrizeActive(true)
+    }
+  }, [])
+
+  // Prize Box interactions from physical ceiling collisions
+  useEffect(() => {
+    if (!ceilingHit) return
+    if (processedCeilingHitRef.current === ceilingHit.signal) return
+
+    processedCeilingHitRef.current = ceilingHit.signal
+
+    const ownerIds = getPrizeBoxIdsForOwner(ceilingHit.owner)
+    if (ownerIds.length === 0) return
+
+    const hitBox = prizeBoxes
+      .map((item, index) => {
+        const id = index + 1
+        return {
+          item,
+          overlap: ownerIds.includes(id) ? getPrizeBoxCeilingOverlap(item, ceilingHit) : 0,
+        }
+      })
+      .filter(({ overlap }) => overlap > 0)
+      .sort((a, b) => b.overlap - a.overlap)[0]?.item
+
+    if (hitBox) {
+      triggerPrizeBox(hitBox)
+    }
+  }, [ceilingHit, prizeBoxes, triggerPrizeBox])
+
+  // Fallback for prize boxes that do not have a collision ceiling entry
   useEffect(() => {
     if (jump) {
-      prizeBoxes.forEach((item) => {
+      prizeBoxes.forEach((item, index) => {
+        if (ceilingPrizeBoxIds.has(index + 1)) return
+
         if (
           xPos > item.x - 55 &&
           xPos < item.x + 45 &&
           yPos >= item.y - 100 - (mario !== 1 ? marioOffset : 0) &&
           yPos < item.y
         ) {
-          if (!item.active) {
-            item.setActive(true)
-            if (item.prizeCount > 0) {
-              item.setPrizeActive(true)
-            }
-          }
+          triggerPrizeBox(item)
         }
       })
     }
-  }, [prizeBoxes, jump, mario, marioOffset, xPos, yPos])
+  }, [jump, mario, marioOffset, prizeBoxes, triggerPrizeBox, xPos, yPos])
 
   // Down arrow over the leaf prize box releases the leaf
   useEffect(() => {
@@ -549,6 +666,7 @@ const Foreground = ({
           show={true}
           clickable={true}
           active={item.active}
+          animationsPaused={animationsPaused}
           setActive={item.setActive}
           score={score}
           setScore={setScore}
@@ -558,6 +676,8 @@ const Foreground = ({
       {goombas.map((item, x) => (
         <MemoizedGoomba
           key={x}
+          id={item.id}
+          animationsPaused={animationsPaused}
           x={item.x}
           y={item.y}
           offset={item.offset}
@@ -565,6 +685,9 @@ const Foreground = ({
           xPos={xPos}
           yPos={yPos}
           setScore={setScore}
+          onStomp={onStomp}
+          onDefeat={markGoombaDefeated}
+          shellDefeat={item.id ? shellDefeats[item.id] : undefined}
         />
       ))}
 
@@ -576,9 +699,13 @@ const Foreground = ({
           x={item.x}
           y={item.y}
           height={item.height}
+          animationsPaused={animationsPaused}
+          falling={falling}
           {...(item.plant && { plant: item.plant })}
           {...(item.plantVariant && { plantVariant: item.plantVariant })}
-          {...(item.active && { active: item.active })}
+          active={item.active}
+          setScore={setScore}
+          onStomp={onStomp}
         />
       ))}
 
@@ -595,6 +722,7 @@ const Foreground = ({
           setPrizeActive={item.setPrizeActive}
           prizeCount={item.prizeCount}
           setPrizeCount={item.setPrizeCount}
+          animationsPaused={animationsPaused}
           viewportActive={Math.abs(item.x - xPos) < 1400}
         >
           {item.children}
@@ -604,6 +732,7 @@ const Foreground = ({
       {turtles.map((item, x) => (
         <MemoizedTurtle
           key={x}
+          animationsPaused={animationsPaused}
           x={item.x}
           y={item.y}
           offset={item.offset}
@@ -611,6 +740,10 @@ const Foreground = ({
           xPos={xPos}
           yPos={yPos}
           setScore={setScore}
+          onStomp={onStomp}
+          onShellPrizeHit={triggerLeafPrizeBox}
+          onShellGoombaHit={handleShellGoombaHit}
+          shellTargets={shellTargets}
         />
       ))}
     </>

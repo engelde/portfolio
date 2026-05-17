@@ -90,6 +90,7 @@ export const goombaSegments = levelMap.goombas
 export const turtleSegments = levelMap.turtles
 export const collisionSurfaces = levelMap.collisionSurfaces
 export const collisionCeilings = levelMap.collisionCeilings
+export const collisionEdgeTolerance = 16
 
 export type MarioFootprint = {
   left: number
@@ -138,7 +139,8 @@ export const getMarioFootprint = (
 export const getSurfaceOverlapRatio = (surface: CollisionSurface, footprint: MarioFootprint) => {
   const overlap = Math.max(
     0,
-    Math.min(surface.xMax, footprint.right) - Math.max(surface.xMin, footprint.left)
+    Math.min(surface.xMax + collisionEdgeTolerance, footprint.right) -
+      Math.max(surface.xMin - collisionEdgeTolerance, footprint.left)
   )
   return overlap / footprint.width
 }

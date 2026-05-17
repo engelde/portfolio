@@ -2,13 +2,13 @@
 
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { motion } from 'framer-motion'
 
 export type PlantProps = {
   variant: 1 | 2
   forwards: boolean
   x: number
   y: number
+  defeated?: boolean
 }
 
 const animation1 = keyframes`
@@ -27,33 +27,40 @@ const animation2 = keyframes`
   100% { background-position: -160px 0; }
 `
 
-const Plant = ({ variant, forwards, x, y }: PlantProps) => {
+const plantTravel = keyframes`
+  0%, 5% { transform: translateY(160px); }
+  30%, 60% { transform: translateY(0); }
+  95%, 100% { transform: translateY(160px); }
+`
+
+const plantDefeat = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(64px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(96px);
+  }
+`
+
+const Plant = ({ variant, forwards, x, y, defeated = false }: PlantProps) => {
   return (
     <Box
-      as={motion.div}
       zIndex={-1}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
       w={80}
       h={160}
-      transform={'scaleX(-1)'}
-      {...(!forwards && {
-        transform: 'scaleX(-1)',
-      })}
-      initial={{ translateY: '160px' }}
-      animate={{
-        translateY: ['160px', '160px', '0px', '0px', '160px', '160px'],
-        transition: {
-          type: 'keyframes',
-          times: [0, 0.05, 0.3, 0.6, 0.95, 1],
-          delay: 0,
-          duration: 8,
-          ease: 'linear',
-          repeat: Infinity,
-          repeatType: 'loop',
-          repeatDelay: 0,
-        },
+      sx={{
+        animation: defeated
+          ? `${plantDefeat} 0.42s ease-in forwards`
+          : `${plantTravel} 8s linear infinite`,
       }}
     >
       <Box
@@ -65,9 +72,7 @@ const Plant = ({ variant, forwards, x, y }: PlantProps) => {
         bgPosition={variant === 1 ? '0 0' : '-160px 0'}
         bgRepeat={'no-repeat'}
         bgSize={'480px 160px'}
-        {...(!forwards && {
-          transform: 'scaleX(-1)',
-        })}
+        transform={forwards ? 'scaleX(-1)' : 'scaleX(1)'}
         sx={{
           animation:
             variant === 1

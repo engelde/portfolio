@@ -4,7 +4,6 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { motion } from 'framer-motion'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -14,6 +13,7 @@ export type PrizeBoxProps = {
   status: boolean
   setStatus: (status: boolean) => void
   active: boolean
+  animationsPaused?: boolean
   setActive: (active: boolean) => void
   prizeActive: boolean
   setPrizeActive: (active: boolean) => void
@@ -29,6 +29,11 @@ const boxAnimation = keyframes`
   50% { background-position: -240px 0; }
   75% { background-position: -320px 0; }
   100% { background-position: -80px 0; }
+`
+
+const boxEnter = keyframes`
+  0% { transform: translateY(150%); }
+  100% { transform: translateY(0); }
 `
 
 const PrizeBox = ({
@@ -82,13 +87,13 @@ const PrizeBox = ({
 
   return (
     <Box
-      as={motion.div}
       zIndex={1}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
-      initial={{ translateY: '150%' }}
-      animate={{ translateY: 0, transition: { delay: 0.3, ease: 'linear' } }}
+      sx={{
+        animation: `${boxEnter} 0.3s linear 0.3s both`,
+      }}
     >
       <Box
         position={'absolute'}

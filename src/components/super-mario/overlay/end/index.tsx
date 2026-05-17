@@ -43,7 +43,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
     <Box
       zIndex={20}
       position={'absolute'}
-      left={locked ? 0 : x + 'px'}
+      left={(locked ? 0 : x) + 'px'}
       bottom={0}
       p={0}
       h={'100dvh'}
@@ -53,25 +53,20 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
       alignItems={'center'}
       justifyContent={'center'}
       bg={'black'}
-      overflow={'hidden'}
-      _before={
-        locked
-          ? undefined
-          : {
-              background:
-                'linear-gradient(-45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(-135deg, #000 16px, transparent 0)',
-              backgroundRepeat: 'repeat-y',
-              backgroundPosition: 'left top',
-              backgroundSize: '32px 32px',
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              left: '-26px',
-              bottom: 0,
-              width: '32px',
-              height: '100%',
-            }
-      }
+      _before={{
+        background:
+          'linear-gradient(-45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(-135deg, #000 16px, transparent 0)',
+        backgroundRepeat: 'repeat-y',
+        backgroundPosition: 'left top',
+        backgroundSize: '32px 32px',
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        left: '-26px',
+        bottom: '64px',
+        width: '32px',
+        height: 'calc(100% - 64px)',
+      }}
     >
       <Flex
         h={'100dvh'}

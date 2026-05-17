@@ -10,6 +10,7 @@ import Points from '../points'
 
 export type OneUpProps = {
   active: boolean
+  animationsPaused?: boolean
   lives: number
   x: number
   y: number

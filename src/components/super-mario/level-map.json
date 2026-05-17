@@ -216,16 +216,16 @@
       "id": "cube-1-upper",
       "owner": "cube-1",
       "kind": "platform",
-      "xMin": 1540,
-      "xMax": 1800,
+      "xMin": 1605,
+      "xMax": 1835,
       "height": 460
     },
     {
       "id": "cube-1-lower",
       "owner": "cube-1",
       "kind": "platform",
-      "xMin": 1380,
-      "xMax": 1640,
+      "xMin": 1440,
+      "xMax": 1675,
       "height": 300
     },
     {
@@ -240,71 +240,71 @@
       "id": "cube-2-top",
       "owner": "cube-2",
       "kind": "platform",
-      "xMin": 2740,
-      "xMax": 3080,
+      "xMin": 2800,
+      "xMax": 3114,
       "height": 624
     },
     {
       "id": "cube-2-mid-high",
       "owner": "cube-2",
       "kind": "platform",
-      "xMin": 2500,
-      "xMax": 2840,
+      "xMin": 2566,
+      "xMax": 2874,
       "height": 460
     },
     {
       "id": "cube-2-mid-low",
       "owner": "cube-2",
       "kind": "platform",
-      "xMin": 2180,
-      "xMax": 2615,
+      "xMin": 2245,
+      "xMax": 2635,
       "height": 300
     },
     {
       "id": "cube-2-low",
       "owner": "cube-2",
       "kind": "platform",
-      "xMin": 2730,
-      "xMax": 3260,
+      "xMin": 2806,
+      "xMax": 3275,
       "height": 222
     },
     {
       "id": "cube-3-top",
       "owner": "cube-3",
       "kind": "platform",
-      "xMin": 6740,
-      "xMax": 7330,
+      "xMin": 6804,
+      "xMax": 7353,
       "height": 544
     },
     {
       "id": "cube-3-mid",
       "owner": "cube-3",
       "kind": "platform",
-      "xMin": 6580,
-      "xMax": 7180,
+      "xMin": 6644,
+      "xMax": 7193,
       "height": 382
     },
     {
       "id": "cube-3-low",
       "owner": "cube-3",
       "kind": "platform",
-      "xMin": 6420,
-      "xMax": 7010,
+      "xMin": 6485,
+      "xMax": 7034,
       "height": 222
     },
     {
       "id": "rock-1-2-top",
       "owner": "rocks-1-2",
       "kind": "platform",
-      "xMin": 7620,
-      "xMax": 7810,
+      "xMin": 7680,
+      "xMax": 7840,
       "height": 464
     },
     {
       "id": "rock-3-8-top",
       "owner": "rocks-3-8",
       "kind": "platform",
-      "xMin": 8100,
+      "xMin": 8160,
       "xMax": 8240,
       "height": 304
     },
@@ -312,7 +312,7 @@
       "id": "rock-3-8-mid",
       "owner": "rocks-3-8",
       "kind": "platform",
-      "xMin": 8010,
+      "xMin": 8080,
       "xMax": 8240,
       "height": 224
     },
@@ -320,7 +320,7 @@
       "id": "rock-3-8-low",
       "owner": "rocks-3-8",
       "kind": "platform",
-      "xMin": 7930,
+      "xMin": 8000,
       "xMax": 8240,
       "height": 144
     },
@@ -328,72 +328,72 @@
       "id": "rock-9-14-top",
       "owner": "rocks-9-14",
       "kind": "platform",
-      "xMin": 8410,
-      "xMax": 8520,
+      "xMin": 8480,
+      "xMax": 8560,
       "height": 304
     },
     {
       "id": "rock-9-14-mid",
       "owner": "rocks-9-14",
       "kind": "platform",
-      "xMin": 8410,
-      "xMax": 8610,
+      "xMin": 8480,
+      "xMax": 8640,
       "height": 224
     },
     {
       "id": "rock-9-14-low",
       "owner": "rocks-9-14",
       "kind": "platform",
-      "xMin": 8410,
-      "xMax": 8690,
+      "xMin": 8480,
+      "xMax": 8720,
       "height": 144
     },
     {
       "id": "brick-stack-1-top",
       "owner": "bricks-1-16",
       "kind": "brick",
-      "xMin": 10110,
-      "xMax": 10450,
+      "xMin": 10160,
+      "xMax": 10480,
       "height": 304
     },
     {
       "id": "brick-stack-1-mid",
       "owner": "bricks-1-16",
       "kind": "brick",
-      "xMin": 10020,
-      "xMax": 10450,
+      "xMin": 10080,
+      "xMax": 10480,
       "height": 224
     },
     {
       "id": "brick-stack-1-low",
       "owner": "bricks-1-16",
       "kind": "brick",
-      "xMin": 9930,
-      "xMax": 10540,
+      "xMin": 10000,
+      "xMax": 10560,
       "height": 144
     },
     {
       "id": "brick-stack-2-mid",
       "owner": "bricks-17-19",
       "kind": "brick",
-      "xMin": 10650,
-      "xMax": 10760,
+      "xMin": 10720,
+      "xMax": 10800,
       "height": 224
     },
     {
       "id": "brick-stack-2-low",
       "owner": "bricks-17-19",
       "kind": "brick",
-      "xMin": 10650,
-      "xMax": 10850,
+      "xMin": 10720,
+      "xMax": 10880,
       "height": 144
     },
     {
       "id": "cube-4-top",
       "owner": "cube-4",
       "kind": "platform",
-      "xMin": 10900,
-      "xMax": 11170,
+      "xMin": 10960,
+      "xMax": 11200,
       "height": 304
     },
     {
@@ -440,24 +440,24 @@
       "id": "sky-cube-top",
       "owner": "cube-5",
       "kind": "platform",
-      "xMin": 6620,
-      "xMax": 7140,
+      "xMin": 6725,
+      "xMax": 7035,
       "height": 1344
     },
     {
       "id": "sky-cloud-1-top",
       "owner": "clouds-1-4",
       "kind": "platform",
-      "xMin": 7190,
-      "xMax": 7530,
+      "xMin": 7200,
+      "xMax": 7520,
       "height": 1104
     },
     {
       "id": "sky-cloud-2-top",
       "owner": "clouds-5-17",
       "kind": "platform",
-      "xMin": 7590,
-      "xMax": 8650,
+      "xMin": 7600,
+      "xMax": 8640,
       "height": 1184
     }
   ],
@@ -465,22 +465,22 @@
     {
       "id": "box-1-2-bottom",
       "owner": "prize-boxes-1-2",
-      "xMin": 1060,
-      "xMax": 1240,
+      "xMin": 1120,
+      "xMax": 1280,
       "height": 214
     },
     {
       "id": "box-3-4-bottom",
       "owner": "prize-boxes-3-4",
-      "xMin": 1300,
-      "xMax": 1480,
+      "xMin": 1360,
+      "xMax": 1520,
       "height": 454
     },
-    { "id": "box-5-bottom", "owner": "prize-box-5", "xMin": 2260, "xMax": 2370, "height": 374 },
-    { "id": "box-7-bottom", "owner": "prize-box-7", "xMin": 3700, "xMax": 3810, "height": 198 },
-    { "id": "box-8-bottom", "owner": "prize-box-8", "xMin": 7460, "xMax": 7570, "height": 134 },
+    { "id": "box-5-bottom", "owner": "prize-box-5", "xMin": 2320, "xMax": 2400, "height": 374 },
+    { "id": "box-7-bottom", "owner": "prize-box-7", "xMin": 3760, "xMax": 3840, "height": 198 },
+    { "id": "box-8-bottom", "owner": "prize-box-8", "xMin": 7520, "xMax": 7600, "height": 134 },
     { "id": "box-9-bottom", "owner": "prize-box-9", "xMin": 7360, "xMax": 7440, "height": 1254 },
-    { "id": "pipe-4-bottom", "owner": "pipe-4", "xMin": 11460, "xMax": 11650, "height": 444 },
+    { "id": "pipe-4-bottom", "owner": "pipe-4", "xMin": 11520, "xMax": 11680, "height": 444 },
     {
       "id": "final-pipe-bottom",
       "owner": "pipe-final",

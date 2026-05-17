@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const levelMapPath = resolve(root, 'src/components/super-mario/level-map.json')
 const levelMap = JSON.parse(readFileSync(levelMapPath, 'utf8'))
+const collisionEdgeTolerance = 16
 
 const failures = []
 const warnings = []
@@ -96,6 +97,7 @@ Source: \`src/components/super-mario/level-map.json\`
 - Visual bricks: ${levelMap.bricks.length}
 - Visual pipes: ${levelMap.pipes.length}
 - Prize boxes: ${levelMap.prizeBoxes.length}
+- Edge tolerance: ${collisionEdgeTolerance}px
 
 ## Surface Inventory
 
@@ -111,7 +113,7 @@ ${ceilingRows}
 
 ## Audit Notes
 
-- Mario support is based on foot-hitbox overlap against this inventory.
+- Surface and ceiling ranges are visual world-space bounds. The controller expands those bounds by the shared edge tolerance before measuring Mario's foot-hitbox overlap.
 - A surface supports Mario while at least half of the active foot hitbox overlaps it.
 - The same inventory drives keyboard movement, scroll movement, falling, and landing.
 `
