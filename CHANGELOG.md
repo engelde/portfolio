@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/engelde/portfolio/compare/v1.2.0...v1.3.0) (2026-05-17)
+
+
+### 🐛 Bug Fixes
+
+* polish mario enemy animations ([073ea26](https://github.com/engelde/portfolio/commit/073ea26cdfabbf3bf59e1aac183cb597bdd10941))
+
 ## [1.2.0](https://github.com/engelde/portfolio/compare/v1.1.3...v1.2.0) (2026-05-17)
 
 
