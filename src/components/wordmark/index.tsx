@@ -2,29 +2,26 @@
 
 import { Box, type BoxProps } from '@chakra-ui/react'
 
-const ART = `██████╗  █████╗ ██╗   ██╗██╗██████╗     ███████╗███╗   ██╗ ██████╗ ███████╗██╗     
-██╔══██╗██╔══██╗██║   ██║██║██╔══██╗    ██╔════╝████╗  ██║██╔════╝ ██╔════╝██║     
-██║  ██║███████║██║   ██║██║██║  ██║    █████╗  ██╔██╗ ██║██║  ███╗█████╗  ██║     
-██║  ██║██╔══██║╚██╗ ██╔╝██║██║  ██║    ██╔══╝  ██║╚██╗██║██║   ██║██╔══╝  ██║     
-██████╔╝██║  ██║ ╚████╔╝ ██║██████╔╝    ███████╗██║ ╚████║╚██████╔╝███████╗███████╗
-╚═════╝ ╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚══════╝`
-
 const Wordmark = (props: BoxProps) => {
+  const { fontSize, ...rest } = props
+  const width =
+    fontSize === '5px'
+      ? { base: '280px', sm: '350px' }
+      : { base: '360px', sm: '540px', md: '700px' }
+
   return (
     <Box
-      as={'pre'}
-      color={'purple.500'}
-      fontFamily={'monospace'}
-      fontWeight={'bold'}
-      fontSize={{ base: '6px', sm: '9px', md: '11px', lg: '12px' }}
-      lineHeight={1}
-      whiteSpace={'pre'}
+      as={'img'}
+      src={'/images/wordmark/wordmark.svg'}
+      alt={'David Engel'}
+      draggable={false}
+      display={'inline-block'}
+      w={width}
+      maxW={'100%'}
+      h={'auto'}
       m={0}
-      aria-label={'David Engel'}
-      {...props}
-    >
-      {ART}
-    </Box>
+      {...rest}
+    />
   )
 }
 

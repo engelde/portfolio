@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.3](https://github.com/engelde/portfolio/compare/v1.1.2...v1.1.3) (2026-05-17)
+
+
+### 🐛 Bug Fixes
+
+* use public wordmark asset ([856cf14](https://github.com/engelde/portfolio/commit/856cf14c6bfbeaeb57696371729b02140797b53f))
+
+### [1.1.2](https://github.com/engelde/portfolio/compare/v1.1.1...v1.1.2) (2026-05-16)
+
+
+### 🐛 Bug Fixes
+
+* stabilize readme wordmark rendering ([f1bbae6](https://github.com/engelde/portfolio/commit/f1bbae6edd049ace543ff86ef6effaf1a0f22a0b))
+
+### [1.1.1](https://github.com/engelde/portfolio/compare/v1.1.0...v1.1.1) (2026-05-16)
+
+
+### 📝 Documentation
+
+* add readme wordmark ([5beabee](https://github.com/engelde/portfolio/commit/5beabeed9f6efee76e94415087737f9be19d18d8))
+* center readme wordmark ([b945808](https://github.com/engelde/portfolio/commit/b9458089ac55e061a555b5c42ac0e82535971acb))
+
 ## [1.1.0](https://github.com/engelde/portfolio/compare/v1.0.0...v1.1.0) (2026-05-15)
 
 

@@ -1,3 +1,9 @@
+<div align="center">
+
+![David Engel](/public/images/wordmark/wordmark.svg)
+
+</div>
+
 # David Engel's Portfolio Site
 
 This is my portfolio site! The site is a work in progress but feel free to look around.
