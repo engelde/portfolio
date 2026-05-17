@@ -106,7 +106,7 @@ const Pipe = ({
   const verticalRange = 260
   const fireTravel = 1280
   const plantValue = 100
-  const plantForwards = xPos !== undefined ? xPos < x + 80 : true
+  const plantForwards = xPos !== undefined ? xPos >= x + 80 : false
   const finishFireShot = useCallback(() => {
     cooldownUntilRef.current = performance.now() + 1800
     setFireShot(null)

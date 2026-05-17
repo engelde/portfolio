@@ -72,6 +72,7 @@ const Turtle = ({
   const { playAudio } = useAudio()
   const startedAtRef = useRef(Date.now())
   const previousYRef = useRef(yPos)
+  const playerMotionRef = useRef({ falling, previousY: yPos, xPos, yPos })
   const pausedAtRef = useRef<{ date: number; performance: number } | null>(null)
   const shellFrameRef = useRef<number | null>(null)
   const shellStartedAtRef = useRef(0)
@@ -139,6 +140,15 @@ const Turtle = ({
     [defeatState, onStomp, playAudio, setScore, y]
   )
 
+  useEffect(() => {
+    playerMotionRef.current = {
+      falling,
+      previousY: playerMotionRef.current.yPos,
+      xPos,
+      yPos,
+    }
+  }, [falling, xPos, yPos])
+
   const handleClick = useCallback(() => {
     if (defeatState !== 'alive') return
 
@@ -171,6 +181,7 @@ const Turtle = ({
         { x: finalWallX, y: lowGroundY },
         { x: pipeRightX, y: lowGroundY },
         { x: finalWallX, y: lowGroundY },
+        { x: pipeRightX, y: lowGroundY },
       ]
 
       let previous = { x: startX, y }
@@ -238,6 +249,30 @@ const Turtle = ({
 
       setShellPose(nextPose)
 
+      const playerMotion = playerMotionRef.current
+      if (playerMotion.xPos !== undefined && playerMotion.yPos !== undefined) {
+        const previousY = playerMotion.previousY ?? playerMotion.yPos
+        const marioLeft = playerMotion.xPos + 8
+        const marioRight = playerMotion.xPos + 72
+        const shellLeft = nextPose.x + 4
+        const shellRight = nextPose.x + shellSize - 4
+        const horizontalOverlap = Math.min(marioRight, shellRight) - Math.max(marioLeft, shellLeft)
+        const shellTop = nextPose.y + shellSize
+        const verticalHit =
+          previousY >= shellTop - 28 &&
+          playerMotion.yPos <= shellTop + 38 &&
+          playerMotion.yPos > nextPose.y + 16
+        const descendingHit = playerMotion.falling === true && playerMotion.yPos <= previousY
+
+        if (horizontalOverlap >= 24 && verticalHit && descendingHit) {
+          onStomp?.()
+          playAudio('stomp')
+          shellFrameRef.current = null
+          setDefeatState('gone')
+          return
+        }
+      }
+
       if (!shellPrizeHitRef.current && nextPose.x >= prizeHitX - 4) {
         shellPrizeHitRef.current = true
         onShellPrizeHit?.()
@@ -283,6 +318,7 @@ const Turtle = ({
     getShellPose,
     onShellGoombaHit,
     onShellPrizeHit,
+    onStomp,
     playAudio,
     prizeHitX,
     shellTargets,

@@ -24,19 +24,19 @@ const fireAnimation = keyframes`
 const fireFlight = keyframes`
   0% {
     opacity: 0;
-    transform: rotate(var(--fire-angle)) translate(0, 0);
+    transform: translate(0, 0);
   }
   6% {
     opacity: 1;
-    transform: rotate(var(--fire-angle)) translate(0, 0);
+    transform: translate(0, 0);
   }
   94% {
     opacity: 1;
-    transform: rotate(var(--fire-angle)) translate(var(--fire-x), var(--fire-y));
+    transform: translate(var(--fire-x), var(--fire-y));
   }
   100% {
     opacity: 0;
-    transform: rotate(var(--fire-angle)) translate(var(--fire-x), var(--fire-y));
+    transform: translate(var(--fire-x), var(--fire-y));
   }
 `
 
@@ -53,7 +53,6 @@ const Fire = ({ x, y, flightX, flightY, angle, shotKey, onComplete }: FireProps)
       w={30}
       h={34}
       sx={{
-        '--fire-angle': `${angle}deg`,
         '--fire-x': `${flightX}px`,
         '--fire-y': `${flightY}px`,
         animation: `${fireFlight} 1.8s linear forwards`,
@@ -71,6 +70,8 @@ const Fire = ({ x, y, flightX, flightY, angle, shotKey, onComplete }: FireProps)
         bgPosition={'0 0'}
         bgRepeat={'no-repeat'}
         bgSize={'120px 34px'}
+        transform={`rotate(${angle}deg)`}
+        transformOrigin={'center center'}
         sx={{
           animation: `${fireAnimation} 0.5s steps(1) infinite`,
           imageRendering: 'pixelated',
