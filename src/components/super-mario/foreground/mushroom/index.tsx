@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -17,10 +17,10 @@ export type MushroomProps = {
   mario: 1 | 2 | 3
   setMario: (variant: 1 | 2 | 3) => void
   score: number
-  setScore: (score: number) => void
+  setScore: Dispatch<SetStateAction<number>>
 }
 
-const Mushroom = ({ x, y, active, mario, score, setActive, setMario, setScore }: MushroomProps) => {
+const Mushroom = ({ x, y, active, mario, setActive, setMario, setScore }: MushroomProps) => {
   const { playAudio } = useAudio()
   const [appearing, setAppearing] = useState(true)
   const [running, setRunning] = useState(false)
@@ -37,7 +37,7 @@ const Mushroom = ({ x, y, active, mario, score, setActive, setMario, setScore }:
   useEffect(() => {
     if (active && !running) {
       setRunning(true)
-      setScore(score + value)
+      setScore((current) => current + value)
       playAudio('powerUp')
 
       if (mario < 2) {
@@ -48,7 +48,7 @@ const Mushroom = ({ x, y, active, mario, score, setActive, setMario, setScore }:
         setDisabled(true)
       }, 150)
     }
-  }, [active, mario, playAudio, running, score, setMario, setScore])
+  }, [active, mario, playAudio, running, setMario, setScore])
 
   return (
     <>

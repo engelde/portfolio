@@ -7,9 +7,10 @@ import { motion } from 'framer-motion'
 export type FireProps = {
   x: number
   y: number
-  firing: boolean
+  direction: 'left' | 'right'
   flightX: number
-  flightY: number
+  shotKey: number
+  onComplete: () => void
 }
 
 const fireAnimation = keyframes`
@@ -20,11 +21,12 @@ const fireAnimation = keyframes`
   100% { background-position: 0 0; }
 `
 
-const Fire = ({ x, y, firing, flightX, flightY }: FireProps) => {
+const Fire = ({ x, y, direction, flightX, shotKey, onComplete }: FireProps) => {
   return (
     <Box
       as={motion.div}
-      zIndex={3}
+      key={shotKey}
+      zIndex={-2}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
@@ -37,25 +39,18 @@ const Fire = ({ x, y, firing, flightX, flightY }: FireProps) => {
       bgRepeat={'no-repeat'}
       bgSize={'120px 34px'}
       initial={{ opacity: 0, translateX: '0px', translateY: '0px' }}
-      animate={
-        firing
-          ? {
-              opacity: [0, 1, 1, 0],
-              translateX: ['0px', '0px', `${flightX}px`, `${flightX}px`],
-              translateY: ['0px', '0px', `${flightY}px`, `${flightY}px`],
-              transition: {
-                type: 'keyframes',
-                times: [0, 0.02, 0.98, 1],
-                delay: 3.4,
-                duration: 4.5,
-                ease: 'linear',
-                repeat: Infinity,
-                repeatType: 'loop',
-                repeatDelay: 3.6,
-              },
-            }
-          : { opacity: 0, translateX: '0px', translateY: '0px' }
-      }
+      animate={{
+        opacity: [0, 1, 1, 0],
+        translateX: ['0px', '0px', `${flightX}px`, `${flightX}px`],
+        transition: {
+          type: 'keyframes',
+          times: [0, 0.06, 0.94, 1],
+          duration: 1.8,
+          ease: 'linear',
+        },
+      }}
+      transform={direction === 'left' ? 'scaleX(-1)' : undefined}
+      onAnimationComplete={onComplete}
       sx={{
         animation: `${fireAnimation} 0.5s steps(1) infinite`,
         imageRendering: 'pixelated',

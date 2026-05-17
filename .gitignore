@@ -44,3 +44,4 @@ next-env.d.ts
 # testing
 .playwright-mcp
 .playwright-cli
+output/

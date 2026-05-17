@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
@@ -17,10 +17,10 @@ export type LeafProps = {
   mario: 1 | 2 | 3
   setMario: (variant: 1 | 2 | 3) => void
   score: number
-  setScore: (score: number) => void
+  setScore: Dispatch<SetStateAction<number>>
 }
 
-const Leaf = ({ x, y, active, mario, score, setActive, setMario, setScore }: LeafProps) => {
+const Leaf = ({ x, y, active, mario, setActive, setMario, setScore }: LeafProps) => {
   const { playAudio } = useAudio()
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)
@@ -29,7 +29,7 @@ const Leaf = ({ x, y, active, mario, score, setActive, setMario, setScore }: Lea
   useEffect(() => {
     if (active && !running) {
       setRunning(true)
-      setScore(score + value)
+      setScore((current) => current + value)
       playAudio('leaf')
 
       if (mario < 3) {
@@ -40,7 +40,7 @@ const Leaf = ({ x, y, active, mario, score, setActive, setMario, setScore }: Lea
         setDisabled(true)
       }, 150)
     }
-  }, [active, mario, playAudio, running, score, setMario, setScore])
+  }, [active, mario, playAudio, running, setMario, setScore])
 
   return (
     <>

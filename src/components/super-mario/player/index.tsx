@@ -9,6 +9,7 @@ import Stats from './stats'
 export type PlayerProps = {
   complete: boolean
   down: boolean
+  dying: boolean
   forwards: boolean
   jump: boolean
   length: number
@@ -33,6 +34,7 @@ export type PlayerProps = {
 const Player = ({
   complete,
   down,
+  dying,
   forwards,
   jump,
   length,
@@ -59,6 +61,7 @@ const Player = ({
         <>
           <Mario
             down={down}
+            dying={dying}
             variant={mario}
             x={x}
             y={y}

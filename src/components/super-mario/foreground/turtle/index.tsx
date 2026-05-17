@@ -1,20 +1,23 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
 
 import { useAudio } from '@/hooks/useAudio'
 
+import Points from '../points'
+
 export type TurtleProps = {
   relative?: boolean
   x: number
   y: number
   offset: number
-  jump?: boolean
+  falling?: boolean
   xPos?: number
   yPos?: number
+  setScore?: Dispatch<SetStateAction<number>>
 }
 
 type DefeatState = 'alive' | 'shell' | 'gone'
@@ -25,12 +28,14 @@ const walkAnimation = keyframes`
   100% { background-position: 0 0; }
 `
 
-const Turtle = ({ relative, x, y, offset, jump, xPos, yPos }: TurtleProps) => {
+const Turtle = ({ relative, x, y, offset, falling, xPos, yPos, setScore }: TurtleProps) => {
   const { playAudio } = useAudio()
   const startedAtRef = useRef(Date.now())
+  const previousYRef = useRef(yPos)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [defeatState, setDefeatState] = useState<DefeatState>('alive')
   const [defeatedX, setDefeatedX] = useState(x - offset)
+  const value = 100
   const duration = (offset / 50) * 2
 
   const getTranslateX = useCallback(() => {
@@ -46,57 +51,67 @@ const Turtle = ({ relative, x, y, offset, jump, xPos, yPos }: TurtleProps) => {
   }, [])
 
   useEffect(() => {
-    if (defeatState !== 'alive' || xPos === undefined || yPos === undefined) return
+    if (xPos === undefined || yPos === undefined) return
+
+    const previousY = previousYRef.current ?? yPos
+    previousYRef.current = yPos
+
+    if (defeatState !== 'alive') return
 
     const currentX = x + getTranslateX()
     const marioCenterX = xPos + 40
     const turtleCenterX = currentX + 40
-    const horizontalHit = Math.abs(marioCenterX - turtleCenterX) < 68
-    const verticalHit = yPos > y + 104 && yPos < y + 260
-    const descendingHit = jump || yPos > y + 160
+    const horizontalHit = Math.abs(marioCenterX - turtleCenterX) < 86
+    const topEdge = y + 160
+    const verticalHit = previousY >= topEdge - 30 && yPos <= topEdge + 40 && yPos > y + 56
+    const descendingHit = falling === true && yPos <= previousY
 
     if (horizontalHit && verticalHit && descendingHit) {
       setDefeatedX(currentX)
       setDefeatState('shell')
+      setScore?.((current) => current + value)
       playAudio('stomp')
       timeoutRef.current = setTimeout(() => setDefeatState('gone'), 1500)
     }
-  }, [defeatState, getTranslateX, jump, playAudio, x, xPos, y, yPos])
+  }, [defeatState, falling, getTranslateX, playAudio, setScore, x, xPos, y, yPos])
 
   if (defeatState === 'gone') return null
 
   if (defeatState === 'shell') {
     return (
-      <Box
-        as={motion.div}
-        zIndex={2}
-        position={relative ? 'relative' : 'absolute'}
-        bottom={y + 'px'}
-        left={defeatedX + 'px'}
-        w={'80px'}
-        h={'80px'}
-        animate={{
-          translateX: ['0px', '150px', '-150px', '90px', '0px'],
-          transition: {
-            type: 'keyframes',
-            times: [0, 0.25, 0.55, 0.8, 1],
-            duration: 1.35,
-            ease: 'linear',
-          },
-        }}
-      >
+      <>
+        <Points x={defeatedX} y={y + 160} total={value} />
         <Box
-          aria-label={'turtle shell'}
-          role={'img'}
+          as={motion.div}
+          zIndex={2}
+          position={relative ? 'relative' : 'absolute'}
+          bottom={y + 'px'}
+          left={defeatedX + 'px'}
           w={'80px'}
           h={'80px'}
-          bgImage={'url("/images/turtle/turtle.sprite.png")'}
-          bgPosition={'-160px -80px'}
-          bgRepeat={'no-repeat'}
-          bgSize={'240px 160px'}
-          sx={{ imageRendering: 'pixelated' }}
-        />
-      </Box>
+          animate={{
+            translateX: ['0px', '150px', '-150px', '90px', '0px'],
+            transition: {
+              type: 'keyframes',
+              times: [0, 0.25, 0.55, 0.8, 1],
+              duration: 1.35,
+              ease: 'linear',
+            },
+          }}
+        >
+          <Box
+            aria-label={'turtle shell'}
+            role={'img'}
+            w={'80px'}
+            h={'80px'}
+            bgImage={'url("/images/turtle/turtle.sprite.png")'}
+            bgPosition={'-160px -80px'}
+            bgRepeat={'no-repeat'}
+            bgSize={'240px 160px'}
+            sx={{ imageRendering: 'pixelated' }}
+          />
+        </Box>
+      </>
     )
   }
 

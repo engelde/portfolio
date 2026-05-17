@@ -14,32 +14,36 @@ const Fireworks = dynamic(() => import('@fireworks-js/react').then((mod) => mod.
 })
 
 export type EndProps = {
-  complete: boolean
+  active: boolean
+  locked: boolean
+  mode: 'course-clear' | 'game-over'
   x: number
   xPos: number
 }
 
-const End = ({ complete, x, xPos }: EndProps) => {
+const End = ({ active, locked, mode, x, xPos }: EndProps) => {
   const [fireworks, setFireworks] = useState(false)
   const [mobile] = useMediaQuery('(max-width: 48rem)')
+  const courseClear = mode === 'course-clear'
+  const visible = active || xPos >= x
 
   useEffect(() => {
-    if (complete && !fireworks) {
+    if (active && courseClear && !fireworks) {
       setFireworks(true)
     }
-  }, [complete, fireworks])
+  }, [active, courseClear, fireworks])
 
   useEffect(() => {
-    if (xPos > x - 1600) {
+    if (courseClear && xPos > x - 1600) {
       void import('@fireworks-js/react')
     }
-  }, [x, xPos])
+  }, [courseClear, x, xPos])
 
   return (
     <Box
       zIndex={20}
       position={'absolute'}
-      left={x + 'px'}
+      left={locked ? 0 : x + 'px'}
       bottom={0}
       p={0}
       h={'100dvh'}
@@ -49,20 +53,25 @@ const End = ({ complete, x, xPos }: EndProps) => {
       alignItems={'center'}
       justifyContent={'center'}
       bg={'black'}
-      _before={{
-        background:
-          'linear-gradient(-45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(-135deg, #000 16px, transparent 0)',
-        backgroundRepeat: 'repeat-y',
-        backgroundPosition: 'left top',
-        backgroundSize: '32px 32px',
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        left: '-26px',
-        bottom: 0,
-        width: '32px',
-        height: '100%',
-      }}
+      overflow={'hidden'}
+      _before={
+        locked
+          ? undefined
+          : {
+              background:
+                'linear-gradient(-45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(-135deg, #000 16px, transparent 0)',
+              backgroundRepeat: 'repeat-y',
+              backgroundPosition: 'left top',
+              backgroundSize: '32px 32px',
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              left: '-26px',
+              bottom: 0,
+              width: '32px',
+              height: '100%',
+            }
+      }
     >
       <Flex
         h={'100dvh'}
@@ -71,14 +80,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
         alignItems={'center'}
         justifyContent={'center'}
       >
-        <Box
-          zIndex={'-1'}
-          position={'absolute'}
-          bottom={0}
-          left={0}
-          width={'100%'}
-          minHeight={'100%'}
-        >
+        <Box zIndex={0} position={'absolute'} bottom={0} left={0} width={'100%'} minHeight={'100%'}>
           <NextImage
             alt={'clear'}
             src={'/images/clear/clear.png'}
@@ -95,7 +97,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
             }}
           />
 
-          {fireworks && (
+          {fireworks && courseClear && (
             <Box
               position={'absolute'}
               top={0}
@@ -177,8 +179,39 @@ const End = ({ complete, x, xPos }: EndProps) => {
           </Box>
         </Box>
 
+        <Box zIndex={2} position={'absolute'} bottom={0} left={0} w={'100vw'} h={'64px'}>
+          <Box
+            position={'absolute'}
+            left={0}
+            bottom={0}
+            w={'12px'}
+            h={'64px'}
+            bg={'url("/images/ground/ground.1.png") no-repeat left top'}
+            backgroundSize={'12px 128px'}
+          />
+          <Box
+            position={'absolute'}
+            left={'12px'}
+            right={'4px'}
+            bottom={0}
+            h={'64px'}
+            bg={'url("/images/ground/ground.2.png") repeat-x left top'}
+            backgroundSize={'64px 128px'}
+          />
+          <Box
+            position={'absolute'}
+            right={0}
+            bottom={0}
+            w={'4px'}
+            h={'64px'}
+            bg={'url("/images/ground/ground.3.png") no-repeat left top'}
+            backgroundSize={'4px 128px'}
+          />
+        </Box>
+
         <Box
           as={motion.div}
+          zIndex={3}
           alignItems={'center'}
           justifyContent={'center'}
           opacity={0}
@@ -186,7 +219,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
           maxW={'100%'}
           initial={false}
           animate={
-            complete || xPos >= x
+            visible
               ? { opacity: 1, translateY: 0, transition: { duration: 0.6 } }
               : { opacity: 0, translateY: -300 }
           }
@@ -197,7 +230,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
             <Heading
               as={motion.div}
               size={{ base: 'xl', md: '4xl' }}
-              color={'white'}
+              color={courseClear ? 'white' : 'red.500'}
               letterSpacing={{ base: '2px', md: '4px' }}
               textTransform={'uppercase'}
               initial={{ scale: 1 }}
@@ -215,7 +248,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
                 },
               }}
             >
-              COURSE CLEAR!
+              {courseClear ? 'COURSE CLEAR!' : 'GAME OVER'}
             </Heading>
 
             <VStack spacing={0}>

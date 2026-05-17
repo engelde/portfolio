@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
@@ -17,7 +17,7 @@ export type CoinProps = {
   active: boolean
   setActive: (status: boolean) => void
   score: number
-  setScore: (score: number) => void
+  setScore: Dispatch<SetStateAction<number>>
 }
 
 const coinSpin = keyframes`
@@ -29,7 +29,7 @@ const coinSpin = keyframes`
   100% { background-position: 0 0; }
 `
 
-const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: CoinProps) => {
+const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps) => {
   const { playAudio } = useAudio()
   const [running, setRunning] = useState(show)
   const [disabled, setDisabled] = useState(false)
@@ -38,7 +38,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: Coi
   useEffect(() => {
     if (active && !disabled) {
       setDisabled(true)
-      setScore(score + value)
+      setScore((current) => current + value)
       playAudio('coin')
 
       if (!running) {
@@ -49,7 +49,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, score, setScore }: Coi
         setRunning(false)
       }, 600)
     }
-  }, [active, disabled, playAudio, score, setActive, setScore, running, setDisabled, setRunning])
+  }, [active, disabled, playAudio, setActive, setScore, running, setDisabled, setRunning])
 
   return (
     <>

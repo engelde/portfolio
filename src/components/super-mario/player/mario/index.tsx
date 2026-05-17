@@ -6,6 +6,7 @@ import { motion, useAnimationControls } from 'framer-motion'
 
 export type MarioProps = {
   down: boolean
+  dying: boolean
   variant: 1 | 2 | 3
   x: number
   y: number
@@ -22,7 +23,7 @@ type VariantProps = {
   frames: number
 }
 
-const Mario = ({ down, variant, x, y, xPos, forwards, jump, zIndex = 9 }: MarioProps) => {
+const Mario = ({ down, dying, variant, x, y, xPos, forwards, jump, zIndex = 9 }: MarioProps) => {
   const variants = {
     1: { sprite: '/images/mario/mario.regular.sprite.png', width: 100, height: 100, frames: 3 },
     2: { sprite: '/images/mario/mario.super.sprite.png', width: 80, height: 160, frames: 4 },
@@ -33,11 +34,19 @@ const Mario = ({ down, variant, x, y, xPos, forwards, jump, zIndex = 9 }: MarioP
   const walkScale = 240 // Pixels per walk cycle
   const state = Math.floor(Math.abs(xPos) / walkScale) % 2 === 0 ? 1 : 2
   const currentVariant = variants[variant]
-  const crouch = down && variant !== 1 && !jump
-  const frame = crouch ? 3 : jump ? 2 : state - 1
+  const crouch = down && variant !== 1 && !jump && !dying
+  const frame = crouch ? 3 : jump || dying ? 2 : state - 1
+  const pulseControls = useAnimationControls()
+  const marioAnimation = dying
+    ? {
+        opacity: [1, 1, 0],
+        rotate: [0, 0, 26],
+        translateY: [0, -150, 520],
+        transition: { duration: 1.9, ease: 'easeInOut', times: [0, 0.28, 1] },
+      }
+    : pulseControls
 
   // Brief pulsate on variant change
-  const pulseControls = useAnimationControls()
   const prevVariantRef = useRef(variant)
   useEffect(() => {
     if (prevVariantRef.current !== variant) {
@@ -65,7 +74,7 @@ const Mario = ({ down, variant, x, y, xPos, forwards, jump, zIndex = 9 }: MarioP
     >
       <Box
         as={motion.div}
-        animate={pulseControls}
+        animate={marioAnimation}
         style={{
           transformOrigin: 'bottom center',
           width: '100%',

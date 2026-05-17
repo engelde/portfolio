@@ -1,9 +1,23 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react'
 
 import { useAudio } from '@/hooks/useAudio'
 
+import {
+  brickSegments,
+  coinSegments,
+  goombaSegments,
+  pipeSegments,
+  turtleSegments,
+} from '../level-map'
 import Brick, { type BrickProps } from './brick'
 import Coin, { type CoinProps } from './coin'
 import Goomba, { type GoombaProps } from './goomba'
@@ -27,6 +41,7 @@ const MemoizedTurtle = React.memo(Turtle)
 
 export type ForegroundProps = {
   down: boolean
+  falling: boolean
   jump: boolean
   lives: number
   mario: 1 | 2 | 3
@@ -36,7 +51,7 @@ export type ForegroundProps = {
   yPos: number
   setLives: (lives: number) => void
   setMario: (variant: 1 | 2 | 3) => void
-  setScore: (score: number) => void
+  setScore: Dispatch<SetStateAction<number>>
 }
 
 type PrizeBoxState = {
@@ -58,6 +73,7 @@ type DynamicObjectsState = {
 
 const Foreground = ({
   down,
+  falling,
   jump,
   lives,
   mario,
@@ -163,114 +179,26 @@ const Foreground = ({
     }
   }, [setItemActive])
 
-  const bricks: BrickProps[] = [
-    { x: 10000, y: 64 },
-    { x: 10080, y: 64 },
-    { x: 10080, y: 144 },
-    { x: 10160, y: 64 },
-    { x: 10160, y: 144 },
-    { x: 10160, y: 224 },
-    { x: 10240, y: 64 },
-    { x: 10240, y: 144 },
-    { x: 10240, y: 224 },
-    { x: 10320, y: 64 },
-    { x: 10320, y: 144 },
-    { x: 10320, y: 224 },
-    { x: 10400, y: 64 },
-    { x: 10400, y: 144 },
-    { x: 10400, y: 224 },
-    { x: 10480, y: 64 },
-    { x: 10720, y: 64 },
-    { x: 10720, y: 144 },
-    { x: 10800, y: 64 },
-  ]
+  const bricks: BrickProps[] = brickSegments
 
   const coins: (CoinProps & { id: number })[] = [
-    {
-      id: 1,
-      x: 5600,
-      y: 308,
-      active: dynamicObjects.coins[1],
-      setActive: coinHandlers[1],
+    ...coinSegments.map((coin) => ({
+      ...coin,
+      active: dynamicObjects.coins[coin.id],
+      setActive: coinHandlers[coin.id],
       score: score,
       setScore: setScore,
-    },
-    {
-      id: 2,
-      x: 5760,
-      y: 468,
-      active: dynamicObjects.coins[2],
-      setActive: coinHandlers[2],
-      score: score,
-      setScore: setScore,
-    },
-    {
-      id: 3,
-      x: 5920,
-      y: 628,
-      active: dynamicObjects.coins[3],
-      setActive: coinHandlers[3],
-      score: score,
-      setScore: setScore,
-    },
-    {
-      id: 4,
-      x: 6080,
-      y: 788,
-      active: dynamicObjects.coins[4],
-      setActive: coinHandlers[4],
-      score: score,
-      setScore: setScore,
-    },
-    {
-      id: 5,
-      x: 6240,
-      y: 948,
-      active: dynamicObjects.coins[5],
-      setActive: coinHandlers[5],
-      score: score,
-      setScore: setScore,
-    },
+    })),
   ]
 
-  const goombas: GoombaProps[] = [
-    { x: 1920, y: 64, offset: 1200 },
-    { x: 3280, y: 64, offset: 1120 },
-    { x: 4800, y: 128, offset: 1200 },
-    { x: 5600, y: 128, offset: 2000 },
-  ]
+  const goombas: GoombaProps[] = goombaSegments
 
-  const pipes: PipeProps[] = [
-    {
-      x: 2000,
-      y: 64,
-      height: 240,
-      plant: true,
-      plantVariant: 2,
-      active: true,
-    },
-    {
-      x: 9200,
-      y: 64,
-      height: 160,
-      plant: true,
-      plantVariant: 1,
-    },
-    {
-      x: 9520,
-      y: 64,
-      height: 240,
-      plant: true,
-      plantVariant: 2,
-      active: xPos < 9600,
-    },
-    { x: 11520, y: 64, height: 240 },
-    { x: 11520, y: 624, height: 1120 },
-    { x: 11520, y: 544, height: 80 },
-    { x: 11840, y: 64, height: 160 },
-  ]
+  const pipes: PipeProps[] = pipeSegments.map(({ activeWhenBeforeX, ...pipe }) => ({
+    ...pipe,
+    ...(activeWhenBeforeX !== undefined && { active: xPos < activeWhenBeforeX }),
+  }))
 
-  const turtles: TurtleProps[] = [{ x: 3200, y: 224, offset: 400 }]
+  const turtles: TurtleProps[] = turtleSegments
 
   const prizeBoxes = useMemo<PrizeBoxProps[]>(
     () => [
@@ -633,9 +561,10 @@ const Foreground = ({
           x={item.x}
           y={item.y}
           offset={item.offset}
-          jump={jump}
+          falling={falling}
           xPos={xPos}
           yPos={yPos}
+          setScore={setScore}
         />
       ))}
 
@@ -678,9 +607,10 @@ const Foreground = ({
           x={item.x}
           y={item.y}
           offset={item.offset}
-          jump={jump}
+          falling={falling}
           xPos={xPos}
           yPos={yPos}
+          setScore={setScore}
         />
       ))}
     </>
