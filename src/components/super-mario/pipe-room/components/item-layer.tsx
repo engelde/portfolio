@@ -51,6 +51,8 @@ const pointsFloat = keyframes`
   }
 `
 
+const coinVisualScale = 0.8
+
 const PipeRoomItemLayer = ({
   coins,
   collectedCoinIds,
@@ -96,6 +98,9 @@ const PipeRoomItemLayer = ({
             left={x + 'px'}
             top={y + 'px'}
             zIndex={3}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
             w={tileSize + 'px'}
             h={tileSize + 'px'}
             cursor={collecting ? 'default' : 'pointer'}
@@ -117,6 +122,8 @@ const PipeRoomItemLayer = ({
               sx={{
                 animation: `${coinSpin} 0.52s steps(1) infinite`,
                 imageRendering: 'pixelated',
+                transform: `scale(${coinVisualScale})`,
+                transformOrigin: 'center',
               }}
             />
           </Box>

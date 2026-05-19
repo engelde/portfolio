@@ -115,7 +115,11 @@
     { "id": "goomba-3", "x": 4800, "y": 128, "offset": 1200 },
     { "id": "goomba-4", "x": 5600, "y": 128, "offset": 2000 }
   ],
-  "turtles": [{ "id": "turtle-1", "x": 3200, "y": 224, "offset": 400 }],
+  "turtles": [
+    { "id": "turtle-1", "x": 3200, "y": 224, "offset": 400 },
+    { "id": "turtle-2", "x": 10400, "y": 304, "offset": 240 },
+    { "id": "turtle-3", "x": 7273, "y": 544, "offset": 469, "variant": "alt" }
+  ],
   "collisionSurfaces": [
     {
       "id": "ground-1-top",

@@ -15,6 +15,7 @@ export type PlayerProps = {
   down: boolean
   dying: boolean
   enteringPipe?: boolean
+  enteringPipeDirection?: 'down' | 'right'
   exitingPipe?: boolean
   forwards: boolean
   jump: boolean
@@ -44,6 +45,7 @@ const Player = ({
   down,
   dying,
   enteringPipe = false,
+  enteringPipeDirection = 'down',
   exitingPipe = false,
   forwards,
   jump,
@@ -75,6 +77,7 @@ const Player = ({
             down={down}
             dying={dying}
             enteringPipe={enteringPipe}
+            enteringPipeDirection={enteringPipeDirection}
             exitingPipe={exitingPipe}
             variant={mario}
             x={x}

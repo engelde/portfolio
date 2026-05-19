@@ -1,16 +1,74 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useMediaQuery } from '@chakra-ui/react'
 
 import {
+  brickSegments,
   collisionCeilings,
   collisionSurfaces,
   levelLength,
+  type CollisionSurface,
 } from '@/components/super-mario/level-map'
 import { useStore } from '@/lib/store'
 
-export const useSettings = () => {
+type UseSettingsOptions = {
+  destroyedBricks?: Record<string, true>
+}
+
+const brickTileSize = 80
+
+const splitSurfaceAroundDestroyedBricks = (
+  surface: CollisionSurface,
+  destroyedBricks: Record<string, true>
+) => {
+  if (surface.kind !== 'brick') return [surface]
+
+  const destroyedTiles = brickSegments
+    .filter(
+      (brick) =>
+        destroyedBricks[brick.id] &&
+        brick.y + brickTileSize === surface.height &&
+        brick.x < surface.xMax &&
+        brick.x + brickTileSize > surface.xMin
+    )
+    .map((brick) => ({
+      xMin: Math.max(surface.xMin, brick.x),
+      xMax: Math.min(surface.xMax, brick.x + brickTileSize),
+    }))
+    .sort((a, b) => a.xMin - b.xMin)
+
+  if (destroyedTiles.length === 0) return [surface]
+
+  const remaining: CollisionSurface[] = []
+  let cursor = surface.xMin
+
+  destroyedTiles.forEach((tile, index) => {
+    if (cursor < tile.xMin) {
+      remaining.push({
+        ...surface,
+        id: `${surface.id}-trim-${index}`,
+        xMin: cursor,
+        xMax: tile.xMin,
+      })
+    }
+
+    cursor = Math.max(cursor, tile.xMax)
+  })
+
+  if (cursor < surface.xMax) {
+    remaining.push({
+      ...surface,
+      id: `${surface.id}-trim-end`,
+      xMin: cursor,
+      xMax: surface.xMax,
+    })
+  }
+
+  return remaining
+}
+
+export const useSettings = ({ destroyedBricks = {} }: UseSettingsOptions = {}) => {
   const [complete, setComplete] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const length = levelLength
@@ -32,9 +90,21 @@ export const useSettings = () => {
   const [timer, setTimer] = useState(300)
 
   const ceilingLevels = collisionCeilings
-  const surfaceLevels = collisionSurfaces
-  const platformLevels = collisionSurfaces.filter((surface) => surface.kind !== 'ground')
-  const groundLevels = collisionSurfaces.filter((surface) => surface.kind === 'ground')
+  const surfaceLevels = useMemo(
+    () =>
+      collisionSurfaces.flatMap((surface) =>
+        splitSurfaceAroundDestroyedBricks(surface, destroyedBricks)
+      ),
+    [destroyedBricks]
+  )
+  const platformLevels = useMemo(
+    () => surfaceLevels.filter((surface) => surface.kind !== 'ground'),
+    [surfaceLevels]
+  )
+  const groundLevels = useMemo(
+    () => surfaceLevels.filter((surface) => surface.kind === 'ground'),
+    [surfaceLevels]
+  )
 
   // Timer
   useEffect(() => {

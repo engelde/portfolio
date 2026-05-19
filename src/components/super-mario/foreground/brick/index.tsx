@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 
 export type BrickProps = {
+  id?: string
   x: number
   y: number
 }
@@ -16,9 +17,17 @@ const animation = keyframes`
   100% { background-position: 0 0; }
 `
 
-const Brick = ({ x, y }: BrickProps) => {
+const Brick = ({ id, x, y }: BrickProps) => {
   return (
-    <Box zIndex={1} position={'absolute'} left={x + 'px'} bottom={y + 'px'} w={'80px'} h={'80px'}>
+    <Box
+      data-brick-id={id}
+      zIndex={1}
+      position={'absolute'}
+      left={x + 'px'}
+      bottom={y + 'px'}
+      w={'80px'}
+      h={'80px'}
+    >
       <Box
         aria-label={'brick'}
         role={'img'}

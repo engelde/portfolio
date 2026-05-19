@@ -67,6 +67,7 @@ type CameraInput = {
 }
 
 const SuperMario = ({ ip }: SuperMarioProps) => {
+  const [destroyedBricks, setDestroyedBricks] = useState<Record<string, true>>({})
   const {
     ceilingLevels,
     complete,
@@ -90,7 +91,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     setMario,
     setPaused,
     setScore,
-  } = useSettings()
+  } = useSettings({ destroyedBricks })
 
   const [dying, setDying] = useState(false)
   const [autoFinishing, setAutoFinishing] = useState(false)
@@ -310,6 +311,10 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     },
     [setScore]
   )
+
+  const handleShellBrickHit = React.useCallback((id: string) => {
+    setDestroyedBricks((prev) => (prev[id] ? prev : { ...prev, [id]: true }))
+  }, [])
 
   useEffect(() => {
     if (!scrollLocked) return
@@ -582,9 +587,11 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
             score={score}
             xPos={worldX}
             yPos={y + yOffset}
+            destroyedBricks={destroyedBricks}
             setLives={setLives}
             setMario={setMario}
             setScore={setScore}
+            onShellBrickHit={handleShellBrickHit}
             onStomp={() => setStompBounceSignal((value) => value + 1)}
           />
         </Box>
@@ -612,10 +619,8 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           bottom={0}
           h={'100vh'}
           w={'100vw'}
-          overflow={endLocked || autoFinishing ? 'hidden' : 'visible'}
+          overflow={'hidden'}
           pointerEvents={endLocked ? 'auto' : 'none'}
-          transform={endLocked ? 'none' : `translate3d(${-x}px, 0, 0)`}
-          willChange={'transform'}
         >
           <MemoizedEnd
             active={endLocked}
@@ -634,8 +639,9 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
             down={down}
             dying={dying}
             enteringPipe={pipeRoomEntering || autoFinishing}
+            enteringPipeDirection={autoFinishing ? 'right' : 'down'}
             exitingPipe={pipeRoomExiting}
-            forwards={pipeRoomExiting ? true : forwards}
+            forwards={pipeRoomExiting || autoFinishing ? true : forwards}
             jump={jump}
             length={length + xOffset}
             lives={lives}

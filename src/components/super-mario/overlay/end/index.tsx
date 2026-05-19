@@ -25,7 +25,11 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
   const [fireworks, setFireworks] = useState(false)
   const [mobile] = useMediaQuery('(max-width: 48rem)')
   const courseClear = mode === 'course-clear'
+  const screenLeft = locked ? 0 : Math.max(0, x - xPos)
   const visible = active || xPos >= x
+  const interactive = active && locked
+  const linkTabIndex = interactive ? undefined : -1
+  const restartTabIndex = interactive ? 0 : -1
 
   useEffect(() => {
     if (active && courseClear && !fireworks) {
@@ -41,15 +45,17 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
 
   return (
     <Box
+      data-end-screen={'true'}
       zIndex={20}
       position={'absolute'}
-      left={(locked ? 0 : x) + 'px'}
+      left={screenLeft + 'px'}
       bottom={0}
       p={0}
       h={'100dvh'}
       minH={'100vh'}
       w={'100dvw'}
       minW={'100vw'}
+      aria-hidden={!interactive}
       alignItems={'center'}
       justifyContent={'center'}
       bg={'black'}
@@ -121,8 +127,8 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                     max: 360,
                   },
                   delay: {
-                    min: 25,
-                    max: 45,
+                    min: 15,
+                    max: 35,
                   },
                   rocketsPoint: {
                     min: 90,
@@ -256,6 +262,14 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.08 }}
                 _hover={{ color: 'cyan.500' }}
+                role={'button'}
+                tabIndex={restartTabIndex}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' && event.key !== ' ') return
+
+                  event.preventDefault()
+                  window.location.reload()
+                }}
                 onClick={() => window.location.reload()}
               >
                 {'> restart'}
@@ -276,6 +290,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                   color={'white'}
                   href={'https://github.com/engelde/portfolio'}
                   target={'_blank'}
+                  tabIndex={linkTabIndex}
                   _hover={{ color: 'cyan.500' }}
                 >
                   {'> view source'}
@@ -290,6 +305,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 target={'_blank'}
                 referrerPolicy={'no-referrer'}
                 rel={'noopener'}
+                tabIndex={linkTabIndex}
               >
                 <Tooltip label={'GitHub'} bg={'black'}>
                   <Box
@@ -310,7 +326,12 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 </Tooltip>
               </Link>
 
-              <Link as={NextLink} href={'https://www.linkedin.com/in/engelde'} target={'_blank'}>
+              <Link
+                as={NextLink}
+                href={'https://www.linkedin.com/in/engelde'}
+                target={'_blank'}
+                tabIndex={linkTabIndex}
+              >
                 <Tooltip label={'LinkedIn'} bg={'black'}>
                   <Box
                     as={motion.div}
@@ -330,7 +351,12 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 </Tooltip>
               </Link>
 
-              <Link as={NextLink} href={'https://orcid.org/0009-0001-0780-738X'} target={'_blank'}>
+              <Link
+                as={NextLink}
+                href={'https://orcid.org/0009-0001-0780-738X'}
+                target={'_blank'}
+                tabIndex={linkTabIndex}
+              >
                 <Tooltip label={'ORCID'} bg={'black'}>
                   <Box
                     as={motion.div}

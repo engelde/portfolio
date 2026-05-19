@@ -43,6 +43,12 @@ export type EnemySegment = LevelPoint & {
   offset: number
 }
 
+export type TurtleVariant = 'normal' | 'alt'
+
+export type TurtleSegment = EnemySegment & {
+  variant?: TurtleVariant
+}
+
 export type CollisionSurface = {
   id: string
   owner: string
@@ -71,7 +77,7 @@ type LevelMap = {
   coins: CoinSegment[]
   prizeBoxes: CoinSegment[]
   goombas: EnemySegment[]
-  turtles: EnemySegment[]
+  turtles: TurtleSegment[]
   collisionSurfaces: CollisionSurface[]
   collisionCeilings: CollisionCeiling[]
 }

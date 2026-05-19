@@ -12,6 +12,7 @@ export type MarioProps = {
   down: boolean
   dying: boolean
   enteringPipe?: boolean
+  enteringPipeDirection?: 'down' | 'right'
   exitingPipe?: boolean
   variant: 1 | 2 | 3
   x: number
@@ -35,6 +36,7 @@ const Mario = ({
   down,
   dying,
   enteringPipe = false,
+  enteringPipeDirection = 'down',
   exitingPipe = false,
   variant,
   x,
@@ -58,6 +60,18 @@ const Mario = ({
   const frame = crouch ? 3 : jump || dying ? 2 : state - 1
   const pulseControls = useAnimationControls()
   const marioInitial = exitingPipe ? { translateY: 192 } : false
+  const pipeEntryAnimation =
+    enteringPipeDirection === 'right'
+      ? {
+          opacity: [1, 1, 0],
+          translateX: [0, 96, 192],
+          transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
+        }
+      : {
+          opacity: [1, 1, 0],
+          translateY: [0, 96, 192],
+          transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
+        }
   const marioAnimation = dying
     ? {
         opacity: [1, 1, 0],
@@ -66,11 +80,7 @@ const Mario = ({
         transition: { duration: 1.05, ease: 'easeInOut', times: [0, 0.28, 1] },
       }
     : enteringPipe
-      ? {
-          opacity: [1, 1, 0],
-          translateY: [0, 96, 192],
-          transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
-        }
+      ? pipeEntryAnimation
       : exitingPipe
         ? {
             opacity: 1,

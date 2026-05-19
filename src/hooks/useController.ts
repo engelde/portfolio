@@ -504,6 +504,58 @@ export const useController = ({
     setLoopWake((val) => val + 1)
   }, [active, mobile, stompBounceSignal, syncState])
 
+  useEffect(() => {
+    if (!active || mobile || movementLocked) return
+    if (yOffsetRef.current !== 0 || velocityYRef.current !== 0) return
+
+    const worldX = xRef.current + xOffsetRef.current
+    const crouching = isCrouching()
+    const support = findSupportSurface(
+      position.surfaceLevels,
+      worldX,
+      yRef.current,
+      mario,
+      forwardsRef.current,
+      crouching
+    )
+
+    if (support) return
+
+    const fallbackGroundHeight =
+      getLowestGroundHeight(
+        position.surfaceLevels,
+        worldX,
+        mario,
+        forwardsRef.current,
+        crouching
+      ) || position.y
+
+    if (yRef.current <= fallbackGroundHeight) {
+      yRef.current = fallbackGroundHeight
+      yOffsetRef.current = 0
+      velocityYRef.current = 0
+      groundedRef.current = true
+      jumpDisplayRef.current = false
+      syncState()
+      return
+    }
+
+    groundedRef.current = false
+    jumpDisplayRef.current = false
+    velocityYRef.current = Math.max(velocityYRef.current, 0.1)
+    syncState()
+    setLoopWake((val) => val + 1)
+  }, [
+    active,
+    isCrouching,
+    mario,
+    mobile,
+    movementLocked,
+    position.surfaceLevels,
+    position.y,
+    syncState,
+  ])
+
   // Game Loop
   useEffect(() => {
     if (!active || mobile || movementLocked) return
@@ -517,6 +569,7 @@ export const useController = ({
       keys.current.has('ArrowRight') ||
       yOffsetRef.current !== 0 ||
       velocityYRef.current !== 0 ||
+      !groundedRef.current ||
       jumpDisplayRef.current ||
       flyingRef.current
 

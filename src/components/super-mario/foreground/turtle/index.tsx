@@ -14,7 +14,7 @@ import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
-import type { EnemySegment } from '../../level-map'
+import type { EnemySegment, TurtleVariant } from '../../level-map'
 import Points from '../points'
 
 export type TurtleProps = {
@@ -26,19 +26,39 @@ export type TurtleProps = {
   falling?: boolean
   xPos?: number
   yPos?: number
+  variant?: TurtleVariant
   setScore?: Dispatch<SetStateAction<number>>
   onStomp?: () => void
+  onShellBrickHit?: (id: string) => void
   onShellPrizeHit?: () => void
   onShellGoombaHit?: (id: string, x: number) => void
+  shellRoute?: TurtleShellRoute
   shellTargets?: EnemySegment[]
 }
 
 type DefeatState = 'alive' | 'shell' | 'gone'
 
+type ShellRoutePoint = {
+  brickId?: string
+  x: number
+  y: number
+}
+
 type ShellPose = {
   scaleX: number
   x: number
   y: number
+}
+
+export type TurtleShellRoute = {
+  points: ShellRoutePoint[]
+  vanishOnComplete?: boolean
+}
+
+type ShellRoutePose = {
+  completedBrickIds: string[]
+  done: boolean
+  pose: ShellPose
 }
 
 const walkAnimation = keyframes`
@@ -79,10 +99,13 @@ const Turtle = ({
   falling,
   xPos,
   yPos,
+  variant = 'normal',
   setScore,
   onStomp,
+  onShellBrickHit,
   onShellPrizeHit,
   onShellGoombaHit,
+  shellRoute,
   shellTargets = [],
 }: TurtleProps) => {
   const { playAudio } = useAudio()
@@ -92,6 +115,7 @@ const Turtle = ({
   const pausedAtRef = useRef<{ date: number; performance: number } | null>(null)
   const shellFrameRef = useRef<number | null>(null)
   const shellStartedAtRef = useRef(0)
+  const shellRouteBrickHitsRef = useRef<Set<string>>(new Set())
   const shellPrizeHitRef = useRef(false)
   const shellGoombaHitRef = useRef(false)
   const [defeatState, setDefeatState] = useState<DefeatState>('alive')
@@ -102,6 +126,8 @@ const Turtle = ({
     y,
   })
   const value = 100
+  const spriteSheet =
+    variant === 'alt' ? '/images/turtle/turtle.alt.sprite.png' : '/images/turtle/turtle.sprite.png'
   const duration = (offset / 50) * 2
   const shellSize = 80
   const platformEdgeX = 3275
@@ -147,6 +173,7 @@ const Turtle = ({
       setShellPose({ scaleX: 1, x: nextX, y })
       setDefeatState('shell')
       shellStartedAtRef.current = performance.now()
+      shellRouteBrickHitsRef.current = new Set()
       shellPrizeHitRef.current = false
       shellGoombaHitRef.current = false
       setScore?.((current) => current + value)
@@ -262,6 +289,52 @@ const Turtle = ({
     [finalWallX, highGroundY, pipeRightX, platformEdgeX, prizeHitX, shellSpeed, y]
   )
 
+  const getShellRoutePose = useCallback(
+    (elapsedSeconds: number, startX: number, route: TurtleShellRoute): ShellRoutePose => {
+      let previous = { x: startX, y }
+      let remaining = elapsedSeconds
+      const completedBrickIds: string[] = []
+
+      for (let index = 0; index < route.points.length; index += 1) {
+        const next = route.points[index]
+        const distance = Math.hypot(next.x - previous.x, next.y - previous.y)
+        const durationSeconds = Math.max(0.001, distance / shellSpeed)
+
+        if (remaining <= durationSeconds) {
+          const progress = remaining / durationSeconds
+          const xPos = previous.x + (next.x - previous.x) * progress
+          const yPos = previous.y + (next.y - previous.y) * progress
+          const direction = next.x >= previous.x ? 1 : -1
+
+          return {
+            completedBrickIds,
+            done: false,
+            pose: {
+              scaleX: direction,
+              x: xPos,
+              y: yPos,
+            },
+          }
+        }
+
+        remaining -= durationSeconds
+        if (next.brickId) completedBrickIds.push(next.brickId)
+        previous = next
+      }
+
+      return {
+        completedBrickIds,
+        done: Boolean(route.vanishOnComplete),
+        pose: {
+          scaleX: -1,
+          x: previous.x,
+          y: previous.y,
+        },
+      }
+    },
+    [shellSpeed, y]
+  )
+
   useEffect(() => {
     if (xPos === undefined || yPos === undefined) return
 
@@ -288,9 +361,26 @@ const Turtle = ({
 
     const tick = (time: number) => {
       const elapsedSeconds = (time - shellStartedAtRef.current) / 1000
-      const nextPose = getShellPose(elapsedSeconds, defeatedX)
+      const routePose = shellRoute ? getShellRoutePose(elapsedSeconds, defeatedX, shellRoute) : null
+      const nextPose = routePose?.pose ?? getShellPose(elapsedSeconds, defeatedX)
 
       setShellPose(nextPose)
+
+      if (routePose) {
+        routePose.completedBrickIds.forEach((brickId) => {
+          if (shellRouteBrickHitsRef.current.has(brickId)) return
+
+          shellRouteBrickHitsRef.current.add(brickId)
+          onShellBrickHit?.(brickId)
+          playAudio('brick')
+        })
+
+        if (routePose.done) {
+          shellFrameRef.current = null
+          setDefeatState('gone')
+          return
+        }
+      }
 
       const playerMotion = playerMotionRef.current
       if (playerMotion.xPos !== undefined && playerMotion.yPos !== undefined) {
@@ -313,13 +403,13 @@ const Turtle = ({
         }
       }
 
-      if (!shellPrizeHitRef.current && nextPose.x >= prizeHitX - 4) {
+      if (!routePose && !shellPrizeHitRef.current && nextPose.x >= prizeHitX - 4) {
         shellPrizeHitRef.current = true
         onShellPrizeHit?.()
         playAudio('stomp')
       }
 
-      if (!shellGoombaHitRef.current) {
+      if (!routePose && !shellGoombaHitRef.current) {
         const shellLeft = nextPose.x
         const shellRight = nextPose.x + shellSize
         const hitTarget = shellTargets.find((target) => {
@@ -357,10 +447,13 @@ const Turtle = ({
     defeatShell,
     getGoombaX,
     getShellPose,
+    getShellRoutePose,
+    onShellBrickHit,
     onShellGoombaHit,
     onShellPrizeHit,
     playAudio,
     prizeHitX,
+    shellRoute,
     shellTargets,
   ])
 
@@ -388,7 +481,7 @@ const Turtle = ({
             role={'img'}
             w={'80px'}
             h={'80px'}
-            bgImage={'url("/images/turtle/turtle.sprite.png")'}
+            bgImage={`url("${spriteSheet}")`}
             bgPosition={'-160px -80px'}
             bgRepeat={'no-repeat'}
             bgSize={'480px 160px'}
@@ -422,7 +515,7 @@ const Turtle = ({
         role={'img'}
         w={'80px'}
         h={'160px'}
-        bgImage={'url("/images/turtle/turtle.sprite.png")'}
+        bgImage={`url("${spriteSheet}")`}
         bgPosition={'0 0'}
         bgRepeat={'no-repeat'}
         bgSize={'480px 160px'}

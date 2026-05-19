@@ -48,6 +48,9 @@ const coinCollect = keyframes`
   }
 `
 
+const coinFrameSize = 80
+const coinVisualScale = 0.8
+
 const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps) => {
   const { playAudio } = useAudio()
   const [running, setRunning] = useState(show)
@@ -75,9 +78,11 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
           position={'absolute'}
           left={x + 'px'}
           bottom={y + 80 + 'px'}
-          w={'72px'}
-          h={'72px'}
-          pl={'4px'}
+          display={'flex'}
+          alignItems={'center'}
+          justifyContent={'center'}
+          w={coinFrameSize + 'px'}
+          h={coinFrameSize + 'px'}
           {...(clickable && !disabled && { cursor: 'pointer', onClick: () => setActive(true) })}
           _hover={{ filter: 'brightness(115%)' }}
           sx={{
@@ -91,15 +96,17 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
           <Box
             aria-label={'coin'}
             role={'img'}
-            w={'80px'}
-            h={'80px'}
+            w={coinFrameSize + 'px'}
+            h={coinFrameSize + 'px'}
             bgImage={'url("/images/coin/coin.sprite.png")'}
             bgPosition={'0 0'}
             bgRepeat={'no-repeat'}
-            bgSize={'400px 80px'}
+            bgSize={`${coinFrameSize * 5}px ${coinFrameSize}px`}
             sx={{
               animation: `${coinSpin} 0.52s steps(1) infinite`,
               imageRendering: 'pixelated',
+              transform: `scale(${coinVisualScale})`,
+              transformOrigin: 'center',
             }}
           />
         </Box>

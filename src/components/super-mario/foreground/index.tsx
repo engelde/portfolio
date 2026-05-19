@@ -22,7 +22,7 @@ import {
   pipeSegments,
   turtleSegments,
 } from '../level-map'
-import Brick, { type BrickProps } from './brick'
+import Brick from './brick'
 import Coin, { type CoinProps } from './coin'
 import Goomba, { type GoombaProps } from './goomba'
 import Leaf from './leaf'
@@ -30,7 +30,7 @@ import Mushroom from './mushroom'
 import OneUp from './one-up'
 import Pipe, { type PipeProps } from './pipe'
 import PrizeBox, { type PrizeBoxProps } from './prize-box'
-import Turtle, { type TurtleProps } from './turtle'
+import Turtle, { type TurtleShellRoute } from './turtle'
 
 // Wrap child components in React.memo for performance
 const MemoizedBrick = React.memo(Brick)
@@ -55,9 +55,11 @@ export type ForegroundProps = {
   score: number
   xPos: number
   yPos: number
+  destroyedBricks: Record<string, true>
   setLives: (lives: number) => void
   setMario: (variant: 1 | 2 | 3) => void
   setScore: Dispatch<SetStateAction<number>>
+  onShellBrickHit: (id: string) => void
   onStomp?: () => void
 }
 
@@ -86,6 +88,34 @@ type ShellDefeat = {
 const prizeBoxWidth = 80
 const coinCollisionSize = 80
 const coinCollectionOverlap = 24
+const turtleTwoShellRoute: TurtleShellRoute = {
+  points: [
+    { x: 10480, y: 304 },
+    { x: 10560, y: 64 },
+    { brickId: 'brick-17', x: 10640, y: 64 },
+    { brickId: 'brick-16', x: 10560, y: 64 },
+    { brickId: 'brick-19', x: 10720, y: 64 },
+    { brickId: 'brick-13', x: 10480, y: 64 },
+  ],
+  vanishOnComplete: true,
+}
+const turtleThreeShellRoute: TurtleShellRoute = {
+  points: [
+    { x: 6724, y: 544 },
+    { x: 6644, y: 382 },
+    { x: 6564, y: 382 },
+    { x: 6485, y: 222 },
+    { x: 6405, y: 222 },
+    { x: 6325, y: 64 },
+    { x: 5920, y: 64 },
+    { x: 5800, y: -120 },
+  ],
+  vanishOnComplete: true,
+}
+const turtleShellRoutes: Record<string, TurtleShellRoute> = {
+  'turtle-2': turtleTwoShellRoute,
+  'turtle-3': turtleThreeShellRoute,
+}
 
 const getPrizeBoxIdsForOwner = (owner: string) => {
   const exactMatch = owner.match(/^prize-box-(\d+)$/)
@@ -129,9 +159,11 @@ const Foreground = ({
   score,
   xPos,
   yPos,
+  destroyedBricks,
   setLives,
   setMario,
   setScore,
+  onShellBrickHit,
   onStomp,
 }: ForegroundProps) => {
   const { playAudio } = useAudio()
@@ -249,7 +281,7 @@ const Foreground = ({
     }))
   }, [])
 
-  const bricks: BrickProps[] = brickSegments
+  const bricks = brickSegments.filter((brick) => !destroyedBricks[brick.id])
 
   const coins: (CoinProps & { id: number })[] = [
     ...coinSegments.map((coin) => ({
@@ -268,7 +300,7 @@ const Foreground = ({
     ...(activeWhenBeforeX !== undefined && { active: xPos < activeWhenBeforeX }),
   }))
 
-  const turtles: TurtleProps[] = turtleSegments
+  const turtles = turtleSegments
   const shellTargets = useMemo(
     () => goombaSegments.filter((goomba) => !defeatedGoombas[goomba.id]),
     [defeatedGoombas]
@@ -690,8 +722,8 @@ const Foreground = ({
 
   return (
     <>
-      {bricks.map((item, x) => (
-        <MemoizedBrick key={x} x={item.x} y={item.y} />
+      {bricks.map((item) => (
+        <MemoizedBrick key={item.id} id={item.id} x={item.x} y={item.y} />
       ))}
 
       {coins.map((item) => (
@@ -764,23 +796,30 @@ const Foreground = ({
         </MemoizedPrizeBox>
       ))}
 
-      {turtles.map((item, x) => (
-        <MemoizedTurtle
-          key={x}
-          animationsPaused={animationsPaused}
-          x={item.x}
-          y={item.y}
-          offset={item.offset}
-          falling={falling}
-          xPos={xPos}
-          yPos={yPos}
-          setScore={setScore}
-          onStomp={onStomp}
-          onShellPrizeHit={triggerLeafPrizeBox}
-          onShellGoombaHit={handleShellGoombaHit}
-          shellTargets={shellTargets}
-        />
-      ))}
+      {turtles.map((item, x) => {
+        const shellRoute = turtleShellRoutes[item.id]
+
+        return (
+          <MemoizedTurtle
+            key={x}
+            animationsPaused={animationsPaused}
+            x={item.x}
+            y={item.y}
+            offset={item.offset}
+            falling={falling}
+            xPos={xPos}
+            yPos={yPos}
+            variant={item.variant}
+            setScore={setScore}
+            onStomp={onStomp}
+            onShellBrickHit={onShellBrickHit}
+            onShellPrizeHit={shellRoute ? undefined : triggerLeafPrizeBox}
+            onShellGoombaHit={shellRoute ? undefined : handleShellGoombaHit}
+            shellRoute={shellRoute}
+            shellTargets={shellRoute ? [] : shellTargets}
+          />
+        )
+      })}
     </>
   )
 }

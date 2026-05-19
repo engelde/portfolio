@@ -13,6 +13,10 @@ import Script from 'next/script'
 import { Box, Button, Heading, HStack, Input, Text, Textarea } from '@chakra-ui/react'
 
 import { config } from '@/lib/config'
+import {
+  hiddenMessageTurnstileField,
+  parseHiddenMessageFormData,
+} from '@/lib/validation/hidden-message'
 
 import type { PipeRoomMessageForm as PipeRoomMessageFormConfig } from '../types'
 
@@ -32,7 +36,8 @@ type Turnstile = {
       action?: string
       appearance?: 'always' | 'execute' | 'interaction-only'
       callback: (token: string) => void
-      'error-callback': () => void
+      execution?: 'execute' | 'render'
+      'error-callback': (errorCode?: string) => void
       'expired-callback': () => void
       sitekey: string
     }
@@ -46,15 +51,33 @@ declare global {
   }
 }
 
-type MessageFormStatus = 'idle' | 'sending' | 'sent' | 'setup-needed' | 'verification' | 'error'
+type MessageFormStatus =
+  | 'idle'
+  | 'sending'
+  | 'sent'
+  | 'setup-needed'
+  | 'validation'
+  | 'verification'
+  | 'error'
 
 const pipeRoomFont = 'var(--font-mono)'
 
+const turnstileErrorMessages: Record<string, string> = {
+  '110100': 'Message verification is using an invalid site key.',
+  '110200': 'Message verification is not configured for this domain.',
+}
+
+const getTurnstileErrorMessage = (errorCode?: string) =>
+  (errorCode && turnstileErrorMessages[errorCode]) || 'Verification failed. Please try again.'
+
 const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
   const [status, setStatus] = useState<MessageFormStatus>('idle')
+  const [feedbackMessage, setFeedbackMessage] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
   const formRef = useRef<HTMLFormElement | null>(null)
+  const pendingSubmitRef = useRef(false)
   const turnstileRef = useRef<HTMLDivElement | null>(null)
+  const turnstileTokenRef = useRef('')
   const turnstileWidgetRef = useRef<TurnstileWidgetId | null>(null)
   const messageForm = config.forms.pipeRoomMessage
   const turnstileSiteKey = messageForm.turnstileSiteKey
@@ -81,19 +104,30 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
     []
   )
   const statusMessage = useMemo(() => {
+    if (feedbackMessage) return feedbackMessage
+    if (status === 'sent') return 'Message sent.'
     if (status === 'setup-needed') return 'Message form setup needed.'
     if (status === 'verification') return 'Verification warming up.'
+    if (status === 'validation') return 'Please check the message fields.'
     if (status === 'error') return 'Message failed. Please try again.'
     return ''
-  }, [status])
+  }, [feedbackMessage, status])
+
+  const setTurnstileTokenValue = useCallback((token: string) => {
+    turnstileTokenRef.current = token
+    setTurnstileToken(token)
+  }, [])
 
   const resetTurnstile = useCallback(() => {
     const widgetId = turnstileWidgetRef.current
+
+    pendingSubmitRef.current = false
+    setTurnstileTokenValue('')
+
     if (!widgetId) return
 
     window.turnstile?.reset(widgetId)
-    setTurnstileToken('')
-  }, [])
+  }, [setTurnstileTokenValue])
 
   useEffect(() => {
     if (!turnstileEnabled) return
@@ -117,16 +151,25 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
           action: 'hidden-message',
           appearance: 'interaction-only',
           callback: (token) => {
-            setTurnstileToken(token)
+            setTurnstileTokenValue(token)
             setStatus((current) => (current === 'verification' ? 'idle' : current))
+
+            if (pendingSubmitRef.current) {
+              pendingSubmitRef.current = false
+              requestAnimationFrame(() => formRef.current?.requestSubmit())
+            }
           },
-          'error-callback': () => {
-            setTurnstileToken('')
+          execution: 'execute',
+          'error-callback': (errorCode) => {
+            pendingSubmitRef.current = false
+            setTurnstileTokenValue('')
+            setFeedbackMessage(getTurnstileErrorMessage(errorCode))
             setStatus('error')
           },
           'expired-callback': () => {
-            setTurnstileToken('')
-            setStatus('verification')
+            pendingSubmitRef.current = false
+            setTurnstileTokenValue('')
+            setStatus((current) => (current === 'sending' ? current : 'idle'))
           },
           sitekey: turnstileSiteKey,
         }) ?? null
@@ -142,23 +185,39 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
         turnstileWidgetRef.current = null
       }
     }
-  }, [turnstileEnabled, turnstileSiteKey])
+  }, [setTurnstileTokenValue, turnstileEnabled, turnstileSiteKey])
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      if (turnstileEnabled && !turnstileToken) {
+      const currentForm = event.currentTarget
+      const formData = new FormData(currentForm)
+      const currentTurnstileToken = turnstileTokenRef.current || turnstileToken
+
+      if (currentTurnstileToken) formData.set(hiddenMessageTurnstileField, currentTurnstileToken)
+
+      const parsedMessage = parseHiddenMessageFormData(formData)
+
+      if (!parsedMessage.success) {
+        const firstError = Object.values(parsedMessage.error.flatten().fieldErrors)
+          .flat()
+          .find(Boolean)
+
+        setFeedbackMessage(firstError || 'Please check the message fields.')
+        setStatus('validation')
+        return
+      }
+
+      if (turnstileEnabled && !currentTurnstileToken) {
+        setFeedbackMessage('')
         setStatus('verification')
+        pendingSubmitRef.current = true
         if (turnstileWidgetRef.current) window.turnstile?.execute(turnstileWidgetRef.current)
         return
       }
 
-      const currentForm = event.currentTarget
-      const formData = new FormData(currentForm)
-
-      if (turnstileToken) formData.set('cf-turnstile-response', turnstileToken)
-
+      setFeedbackMessage('')
       setStatus('sending')
 
       try {
@@ -166,17 +225,23 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
           body: formData,
           method: 'POST',
         })
+        const responseBody = (await response.json().catch(() => null)) as {
+          message?: string
+        } | null
 
         if (!response.ok) {
+          setFeedbackMessage(responseBody?.message || '')
           setStatus(response.status === 500 ? 'setup-needed' : 'error')
           resetTurnstile()
           return
         }
 
         currentForm.reset()
+        setFeedbackMessage(responseBody?.message || '')
         setStatus('sent')
         resetTurnstile()
       } catch {
+        setFeedbackMessage('')
         setStatus('error')
         resetTurnstile()
       }
@@ -205,7 +270,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
         />
       )}
 
-      <Box as={'form'} ref={formRef} display={'grid'} gap={3} onSubmit={handleSubmit}>
+      <Box as={'form'} ref={formRef} display={'grid'} gap={3} noValidate onSubmit={handleSubmit}>
         <Heading
           as={'h2'}
           color={'green.500'}
@@ -267,6 +332,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
             onClick={() => {
               formRef.current?.reset()
               setStatus('idle')
+              setFeedbackMessage('')
               resetTurnstile()
               onCancel()
             }}
@@ -312,7 +378,10 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
 
         {statusMessage && (
           <Text
-            color={status === 'verification' ? 'cyan.500' : 'red.500'}
+            aria-live={'polite'}
+            color={
+              status === 'sent' ? 'green.500' : status === 'verification' ? 'cyan.500' : 'red.500'
+            }
             fontFamily={pipeRoomFont}
             fontSize={'xl'}
             fontWeight={'bold'}
