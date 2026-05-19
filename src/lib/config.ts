@@ -7,4 +7,12 @@ export const config = {
     version: process.env.NEXT_PUBLIC_VERSION || '',
     environment: process.env.NODE_ENV || '',
   },
+  forms: {
+    pipeRoomMessage: {
+      action: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_FORM_ACTION || '',
+      emailField: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_EMAIL_FIELD || '',
+      nameField: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_NAME_FIELD || '',
+      messageField: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_MESSAGE_FIELD || '',
+    },
+  },
 }

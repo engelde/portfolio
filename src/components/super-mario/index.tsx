@@ -83,6 +83,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const [gameOverBanner, setGameOverBanner] = useState(false)
   const [pipeRoomPhase, setPipeRoomPhase] = useState<PipeRoomPhase>('idle')
   const [pipeRoomEntryPipeId, setPipeRoomEntryPipeId] = useState(defaultPipeRoomEntryPipe?.id ?? '')
+  const [collectedPipeRoomCoins, setCollectedPipeRoomCoins] = useState<Record<string, true>>({})
   const [stompBounceSignal, setStompBounceSignal] = useState(0)
   const endLocked = complete || gameOver
   const pipeRoomActive = pipeRoomPhase !== 'idle'
@@ -99,6 +100,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const autoFinishFrameRef = useRef<number | null>(null)
   const autoFinishSampleRef = useRef<AutoFinishSample | null>(null)
   const autoFinishSpeedRef = useRef(autoFinishPixelsPerSecond)
+  const collectedPipeRoomCoinsRef = useRef<Record<string, true>>({})
   const deathTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pipeRoomTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -236,6 +238,17 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       }
     }, pipeRoomExitDelay)
   }, [activePipeRoomEntryPipe, setX, setY, xOffset, yOffset])
+
+  const handlePipeRoomCoinCollect = React.useCallback(
+    (id: string, value: number) => {
+      if (collectedPipeRoomCoinsRef.current[id]) return
+
+      collectedPipeRoomCoinsRef.current = { ...collectedPipeRoomCoinsRef.current, [id]: true }
+      setCollectedPipeRoomCoins(collectedPipeRoomCoinsRef.current)
+      setScore((score) => score + value)
+    },
+    [setScore]
+  )
 
   useEffect(() => {
     if (!scrollLocked) return
@@ -579,7 +592,13 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
         )}
 
         {pipeRoomVisible && activePipeRoomEntryPipe && (
-          <PipeRoom character={playerCharacter} onExit={handlePipeRoomExit} variant={mario} />
+          <PipeRoom
+            character={playerCharacter}
+            collectedCoinIds={collectedPipeRoomCoins}
+            onCollectCoin={handlePipeRoomCoinCollect}
+            onExit={handlePipeRoomExit}
+            variant={mario}
+          />
         )}
 
         {gameOverBanner && (

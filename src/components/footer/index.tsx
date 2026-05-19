@@ -14,7 +14,7 @@ const Footer = ({ animated = true, dark }: FooterProps) => {
 
   return (
     <HStack
-      zIndex={10}
+      zIndex={35}
       position={'fixed'}
       bottom={0}
       left={0}
