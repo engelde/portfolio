@@ -37,6 +37,7 @@ const autoFinishDistance = 520
 const autoFinishCatchupSeconds = 0.42
 const autoFinishPixelsPerSecond = 640
 const autoFinishMaxPixelsPerSecond = 2600
+const autoFinishPipeContactOffset = 80
 const pipeRoomEntryPipeIds = new Set(['pipe-5', 'pipe-7'])
 const pipeRoomEntryPipes = pipeSegments.filter(({ id }) => pipeRoomEntryPipeIds.has(id))
 const defaultPipeRoomEntryPipe =
@@ -421,7 +422,12 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   useEffect(() => {
     if (complete || gameOver || dying || autoFinishing || pipeRoomActive) return
 
-    if (worldX >= length - autoFinishDistance) {
+    const autoFinishStartX = Math.max(
+      length - autoFinishDistance,
+      finalPipe.x - autoFinishPipeContactOffset
+    )
+
+    if (worldX >= autoFinishStartX) {
       const remaining = Math.max(0, length - window.scrollY)
       autoFinishSpeedRef.current = Math.max(
         autoFinishSpeedRef.current,
@@ -488,7 +494,6 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   useEffect(() => {
     if (!autoFinishing) return
 
-    const preventDefault = (event: Event) => event.preventDefault()
     const preventMovementKeys = (event: KeyboardEvent) => {
       if (isEditableTarget(event.target)) return
 
@@ -509,13 +514,9 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       }
     }
 
-    window.addEventListener('wheel', preventDefault, { passive: false })
-    window.addEventListener('touchmove', preventDefault, { passive: false })
     window.addEventListener('keydown', preventMovementKeys, { passive: false })
 
     return () => {
-      window.removeEventListener('wheel', preventDefault)
-      window.removeEventListener('touchmove', preventDefault)
       window.removeEventListener('keydown', preventMovementKeys)
     }
   }, [autoFinishing])
@@ -611,14 +612,14 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           bottom={0}
           h={'100vh'}
           w={'100vw'}
-          overflow={gameOver ? 'hidden' : 'visible'}
+          overflow={endLocked || autoFinishing ? 'hidden' : 'visible'}
           pointerEvents={endLocked ? 'auto' : 'none'}
-          transform={gameOver ? 'none' : `translate3d(${-x}px, 0, 0)`}
+          transform={endLocked ? 'none' : `translate3d(${-x}px, 0, 0)`}
           willChange={'transform'}
         >
           <MemoizedEnd
             active={endLocked}
-            locked={gameOver}
+            locked={endLocked}
             mode={gameOver ? 'game-over' : 'course-clear'}
             x={length - offset.x}
             xPos={worldX}
@@ -632,7 +633,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
             complete={complete}
             down={down}
             dying={dying}
-            enteringPipe={pipeRoomEntering}
+            enteringPipe={pipeRoomEntering || autoFinishing}
             exitingPipe={pipeRoomExiting}
             forwards={pipeRoomExiting ? true : forwards}
             jump={jump}
@@ -641,7 +642,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
             mario={mario}
             maxXOffset={offset.x}
             mobile={mobile}
-            marioZIndex={pipeRoomEntering || pipeRoomExiting ? 0 : 9}
+            marioZIndex={pipeRoomEntering || pipeRoomExiting || autoFinishing ? 0 : 9}
             paused={paused}
             score={score}
             timer={timer}

@@ -10,7 +10,7 @@ export const config = {
   forms: {
     pipeRoomMessage: {
       endpoint: '/api/hidden-message',
-      turnstileSiteKey: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_TURNSTILE_SITE_KEY || '',
+      turnstileSiteKey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
     },
   },
 }

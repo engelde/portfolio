@@ -10,25 +10,14 @@ type TurnstileValidationResponse = {
 }
 
 const googleForm = {
-  action:
-    process.env.PIPE_ROOM_MESSAGE_FORM_ACTION ||
-    process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_FORM_ACTION ||
-    '',
-  emailField:
-    process.env.PIPE_ROOM_MESSAGE_EMAIL_FIELD ||
-    process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_EMAIL_FIELD ||
-    '',
+  action: process.env.MESSAGE_FORM_ACTION || process.env.NEXT_PUBLIC_MESSAGE_FORM_ACTION || '',
+  emailField: process.env.MESSAGE_EMAIL_FIELD || process.env.NEXT_PUBLIC_MESSAGE_EMAIL_FIELD || '',
   messageField:
-    process.env.PIPE_ROOM_MESSAGE_MESSAGE_FIELD ||
-    process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_MESSAGE_FIELD ||
-    '',
-  nameField:
-    process.env.PIPE_ROOM_MESSAGE_NAME_FIELD ||
-    process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_NAME_FIELD ||
-    '',
+    process.env.MESSAGE_MESSAGE_FIELD || process.env.NEXT_PUBLIC_MESSAGE_MESSAGE_FIELD || '',
+  nameField: process.env.MESSAGE_NAME_FIELD || process.env.NEXT_PUBLIC_MESSAGE_NAME_FIELD || '',
 }
 
-const turnstileSecret = process.env.PIPE_ROOM_MESSAGE_TURNSTILE_SECRET_KEY || ''
+const turnstileSecret = process.env.TURNSTILE_SECRET_KEY || ''
 
 const isGoogleFormConfigured = () =>
   Boolean(

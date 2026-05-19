@@ -12,7 +12,6 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "audit:mario-collisions": "node scripts/audit-mario-collisions.mjs",
     "start": "next start",
     "lint": "next lint",
     "lint-staged": "lint-staged",
