@@ -13,9 +13,10 @@ import Environment from './environment'
 import Foreground from './foreground'
 import Pipe from './foreground/pipe'
 import Landscape from './landscape'
-import { finalPipe } from './level-map'
+import { finalPipe, pipeSegments } from './level-map'
 import Overlay from './overlay'
 import End from './overlay/end'
+import PipeRoom from './pipe-room'
 import Player from './player'
 
 export type SuperMarioProps = {
@@ -34,11 +35,22 @@ const autoFinishDistance = 520
 const autoFinishCatchupSeconds = 0.42
 const autoFinishPixelsPerSecond = 640
 const autoFinishMaxPixelsPerSecond = 2600
+const pipeRoomEntryPipeIds = new Set(['pipe-5', 'pipe-7'])
+const pipeRoomEntryPipes = pipeSegments.filter(({ id }) => pipeRoomEntryPipeIds.has(id))
+const defaultPipeRoomEntryPipe =
+  pipeRoomEntryPipes.find(({ id }) => id === 'pipe-7') ?? pipeRoomEntryPipes[0]
+const pipeRoomExitPipe = pipeSegments.find(({ id }) => id === 'pipe-7') ?? defaultPipeRoomEntryPipe
+const pipeRoomEntryDelay = 620
+const pipeRoomExitDelay = 720
+const pipeRoomEntryFeetTolerance = 8
+const pipeRoomEntryMouthPadding = 40
 
 type AutoFinishSample = {
   time: number
   x: number
 }
+
+type PipeRoomPhase = 'idle' | 'entering' | 'room' | 'exiting'
 
 const SuperMario = ({ ip }: SuperMarioProps) => {
   const {
@@ -69,9 +81,17 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const [dying, setDying] = useState(false)
   const [autoFinishing, setAutoFinishing] = useState(false)
   const [gameOverBanner, setGameOverBanner] = useState(false)
+  const [pipeRoomPhase, setPipeRoomPhase] = useState<PipeRoomPhase>('idle')
+  const [pipeRoomEntryPipeId, setPipeRoomEntryPipeId] = useState(defaultPipeRoomEntryPipe?.id ?? '')
   const [stompBounceSignal, setStompBounceSignal] = useState(0)
   const endLocked = complete || gameOver
-  const scrollLocked = paused || endLocked || dying
+  const pipeRoomActive = pipeRoomPhase !== 'idle'
+  const pipeRoomEntering = pipeRoomPhase === 'entering'
+  const pipeRoomExiting = pipeRoomPhase === 'exiting'
+  const pipeRoomVisible = pipeRoomPhase === 'room'
+  const activePipeRoomEntryPipe =
+    pipeRoomEntryPipes.find(({ id }) => id === pipeRoomEntryPipeId) ?? defaultPipeRoomEntryPipe
+  const scrollLocked = paused || endLocked || dying || pipeRoomActive
   const { playAudio } = useAudio()
   const playAudioRef = useRef(playAudio)
   const animationRootRef = useRef<HTMLDivElement | null>(null)
@@ -80,6 +100,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const autoFinishSampleRef = useRef<AutoFinishSample | null>(null)
   const autoFinishSpeedRef = useRef(autoFinishPixelsPerSecond)
   const deathTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pipeRoomTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const {
     ceilingHit,
@@ -95,9 +116,9 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     setX,
     setY,
   } = useController({
-    active: !complete && !gameOver && !dying && !paused,
+    active: !complete && !gameOver && !dying && !paused && !pipeRoomActive,
     mario: mario,
-    movementLocked: autoFinishing,
+    movementLocked: autoFinishing || pipeRoomActive,
     maximum: {
       length: length,
       marioOffset: offset.mario,
@@ -139,7 +160,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   }, [setX])
 
   useEffect(() => {
-    if (complete || gameOver || dying || paused || autoFinishing) {
+    if (complete || gameOver || dying || paused || autoFinishing || pipeRoomActive) {
       autoFinishSampleRef.current = null
 
       if (complete || gameOver) {
@@ -167,7 +188,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     }
 
     autoFinishSampleRef.current = { time: now, x: worldX }
-  }, [autoFinishing, complete, dying, gameOver, paused, worldX])
+  }, [autoFinishing, complete, dying, gameOver, paused, pipeRoomActive, worldX])
 
   const handleDeath = React.useCallback(() => {
     if (complete || gameOver || dying) return
@@ -183,6 +204,38 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       setGameOver(true)
     }, 1050)
   }, [complete, dying, gameOver, playAudio, setGameOver])
+
+  const handlePipeRoomExit = React.useCallback(() => {
+    const exitPipe = pipeRoomExitPipe ?? activePipeRoomEntryPipe
+
+    if (pipeRoomTimeoutRef.current) {
+      clearTimeout(pipeRoomTimeoutRef.current)
+      pipeRoomTimeoutRef.current = null
+    }
+
+    if (exitPipe) {
+      const exitWorldX = exitPipe.x + 40
+
+      setX(Math.max(0, exitWorldX - xOffset))
+      setY(exitPipe.y + exitPipe.height - yOffset)
+    }
+
+    setPipeRoomPhase('exiting')
+    pipeRoomTimeoutRef.current = setTimeout(() => {
+      pipeRoomTimeoutRef.current = null
+      setPipeRoomPhase('idle')
+
+      if (exitPipe) {
+        const exitWorldX = exitPipe.x + 40
+
+        setX(Math.max(0, exitWorldX - xOffset))
+        setY(exitPipe.y + exitPipe.height - yOffset)
+        window.requestAnimationFrame(() => {
+          window.scrollTo({ top: exitWorldX, behavior: 'auto' })
+        })
+      }
+    }, pipeRoomExitDelay)
+  }, [activePipeRoomEntryPipe, setX, setY, xOffset, yOffset])
 
   useEffect(() => {
     if (!scrollLocked) return
@@ -291,7 +344,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
 
   // Complete
   useEffect(() => {
-    if (complete || gameOver || dying || autoFinishing) return
+    if (complete || gameOver || dying || autoFinishing || pipeRoomActive) return
 
     if (worldX >= length - autoFinishDistance) {
       const remaining = Math.max(0, length - window.scrollY)
@@ -301,7 +354,61 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       )
       setAutoFinishing(true)
     }
-  }, [autoFinishing, complete, dying, gameOver, length, worldX])
+  }, [autoFinishing, complete, dying, gameOver, length, pipeRoomActive, worldX])
+
+  useEffect(() => {
+    if (
+      pipeRoomEntryPipes.length === 0 ||
+      !down ||
+      pipeRoomActive ||
+      complete ||
+      gameOver ||
+      dying ||
+      paused ||
+      autoFinishing ||
+      jump ||
+      falling
+    ) {
+      return
+    }
+
+    const playerCenterX = worldX + 40
+    const entryPipe = pipeRoomEntryPipes.find((pipe) => {
+      const pipeTop = pipe.y + pipe.height
+      const standingOnEntryPipe = Math.abs(y + yOffset - pipeTop) <= pipeRoomEntryFeetTolerance
+      const centeredOnPipeMouth =
+        playerCenterX >= pipe.x + pipeRoomEntryMouthPadding &&
+        playerCenterX <= pipe.x + 160 - pipeRoomEntryMouthPadding
+
+      return standingOnEntryPipe && centeredOnPipeMouth
+    })
+
+    if (!entryPipe) return
+
+    setPipeRoomEntryPipeId(entryPipe.id)
+    setPipeRoomPhase('entering')
+    playAudio('pipe')
+
+    if (pipeRoomTimeoutRef.current) clearTimeout(pipeRoomTimeoutRef.current)
+    pipeRoomTimeoutRef.current = setTimeout(() => {
+      pipeRoomTimeoutRef.current = null
+      setPipeRoomPhase('room')
+    }, pipeRoomEntryDelay)
+  }, [
+    autoFinishing,
+    complete,
+    down,
+    dying,
+    falling,
+    gameOver,
+    jump,
+    paused,
+    pipeRoomActive,
+    playAudio,
+    worldX,
+    y,
+    yOffset,
+  ])
 
   useEffect(() => {
     if (!autoFinishing) return
@@ -340,6 +447,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     return () => {
       if (autoFinishFrameRef.current !== null) cancelAnimationFrame(autoFinishFrameRef.current)
       if (deathTimeoutRef.current) clearTimeout(deathTimeoutRef.current)
+      if (pipeRoomTimeoutRef.current) clearTimeout(pipeRoomTimeoutRef.current)
     }
   }, [])
 
@@ -440,20 +548,22 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           />
         </Box>
 
-        {!complete && !gameOver && (
+        {!complete && !gameOver && !pipeRoomVisible && (
           <MemoizedPlayer
             character={playerCharacter}
             complete={complete}
             down={down}
             dying={dying}
-            forwards={forwards}
+            enteringPipe={pipeRoomEntering}
+            exitingPipe={pipeRoomExiting}
+            forwards={pipeRoomExiting ? true : forwards}
             jump={jump}
             length={length + xOffset}
             lives={lives}
             mario={mario}
             maxXOffset={offset.x}
             mobile={mobile}
-            marioZIndex={9}
+            marioZIndex={pipeRoomEntering || pipeRoomExiting ? 0 : 9}
             paused={paused}
             score={score}
             timer={timer}
@@ -466,6 +576,10 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
             setX={setX}
             setY={setY}
           />
+        )}
+
+        {pipeRoomVisible && activePipeRoomEntryPipe && (
+          <PipeRoom character={playerCharacter} onExit={handlePipeRoomExit} variant={mario} />
         )}
 
         {gameOverBanner && (
@@ -491,7 +605,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           </Box>
         )}
 
-        {!complete && !gameOver && !dying && !autoFinishing && (
+        {!complete && !gameOver && !dying && !autoFinishing && !pipeRoomActive && (
           <MemoizedOverlay forwards={forwards} ip={ip} xPos={worldX} yPos={y + yOffset} />
         )}
       </MotionConfig>

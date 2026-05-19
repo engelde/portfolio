@@ -10,6 +10,8 @@ export type MarioProps = {
   character: PlayerCharacter
   down: boolean
   dying: boolean
+  enteringPipe?: boolean
+  exitingPipe?: boolean
   variant: 1 | 2 | 3
   x: number
   y: number
@@ -30,6 +32,8 @@ const Mario = ({
   character,
   down,
   dying,
+  enteringPipe = false,
+  exitingPipe = false,
   variant,
   x,
   y,
@@ -48,9 +52,10 @@ const Mario = ({
   const walkScale = 240 // Pixels per walk cycle
   const state = Math.floor(Math.abs(xPos) / walkScale) % 2 === 0 ? 1 : 2
   const currentVariant = variants[variant]
-  const crouch = down && variant !== 1 && !jump && !dying
+  const crouch = down && variant !== 1 && !jump && !dying && !enteringPipe && !exitingPipe
   const frame = crouch ? 3 : jump || dying ? 2 : state - 1
   const pulseControls = useAnimationControls()
+  const marioInitial = exitingPipe ? { translateY: 192 } : false
   const marioAnimation = dying
     ? {
         opacity: [1, 1, 0],
@@ -58,7 +63,19 @@ const Mario = ({
         translateY: [0, -150, 520],
         transition: { duration: 1.05, ease: 'easeInOut', times: [0, 0.28, 1] },
       }
-    : pulseControls
+    : enteringPipe
+      ? {
+          opacity: [1, 1, 0],
+          translateY: [0, 96, 192],
+          transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
+        }
+      : exitingPipe
+        ? {
+            opacity: 1,
+            translateY: [192, 96, 0],
+            transition: { duration: 0.68, ease: 'easeOut', times: [0, 0.28, 1] },
+          }
+        : pulseControls
 
   // Brief pulsate on variant change
   const prevVariantRef = useRef(variant)
@@ -88,6 +105,7 @@ const Mario = ({
     >
       <Box
         as={motion.div}
+        initial={marioInitial}
         animate={marioAnimation}
         style={{
           transformOrigin: 'bottom center',

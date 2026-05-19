@@ -180,7 +180,6 @@ export const useController = ({
         return false
       }
 
-      const worldX = xRef.current + xOffsetRef.current
       const recoverSurface =
         force &&
         !jumpDisplayRef.current &&
@@ -196,8 +195,7 @@ export const useController = ({
         yOffsetRef.current = 0
       }
 
-      const inFlightWindow = worldX >= 4400 && worldX <= 7400
-      if (mario === 3 && runChargeRef.current >= 60 && inFlightWindow) {
+      if (mario === 3 && runChargeRef.current >= 60) {
         flyingRef.current = true
         flyTimeRef.current = 0
       }

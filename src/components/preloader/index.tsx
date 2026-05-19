@@ -91,6 +91,8 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         '/images/orcid/orcid.png',
         '/images/pipe/pipe.0.png',
         '/images/pipe/pipe.1.png',
+        '/images/pipe/pipe.alt.0.png',
+        '/images/pipe/pipe.alt.1.png',
         '/images/plant/plant.sprite.png',
         '/images/rock/rock.png',
         '/images/sun/sun.png',

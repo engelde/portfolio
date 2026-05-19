@@ -29,6 +29,9 @@ type FireShot = {
 }
 
 type PlantState = 'alive' | 'hit' | 'gone'
+type PipeDirection = 'up' | 'down'
+type PipePlacement = 'bottom' | 'top'
+type PipeSkin = 'normal' | 'alt'
 
 const pipeEnter = keyframes`
   0% { transform: translateY(150%); }
@@ -47,19 +50,24 @@ const firePeakWindowEnd = 0.49
 const maxFireAngle = 55
 
 export type PipeProps = {
+  animateEntry?: boolean
   animationsPaused?: boolean
+  direction?: PipeDirection
   xPos?: number
   yPos?: number
   x: number
   y: number
   height: number
+  placement?: PipePlacement
   rotate?: number
+  skin?: PipeSkin
   plant?: boolean
   plantVariant?: 1 | 2
   active?: boolean
   falling?: boolean
   setScore?: Dispatch<SetStateAction<number>>
   onStomp?: () => void
+  zIndex?: number
 }
 
 const getPlantCycleProgress = (startedAt: number) =>
@@ -77,19 +85,24 @@ const getPlantTranslateY = (startedAt: number) =>
   getPlantTranslateYForProgress(getPlantCycleProgress(startedAt))
 
 const Pipe = ({
+  animateEntry = true,
   animationsPaused = false,
+  direction = 'up',
   xPos,
   yPos,
   x,
   y,
   height,
+  placement = 'bottom',
   rotate,
+  skin = 'normal',
   plant,
   plantVariant,
   active,
   falling,
   setScore,
   onStomp,
+  zIndex = 1,
 }: PipeProps) => {
   const { playAudio } = useAudio()
   const [fireShot, setFireShot] = useState<FireShot | null>(null)
@@ -113,6 +126,37 @@ const Pipe = ({
   const fireTravel = 1280
   const plantValue = 100
   const plantForwards = xPos !== undefined ? xPos >= x + 80 : false
+  const pipeTopSrc = skin === 'alt' ? '/images/pipe/pipe.alt.0.png' : '/images/pipe/pipe.0.png'
+  const pipeBodySrc = skin === 'alt' ? '/images/pipe/pipe.alt.1.png' : '/images/pipe/pipe.1.png'
+  const pipeBodyHeight = Math.max(0, height - 80)
+  const pipePlacement = placement === 'top' ? { top: y + 'px' } : { bottom: y + 'px' }
+  const pipeTop = (
+    <NextImage
+      key={'top'}
+      alt={'pipe'}
+      src={pipeTopSrc}
+      width={160}
+      height={80}
+      draggable={false}
+      unoptimized
+      style={{
+        display: 'block',
+        width: 160,
+        height: 80,
+        imageRendering: 'pixelated',
+      }}
+    />
+  )
+  const pipeBody = (
+    <Box
+      key={'body'}
+      w={'160px'}
+      h={pipeBodyHeight + 'px'}
+      bg={`url(${pipeBodySrc}) repeat-y left top / 160px 80px`}
+      sx={{ imageRendering: 'pixelated' }}
+    />
+  )
+  const pipeParts = direction === 'down' ? [pipeBody, pipeTop] : [pipeTop, pipeBody]
   const finishFireShot = useCallback(() => {
     cooldownUntilRef.current = performance.now() + 1800
     setFireShot(null)
@@ -254,13 +298,13 @@ const Pipe = ({
 
   return (
     <Box
-      zIndex={1}
+      zIndex={zIndex}
       position={'absolute'}
       left={x + 'px'}
-      bottom={y + 'px'}
       w={'160px'}
+      {...pipePlacement}
       sx={{
-        animation: `${pipeEnter} 0.3s linear 0.3s both`,
+        animation: animateEntry ? `${pipeEnter} 0.3s linear 0.3s both` : undefined,
       }}
     >
       <VStack
@@ -268,19 +312,7 @@ const Pipe = ({
         mb={rotate !== undefined ? '-' + (height / 2 - 76) + 'px' : '0px'}
         transform={'rotate(' + ((rotate !== undefined && rotate + 'deg') || '0deg') + ')'}
       >
-        <NextImage
-          alt={'pipe'}
-          src={'/images/pipe/pipe.0.png'}
-          width={160}
-          height={80}
-          draggable={false}
-          unoptimized
-        />
-        <Box
-          w={'160px'}
-          h={height - 80 + 'px'}
-          bg={'url(/images/pipe/pipe.1.png) repeat-y left top / contain'}
-        />
+        {pipeParts}
       </VStack>
       {plant && (
         <>

@@ -13,6 +13,8 @@ export type PlayerProps = {
   complete: boolean
   down: boolean
   dying: boolean
+  enteringPipe?: boolean
+  exitingPipe?: boolean
   forwards: boolean
   jump: boolean
   length: number
@@ -39,6 +41,8 @@ const Player = ({
   complete,
   down,
   dying,
+  enteringPipe = false,
+  exitingPipe = false,
   forwards,
   jump,
   length,
@@ -67,6 +71,8 @@ const Player = ({
             character={character}
             down={down}
             dying={dying}
+            enteringPipe={enteringPipe}
+            exitingPipe={exitingPipe}
             variant={mario}
             x={x}
             y={y}

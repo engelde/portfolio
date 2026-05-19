@@ -77,7 +77,7 @@
       "activeWhenBeforeX": 9600
     },
     { "id": "pipe-4", "x": 11520, "y": 64, "height": 240 },
-    { "id": "pipe-5", "x": 11520, "y": 624, "height": 1120, "collisionTop": false },
+    { "id": "pipe-5", "x": 11520, "y": 624, "height": 1120 },
     { "id": "pipe-6", "x": 11520, "y": 544, "height": 80, "collisionTop": false },
     { "id": "pipe-7", "x": 11840, "y": 64, "height": 160 }
   ],
@@ -397,6 +397,14 @@
       "height": 304
     },
     {
+      "id": "cube-4-top-2",
+      "owner": "cube-4",
+      "kind": "platform",
+      "xMin": 11120,
+      "xMax": 11360,
+      "height": 784
+    },
+    {
       "id": "pipe-2-top",
       "owner": "pipe-2",
       "kind": "pipe",
@@ -419,6 +427,14 @@
       "xMin": 11520,
       "xMax": 11680,
       "height": 304
+    },
+    {
+      "id": "pipe-5-top",
+      "owner": "pipe-5",
+      "kind": "pipe",
+      "xMin": 11520,
+      "xMax": 11680,
+      "height": 1744
     },
     {
       "id": "pipe-7-top",

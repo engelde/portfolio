@@ -26,11 +26,43 @@ export type MushroomProps = {
 }
 
 const mushroomDuration = 1.4
-const mushroomDelayRatio = 0.28
+const mushroomEmergeSeconds = 0.62
+const mushroomDelayRatio = mushroomEmergeSeconds / mushroomDuration
+const mushroomDelayPercent = mushroomDelayRatio * 100
+const mushroomTravelX = 320
+const mushroomTravelY = 160
 const mushroomMove = keyframes`
-  0%, 28% { transform: translate(0, 0); }
-  100% { transform: translate(320px, 160px); }
+  0%, ${mushroomDelayPercent}% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(${mushroomTravelX}px, ${mushroomTravelY}px, 0); }
 `
+
+const getMushroomRect = (elapsed: number, worldX: number, worldY: number, x: number, y: number) => {
+  if (elapsed <= mushroomEmergeSeconds) {
+    const emergeProgress = Math.max(0, Math.min(1, elapsed / mushroomEmergeSeconds))
+    const bottom = worldY + y + 80 * emergeProgress
+
+    return {
+      left: worldX + x,
+      right: worldX + x + 80,
+      bottom,
+      top: bottom + 80,
+    }
+  }
+
+  const moveProgress = Math.max(
+    0,
+    Math.min(1, (elapsed - mushroomEmergeSeconds) / (mushroomDuration - mushroomEmergeSeconds))
+  )
+  const left = worldX + x + mushroomTravelX * moveProgress
+  const bottom = worldY + y + 80 - mushroomTravelY * moveProgress
+
+  return {
+    left,
+    right: left + 80,
+    bottom,
+    top: bottom + 80,
+  }
+}
 
 const Mushroom = ({
   x,
@@ -102,22 +134,14 @@ const Mushroom = ({
 
     const tick = () => {
       const elapsed = Math.min(mushroomDuration, (performance.now() - spawnedAtRef.current) / 1000)
-      const xProgress = Math.max(
-        0,
-        (elapsed / mushroomDuration - mushroomDelayRatio) / (1 - mushroomDelayRatio)
-      )
-      const yProgress = elapsed / mushroomDuration
-      const mushroomLeft = worldX + x + 320 * xProgress
-      const mushroomRight = mushroomLeft + 80
-      const mushroomBottom = worldY + y + 80 - 160 * yProgress
-      const mushroomTop = mushroomBottom + 80
+      const mushroomRect = getMushroomRect(elapsed, worldX, worldY, x, y)
       const marioWidth = mario === 3 ? 120 : mario === 2 ? 80 : 100
       const marioLeft = xPos + (mario === 3 ? -24 : 0)
       const marioRight = marioLeft + marioWidth
       const marioBottom = yPos
       const marioTop = yPos + (mario === 1 ? 100 : 160)
-      const horizontalHit = marioRight > mushroomLeft + 8 && marioLeft < mushroomRight - 8
-      const verticalHit = marioTop > mushroomBottom + 8 && marioBottom < mushroomTop - 8
+      const horizontalHit = marioRight > mushroomRect.left + 8 && marioLeft < mushroomRect.right - 8
+      const verticalHit = marioTop > mushroomRect.bottom + 8 && marioBottom < mushroomRect.top - 8
 
       if (horizontalHit && verticalHit) {
         collect()
