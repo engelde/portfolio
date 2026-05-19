@@ -132,7 +132,11 @@ const Turtle = ({
   const shellSize = 80
   const platformEdgeX = 3275
   const prizeBoxLeftX = 3520
+  const prizeBoxBottomY = 128
+  const prizeBoxCollisionTolerance = 6
   const prizeHitX = prizeBoxLeftX - shellSize
+  const prizeBoxRightX = prizeBoxLeftX + shellSize
+  const prizeBoxTopY = prizeBoxBottomY + shellSize
   const highGroundStartX = 3360
   const highGroundY = 128
   const lowGroundY = 64
@@ -335,6 +339,30 @@ const Turtle = ({
     [shellSpeed, y]
   )
 
+  const shellHitsLeafPrizeBox = useCallback(
+    (pose: ShellPose) => {
+      const shellLeft = pose.x
+      const shellRight = pose.x + shellSize
+      const shellBottom = pose.y
+      const shellTop = pose.y + shellSize
+
+      return (
+        shellRight >= prizeBoxLeftX - prizeBoxCollisionTolerance &&
+        shellLeft <= prizeBoxRightX + prizeBoxCollisionTolerance &&
+        shellTop >= prizeBoxBottomY - prizeBoxCollisionTolerance &&
+        shellBottom <= prizeBoxTopY + prizeBoxCollisionTolerance
+      )
+    },
+    [
+      prizeBoxBottomY,
+      prizeBoxCollisionTolerance,
+      prizeBoxLeftX,
+      prizeBoxRightX,
+      prizeBoxTopY,
+      shellSize,
+    ]
+  )
+
   useEffect(() => {
     if (xPos === undefined || yPos === undefined) return
 
@@ -403,7 +431,7 @@ const Turtle = ({
         }
       }
 
-      if (!routePose && !shellPrizeHitRef.current && nextPose.x >= prizeHitX - 4) {
+      if (!routePose && !shellPrizeHitRef.current && shellHitsLeafPrizeBox(nextPose)) {
         shellPrizeHitRef.current = true
         onShellPrizeHit?.()
         playAudio('stomp')
@@ -452,8 +480,8 @@ const Turtle = ({
     onShellGoombaHit,
     onShellPrizeHit,
     playAudio,
-    prizeHitX,
     shellRoute,
+    shellHitsLeafPrizeBox,
     shellTargets,
   ])
 
