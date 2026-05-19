@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/engelde/portfolio/compare/v1.6.0...v1.6.1) (2026-05-19)
+
+
+### 🐛 Bug Fixes
+
+* polish pipe room camera and end flow ([ce6bb89](https://github.com/engelde/portfolio/commit/ce6bb892c9186d91332c111087d342ba036b2c9a))
+
 ## [1.6.0](https://github.com/engelde/portfolio/compare/v1.5.0...v1.6.0) (2026-05-19)
 
 
