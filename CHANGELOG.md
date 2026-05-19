@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.3](https://github.com/engelde/portfolio/compare/v1.7.2...v1.7.3) (2026-05-19)
+
+
+### 🐛 Bug Fixes
+
+* stabilize mobile preloader assets ([cb4eecc](https://github.com/engelde/portfolio/commit/cb4eecc6eb519e31a51a21d06368e9c4136c6a48))
+
 ### [1.7.2](https://github.com/engelde/portfolio/compare/v1.7.1...v1.7.2) (2026-05-19)
 
 
