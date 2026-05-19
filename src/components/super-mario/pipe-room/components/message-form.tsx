@@ -83,6 +83,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
   const turnstileSiteKey = messageForm.turnstileSiteKey
   const turnstileEnabled = Boolean(turnstileSiteKey)
   const sending = status === 'sending'
+  const submitting = sending || status === 'verification'
   const fieldStyles = useMemo(
     () => ({
       _focusVisible: {
@@ -348,7 +349,9 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
 
           <Button
             type={'submit'}
-            isDisabled={sending}
+            isDisabled={submitting}
+            isLoading={submitting}
+            loadingText={status === 'verification' ? 'Verify' : 'Sending'}
             flex={1}
             h={'56px'}
             border={'4px solid'}
@@ -368,7 +371,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
             }}
             _active={{ bg: 'green.500', borderColor: 'green.500' }}
           >
-            {status === 'sent' ? 'Sent' : sending ? 'Sending' : 'Submit'}
+            {status === 'sent' ? 'Sent' : 'Submit'}
           </Button>
         </HStack>
 

@@ -128,7 +128,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                   },
                   delay: {
                     min: 15,
-                    max: 35,
+                    max: 45,
                   },
                   rocketsPoint: {
                     min: 90,
