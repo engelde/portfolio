@@ -212,14 +212,12 @@ const Turtle = ({
   }, [])
 
   const getShellPose = useCallback(
-    (elapsedSeconds: number, startX: number): ShellPose | null => {
+    (elapsedSeconds: number, startX: number): ShellPose => {
       const path = [
         ...(startX < platformEdgeX ? [{ x: platformEdgeX, y }] : []),
         ...(startX < highGroundStartX ? [{ x: highGroundStartX, y: highGroundY }] : []),
         ...(startX < prizeHitX ? [{ x: prizeHitX, y: highGroundY }] : []),
         { x: highGroundStartX, y: highGroundY },
-        { x: finalWallX, y: lowGroundY },
-        { x: pipeRightX, y: lowGroundY },
         { x: finalWallX, y: lowGroundY },
         { x: pipeRightX, y: lowGroundY },
       ]
@@ -248,7 +246,18 @@ const Turtle = ({
         previous = next
       }
 
-      return null
+      const loopDistance = Math.abs(finalWallX - pipeRightX)
+      const loopDurationSeconds = Math.max(0.001, loopDistance / shellSpeed)
+      const loopProgress = (remaining % (loopDurationSeconds * 2)) / loopDurationSeconds
+      const goingRight = loopProgress <= 1
+      const progress = goingRight ? loopProgress : 2 - loopProgress
+      const xPos = pipeRightX + (finalWallX - pipeRightX) * progress
+
+      return {
+        scaleX: goingRight ? 1 : -1,
+        x: xPos,
+        y: lowGroundY,
+      }
     },
     [finalWallX, highGroundY, pipeRightX, platformEdgeX, prizeHitX, shellSpeed, y]
   )
@@ -280,12 +289,6 @@ const Turtle = ({
     const tick = (time: number) => {
       const elapsedSeconds = (time - shellStartedAtRef.current) / 1000
       const nextPose = getShellPose(elapsedSeconds, defeatedX)
-
-      if (!nextPose) {
-        shellFrameRef.current = null
-        setDefeatState('gone')
-        return
-      }
 
       setShellPose(nextPose)
 

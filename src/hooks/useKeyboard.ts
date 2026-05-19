@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+import { isEditableTarget } from '@/lib/is-editable-target'
+
 type KeyboardProps = {
   active: boolean
 }
@@ -23,6 +25,7 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!active || !event.code) return
+      if (isEditableTarget(event.target)) return
 
       keys.current.add(event.code)
 
@@ -50,6 +53,7 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
 
     const handleKeyUp = (event: KeyboardEvent) => {
       if (!active || !event.code) return
+      if (isEditableTarget(event.target)) return
 
       keys.current.delete(event.code)
 

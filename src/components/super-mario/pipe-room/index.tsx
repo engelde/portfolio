@@ -44,6 +44,7 @@ const PipeRoom = ({
   )
   const {
     collectingCoinIds,
+    collectCoinById,
     exiting,
     frame,
     playerTop,
@@ -102,6 +103,7 @@ const PipeRoom = ({
           collectedCoinIds={collectedCoinIds}
           collectingCoinIds={collectingCoinIds}
           coins={layout.coins}
+          onCoinCollect={collectCoinById}
           prizeBoxes={layout.prizeBoxes}
           tileSize={layout.tileSize}
         />

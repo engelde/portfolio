@@ -7,6 +7,7 @@ import { motion, useAnimationControls } from 'framer-motion'
 import type { PlayerCharacter } from '@/lib/store'
 
 export type MarioProps = {
+  cameraY?: number
   character: PlayerCharacter
   down: boolean
   dying: boolean
@@ -29,6 +30,7 @@ type VariantProps = {
 }
 
 const Mario = ({
+  cameraY = 0,
   character,
   down,
   dying,
@@ -101,7 +103,9 @@ const Mario = ({
       bottom={y + 'px'}
       w={currentVariant.width + 'px'}
       h={currentVariant.height + 'px'}
-      transform={!forwards ? 'scaleX(-1)' : ''}
+      transform={`${cameraY ? `translate3d(0, ${cameraY}px, 0) ` : ''}${
+        !forwards ? 'scaleX(-1)' : ''
+      }`}
     >
       <Box
         as={motion.div}

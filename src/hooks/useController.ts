@@ -16,6 +16,7 @@ import { useAudio } from '@/hooks/useAudio'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { useScroll } from '@/hooks/useScroll'
 import { useWindow } from '@/hooks/useWindow'
+import { isEditableTarget } from '@/lib/is-editable-target'
 
 type ControllerProps = {
   active: boolean
@@ -216,6 +217,8 @@ export const useController = ({
     if (!active || mobile || movementLocked) return
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) return
+
       if (event.code === 'ArrowUp' || event.code === 'Space') {
         event.preventDefault()
         if (!event.repeat && startJump(true)) {
@@ -234,6 +237,7 @@ export const useController = ({
     }
 
     const handleKeyUp = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) return
       if (event.code !== 'ArrowUp' && event.code !== 'Space') return
       event.preventDefault()
 

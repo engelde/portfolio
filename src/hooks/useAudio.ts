@@ -41,7 +41,7 @@ export const useAudio = () => {
   const playAudio = (type: string) => {
     if (variants[type] && audio > 0) {
       const sound = new Audio(variants[type])
-      sound.volume = audio / 100
+      sound.volume = Math.min(1, (audio / 100) * 1.2)
       void sound.play()
     }
   }

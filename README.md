@@ -49,10 +49,12 @@ docker run --name portfolio -p 80:3000 -d engelde/portfolio
 The pipe-room message form is wired for a free Google Forms endpoint. To enable it, create a Google Form with short-answer `Name`, short-answer `Email`, and paragraph `Message` fields, inspect the form HTML to find the three `entry.<id>` names, and set:
 
 ```bash
-NEXT_PUBLIC_PIPE_ROOM_MESSAGE_FORM_ACTION="https://docs.google.com/forms/d/e/<form-id>/formResponse"
-NEXT_PUBLIC_PIPE_ROOM_MESSAGE_NAME_FIELD="entry.<name-id>"
-NEXT_PUBLIC_PIPE_ROOM_MESSAGE_EMAIL_FIELD="entry.<email-id>"
-NEXT_PUBLIC_PIPE_ROOM_MESSAGE_MESSAGE_FIELD="entry.<message-id>"
+PIPE_ROOM_MESSAGE_FORM_ACTION="https://docs.google.com/forms/d/e/<form-id>/formResponse"
+PIPE_ROOM_MESSAGE_NAME_FIELD="entry.<name-id>"
+PIPE_ROOM_MESSAGE_EMAIL_FIELD="entry.<email-id>"
+PIPE_ROOM_MESSAGE_MESSAGE_FIELD="entry.<message-id>"
+NEXT_PUBLIC_PIPE_ROOM_MESSAGE_TURNSTILE_SITE_KEY="<cloudflare-turnstile-site-key>"
+PIPE_ROOM_MESSAGE_TURNSTILE_SECRET_KEY="<cloudflare-turnstile-secret-key>"
 ```
 
 ## Asset Credits

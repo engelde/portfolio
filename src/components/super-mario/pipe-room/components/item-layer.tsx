@@ -7,6 +7,7 @@ type PipeRoomItemLayerProps = {
   coins: PipeRoomCoin[]
   collectedCoinIds: Record<string, true>
   collectingCoinIds: Record<string, true>
+  onCoinCollect: (id: string) => void
   prizeBoxes: PipeRoomPrizeBox[]
   tileSize: number
 }
@@ -54,6 +55,7 @@ const PipeRoomItemLayer = ({
   coins,
   collectedCoinIds,
   collectingCoinIds,
+  onCoinCollect,
   prizeBoxes,
   tileSize,
 }: PipeRoomItemLayerProps) => (
@@ -96,7 +98,11 @@ const PipeRoomItemLayer = ({
             zIndex={3}
             w={tileSize + 'px'}
             h={tileSize + 'px'}
-            pointerEvents={'none'}
+            cursor={collecting ? 'default' : 'pointer'}
+            pointerEvents={'auto'}
+            onClick={() => {
+              if (!collecting) onCoinCollect(id)
+            }}
             sx={{
               animation: collecting ? `${coinCollect} 0.6s ease-in-out forwards` : 'none',
             }}

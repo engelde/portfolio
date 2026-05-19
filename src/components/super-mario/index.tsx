@@ -8,6 +8,8 @@ import { useAudio } from '@/hooks/useAudio'
 import { useController } from '@/hooks/useController'
 import { useGameAnimationPause } from '@/hooks/useGameAnimationPause'
 import { useSettings } from '@/hooks/useSettings'
+import { useWindow } from '@/hooks/useWindow'
+import { isEditableTarget } from '@/lib/is-editable-target'
 
 import Environment from './environment'
 import Foreground from './foreground'
@@ -44,6 +46,8 @@ const pipeRoomEntryDelay = 620
 const pipeRoomExitDelay = 720
 const pipeRoomEntryFeetTolerance = 8
 const pipeRoomEntryMouthPadding = 40
+const maxCameraPanRatio = 0.35
+const cameraPanLerp = 0.18
 
 type AutoFinishSample = {
   time: number
@@ -85,6 +89,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const [pipeRoomEntryPipeId, setPipeRoomEntryPipeId] = useState(defaultPipeRoomEntryPipe?.id ?? '')
   const [collectedPipeRoomCoins, setCollectedPipeRoomCoins] = useState<Record<string, true>>({})
   const [stompBounceSignal, setStompBounceSignal] = useState(0)
+  const [cameraY, setCameraY] = useState(0)
   const endLocked = complete || gameOver
   const pipeRoomActive = pipeRoomPhase !== 'idle'
   const pipeRoomEntering = pipeRoomPhase === 'entering'
@@ -94,6 +99,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
     pipeRoomEntryPipes.find(({ id }) => id === pipeRoomEntryPipeId) ?? defaultPipeRoomEntryPipe
   const scrollLocked = paused || endLocked || dying || pipeRoomActive
   const { playAudio } = useAudio()
+  const { height: viewportHeight } = useWindow()
   const playAudioRef = useRef(playAudio)
   const animationRootRef = useRef<HTMLDivElement | null>(null)
   const setXRef = useRef<((val: number) => void) | null>(null)
@@ -101,6 +107,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const autoFinishSampleRef = useRef<AutoFinishSample | null>(null)
   const autoFinishSpeedRef = useRef(autoFinishPixelsPerSecond)
   const collectedPipeRoomCoinsRef = useRef<Record<string, true>>({})
+  const cameraYRef = useRef(0)
   const deathTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pipeRoomTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -150,12 +157,41 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   })
   const worldX = x + xOffset
   const animationsPaused = paused
+  const playerHeight = mario === 1 ? 100 : 160
+  const worldTransform = `translate3d(${-x}px, ${cameraY}px, 0)`
 
   useEffect(() => {
     playAudioRef.current = playAudio
   }, [playAudio])
 
   useGameAnimationPause(animationRootRef, animationsPaused)
+
+  useEffect(() => {
+    let frame: number
+
+    const tick = () => {
+      const playerTop = viewportHeight - (y + yOffset + playerHeight)
+      const thresholdTop = viewportHeight * 0.25
+      const maxPan = Math.min(360, viewportHeight * maxCameraPanRatio)
+      const target =
+        endLocked || pipeRoomActive || dying
+          ? 0
+          : Math.max(0, Math.min(maxPan, thresholdTop - playerTop))
+      const current = cameraYRef.current
+      const next = current + (target - current) * cameraPanLerp
+      const snapped = Math.abs(next - target) < 0.5 ? target : next
+
+      cameraYRef.current = snapped
+      setCameraY((previous) => (Math.abs(previous - snapped) < 0.25 ? previous : snapped))
+
+      if (snapped !== target) {
+        frame = requestAnimationFrame(tick)
+      }
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [dying, endLocked, pipeRoomActive, playerHeight, viewportHeight, y, yOffset])
 
   useEffect(() => {
     setXRef.current = setX
@@ -266,6 +302,8 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       event.preventDefault()
     }
     const preventMovementKeys = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) return
+
       if (
         [
           'ArrowUp',
@@ -428,6 +466,8 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
 
     const preventDefault = (event: Event) => event.preventDefault()
     const preventMovementKeys = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) return
+
       if (
         [
           'ArrowUp',
@@ -501,7 +541,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           bottom={0}
           h={'100vh'}
           w={'100vw'}
-          transform={`translate3d(${-x}px, 0, 0)`}
+          transform={worldTransform}
           willChange={'transform'}
         >
           <MemoizedLandscape />
@@ -532,7 +572,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
           h={'100vh'}
           w={'100vw'}
           pointerEvents={'none'}
-          transform={`translate3d(${-x}px, 0, 0)`}
+          transform={worldTransform}
           willChange={'transform'}
         >
           <Box position={'absolute'} left={finalPipe.x} bottom={'64px'} w={'410px'} h={'160px'}>
@@ -564,6 +604,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
         {!complete && !gameOver && !pipeRoomVisible && (
           <MemoizedPlayer
             character={playerCharacter}
+            cameraY={cameraY}
             complete={complete}
             down={down}
             dying={dying}

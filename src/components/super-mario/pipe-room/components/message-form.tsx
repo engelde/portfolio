@@ -1,6 +1,15 @@
 'use client'
 
-import { useMemo, useRef, useState, type FormEvent, type WheelEvent } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+  type WheelEvent,
+} from 'react'
+import Script from 'next/script'
 import { Box, Button, Heading, HStack, Input, Text, Textarea } from '@chakra-ui/react'
 
 import { config } from '@/lib/config'
@@ -12,20 +21,45 @@ type PipeRoomMessageFormProps = {
   onCancel: () => void
 }
 
-const pipeRoomMessageTarget = 'pipe-room-message-target'
+type TurnstileWidgetId = string
+
+type Turnstile = {
+  execute: (widgetId: TurnstileWidgetId) => void
+  remove: (widgetId: TurnstileWidgetId) => void
+  render: (
+    container: HTMLElement,
+    options: {
+      action?: string
+      appearance?: 'always' | 'execute' | 'interaction-only'
+      callback: (token: string) => void
+      'error-callback': () => void
+      'expired-callback': () => void
+      sitekey: string
+    }
+  ) => TurnstileWidgetId | undefined
+  reset: (widgetId: TurnstileWidgetId) => void
+}
+
+declare global {
+  interface Window {
+    turnstile?: Turnstile
+  }
+}
+
+type MessageFormStatus = 'idle' | 'sending' | 'sent' | 'setup-needed' | 'verification' | 'error'
+
 const pipeRoomFont = 'var(--font-mono)'
 
 const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
-  const [submitted, setSubmitted] = useState(false)
-  const [setupNeeded, setSetupNeeded] = useState(false)
+  const [status, setStatus] = useState<MessageFormStatus>('idle')
+  const [turnstileToken, setTurnstileToken] = useState('')
   const formRef = useRef<HTMLFormElement | null>(null)
+  const turnstileRef = useRef<HTMLDivElement | null>(null)
+  const turnstileWidgetRef = useRef<TurnstileWidgetId | null>(null)
   const messageForm = config.forms.pipeRoomMessage
-  const configured = Boolean(
-    messageForm.action &&
-    messageForm.emailField &&
-    messageForm.nameField &&
-    messageForm.messageField
-  )
+  const turnstileSiteKey = messageForm.turnstileSiteKey
+  const turnstileEnabled = Boolean(turnstileSiteKey)
+  const sending = status === 'sending'
   const fieldStyles = useMemo(
     () => ({
       _focusVisible: {
@@ -46,6 +80,109 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
     }),
     []
   )
+  const statusMessage = useMemo(() => {
+    if (status === 'setup-needed') return 'Message form setup needed.'
+    if (status === 'verification') return 'Verification warming up.'
+    if (status === 'error') return 'Message failed. Please try again.'
+    return ''
+  }, [status])
+
+  const resetTurnstile = useCallback(() => {
+    const widgetId = turnstileWidgetRef.current
+    if (!widgetId) return
+
+    window.turnstile?.reset(widgetId)
+    setTurnstileToken('')
+  }, [])
+
+  useEffect(() => {
+    if (!turnstileEnabled) return
+
+    let cancelled = false
+    let frame: number | null = null
+
+    const renderTurnstile = () => {
+      if (cancelled || turnstileWidgetRef.current) return
+
+      const turnstile = window.turnstile
+      const container = turnstileRef.current
+
+      if (!turnstile || !container) {
+        frame = requestAnimationFrame(renderTurnstile)
+        return
+      }
+
+      turnstileWidgetRef.current =
+        turnstile.render(container, {
+          action: 'hidden-message',
+          appearance: 'interaction-only',
+          callback: (token) => {
+            setTurnstileToken(token)
+            setStatus((current) => (current === 'verification' ? 'idle' : current))
+          },
+          'error-callback': () => {
+            setTurnstileToken('')
+            setStatus('error')
+          },
+          'expired-callback': () => {
+            setTurnstileToken('')
+            setStatus('verification')
+          },
+          sitekey: turnstileSiteKey,
+        }) ?? null
+    }
+
+    renderTurnstile()
+
+    return () => {
+      cancelled = true
+      if (frame !== null) cancelAnimationFrame(frame)
+      if (turnstileWidgetRef.current) {
+        window.turnstile?.remove(turnstileWidgetRef.current)
+        turnstileWidgetRef.current = null
+      }
+    }
+  }, [turnstileEnabled, turnstileSiteKey])
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+
+      if (turnstileEnabled && !turnstileToken) {
+        setStatus('verification')
+        if (turnstileWidgetRef.current) window.turnstile?.execute(turnstileWidgetRef.current)
+        return
+      }
+
+      const currentForm = event.currentTarget
+      const formData = new FormData(currentForm)
+
+      if (turnstileToken) formData.set('cf-turnstile-response', turnstileToken)
+
+      setStatus('sending')
+
+      try {
+        const response = await fetch(messageForm.endpoint, {
+          body: formData,
+          method: 'POST',
+        })
+
+        if (!response.ok) {
+          setStatus(response.status === 500 ? 'setup-needed' : 'error')
+          resetTurnstile()
+          return
+        }
+
+        currentForm.reset()
+        setStatus('sent')
+        resetTurnstile()
+      } catch {
+        setStatus('error')
+        resetTurnstile()
+      }
+    },
+    [messageForm.endpoint, resetTurnstile, turnstileEnabled, turnstileToken]
+  )
 
   return (
     <Box
@@ -61,25 +198,14 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
       pointerEvents={'auto'}
       onWheel={(event: WheelEvent<HTMLDivElement>) => event.stopPropagation()}
     >
-      <Box
-        as={'form'}
-        ref={formRef}
-        action={configured ? messageForm.action : undefined}
-        method={'post'}
-        target={pipeRoomMessageTarget}
-        display={'grid'}
-        gap={3}
-        onSubmit={(event: FormEvent<HTMLFormElement>) => {
-          if (!configured) {
-            event.preventDefault()
-            setSetupNeeded(true)
-            return
-          }
+      {turnstileEnabled && (
+        <Script
+          src={'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'}
+          strategy={'afterInteractive'}
+        />
+      )}
 
-          setSubmitted(true)
-          setSetupNeeded(false)
-        }}
-      >
+      <Box as={'form'} ref={formRef} display={'grid'} gap={3} onSubmit={handleSubmit}>
         <Heading
           as={'h2'}
           color={'green.500'}
@@ -96,7 +222,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
           aria-label={'Name'}
           autoComplete={'name'}
           h={'56px'}
-          name={messageForm.nameField || 'name'}
+          name={'name'}
           placeholder={'Name'}
           required
           {...fieldStyles}
@@ -106,7 +232,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
           aria-label={'Email'}
           autoComplete={'email'}
           h={'56px'}
-          name={messageForm.emailField || 'email'}
+          name={'email'}
           placeholder={'Email'}
           required
           type={'email'}
@@ -116,7 +242,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
         <Textarea
           aria-label={'Message'}
           h={'136px'}
-          name={messageForm.messageField || 'message'}
+          name={'message'}
           placeholder={'Message'}
           required
           resize={'none'}
@@ -140,8 +266,8 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
             textTransform={'uppercase'}
             onClick={() => {
               formRef.current?.reset()
-              setSubmitted(false)
-              setSetupNeeded(false)
+              setStatus('idle')
+              resetTurnstile()
               onCancel()
             }}
             _hover={{
@@ -156,43 +282,46 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
 
           <Button
             type={'submit'}
+            isDisabled={sending}
             flex={1}
             h={'56px'}
             border={'4px solid'}
-            borderColor={configured ? 'white' : 'whiteAlpha.600'}
+            borderColor={'white'}
             borderRadius={0}
             bg={'black'}
-            color={configured ? 'white' : 'whiteAlpha.700'}
+            color={'white'}
             fontFamily={pipeRoomFont}
             fontSize={'2xl'}
             fontWeight={'black'}
             letterSpacing={0}
             textTransform={'uppercase'}
             _hover={{
-              bg: configured ? 'cyan.500' : 'black',
-              borderColor: configured ? 'cyan.500' : 'whiteAlpha.700',
-              color: configured ? 'black' : 'white',
+              bg: 'cyan.500',
+              borderColor: 'cyan.500',
+              color: 'black',
             }}
-            _active={{ bg: configured ? 'green.500' : 'black', borderColor: 'green.500' }}
+            _active={{ bg: 'green.500', borderColor: 'green.500' }}
           >
-            {submitted ? 'Sent' : 'Submit'}
+            {status === 'sent' ? 'Sent' : sending ? 'Sending' : 'Submit'}
           </Button>
         </HStack>
 
-        {setupNeeded && (
+        {turnstileEnabled && (
+          <Box ref={turnstileRef} position={'absolute'} w={0} h={0} overflow={'hidden'} />
+        )}
+
+        {statusMessage && (
           <Text
-            color={'red.500'}
+            color={status === 'verification' ? 'cyan.500' : 'red.500'}
             fontFamily={pipeRoomFont}
             fontSize={'xl'}
             fontWeight={'bold'}
             lineHeight={1}
           >
-            Message form setup needed.
+            {statusMessage}
           </Text>
         )}
       </Box>
-
-      <Box as={'iframe'} name={pipeRoomMessageTarget} title={'Message form response'} hidden />
     </Box>
   )
 }

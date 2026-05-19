@@ -9,10 +9,8 @@ export const config = {
   },
   forms: {
     pipeRoomMessage: {
-      action: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_FORM_ACTION || '',
-      emailField: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_EMAIL_FIELD || '',
-      nameField: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_NAME_FIELD || '',
-      messageField: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_MESSAGE_FIELD || '',
+      endpoint: '/api/hidden-message',
+      turnstileSiteKey: process.env.NEXT_PUBLIC_PIPE_ROOM_MESSAGE_TURNSTILE_SITE_KEY || '',
     },
   },
 }

@@ -9,6 +9,7 @@ import Pause from './pause'
 import Stats from './stats'
 
 export type PlayerProps = {
+  cameraY: number
   character: PlayerCharacter
   complete: boolean
   down: boolean
@@ -37,6 +38,7 @@ export type PlayerProps = {
 }
 
 const Player = ({
+  cameraY,
   character,
   complete,
   down,
@@ -68,6 +70,7 @@ const Player = ({
       {xPos < length && (
         <>
           <Mario
+            cameraY={cameraY}
             character={character}
             down={down}
             dying={dying}

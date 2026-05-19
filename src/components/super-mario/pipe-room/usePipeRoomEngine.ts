@@ -17,7 +17,7 @@ import {
   resolveSurfaceFollowMovement,
   supportTolerance,
 } from './physics'
-import type { PipeRoomLayout, Position } from './types'
+import type { PipeRoomCoin, PipeRoomLayout, Position } from './types'
 import { playerSprites } from './types'
 
 export const pipeRoomExitDelay = 620
@@ -174,6 +174,35 @@ export const usePipeRoomEngine = ({
     setCollectingCoinIds(next)
   }, [])
 
+  const collectCoin = useCallback(
+    (coin: PipeRoomCoin) => {
+      if (collectedCoinIdsRef.current[coin.id] || collectingCoinIdsRef.current[coin.id]) return
+
+      setCoinCollecting(coin.id, true)
+      onCollectCoin(coin.id, coin.value ?? 100)
+      playAudio('coin')
+
+      const currentTimeout = coinTimeoutsRef.current.get(coin.id)
+      if (currentTimeout) clearTimeout(currentTimeout)
+
+      const timeout = setTimeout(() => {
+        coinTimeoutsRef.current.delete(coin.id)
+        setCoinCollecting(coin.id, false)
+      }, coinCollectAnimationMs)
+
+      coinTimeoutsRef.current.set(coin.id, timeout)
+    },
+    [onCollectCoin, playAudio, setCoinCollecting]
+  )
+
+  const collectCoinById = useCallback(
+    (id: string) => {
+      const coin = layout.coins.find((item) => item.id === id)
+      if (coin) collectCoin(coin)
+    },
+    [collectCoin, layout.coins]
+  )
+
   const collectCoinsAt = useCallback(
     (nextPosition: Position) => {
       const player = getPlayerRect(nextPosition, sprite)
@@ -198,22 +227,10 @@ export const usePipeRoomEngine = ({
           return
         }
 
-        setCoinCollecting(coin.id, true)
-        onCollectCoin(coin.id, coin.value ?? 100)
-        playAudio('coin')
-
-        const currentTimeout = coinTimeoutsRef.current.get(coin.id)
-        if (currentTimeout) clearTimeout(currentTimeout)
-
-        const timeout = setTimeout(() => {
-          coinTimeoutsRef.current.delete(coin.id)
-          setCoinCollecting(coin.id, false)
-        }, coinCollectAnimationMs)
-
-        coinTimeoutsRef.current.set(coin.id, timeout)
+        collectCoin(coin)
       })
     },
-    [layout.coins, layout.tileSize, onCollectCoin, playAudio, setCoinCollecting, sprite]
+    [collectCoin, layout.coins, layout.tileSize, sprite]
   )
 
   const startExit = useCallback(
@@ -584,16 +601,22 @@ export const usePipeRoomEngine = ({
       if (exitingRef.current || formFocusedRef.current) return
 
       const current = positionRef.current
-      const nextX = resolveHorizontal(
-        layout,
-        current.x,
-        current.x + delta * wheelSpeed,
-        current.y,
-        sprite,
-        minX,
-        maxX
-      )
-      const nextY = current.y
+      const targetX = current.x + delta * wheelSpeed
+      const direction = Math.sign(targetX - current.x)
+      let nextX = current.x
+      let nextY = current.y
+
+      if (groundedRef.current && velocityYRef.current === 0) {
+        const resolved = resolveSurfaceFollowMovement(layout, current, targetX, sprite, minX, maxX)
+
+        if (startStepTransition(current, resolved.position, direction)) return
+
+        nextX = resolved.position.x
+        nextY = resolved.position.y
+        groundedRef.current = resolved.grounded
+      } else {
+        nextX = resolveHorizontal(layout, current.x, targetX, current.y, sprite, minX, maxX)
+      }
 
       if (nextX === current.x && nextY === current.y) return
 
@@ -613,7 +636,7 @@ export const usePipeRoomEngine = ({
 
       syncPosition({ x: nextX, y: nextY })
     },
-    [layout, maxX, minX, sprite, syncPosition]
+    [layout, maxX, minX, sprite, startStepTransition, syncPosition]
   )
 
   useEffect(() => {
@@ -627,6 +650,7 @@ export const usePipeRoomEngine = ({
 
   return {
     collectingCoinIds,
+    collectCoinById,
     exiting,
     frame,
     playerTop,

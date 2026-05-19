@@ -66,7 +66,7 @@ const Landscape = () => {
 
   const trees: TreeProps[] = [
     { variant: 2, x: 320, y: 64 },
-    { variant: 2, x: 4320, y: 128 },
+    { variant: 4, x: 4320, y: 128 },
     { variant: 1, x: 4960, y: 128 },
     { variant: 1, x: 9680, y: 64 },
     { variant: 3, x: 12080, y: 64 },

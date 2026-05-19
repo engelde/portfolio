@@ -84,6 +84,8 @@ type ShellDefeat = {
 }
 
 const prizeBoxWidth = 80
+const coinCollisionSize = 80
+const coinCollectionOverlap = 24
 
 const getPrizeBoxIdsForOwner = (owner: string) => {
   const exactMatch = owner.match(/^prize-box-(\d+)$/)
@@ -99,12 +101,21 @@ const ceilingPrizeBoxIds = new Set(
   collisionCeilings.flatMap((ceiling) => getPrizeBoxIdsForOwner(ceiling.owner))
 )
 
+const createInitialCoinState = () =>
+  coinSegments.reduce<{ [key: number]: boolean }>((state, coin) => {
+    state[coin.id] = false
+    return state
+  }, {})
+
 const getPrizeBoxCeilingOverlap = (item: PrizeBoxProps, ceilingHit: CeilingHit) =>
   Math.max(
     0,
     Math.min(item.x + prizeBoxWidth + collisionEdgeTolerance, ceilingHit.footprintRight) -
       Math.max(item.x - collisionEdgeTolerance, ceilingHit.footprintLeft)
   )
+
+const getOverlap = (startA: number, endA: number, startB: number, endB: number) =>
+  Math.min(endA, endB) - Math.max(startA, startB)
 
 const Foreground = ({
   animationsPaused = false,
@@ -141,13 +152,7 @@ const Foreground = ({
       8: { status: true, active: false, count: 1, prize: false },
       9: { status: true, active: false, count: 1, prize: false },
     },
-    coins: {
-      1: false,
-      2: false,
-      3: false,
-      4: false,
-      5: false,
-    },
+    coins: createInitialCoinState(),
     items: {
       leaf1: false,
       mushroom1: false,
@@ -206,9 +211,9 @@ const Foreground = ({
 
   const coinHandlers = useMemo(() => {
     const handlers: { [key: number]: (val: boolean) => void } = {}
-    for (let i = 1; i <= 5; i++) {
-      handlers[i] = (val: boolean) => setCoinActive(i, val)
-    }
+    coinSegments.forEach(({ id }) => {
+      handlers[id] = (val: boolean) => setCoinActive(id, val)
+    })
     return handlers
   }, [setCoinActive])
 
@@ -573,6 +578,37 @@ const Foreground = ({
       item.setPrizeActive(true)
     }
   }, [])
+
+  useEffect(() => {
+    const playerWidth = mario === 3 ? 120 : mario === 2 ? 80 : 100
+    const playerHeight = mario === 1 ? 100 : 160
+    const playerLeft = xPos + (mario === 3 ? -24 : 0) + 8
+    const playerRight = playerLeft + playerWidth - 16
+    const playerBottom = yPos + 8
+    const playerTop = yPos + playerHeight - 8
+
+    coinSegments.forEach((coin) => {
+      if (dynamicObjects.coins[coin.id]) return
+
+      const coinBottom = coin.y + 80
+      const horizontalOverlap = getOverlap(
+        playerLeft,
+        playerRight,
+        coin.x,
+        coin.x + coinCollisionSize
+      )
+      const verticalOverlap = getOverlap(
+        playerBottom,
+        playerTop,
+        coinBottom,
+        coinBottom + coinCollisionSize
+      )
+
+      if (horizontalOverlap >= coinCollectionOverlap && verticalOverlap >= coinCollectionOverlap) {
+        coinHandlers[coin.id]?.(true)
+      }
+    })
+  }, [coinHandlers, dynamicObjects.coins, mario, xPos, yPos])
 
   // Prize Box interactions from physical ceiling collisions
   useEffect(() => {

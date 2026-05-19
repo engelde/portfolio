@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -25,36 +24,46 @@ export type MushroomProps = {
   yPos: number
 }
 
-const mushroomDuration = 1.4
-const mushroomEmergeSeconds = 0.62
-const mushroomDelayRatio = mushroomEmergeSeconds / mushroomDuration
-const mushroomDelayPercent = mushroomDelayRatio * 100
+type MushroomPose = {
+  x: number
+  y: number
+}
+
+const mushroomDuration = 1.75
+const mushroomEmergeSeconds = 0.48
 const mushroomTravelX = 320
 const mushroomTravelY = 160
-const mushroomMove = keyframes`
-  0%, ${mushroomDelayPercent}% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(${mushroomTravelX}px, ${mushroomTravelY}px, 0); }
-`
+const initialMushroomPose = { x: 0, y: 80 }
 
-const getMushroomRect = (elapsed: number, worldX: number, worldY: number, x: number, y: number) => {
+const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value))
+
+const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3)
+
+const getMushroomPose = (elapsed: number): MushroomPose => {
   if (elapsed <= mushroomEmergeSeconds) {
-    const emergeProgress = Math.max(0, Math.min(1, elapsed / mushroomEmergeSeconds))
-    const bottom = worldY + y + 80 * emergeProgress
+    const progress = easeOutCubic(clamp(elapsed / mushroomEmergeSeconds))
 
     return {
-      left: worldX + x,
-      right: worldX + x + 80,
-      bottom,
-      top: bottom + 80,
+      x: 0,
+      y: initialMushroomPose.y * (1 - progress),
     }
   }
 
-  const moveProgress = Math.max(
-    0,
-    Math.min(1, (elapsed - mushroomEmergeSeconds) / (mushroomDuration - mushroomEmergeSeconds))
+  const travelProgress = clamp(
+    (elapsed - mushroomEmergeSeconds) / (mushroomDuration - mushroomEmergeSeconds)
   )
-  const left = worldX + x + mushroomTravelX * moveProgress
-  const bottom = worldY + y + 80 - mushroomTravelY * moveProgress
+  const fallProgress = clamp((travelProgress - 0.15) / 0.85)
+
+  return {
+    x: mushroomTravelX * easeOutCubic(travelProgress),
+    y: mushroomTravelY * fallProgress * fallProgress,
+  }
+}
+
+const getMushroomRect = (elapsed: number, worldX: number, worldY: number, x: number, y: number) => {
+  const pose = getMushroomPose(Math.min(mushroomDuration, elapsed))
+  const left = worldX + x + pose.x
+  const bottom = worldY + y + 80 - pose.y
 
   return {
     left,
@@ -81,13 +90,20 @@ const Mushroom = ({
   const { playAudio } = useAudio()
   const spawnedAtRef = useRef(performance.now())
   const pausedAtRef = useRef<number | null>(null)
+  const poseRef = useRef<MushroomPose>(initialMushroomPose)
   const [appearing, setAppearing] = useState(true)
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)
+  const [pose, setPose] = useState<MushroomPose>(initialMushroomPose)
+  const [pointsPose, setPointsPose] = useState<MushroomPose>({
+    x: mushroomTravelX,
+    y: mushroomTravelY,
+  })
   const value = 1000
 
   const collect = useCallback(() => {
     if (active || running || disabled) return
+    setPointsPose(poseRef.current)
     setActive(true)
   }, [active, disabled, running, setActive])
 
@@ -133,7 +149,12 @@ const Mushroom = ({
     let frame: number
 
     const tick = () => {
-      const elapsed = Math.min(mushroomDuration, (performance.now() - spawnedAtRef.current) / 1000)
+      const elapsed = Math.max(0, (performance.now() - spawnedAtRef.current) / 1000)
+      const nextPose = getMushroomPose(Math.min(mushroomDuration, elapsed))
+
+      poseRef.current = nextPose
+      setPose(nextPose)
+
       const mushroomRect = getMushroomRect(elapsed, worldX, worldY, x, y)
       const marioWidth = mario === 3 ? 120 : mario === 2 ? 80 : 100
       const marioLeft = xPos + (mario === 3 ? -24 : 0)
@@ -148,9 +169,7 @@ const Mushroom = ({
         return
       }
 
-      if (elapsed < mushroomDuration) {
-        frame = requestAnimationFrame(tick)
-      }
+      frame = requestAnimationFrame(tick)
     }
 
     frame = requestAnimationFrame(tick)
@@ -172,7 +191,7 @@ const Mushroom = ({
 
   return (
     <>
-      {active && <Points x={x + 320} y={y - 40} total={value} />}
+      {active && <Points x={x + pointsPose.x} y={y + 80 - pointsPose.y} total={value} />}
       {!disabled && (
         <Box
           zIndex={-1}
@@ -187,9 +206,8 @@ const Mushroom = ({
           transition={'opacity .1s ease-out'}
           _hover={{ cursor: 'pointer', filter: 'brightness(110%)' }}
           onClick={collect}
-          sx={{
-            animation: `${mushroomMove} ${mushroomDuration}s linear forwards`,
-          }}
+          transform={`translate3d(${pose.x}px, ${pose.y}px, 0)`}
+          willChange={'transform'}
         >
           <NextImage
             alt={'mushroom'}
