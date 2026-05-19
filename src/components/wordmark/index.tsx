@@ -15,6 +15,8 @@ const Wordmark = (props: BoxProps) => {
       src={'/images/wordmark/wordmark.svg'}
       alt={'David Engel'}
       draggable={false}
+      loading={'eager'}
+      decoding={'sync'}
       display={'inline-block'}
       w={width}
       maxW={'100%'}

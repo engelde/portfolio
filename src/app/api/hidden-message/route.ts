@@ -73,8 +73,12 @@ const getGoogleFormConfig = () => {
 
 const validateTurnstile = async (token: string, request: Request) => {
   const turnstileSecret = process.env.TURNSTILE_SECRET_KEY || ''
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
 
-  if (!turnstileSecret) return { success: true } satisfies TurnstileValidationResponse
+  if (!turnstileSecret || !turnstileSiteKey) {
+    return { success: true } satisfies TurnstileValidationResponse
+  }
+
   if (!token) return { success: false, 'error-codes': ['missing-input-response'] }
 
   const body = new URLSearchParams({
@@ -162,9 +166,10 @@ export async function POST(request: Request) {
       body: googleBody,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       method: 'POST',
+      redirect: 'manual',
     })
 
-    if (googleResponse.status >= 400) {
+    if (![200, 302, 303].includes(googleResponse.status)) {
       return NextResponse.json({ message: 'Message delivery failed.' }, { status: 502 })
     }
   } catch {
