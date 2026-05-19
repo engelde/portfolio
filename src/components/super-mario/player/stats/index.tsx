@@ -35,7 +35,7 @@ const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
         <StatGroup w={'full'} alignItems={'center'} justifyContent={'space-between'}>
           <Stat textAlign={'left'}>
             <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Level'}>
-              World 1
+              World 1-1
             </StatNumber>
           </Stat>
           <Stat textAlign={'right'}>

@@ -312,20 +312,38 @@ export const resolveSurfaceFollowMovement = (
       (direction > 0 && steppedX < stepTargetX - 0.5) ||
       (direction < 0 && steppedX > stepTargetX + 0.5)
     ) {
+      const standingSurface = findStandingSurface(layout, { x: steppedX, y: next.y }, sprite)
+
+      if (standingSurface === null) {
+        return {
+          position: next,
+          grounded: true,
+        }
+      }
+
       return {
-        position: { x: steppedX, y: next.y },
-        grounded: findStandingSurface(layout, { x: steppedX, y: next.y }, sprite) !== null,
+        position: { x: steppedX, y: standingSurface - sprite.height },
+        grounded: true,
       }
     }
 
     return {
-      position: { x: stepTargetX, y: next.y },
-      grounded: false,
+      position: next,
+      grounded: true,
+    }
+  }
+
+  const standingSurface = findStandingSurface(layout, next, sprite)
+
+  if (standingSurface === null) {
+    return {
+      position: current,
+      grounded: true,
     }
   }
 
   return {
-    position: next,
-    grounded: findStandingSurface(layout, next, sprite) !== null,
+    position: { x: next.x, y: standingSurface - sprite.height },
+    grounded: true,
   }
 }

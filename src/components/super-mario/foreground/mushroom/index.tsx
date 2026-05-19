@@ -33,7 +33,7 @@ const mushroomDuration = 1.75
 const mushroomEmergeSeconds = 0.48
 const mushroomTravelX = 320
 const mushroomTravelY = 160
-const initialMushroomPose = { x: 0, y: 80 }
+const initialMushroomPose = { x: 0, y: 0 }
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value))
 

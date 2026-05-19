@@ -46,8 +46,9 @@ const pipeRoomEntryDelay = 620
 const pipeRoomExitDelay = 720
 const pipeRoomEntryFeetTolerance = 8
 const pipeRoomEntryMouthPadding = 40
-const maxCameraPanRatio = 0.35
-const cameraPanLerp = 0.18
+const cameraPanEngageRatio = 0.25
+const maxCameraPanRatio = 1.5
+const cameraPanLerp = 0.34
 
 type AutoFinishSample = {
   time: number
@@ -55,6 +56,14 @@ type AutoFinishSample = {
 }
 
 type PipeRoomPhase = 'idle' | 'entering' | 'room' | 'exiting'
+
+type CameraInput = {
+  disabled: boolean
+  playerHeight: number
+  viewportHeight: number
+  y: number
+  yOffset: number
+}
 
 const SuperMario = ({ ip }: SuperMarioProps) => {
   const {
@@ -107,6 +116,13 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   const autoFinishSampleRef = useRef<AutoFinishSample | null>(null)
   const autoFinishSpeedRef = useRef(autoFinishPixelsPerSecond)
   const collectedPipeRoomCoinsRef = useRef<Record<string, true>>({})
+  const cameraInputRef = useRef<CameraInput>({
+    disabled: true,
+    playerHeight: 100,
+    viewportHeight: 0,
+    y: 64,
+    yOffset: 0,
+  })
   const cameraYRef = useRef(0)
   const deathTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pipeRoomTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -167,31 +183,39 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
   useGameAnimationPause(animationRootRef, animationsPaused)
 
   useEffect(() => {
+    cameraInputRef.current = {
+      disabled: endLocked || pipeRoomActive || dying,
+      playerHeight,
+      viewportHeight,
+      y,
+      yOffset,
+    }
+  }, [dying, endLocked, pipeRoomActive, playerHeight, viewportHeight, y, yOffset])
+
+  useEffect(() => {
     let frame: number
 
     const tick = () => {
-      const playerTop = viewportHeight - (y + yOffset + playerHeight)
-      const thresholdTop = viewportHeight * 0.25
-      const maxPan = Math.min(360, viewportHeight * maxCameraPanRatio)
-      const target =
-        endLocked || pipeRoomActive || dying
-          ? 0
-          : Math.max(0, Math.min(maxPan, thresholdTop - playerTop))
+      const cameraInput = cameraInputRef.current
+      const playerTop =
+        cameraInput.viewportHeight -
+        (cameraInput.y + cameraInput.yOffset + cameraInput.playerHeight)
+      const thresholdTop = cameraInput.viewportHeight * cameraPanEngageRatio
+      const excessAboveThreshold = thresholdTop - playerTop
+      const maxPan = cameraInput.viewportHeight * maxCameraPanRatio
+      const target = cameraInput.disabled ? 0 : Math.max(0, Math.min(maxPan, excessAboveThreshold))
       const current = cameraYRef.current
       const next = current + (target - current) * cameraPanLerp
       const snapped = Math.abs(next - target) < 0.5 ? target : next
 
       cameraYRef.current = snapped
       setCameraY((previous) => (Math.abs(previous - snapped) < 0.25 ? previous : snapped))
-
-      if (snapped !== target) {
-        frame = requestAnimationFrame(tick)
-      }
+      frame = requestAnimationFrame(tick)
     }
 
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
-  }, [dying, endLocked, pipeRoomActive, playerHeight, viewportHeight, y, yOffset])
+  }, [])
 
   useEffect(() => {
     setXRef.current = setX
