@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/engelde/portfolio/compare/v1.6.1...v1.7.0) (2026-05-19)
+
+
+### ✨ Features
+
+* add message validation and turtle shell routes ([f0b3fb0](https://github.com/engelde/portfolio/commit/f0b3fb0dbd74b36db3da99dcfceb11df3c952a4b))
+
 ### [1.6.1](https://github.com/engelde/portfolio/compare/v1.6.0...v1.6.1) (2026-05-19)
 
 
