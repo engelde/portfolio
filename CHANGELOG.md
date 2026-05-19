@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/engelde/portfolio/compare/v1.5.0...v1.6.0) (2026-05-19)
+
+
+### ✨ Features
+
+* refine gameplay interactions ([0539d16](https://github.com/engelde/portfolio/commit/0539d1616f69c455a60692b0339afc5af810ac05))
+* refine mario camera and pipe room physics ([872dcc2](https://github.com/engelde/portfolio/commit/872dcc2b7e0870b24a9a969dd033da0af6dd5ae8))
+* refine pipe room interactions ([6f47c70](https://github.com/engelde/portfolio/commit/6f47c70470912588892a7a4d2c84764790d82499))
+
+
+### 🐛 Bug Fixes
+
+* improve intro tooltip interaction ([55a28bc](https://github.com/engelde/portfolio/commit/55a28bc3d663b5664986b98e6fbd4a0965b9c71d))
+
 ## [1.5.0](https://github.com/engelde/portfolio/compare/v1.4.0...v1.5.0) (2026-05-19)
 
 
