@@ -60,6 +60,20 @@ type MessageFormStatus =
   | 'verification'
   | 'error'
 
+type HiddenMessageDelivery = {
+  action: string
+  fields: {
+    email: string
+    message: string
+    name: string
+  }
+}
+
+type HiddenMessageResponse = {
+  delivery?: HiddenMessageDelivery
+  message?: string
+}
+
 const pipeRoomFont = 'var(--font-mono)'
 
 const turnstileErrorMessages: Record<string, string> = {
@@ -69,6 +83,66 @@ const turnstileErrorMessages: Record<string, string> = {
 
 const getTurnstileErrorMessage = (errorCode?: string) =>
   (errorCode && turnstileErrorMessages[errorCode]) || 'Verification failed. Please try again.'
+
+const submitGoogleFormFallback = (
+  delivery: HiddenMessageDelivery,
+  values: { email: string; message: string; name: string }
+) =>
+  new Promise<void>((resolve, reject) => {
+    const iframeName = `hidden-message-${Date.now()}`
+    const iframe = document.createElement('iframe')
+    const form = document.createElement('form')
+    const cleanup = () => {
+      window.setTimeout(() => {
+        form.remove()
+        iframe.remove()
+      }, 100)
+    }
+    const addInput = (name: string, value: string) => {
+      const input = document.createElement('input')
+
+      input.type = 'hidden'
+      input.name = name
+      input.value = value
+      form.appendChild(input)
+    }
+    const fallbackTimer = window.setTimeout(() => {
+      cleanup()
+      resolve()
+    }, 1800)
+
+    iframe.name = iframeName
+    iframe.title = 'Message delivery'
+    iframe.style.display = 'none'
+
+    iframe.addEventListener('load', () => {
+      window.clearTimeout(fallbackTimer)
+      cleanup()
+      resolve()
+    })
+
+    form.action = delivery.action
+    form.method = 'POST'
+    form.target = iframeName
+    form.style.display = 'none'
+
+    addInput('fvv', '1')
+    addInput('pageHistory', '0')
+    addInput(delivery.fields.email, values.email)
+    addInput(delivery.fields.message, values.message)
+    addInput(delivery.fields.name, values.name)
+
+    document.body.appendChild(iframe)
+    document.body.appendChild(form)
+
+    try {
+      form.submit()
+    } catch {
+      window.clearTimeout(fallbackTimer)
+      cleanup()
+      reject(new Error('Google Forms fallback submission failed.'))
+    }
+  })
 
 const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
   const [status, setStatus] = useState<MessageFormStatus>('idle')
@@ -226,9 +300,23 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
           body: formData,
           method: 'POST',
         })
-        const responseBody = (await response.json().catch(() => null)) as {
-          message?: string
-        } | null
+        const responseBody = (await response
+          .json()
+          .catch(() => null)) as HiddenMessageResponse | null
+
+        if (response.status === 202 && responseBody?.delivery) {
+          await submitGoogleFormFallback(responseBody.delivery, {
+            email: parsedMessage.data.email,
+            message: parsedMessage.data.message,
+            name: parsedMessage.data.name,
+          })
+
+          currentForm.reset()
+          setFeedbackMessage('Message sent.')
+          setStatus('sent')
+          resetTurnstile()
+          return
+        }
 
         if (!response.ok) {
           setFeedbackMessage(responseBody?.message || '')

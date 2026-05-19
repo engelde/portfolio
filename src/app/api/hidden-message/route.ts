@@ -37,6 +37,16 @@ const turnstileValidationSchema = z
   .passthrough()
 
 type TurnstileValidationResponse = z.infer<typeof turnstileValidationSchema>
+type GoogleFormConfig = z.infer<typeof googleFormConfigSchema>
+
+type GoogleDeliveryResult =
+  | { success: true }
+  | {
+      error: string
+      status?: number
+      statusText?: string
+      success: false
+    }
 
 const getClientIp = (request: Request) =>
   request.headers.get('CF-Connecting-IP') ||
@@ -112,6 +122,43 @@ const validateTurnstile = async (token: string, request: Request) => {
   }
 }
 
+const getGoogleFormViewUrl = (action: string) => action.replace('/formResponse', '/viewform')
+
+const deliverToGoogleForm = async (
+  config: GoogleFormConfig,
+  body: URLSearchParams
+): Promise<GoogleDeliveryResult> => {
+  try {
+    const googleResponse = await fetch(config.action, {
+      body,
+      headers: {
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        Origin: 'https://docs.google.com',
+        Referer: getGoogleFormViewUrl(config.action),
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36',
+      },
+      method: 'POST',
+      redirect: 'follow',
+    })
+
+    if (googleResponse.ok) return { success: true }
+
+    return {
+      error: 'google-status',
+      status: googleResponse.status,
+      statusText: googleResponse.statusText,
+      success: false,
+    }
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.name : 'google-fetch-failed',
+      success: false,
+    }
+  }
+}
+
 export async function POST(request: Request) {
   let formData: FormData
 
@@ -156,24 +203,36 @@ export async function POST(request: Request) {
   }
 
   const googleBody = new URLSearchParams({
+    fvv: '1',
+    pageHistory: '0',
     [googleForm.data.emailField]: email,
     [googleForm.data.messageField]: message,
     [googleForm.data.nameField]: name,
   })
 
-  try {
-    const googleResponse = await fetch(googleForm.data.action, {
-      body: googleBody,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      method: 'POST',
-      redirect: 'manual',
+  const delivery = await deliverToGoogleForm(googleForm.data, googleBody)
+
+  if (!delivery.success) {
+    console.warn('Hidden message server delivery failed; browser fallback requested.', {
+      error: delivery.error,
+      status: delivery.status,
+      statusText: delivery.statusText,
     })
 
-    if (![200, 302, 303].includes(googleResponse.status)) {
-      return NextResponse.json({ message: 'Message delivery failed.' }, { status: 502 })
-    }
-  } catch {
-    return NextResponse.json({ message: 'Message delivery failed.' }, { status: 502 })
+    return NextResponse.json(
+      {
+        delivery: {
+          action: googleForm.data.action,
+          fields: {
+            email: googleForm.data.emailField,
+            message: googleForm.data.messageField,
+            name: googleForm.data.nameField,
+          },
+        },
+        message: 'Message verified. Completing delivery.',
+      },
+      { status: 202 }
+    )
   }
 
   return NextResponse.json({ message: 'Message sent.' })
