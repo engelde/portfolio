@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/engelde/portfolio/compare/v1.4.0...v1.5.0) (2026-05-19)
+
+
+### ✨ Features
+
+* add pipe room easter egg ([49eb9b6](https://github.com/engelde/portfolio/commit/49eb9b69eea6c5e6f19ef56741ed8471608515f9))
+
 ## [1.4.0](https://github.com/engelde/portfolio/compare/v1.3.0...v1.4.0) (2026-05-17)
 
 
