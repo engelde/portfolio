@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.4](https://github.com/engelde/portfolio/compare/v1.7.3...v1.7.4) (2026-05-19)
+
+
+### 🐛 Bug Fixes
+
+* harden hidden message delivery ([9de2b11](https://github.com/engelde/portfolio/commit/9de2b1147f0d1d66ba85c8c3f5b2083bf6719d1d))
+
 ### [1.7.3](https://github.com/engelde/portfolio/compare/v1.7.2...v1.7.3) (2026-05-19)
 
 
