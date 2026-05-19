@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1](https://github.com/engelde/portfolio/compare/v1.7.0...v1.7.1) (2026-05-19)
+
+
+### 🐛 Bug Fixes
+
+* normalize mario keyboard movement speed ([a6d25e6](https://github.com/engelde/portfolio/commit/a6d25e6c69035550a27a013746cc34a318895666))
+
 ## [1.7.0](https://github.com/engelde/portfolio/compare/v1.6.1...v1.7.0) (2026-05-19)
 
 
