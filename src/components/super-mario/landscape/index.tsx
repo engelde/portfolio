@@ -2,6 +2,7 @@
 
 import React from 'react'
 
+import { cubeSegments, groundSegments, rockSegments } from '../level-map'
 import Bush, { type BushProps } from './bush'
 import Cloud, { type CloudProps } from './cloud'
 import Cube, { type CubeProps } from './cube'
@@ -57,47 +58,15 @@ const Landscape = () => {
     { x: 8560, y: 1104 },
   ]
 
-  const cubes: CubeProps[] = [
-    { variant: 1, x: 1440, y: 64 },
-    { variant: 2, x: 2240, y: 64 },
-    { variant: 3, x: 6480, y: 64 },
-    { variant: 4, x: 10960, y: 64 },
-    { variant: 5, x: 6720, y: 1144 },
-  ]
+  const cubes: CubeProps[] = cubeSegments
 
-  const grounds: GroundProps[] = [
-    { x: 0, width: 3374, height: 64 },
-    { x: 3360, width: 2320, height: 128 },
-    { x: 5920, width: 1760, height: 64 },
-    { x: 7840, width: 400, height: 64 },
-    { x: 8480, width: 2960, height: 64 },
-    { x: 11520, width: 9000, height: 64 },
-  ]
+  const grounds: GroundProps[] = groundSegments
 
-  const rocks: RockProps[] = [
-    { x: 7680, y: 384 },
-    { x: 7760, y: 384 },
-    { x: 8000, y: 64 },
-    { x: 8080, y: 64 },
-    { x: 8080, y: 144 },
-    { x: 8160, y: 64 },
-    { x: 8160, y: 144 },
-    { x: 8160, y: 224 },
-    { x: 8480, y: 64 },
-    { x: 8480, y: 144 },
-    { x: 8480, y: 224 },
-    { x: 8560, y: 64 },
-    { x: 8560, y: 144 },
-    { x: 8640, y: 64 },
-    { x: 11520, y: 224 },
-    { x: 11600, y: 224 },
-    { x: 11520, y: 544 },
-    { x: 11600, y: 544 },
-  ]
+  const rocks: RockProps[] = rockSegments
 
   const trees: TreeProps[] = [
     { variant: 2, x: 320, y: 64 },
-    { variant: 2, x: 4320, y: 128 },
+    { variant: 4, x: 4320, y: 128 },
     { variant: 1, x: 4960, y: 128 },
     { variant: 1, x: 9680, y: 64 },
     { variant: 3, x: 12080, y: 64 },

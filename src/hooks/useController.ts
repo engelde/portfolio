@@ -2,10 +2,21 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import {
+  collisionEdgeTolerance,
+  findLandingSurface,
+  findStepSurface,
+  findSupportSurface,
+  getLowestGroundHeight,
+  getMarioFootprint,
+  type CollisionCeiling,
+  type CollisionSurface,
+} from '@/components/super-mario/level-map'
 import { useAudio } from '@/hooks/useAudio'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { useScroll } from '@/hooks/useScroll'
 import { useWindow } from '@/hooks/useWindow'
+import { isEditableTarget } from '@/lib/is-editable-target'
 
 type ControllerProps = {
   active: boolean
@@ -22,21 +33,10 @@ type ControllerProps = {
     setPaused: (val: boolean) => void
   }
   position: {
-    ceilingLevels: {
-      xMin: number
-      xMax: number
-      height: number
-    }[]
-    groundLevels: {
-      xMin: number
-      xMax: number
-      height: number
-    }[]
-    platformLevels: {
-      xMin: number
-      xMax: number
-      height: number
-    }[]
+    ceilingLevels: CollisionCeiling[]
+    groundLevels: CollisionSurface[]
+    platformLevels: CollisionSurface[]
+    surfaceLevels: CollisionSurface[]
     x: number
     xOffset: number
     y: number
@@ -46,19 +46,49 @@ type ControllerProps = {
     x: number
     y: number
   }
+  movementLocked?: boolean
+  stompBounceSignal?: number
 }
+
+export type CeilingHit = {
+  id: string
+  owner: string
+  xMin: number
+  xMax: number
+  height: number
+  footprintLeft: number
+  footprintRight: number
+  worldX: number
+  signal: number
+}
+
+type ControllerRenderState = {
+  x: number
+  y: number
+  xOffset: number
+  yOffset: number
+  forwards: boolean
+  falling: boolean
+  jump: boolean
+  ceilingHit: CeilingHit | null
+}
+
+const targetFrameMs = 1000 / 60
+const maxFrameScale = 2.5
 
 export const useController = ({
   active,
   mario,
+  movementLocked = false,
   mobile,
   maximum,
   pause,
   position,
   speed,
+  stompBounceSignal = 0,
 }: ControllerProps) => {
   const { playAudio } = useAudio()
-  const { keys, down, escape } = useKeyboard({ active: active })
+  const { keys, down, escape, up, left, right } = useKeyboard({ active: active && !movementLocked })
   const { scrollY } = useScroll()
   const { height } = useWindow()
 
@@ -73,25 +103,51 @@ export const useController = ({
   const jumpLockRef = useRef(false)
   const jumpHeldRef = useRef(false)
   const jumpDisplayRef = useRef(false)
+  const groundedRef = useRef(true)
   const runChargeRef = useRef(0)
   const flyingRef = useRef(false)
   const flyTimeRef = useRef(0)
   const lastYScrollRef = useRef(scrollY.get())
+  const keyboardDirectionLockUntilRef = useRef(0)
+  const programmaticScrollTargetRef = useRef<number | null>(null)
+  const lastStompBounceSignalRef = useRef(stompBounceSignal)
+  const ceilingHitRef = useRef<CeilingHit | null>(null)
+  const lastFrameTimeRef = useRef<number | null>(null)
 
   // React state for rendering
-  const [renderState, setRenderState] = useState({
+  const [renderState, setRenderState] = useState<ControllerRenderState>({
     x: position.x,
     y: position.y,
     xOffset: position.xOffset,
     yOffset: position.yOffset,
     forwards: true,
+    falling: false,
     jump: false,
+    ceilingHit: null,
   })
+  const [forwards, setForwards] = useState(true)
+  const [loopWake, setLoopWake] = useState(0)
 
-  const [maxYScroll, setMaxYScroll] = useState(maximum.length + height - 24)
+  const [maxYScroll, setMaxYScroll] = useState(maximum.length + height)
+
+  const updateForwards = useCallback((nextForwards: boolean) => {
+    forwardsRef.current = nextForwards
+    setForwards((prev) => (prev === nextForwards ? prev : nextForwards))
+  }, [])
+
+  const isCrouching = useCallback(
+    () => down && mario !== 1 && !jumpDisplayRef.current,
+    [down, mario]
+  )
+
+  const markKeyboardDirectionInput = useCallback(() => {
+    keyboardDirectionLockUntilRef.current = performance.now() + 280
+  }, [])
 
   // Helper to sync refs to state
   const syncState = useCallback(() => {
+    setForwards((prev) => (prev === forwardsRef.current ? prev : forwardsRef.current))
+
     setRenderState((prev) => {
       if (
         prev.x === xRef.current &&
@@ -99,7 +155,9 @@ export const useController = ({
         prev.xOffset === xOffsetRef.current &&
         prev.yOffset === yOffsetRef.current &&
         prev.forwards === forwardsRef.current &&
-        prev.jump === jumpDisplayRef.current
+        prev.falling === velocityYRef.current > 0 &&
+        prev.jump === jumpDisplayRef.current &&
+        prev.ceilingHit === ceilingHitRef.current
       ) {
         return prev
       }
@@ -109,143 +167,459 @@ export const useController = ({
         xOffset: xOffsetRef.current,
         yOffset: yOffsetRef.current,
         forwards: forwardsRef.current,
+        falling: velocityYRef.current > 0,
         jump: jumpDisplayRef.current,
+        ceilingHit: ceilingHitRef.current,
       }
     })
 
-    const newMaxYScroll = maximum.length + height - 24
+    const newMaxYScroll = maximum.length + height
     if (maxYScroll !== newMaxYScroll) {
       setMaxYScroll(newMaxYScroll)
     }
   }, [height, maximum.length, maxYScroll])
 
+  const startJump = useCallback(
+    (force = false) => {
+      if (mobile || isCrouching() || (!force && (jumpHeldRef.current || jumpLockRef.current))) {
+        return false
+      }
+
+      const recoverSurface =
+        force &&
+        !jumpDisplayRef.current &&
+        velocityYRef.current === 0 &&
+        (groundedRef.current || yOffsetRef.current !== 0)
+
+      if (!groundedRef.current && !recoverSurface) {
+        return false
+      }
+
+      if (recoverSurface) {
+        yRef.current += yOffsetRef.current
+        yOffsetRef.current = 0
+      }
+
+      if (mario === 3 && runChargeRef.current >= 60) {
+        flyingRef.current = true
+        flyTimeRef.current = 0
+      }
+
+      velocityYRef.current = mario !== 3 ? -30 : -36
+      groundedRef.current = false
+      jumpRef.current = true
+      jumpHeldRef.current = true
+      jumpDisplayRef.current = true
+      playAudio('jump')
+      syncState()
+      return true
+    },
+    [isCrouching, mario, mobile, playAudio, syncState]
+  )
+
+  useEffect(() => {
+    if (!active || mobile || movementLocked) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) return
+
+      if (event.code === 'ArrowUp' || event.code === 'Space') {
+        event.preventDefault()
+        if (!event.repeat && startJump(true)) {
+          setLoopWake((val) => val + 1)
+        }
+        return
+      }
+
+      if (event.code !== 'ArrowLeft' && event.code !== 'ArrowRight') return
+      event.preventDefault()
+
+      const nextForwards = event.code === 'ArrowRight'
+      markKeyboardDirectionInput()
+      updateForwards(nextForwards)
+      syncState()
+    }
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target)) return
+      if (event.code !== 'ArrowUp' && event.code !== 'Space') return
+      event.preventDefault()
+
+      jumpHeldRef.current = false
+      if (jumpRef.current && velocityYRef.current < -11) {
+        velocityYRef.current = -11
+      }
+      jumpRef.current = false
+      jumpLockRef.current = false
+      if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
+        groundedRef.current = true
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [
+    active,
+    markKeyboardDirectionInput,
+    mobile,
+    movementLocked,
+    startJump,
+    syncState,
+    updateForwards,
+  ])
+
+  useEffect(() => {
+    if (up) return
+
+    jumpHeldRef.current = false
+    jumpLockRef.current = false
+    if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
+      jumpRef.current = false
+      groundedRef.current = true
+    }
+  }, [up])
+
+  const syncScrollPosition = useCallback(
+    (currentYScroll: number) => {
+      if (!active) return
+
+      const target = programmaticScrollTargetRef.current
+      if (target !== null && Math.abs(currentYScroll - target) < 1) {
+        lastYScrollRef.current = currentYScroll
+        programmaticScrollTargetRef.current = null
+        return
+      }
+
+      const keyboardDirectionActive =
+        !mobile &&
+        (keys.current.has('ArrowLeft') ||
+          keys.current.has('ArrowRight') ||
+          performance.now() < keyboardDirectionLockUntilRef.current)
+
+      if (keyboardDirectionActive) {
+        lastYScrollRef.current = currentYScroll
+        return
+      }
+
+      if (lastYScrollRef.current === currentYScroll) return
+
+      const total = Math.max(0, Math.min(maximum.length, currentYScroll))
+
+      if (total < maximum.xOffset) {
+        xOffsetRef.current = total
+        xRef.current = 0
+      } else {
+        xOffsetRef.current = maximum.xOffset
+        xRef.current = total - maximum.xOffset
+      }
+
+      if (currentYScroll > lastYScrollRef.current) {
+        updateForwards(true)
+      } else if (currentYScroll < lastYScrollRef.current) {
+        updateForwards(false)
+      }
+
+      if (yOffsetRef.current === 0 && velocityYRef.current === 0) {
+        const support = findSupportSurface(
+          position.surfaceLevels,
+          total,
+          yRef.current,
+          mario,
+          forwardsRef.current,
+          isCrouching()
+        )
+        const stepSurface =
+          support ??
+          findStepSurface(
+            position.surfaceLevels,
+            total,
+            yRef.current,
+            mario,
+            forwardsRef.current,
+            isCrouching()
+          )
+
+        if (stepSurface) {
+          yRef.current = stepSurface.height
+          groundedRef.current = true
+        } else {
+          yRef.current =
+            getLowestGroundHeight(
+              position.surfaceLevels,
+              total,
+              mario,
+              forwardsRef.current,
+              isCrouching()
+            ) || position.y
+          yOffsetRef.current = 0
+          velocityYRef.current = 0
+          groundedRef.current = true
+        }
+      }
+
+      lastYScrollRef.current = currentYScroll
+      syncState()
+    },
+    [
+      active,
+      isCrouching,
+      keys,
+      mario,
+      maximum.length,
+      maximum.xOffset,
+      mobile,
+      position.y,
+      position.surfaceLevels,
+      syncState,
+      updateForwards,
+    ]
+  )
+
   // Adjust Y Positioning logic (now uses velocity for parabolic motion)
-  const updateY = useCallback(() => {
-    if (active) {
-      const gravity = 1.6
+  const updateY = useCallback(
+    (frameScale = 1) => {
+      if (active) {
+        const scaledFrame = Math.min(maxFrameScale, Math.max(0.5, frameScale))
+        const gravity = 1.6
+        const worldX = xRef.current + xOffsetRef.current
+        const crouching = isCrouching()
+        const previousFeet = yRef.current + yOffsetRef.current
 
-      // Determine ground height at current X
-      let groundHeight = 0
-      for (const i of position.groundLevels) {
-        if (
-          xRef.current + xOffsetRef.current > i.xMin &&
-          xRef.current + xOffsetRef.current < i.xMax
-        ) {
-          groundHeight = i.height
-          break
+        // Apply Gravity
+        velocityYRef.current += gravity * scaledFrame
+        yOffsetRef.current -= velocityYRef.current * scaledFrame
+        const currentFeet = yRef.current + yOffsetRef.current
+        if (velocityYRef.current !== 0 || yOffsetRef.current !== 0) {
+          groundedRef.current = false
         }
-      }
 
-      // Apply Gravity
-      velocityYRef.current += gravity
-      yOffsetRef.current -= velocityYRef.current
-
-      // Ceiling levels check
-      if (velocityYRef.current < 0) {
-        for (const i of position.ceilingLevels) {
-          // Compute previous absolute feet position (before this frame's gravity step)
-          // gravity already applied: vel = oldVel + g; yOffset = oldYOffset - vel
-          // therefore: oldYOffset = yOffset + vel  =>  previousFeet = yRef + yOffset + vel
-          const previousFeet = yRef.current + yOffsetRef.current + velocityYRef.current
-          const currentFeet = yRef.current + yOffsetRef.current
-          const ceilingY = i.height - (mario !== 1 ? maximum.marioOffset : 0)
-          if (
-            xRef.current + xOffsetRef.current > i.xMin &&
-            xRef.current + xOffsetRef.current < i.xMax &&
-            yRef.current <= i.height &&
-            previousFeet < ceilingY && // Was strictly below the ceiling last frame
-            currentFeet >= ceilingY // Has now crossed up into it
-          ) {
-            yOffsetRef.current = i.height - yRef.current - (mario !== 1 ? maximum.marioOffset : 0)
-            velocityYRef.current = 0
-            jumpLockRef.current = true
-            return true
-          }
-        }
-      }
-
-      // Ground/Platform levels check (only when falling or on ground)
-      if (velocityYRef.current >= 0) {
-        // Platform levels
-        if (!mobile) {
-          for (const i of position.platformLevels) {
-            const previousY = yRef.current + yOffsetRef.current + velocityYRef.current
-            const currentY = yRef.current + yOffsetRef.current
-
+        // Ceiling levels check
+        if (velocityYRef.current < 0) {
+          const footprint = getMarioFootprint(worldX, mario, forwardsRef.current, crouching)
+          for (const i of position.ceilingLevels) {
+            const ceilingY = i.height - (mario !== 1 ? maximum.marioOffset : 0)
+            const overlap = Math.max(
+              0,
+              Math.min(i.xMax + collisionEdgeTolerance, footprint.right) -
+                Math.max(i.xMin - collisionEdgeTolerance, footprint.left)
+            )
+            const overlapsCeiling = overlap / footprint.width >= 0.25
             if (
-              xRef.current + xOffsetRef.current > i.xMin &&
-              xRef.current + xOffsetRef.current < i.xMax &&
-              previousY >= i.height && // Was above or on
-              currentY <= i.height // Is now below or on
+              overlapsCeiling &&
+              yRef.current <= i.height &&
+              previousFeet < ceilingY && // Was strictly below the ceiling last frame
+              currentFeet >= ceilingY // Has now crossed up into it
             ) {
-              yRef.current = i.height
-              yOffsetRef.current = 0
+              yOffsetRef.current = i.height - yRef.current - (mario !== 1 ? maximum.marioOffset : 0)
               velocityYRef.current = 0
+              groundedRef.current = false
+              jumpLockRef.current = true
+              ceilingHitRef.current = {
+                id: i.id,
+                owner: i.owner,
+                xMin: i.xMin,
+                xMax: i.xMax,
+                height: i.height,
+                footprintLeft: footprint.left,
+                footprintRight: footprint.right,
+                worldX,
+                signal: performance.now(),
+              }
               return true
             }
           }
         }
 
-        // Ground check
-        if (yRef.current + yOffsetRef.current <= groundHeight) {
-          yRef.current = groundHeight
+        const lowestGroundHeight = getLowestGroundHeight(
+          position.surfaceLevels,
+          worldX,
+          mario,
+          forwardsRef.current,
+          crouching
+        )
+        const fallbackGroundHeight = lowestGroundHeight || position.y
+
+        // Ground/Platform levels check (only when falling or on ground)
+        if (velocityYRef.current >= 0) {
+          const landing = findLandingSurface(
+            position.surfaceLevels,
+            worldX,
+            previousFeet,
+            currentFeet,
+            mario,
+            forwardsRef.current,
+            crouching
+          )
+
+          if (landing) {
+            yRef.current = landing.height
+            yOffsetRef.current = 0
+            velocityYRef.current = 0
+            groundedRef.current = true
+            jumpLockRef.current = false
+            return true
+          }
+
+          if (previousFeet >= fallbackGroundHeight && currentFeet <= fallbackGroundHeight) {
+            yRef.current = fallbackGroundHeight
+            yOffsetRef.current = 0
+            velocityYRef.current = 0
+            groundedRef.current = true
+            jumpLockRef.current = false
+            return true
+          }
+        }
+
+        if (currentFeet < fallbackGroundHeight - 260) {
+          yRef.current = fallbackGroundHeight
           yOffsetRef.current = 0
           velocityYRef.current = 0
+          groundedRef.current = true
           return true
         }
       }
+      return false
+    },
+    [
+      active,
+      isCrouching,
+      mario,
+      maximum.marioOffset,
+      position.ceilingLevels,
+      position.surfaceLevels,
+      position.y,
+    ]
+  )
 
-      // Handle falling off platforms: if we are in the air and below our yRef,
-      // but still above ground height, we should stay in air and continue falling.
-      // If we are below groundHeight, we snap to it.
-      if (yOffsetRef.current < 0) {
-        if (yRef.current + yOffsetRef.current > groundHeight) {
-          // Still falling, adjust yRef and yOffset to maintain absolute height
-          yOffsetRef.current = yRef.current + yOffsetRef.current - groundHeight
-          yRef.current = groundHeight
-        } else {
-          // Hit the ground
-          yRef.current = groundHeight
-          yOffsetRef.current = 0
-          velocityYRef.current = 0
-        }
-      }
+  useEffect(() => {
+    if (stompBounceSignal === lastStompBounceSignalRef.current || mobile || !active) return
+
+    lastStompBounceSignalRef.current = stompBounceSignal
+    const currentFeet = yRef.current + yOffsetRef.current
+    yRef.current = currentFeet
+    yOffsetRef.current = 0
+    velocityYRef.current = -18
+    groundedRef.current = false
+    jumpRef.current = false
+    jumpHeldRef.current = false
+    jumpLockRef.current = false
+    jumpDisplayRef.current = true
+    syncState()
+    setLoopWake((val) => val + 1)
+  }, [active, mobile, stompBounceSignal, syncState])
+
+  useEffect(() => {
+    if (!active || mobile || movementLocked) return
+    if (yOffsetRef.current !== 0 || velocityYRef.current !== 0) return
+
+    const worldX = xRef.current + xOffsetRef.current
+    const crouching = isCrouching()
+    const support = findSupportSurface(
+      position.surfaceLevels,
+      worldX,
+      yRef.current,
+      mario,
+      forwardsRef.current,
+      crouching
+    )
+
+    if (support) return
+
+    const fallbackGroundHeight =
+      getLowestGroundHeight(
+        position.surfaceLevels,
+        worldX,
+        mario,
+        forwardsRef.current,
+        crouching
+      ) || position.y
+
+    if (yRef.current <= fallbackGroundHeight) {
+      yRef.current = fallbackGroundHeight
+      yOffsetRef.current = 0
+      velocityYRef.current = 0
+      groundedRef.current = true
+      jumpDisplayRef.current = false
+      syncState()
+      return
     }
-    return false
-  }, [active, mario, maximum.marioOffset, mobile, position])
+
+    groundedRef.current = false
+    jumpDisplayRef.current = false
+    velocityYRef.current = Math.max(velocityYRef.current, 0.1)
+    syncState()
+    setLoopWake((val) => val + 1)
+  }, [
+    active,
+    isCrouching,
+    mario,
+    mobile,
+    movementLocked,
+    position.surfaceLevels,
+    position.y,
+    syncState,
+  ])
 
   // Game Loop
   useEffect(() => {
-    if (!active) return
+    if (!active || mobile || movementLocked) return
 
     let rafId: number
 
-    const tick = () => {
-      let moved = false
+    const shouldTick = () =>
+      keys.current.has('ArrowUp') ||
+      keys.current.has('Space') ||
+      keys.current.has('ArrowLeft') ||
+      keys.current.has('ArrowRight') ||
+      yOffsetRef.current !== 0 ||
+      velocityYRef.current !== 0 ||
+      !groundedRef.current ||
+      jumpDisplayRef.current ||
+      flyingRef.current
 
-      const up = keys.current.has('ArrowUp') || keys.current.has('Space')
-      const left = keys.current.has('ArrowLeft')
-      const right = keys.current.has('ArrowRight')
+    const getFrameScale = (time: number) => {
+      if (lastFrameTimeRef.current === null) {
+        lastFrameTimeRef.current = time
+        return 1
+      }
+
+      const delta = time - lastFrameTimeRef.current
+      lastFrameTimeRef.current = time
+      return Math.min(maxFrameScale, Math.max(0.5, delta / targetFrameMs))
+    }
+
+    const tick = (time: number) => {
+      let moved = false
+      const frameScale = getFrameScale(time)
+      const movementStep = speed.x * frameScale
+
+      const upPressed = keys.current.has('ArrowUp') || keys.current.has('Space')
+      const leftPressed = keys.current.has('ArrowLeft')
+      const rightPressed = keys.current.has('ArrowRight')
+      const crouching = isCrouching()
+      const previousWorldX = xRef.current + xOffsetRef.current
+      const previousSupport =
+        yOffsetRef.current === 0 && velocityYRef.current === 0
+          ? findSupportSurface(
+              position.surfaceLevels,
+              previousWorldX,
+              yRef.current,
+              mario,
+              forwardsRef.current,
+              crouching
+            )
+          : undefined
+      let keyboardMoved = false
 
       // Jump Logic
       if (!mobile) {
-        if (up && !jumpHeldRef.current && !jumpLockRef.current && yOffsetRef.current === 0) {
-          // Raccoon flight: if P-meter is charged AND we're in the coin-chain launch window,
-          // initiate flight. Window brackets the upward 5-coin chain (x=5600..6240) with a
-          // small lead-in and a longer trailing buffer for late jump presses.
-          const worldX = xRef.current + xOffsetRef.current
-          const inFlightWindow = worldX >= 4400 && worldX <= 7400
-          if (mario === 3 && runChargeRef.current >= 60 && inFlightWindow) {
-            flyingRef.current = true
-            flyTimeRef.current = 0
-          }
-          velocityYRef.current = mario !== 3 ? -30 : -36
-          jumpRef.current = true
-          jumpHeldRef.current = true
-          jumpDisplayRef.current = true
-          playAudio('jump')
+        if (!crouching && upPressed && startJump()) {
           moved = true
-        } else if (!up && jumpRef.current) {
+        } else if (!upPressed && jumpRef.current) {
           // Variable jump height: cut velocity if button released early
           if (velocityYRef.current < -11) {
             velocityYRef.current = -11
@@ -254,7 +628,7 @@ export const useController = ({
           moved = true
         }
 
-        if (!up) {
+        if (!upPressed) {
           jumpHeldRef.current = false
         }
 
@@ -264,28 +638,28 @@ export const useController = ({
           moved = true
         }
 
-        if (up && jumpLockRef.current && yOffsetRef.current === 0) {
+        if (upPressed && jumpLockRef.current && yOffsetRef.current === 0) {
           // Stay locked until button released
-        } else if (!up && jumpLockRef.current && yOffsetRef.current === 0) {
+        } else if (!upPressed && jumpLockRef.current && yOffsetRef.current === 0) {
           jumpLockRef.current = false
         }
 
         // Raccoon Mario abilities
         if (mario === 3) {
           // Slow descent: hold jump while falling -> tail float
-          if (up && velocityYRef.current > 4 && yOffsetRef.current !== 0) {
+          if (upPressed && velocityYRef.current > 4 && yOffsetRef.current !== 0) {
             velocityYRef.current = 4
             moved = true
           }
 
           // Flight: while charged, holding jump after takeoff sustains lift (SMB3 tail flap)
           if (flyingRef.current) {
-            if (up && flyTimeRef.current < 180) {
+            if (upPressed && flyTimeRef.current < 180) {
               // Sustain a steady upward climb while in flight
               if (velocityYRef.current > -9) {
                 velocityYRef.current = -9
               }
-              flyTimeRef.current += 1
+              flyTimeRef.current += frameScale
               moved = true
             } else {
               flyingRef.current = false
@@ -296,70 +670,102 @@ export const useController = ({
       }
 
       // Left Logic
-      if (!mobile && !right && left && xRef.current + xOffsetRef.current > 0) {
+      if (
+        !mobile &&
+        !crouching &&
+        !rightPressed &&
+        leftPressed &&
+        xRef.current + xOffsetRef.current > 0
+      ) {
+        markKeyboardDirectionInput()
         if (xRef.current === 0 && xOffsetRef.current > 0) {
-          xOffsetRef.current = Math.max(0, xOffsetRef.current - speed.x)
+          xOffsetRef.current = Math.max(0, xOffsetRef.current - movementStep)
         } else {
-          xRef.current = Math.max(0, xRef.current - speed.x)
+          xRef.current = Math.max(0, xRef.current - movementStep)
         }
-        if (forwardsRef.current) forwardsRef.current = false
+        if (forwardsRef.current) updateForwards(false)
 
         // Sync scroll
         const newTotal = xRef.current + xOffsetRef.current
+        lastYScrollRef.current = newTotal
+        programmaticScrollTargetRef.current = newTotal
         window.scrollTo({ top: newTotal, behavior: 'auto' })
+        keyboardMoved = true
         moved = true
       }
 
       // Right Logic
-      if (!mobile && !left && right && xRef.current + xOffsetRef.current < maximum.length) {
+      if (
+        !mobile &&
+        !crouching &&
+        !leftPressed &&
+        rightPressed &&
+        xRef.current + xOffsetRef.current < maximum.length
+      ) {
+        markKeyboardDirectionInput()
         if (xOffsetRef.current < maximum.xOffset) {
-          xOffsetRef.current = Math.min(maximum.xOffset, xOffsetRef.current + speed.x)
+          xOffsetRef.current = Math.min(maximum.xOffset, xOffsetRef.current + movementStep)
         } else {
-          xRef.current = Math.min(maximum.length - xOffsetRef.current, xRef.current + speed.x)
+          xRef.current = Math.min(maximum.length - xOffsetRef.current, xRef.current + movementStep)
         }
-        if (!forwardsRef.current) forwardsRef.current = true
+        if (!forwardsRef.current) updateForwards(true)
 
         // Sync scroll
         const newTotal = xRef.current + xOffsetRef.current
+        lastYScrollRef.current = newTotal
+        programmaticScrollTargetRef.current = newTotal
         window.scrollTo({ top: newTotal, behavior: 'auto' })
+        keyboardMoved = true
         moved = true
 
         // Charge raccoon P-meter while running on ground
         if (mario === 3 && yOffsetRef.current === 0 && !flyingRef.current) {
-          if (runChargeRef.current < 60) runChargeRef.current += 1
+          if (runChargeRef.current < 60) {
+            runChargeRef.current = Math.min(60, runChargeRef.current + frameScale)
+          }
         }
       } else if (!flyingRef.current) {
         // Decay run-charge when not actively running right (preserve while flying)
         if (runChargeRef.current > 0 && yOffsetRef.current === 0) {
-          runChargeRef.current = Math.max(0, runChargeRef.current - 2)
+          runChargeRef.current = Math.max(0, runChargeRef.current - 2 * frameScale)
         }
-      }
-
-      // Scroll Logic (sync with React-driven scroll)
-      const currentYScroll = scrollY.get()
-      if (!left && !right && lastYScrollRef.current !== currentYScroll) {
-        const total = Math.max(0, Math.min(maximum.length, currentYScroll))
-
-        if (total < maximum.xOffset) {
-          xOffsetRef.current = total
-          xRef.current = 0
-        } else {
-          xOffsetRef.current = maximum.xOffset
-          xRef.current = total - maximum.xOffset
-        }
-
-        if (currentYScroll > lastYScrollRef.current) {
-          if (!forwardsRef.current) forwardsRef.current = true
-        } else if (currentYScroll < lastYScrollRef.current) {
-          if (forwardsRef.current) forwardsRef.current = false
-        }
-
-        lastYScrollRef.current = currentYScroll
-        moved = true
       }
 
       // Always update physics
-      if (updateY()) {
+      if (keyboardMoved && yOffsetRef.current === 0 && velocityYRef.current === 0) {
+        const support = findSupportSurface(
+          position.surfaceLevels,
+          xRef.current + xOffsetRef.current,
+          yRef.current,
+          mario,
+          forwardsRef.current,
+          crouching
+        )
+        if (!support) {
+          const lowestGroundHeight = getLowestGroundHeight(
+            position.surfaceLevels,
+            xRef.current + xOffsetRef.current,
+            mario,
+            forwardsRef.current,
+            crouching
+          )
+          const fallbackGroundHeight = lowestGroundHeight || position.y
+
+          if (!previousSupport || previousSupport.kind === 'ground') {
+            yRef.current = fallbackGroundHeight
+            yOffsetRef.current = 0
+            velocityYRef.current = 0
+            groundedRef.current = true
+            jumpDisplayRef.current = false
+            jumpLockRef.current = false
+          } else {
+            groundedRef.current = false
+            velocityYRef.current = Math.max(velocityYRef.current, 0)
+          }
+        }
+      }
+
+      if (updateY(frameScale)) {
         moved = true
       } else if (yOffsetRef.current > 0 || velocityYRef.current !== 0) {
         moved = true
@@ -369,7 +775,16 @@ export const useController = ({
         syncState()
       }
 
-      rafId = requestAnimationFrame(tick)
+      if (shouldTick()) {
+        rafId = requestAnimationFrame(tick)
+      } else {
+        lastFrameTimeRef.current = null
+      }
+    }
+
+    if (!shouldTick()) {
+      lastFrameTimeRef.current = null
+      return
     }
 
     rafId = requestAnimationFrame(tick)
@@ -377,20 +792,35 @@ export const useController = ({
   }, [
     active,
     keys,
+    left,
+    loopWake,
+    isCrouching,
+    markKeyboardDirectionInput,
     mario,
     maximum.length,
     maximum.xOffset,
     mobile,
-    playAudio,
+    movementLocked,
+    right,
     speed.x,
+    startJump,
     syncState,
     updateY,
-    scrollY,
+    updateForwards,
+    up,
+    position.y,
+    position.surfaceLevels,
   ])
+
+  useEffect(() => {
+    const unsubscribe = scrollY.on('change', syncScrollPosition)
+    syncScrollPosition(scrollY.get())
+    return () => unsubscribe()
+  }, [scrollY, syncScrollPosition])
 
   // Resize
   useEffect(() => {
-    const newMaxYScroll = maximum.length + height - xOffsetRef.current - 24
+    const newMaxYScroll = maximum.length + height
     if (maxYScroll !== newMaxYScroll) {
       setMaxYScroll(newMaxYScroll)
     }
@@ -406,7 +836,9 @@ export const useController = ({
 
   return {
     down,
-    forwards: renderState.forwards,
+    ceilingHit: renderState.ceilingHit,
+    falling: renderState.falling,
+    forwards,
     jump: renderState.jump,
     x: renderState.x,
     y: renderState.y,

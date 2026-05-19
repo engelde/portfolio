@@ -2,6 +2,79 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.2](https://github.com/engelde/portfolio/compare/v1.7.1...v1.7.2) (2026-05-19)
+
+
+### 🐛 Bug Fixes
+
+* trigger leaf box from turtle shell ([56437fe](https://github.com/engelde/portfolio/commit/56437fe05756345498765823626115c95a7b5345))
+
+### [1.7.1](https://github.com/engelde/portfolio/compare/v1.7.0...v1.7.1) (2026-05-19)
+
+
+### 🐛 Bug Fixes
+
+* normalize mario keyboard movement speed ([a6d25e6](https://github.com/engelde/portfolio/commit/a6d25e6c69035550a27a013746cc34a318895666))
+
+## [1.7.0](https://github.com/engelde/portfolio/compare/v1.6.1...v1.7.0) (2026-05-19)
+
+
+### ✨ Features
+
+* add message validation and turtle shell routes ([f0b3fb0](https://github.com/engelde/portfolio/commit/f0b3fb0dbd74b36db3da99dcfceb11df3c952a4b))
+
+### [1.6.1](https://github.com/engelde/portfolio/compare/v1.6.0...v1.6.1) (2026-05-19)
+
+
+### 🐛 Bug Fixes
+
+* polish pipe room camera and end flow ([ce6bb89](https://github.com/engelde/portfolio/commit/ce6bb892c9186d91332c111087d342ba036b2c9a))
+
+## [1.6.0](https://github.com/engelde/portfolio/compare/v1.5.0...v1.6.0) (2026-05-19)
+
+
+### ✨ Features
+
+* refine gameplay interactions ([0539d16](https://github.com/engelde/portfolio/commit/0539d1616f69c455a60692b0339afc5af810ac05))
+* refine mario camera and pipe room physics ([872dcc2](https://github.com/engelde/portfolio/commit/872dcc2b7e0870b24a9a969dd033da0af6dd5ae8))
+* refine pipe room interactions ([6f47c70](https://github.com/engelde/portfolio/commit/6f47c70470912588892a7a4d2c84764790d82499))
+
+
+### 🐛 Bug Fixes
+
+* improve intro tooltip interaction ([55a28bc](https://github.com/engelde/portfolio/commit/55a28bc3d663b5664986b98e6fbd4a0965b9c71d))
+
+## [1.5.0](https://github.com/engelde/portfolio/compare/v1.4.0...v1.5.0) (2026-05-19)
+
+
+### ✨ Features
+
+* add pipe room easter egg ([49eb9b6](https://github.com/engelde/portfolio/commit/49eb9b69eea6c5e6f19ef56741ed8471608515f9))
+
+## [1.4.0](https://github.com/engelde/portfolio/compare/v1.3.0...v1.4.0) (2026-05-17)
+
+
+### ✨ Features
+
+* add player selection and polish mario sprites ([8bd9837](https://github.com/engelde/portfolio/commit/8bd98370465bea8170674503739c81c254d7d529))
+
+## [1.3.0](https://github.com/engelde/portfolio/compare/v1.2.0...v1.3.0) (2026-05-17)
+
+
+### 🐛 Bug Fixes
+
+* polish mario enemy animations ([073ea26](https://github.com/engelde/portfolio/commit/073ea26cdfabbf3bf59e1aac183cb597bdd10941))
+
+## [1.2.0](https://github.com/engelde/portfolio/compare/v1.1.3...v1.2.0) (2026-05-17)
+
+
+### 🐛 Bug Fixes
+
+* improve mario controls and sprite loading ([db49635](https://github.com/engelde/portfolio/commit/db49635194ea759f10211b167b2d3200e9f051c3))
+* polish mario gameplay animations ([8d24a3e](https://github.com/engelde/portfolio/commit/8d24a3e0b48e5116a2a009c2be4163f228b29c49))
+* polish shell and pipe fire interactions ([16a4bb9](https://github.com/engelde/portfolio/commit/16a4bb9836eb61a58efe90f10733acdb9682556a))
+* stabilize mario gameplay interactions ([132fb26](https://github.com/engelde/portfolio/commit/132fb269f4d45bad64836a8c1ca41b523d8af803))
+
 ### [1.1.3](https://github.com/engelde/portfolio/compare/v1.1.2...v1.1.3) (2026-05-17)
 
 

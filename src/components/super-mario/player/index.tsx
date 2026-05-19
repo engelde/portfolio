@@ -2,12 +2,21 @@
 
 import { VStack } from '@chakra-ui/react'
 
+import type { PlayerCharacter } from '@/lib/store'
+
 import Mario from './mario'
 import Pause from './pause'
 import Stats from './stats'
 
 export type PlayerProps = {
+  cameraY: number
+  character: PlayerCharacter
   complete: boolean
+  down: boolean
+  dying: boolean
+  enteringPipe?: boolean
+  enteringPipeDirection?: 'down' | 'right'
+  exitingPipe?: boolean
   forwards: boolean
   jump: boolean
   length: number
@@ -15,6 +24,7 @@ export type PlayerProps = {
   mario: 1 | 2 | 3
   maxXOffset: number
   mobile: boolean | undefined
+  marioZIndex?: number
   paused: boolean
   score: number
   timer: number
@@ -29,7 +39,14 @@ export type PlayerProps = {
 }
 
 const Player = ({
+  cameraY,
+  character,
   complete,
+  down,
+  dying,
+  enteringPipe = false,
+  enteringPipeDirection = 'down',
+  exitingPipe = false,
   forwards,
   jump,
   length,
@@ -37,6 +54,7 @@ const Player = ({
   mario,
   maxXOffset,
   mobile,
+  marioZIndex = 9,
   paused,
   score,
   timer,
@@ -53,7 +71,22 @@ const Player = ({
     <>
       {xPos < length && (
         <>
-          <Mario variant={mario} x={x} y={y} xPos={xPos} forwards={forwards} jump={jump} />
+          <Mario
+            cameraY={cameraY}
+            character={character}
+            down={down}
+            dying={dying}
+            enteringPipe={enteringPipe}
+            enteringPipeDirection={enteringPipeDirection}
+            exitingPipe={exitingPipe}
+            variant={mario}
+            x={x}
+            y={y}
+            xPos={xPos}
+            forwards={forwards}
+            jump={jump}
+            zIndex={marioZIndex}
+          />
         </>
       )}
 

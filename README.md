@@ -43,3 +43,7 @@ Build and run with Docker:
 docker build -t engelde/portfolio .
 docker run --name portfolio -p 80:3000 -d engelde/portfolio
 ```
+
+## Asset Credits
+
+Super Mario Bros. 3 and all related character, item, environment, visual, and audio assets are owned by Nintendo. I do not claim ownership of those assets, and this site is not affiliated with, sponsored by, or endorsed by Nintendo.

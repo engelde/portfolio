@@ -1,65 +1,81 @@
 'use client'
 
-import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { motion } from 'framer-motion'
 
 export type FireProps = {
   x: number
   y: number
-  forwards: boolean
+  flightX: number
+  flightY: number
+  angle: number
+  shotKey: number
+  onComplete: () => void
 }
 
 const fireAnimation = keyframes`
-  0% { content: url('/images/fire/fire.1.png'); }
-  25% { content: url('/images/fire/fire.2.png'); }
-  50% { content: url('/images/fire/fire.3.png'); }
-  75% { content: url('/images/fire/fire.4.png'); }
-  100% { content: url('/images/fire/fire.1.png'); }
+  0% { background-position: 0 0; }
+  25% { background-position: -30px 0; }
+  50% { background-position: -60px 0; }
+  75% { background-position: -90px 0; }
+  100% { background-position: 0 0; }
 `
 
-const Fire = ({ x, y, forwards }: FireProps) => {
+const fireFlight = keyframes`
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  6% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  94% {
+    opacity: 1;
+    transform: translate(var(--fire-x), var(--fire-y));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--fire-x), var(--fire-y));
+  }
+`
+
+const Fire = ({ x, y, flightX, flightY, angle, shotKey, onComplete }: FireProps) => {
   return (
     <Box
-      as={motion.div}
-      zIndex={3}
+      key={shotKey}
+      zIndex={-2}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
+      aria-label={'fire'}
+      role={'img'}
       w={30}
       h={34}
-      initial={{ opacity: 0, translateX: '0px', translateY: '0px' }}
-      animate={
-        forwards && {
-          opacity: [0, 1, 1, 0],
-          translateX: ['0px', '0px', '-2400px', '-2400px'],
-          translateY: ['0px', '0px', '600px', '600px'],
-          transition: {
-            type: 'keyframes',
-            times: [0, 0.02, 0.98, 1],
-            delay: 3.4,
-            duration: 4.5,
-            ease: 'linear',
-            repeat: Infinity,
-            repeatType: 'loop',
-            repeatDelay: 3.6,
-          },
-        }
-      }
       sx={{
-        '& img': {
-          animation: `${fireAnimation} 0.5s steps(1) infinite`,
-        },
+        '--fire-x': `${flightX}px`,
+        '--fire-y': `${flightY}px`,
+        animation: `${fireFlight} 1.8s linear forwards`,
+        transformOrigin: 'center center',
+      }}
+      onAnimationEnd={(event) => {
+        if (event.currentTarget !== event.target) return
+        onComplete()
       }}
     >
-      <NextImage
-        alt={'fire'}
-        src={'/images/fire/fire.1.png'}
-        width={30}
-        height={34}
-        draggable={false}
-        priority
+      <Box
+        w={30}
+        h={34}
+        bgImage={'url("/images/fire/fire.sprite.png")'}
+        bgPosition={'0 0'}
+        bgRepeat={'no-repeat'}
+        bgSize={'120px 34px'}
+        transform={`rotate(${angle}deg)`}
+        transformOrigin={'center center'}
+        sx={{
+          animation: `${fireAnimation} 0.5s steps(1) infinite`,
+          imageRendering: 'pixelated',
+        }}
       />
     </Box>
   )

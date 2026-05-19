@@ -5,7 +5,7 @@ import { Box } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 export type TreeProps = {
-  variant: 1 | 2 | 3
+  variant: 1 | 2 | 3 | 4
   x: number
   y: number
 }
@@ -35,6 +35,11 @@ const Tree = ({ variant, x, y }: TreeProps) => {
       width: 480,
       height: 640,
     },
+    4: {
+      src: '/images/tree/tree.4.png',
+      width: 640,
+      height: 320,
+    },
   }
 
   return (
@@ -55,7 +60,7 @@ const Tree = ({ variant, x, y }: TreeProps) => {
         width={variants[variant]?.width || 0}
         height={variants[variant]?.height || 0}
         draggable={false}
-        priority
+        unoptimized
       />
     </Box>
   )

@@ -28,7 +28,7 @@ const Bush = ({ x, y }: BushProps) => {
         width={80}
         height={80}
         draggable={false}
-        priority
+        unoptimized
       />
     </Box>
   )

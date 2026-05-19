@@ -2,10 +2,8 @@
 
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
-import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { motion } from 'framer-motion'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -15,6 +13,7 @@ export type PrizeBoxProps = {
   status: boolean
   setStatus: (status: boolean) => void
   active: boolean
+  animationsPaused?: boolean
   setActive: (active: boolean) => void
   prizeActive: boolean
   setPrizeActive: (active: boolean) => void
@@ -24,11 +23,16 @@ export type PrizeBoxProps = {
 }
 
 const boxAnimation = keyframes`
-  0% { content: url('/images/box/box.1.png'); }
-  25% { content: url('/images/box/box.2.png'); }
-  50% { content: url('/images/box/box.3.png'); }
-  75% { content: url('/images/box/box.4.png'); }
-  100% { content: url('/images/box/box.1.png'); }
+  0% { background-position: -80px 0; }
+  25% { background-position: -160px 0; }
+  50% { background-position: -240px 0; }
+  75% { background-position: -320px 0; }
+  100% { background-position: -80px 0; }
+`
+
+const boxEnter = keyframes`
+  0% { transform: translateY(150%); }
+  100% { transform: translateY(0); }
 `
 
 const PrizeBox = ({
@@ -81,47 +85,45 @@ const PrizeBox = ({
 
   return (
     <Box
-      as={motion.div}
       zIndex={1}
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
-      initial={{ translateY: '150%' }}
-      animate={{ translateY: 0, transition: { delay: 0.3, ease: 'linear' } }}
+      sx={{
+        animation: `${boxEnter} 0.3s linear 0.3s both`,
+      }}
     >
       <Box
         position={'absolute'}
         left={0}
         bottom={'-80px'}
-        mb={prizeActive ? '80px' : 0}
+        transform={prizeActive ? 'translate3d(0, -80px, 0)' : 'translate3d(0, 0, 0)'}
         transitionDelay={prizeActive ? '0.2s' : '0s'}
-        transition={prizeActive ? 'all 0.4s ease-in-out' : 'margin-bottom 2s ease-in-out'}
+        transition={prizeActive ? 'transform 0.4s ease-in-out' : 'transform 2s ease-in-out'}
+        willChange={'transform'}
       >
         {prizeActive && [children]}
       </Box>
       <Box
+        role={'img'}
+        aria-label={'box'}
         w={'80px'}
         h={'80px'}
-        mb={active ? '20px' : 0}
-        transition={active ? 'margin-bottom 0.16s ease-in-out' : 'none'}
+        transform={active ? 'translate3d(0, -20px, 0)' : 'translate3d(0, 0, 0)'}
+        transition={active ? 'transform 0.16s ease-in-out' : 'none'}
+        willChange={'transform, background-position'}
         cursor={status ? 'pointer' : 'default'}
+        bgImage={'url("/images/box/box.sprite.png")'}
+        bgRepeat={'no-repeat'}
+        bgSize={'400px 80px'}
+        bgPosition={status ? '-80px 0' : '0 0'}
         _hover={{ filter: status ? 'brightness(115%)' : 'brightness(100%)' }}
         onClick={handleAction}
         sx={{
-          '& img': {
-            animation: status ? `${boxAnimation} 0.52s steps(1) infinite` : 'none',
-          },
+          animation: status ? `${boxAnimation} 0.52s steps(1) infinite` : 'none',
+          imageRendering: 'pixelated',
         }}
-      >
-        <NextImage
-          alt={'box'}
-          src={status ? '/images/box/box.1.png' : '/images/box/box.0.png'}
-          width={80}
-          height={80}
-          draggable={false}
-          priority
-        />
-      </Box>
+      />
     </Box>
   )
 }

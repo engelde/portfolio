@@ -81,6 +81,9 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             color={'cyan.500'}
             _hover={{ color: 'cyan.600' }}
             _active={{ color: 'cyan.600' }}
+            style={{
+              pointerEvents: 'auto',
+            }}
           >
             GitHub
           </Link>
@@ -100,7 +103,7 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
       >
         <HStack color={'black'} spacing={1}>
           <Tooltip label={'Scroll'} bg={'black'}>
-            <Box>
+            <Box style={{ pointerEvents: 'auto' }}>
               <Icon as={BsMouseFill} boxSize={9} color={'white'} />
             </Box>
           </Tooltip>
@@ -110,7 +113,7 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
           </Text>
 
           <Tooltip label={'Arrow Keys'} bg={'black'}>
-            <HStack>
+            <HStack style={{ pointerEvents: 'auto' }}>
               <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
                 <Icon as={FiArrowLeft} />
               </Kbd>
@@ -133,7 +136,7 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
           </Text>
 
           <Tooltip label={'Escape Key'} bg={'black'}>
-            <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
+            <Kbd bg={'white'} borderColor={'blackAlpha.300'} style={{ pointerEvents: 'auto' }}>
               esc
             </Kbd>
           </Tooltip>

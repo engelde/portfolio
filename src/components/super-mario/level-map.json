@@ -1,0 +1,521 @@
+{
+  "length": 13320,
+  "grounds": [
+    { "id": "ground-1", "x": 0, "width": 3374, "height": 64 },
+    { "id": "ground-2", "x": 3360, "width": 2320, "height": 128 },
+    { "id": "ground-3", "x": 5920, "width": 1760, "height": 64 },
+    { "id": "ground-4", "x": 7840, "width": 400, "height": 64 },
+    { "id": "ground-5", "x": 8480, "width": 2960, "height": 64 },
+    { "id": "ground-6", "x": 11520, "width": 9000, "height": 64 }
+  ],
+  "cubes": [
+    { "id": "cube-1", "variant": 1, "x": 1440, "y": 64 },
+    { "id": "cube-2", "variant": 2, "x": 2240, "y": 64 },
+    { "id": "cube-3", "variant": 3, "x": 6480, "y": 64 },
+    { "id": "cube-4", "variant": 4, "x": 10960, "y": 64 },
+    { "id": "cube-5", "variant": 5, "x": 6720, "y": 1144 }
+  ],
+  "rocks": [
+    { "id": "rock-1", "x": 7680, "y": 384 },
+    { "id": "rock-2", "x": 7760, "y": 384 },
+    { "id": "rock-3", "x": 8000, "y": 64 },
+    { "id": "rock-4", "x": 8080, "y": 64 },
+    { "id": "rock-5", "x": 8080, "y": 144 },
+    { "id": "rock-6", "x": 8160, "y": 64 },
+    { "id": "rock-7", "x": 8160, "y": 144 },
+    { "id": "rock-8", "x": 8160, "y": 224 },
+    { "id": "rock-9", "x": 8480, "y": 64 },
+    { "id": "rock-10", "x": 8480, "y": 144 },
+    { "id": "rock-11", "x": 8480, "y": 224 },
+    { "id": "rock-12", "x": 8560, "y": 64 },
+    { "id": "rock-13", "x": 8560, "y": 144 },
+    { "id": "rock-14", "x": 8640, "y": 64 },
+    { "id": "rock-15", "x": 11520, "y": 224 },
+    { "id": "rock-16", "x": 11600, "y": 224 },
+    { "id": "rock-17", "x": 11520, "y": 544 },
+    { "id": "rock-18", "x": 11600, "y": 544 }
+  ],
+  "bricks": [
+    { "id": "brick-1", "x": 10000, "y": 64 },
+    { "id": "brick-2", "x": 10080, "y": 64 },
+    { "id": "brick-3", "x": 10080, "y": 144 },
+    { "id": "brick-4", "x": 10160, "y": 64 },
+    { "id": "brick-5", "x": 10160, "y": 144 },
+    { "id": "brick-6", "x": 10160, "y": 224 },
+    { "id": "brick-7", "x": 10240, "y": 64 },
+    { "id": "brick-8", "x": 10240, "y": 144 },
+    { "id": "brick-9", "x": 10240, "y": 224 },
+    { "id": "brick-10", "x": 10320, "y": 64 },
+    { "id": "brick-11", "x": 10320, "y": 144 },
+    { "id": "brick-12", "x": 10320, "y": 224 },
+    { "id": "brick-13", "x": 10400, "y": 64 },
+    { "id": "brick-14", "x": 10400, "y": 144 },
+    { "id": "brick-15", "x": 10400, "y": 224 },
+    { "id": "brick-16", "x": 10480, "y": 64 },
+    { "id": "brick-17", "x": 10720, "y": 64 },
+    { "id": "brick-18", "x": 10720, "y": 144 },
+    { "id": "brick-19", "x": 10800, "y": 64 }
+  ],
+  "pipes": [
+    {
+      "id": "pipe-1",
+      "x": 2000,
+      "y": 64,
+      "height": 240,
+      "plant": true,
+      "plantVariant": 2,
+      "active": true
+    },
+    { "id": "pipe-2", "x": 9200, "y": 64, "height": 160, "plant": true, "plantVariant": 1 },
+    {
+      "id": "pipe-3",
+      "x": 9520,
+      "y": 64,
+      "height": 240,
+      "plant": true,
+      "plantVariant": 2,
+      "activeWhenBeforeX": 9600
+    },
+    { "id": "pipe-4", "x": 11520, "y": 64, "height": 240 },
+    { "id": "pipe-5", "x": 11520, "y": 624, "height": 1120 },
+    { "id": "pipe-6", "x": 11520, "y": 544, "height": 80, "collisionTop": false },
+    { "id": "pipe-7", "x": 11840, "y": 64, "height": 160 }
+  ],
+  "finalPipe": { "id": "pipe-final", "x": 13040, "y": 64, "height": 410, "rotate": -90 },
+  "coins": [
+    { "id": 1, "x": 5600, "y": 308 },
+    { "id": 2, "x": 5760, "y": 468 },
+    { "id": 3, "x": 5920, "y": 628 },
+    { "id": 4, "x": 6080, "y": 788 },
+    { "id": 5, "x": 6240, "y": 948 },
+    { "id": 6, "x": 6800, "y": 1504 },
+    { "id": 7, "x": 6880, "y": 1504 },
+    { "id": 8, "x": 6960, "y": 1504 },
+    { "id": 9, "x": 7920, "y": 1264 },
+    { "id": 10, "x": 8000, "y": 1264 },
+    { "id": 11, "x": 8080, "y": 1264 },
+    { "id": 12, "x": 8320, "y": 1264 },
+    { "id": 13, "x": 8400, "y": 1264 },
+    { "id": 14, "x": 8480, "y": 1264 }
+  ],
+  "prizeBoxes": [
+    { "id": 1, "x": 1120, "y": 304 },
+    { "id": 2, "x": 1200, "y": 304 },
+    { "id": 3, "x": 1360, "y": 544 },
+    { "id": 4, "x": 1440, "y": 544 },
+    { "id": 5, "x": 2320, "y": 464 },
+    { "id": 6, "x": 3520, "y": 128 },
+    { "id": 7, "x": 3760, "y": 288 },
+    { "id": 8, "x": 7520, "y": 224 },
+    { "id": 9, "x": 7360, "y": 1344 }
+  ],
+  "goombas": [
+    { "id": "goomba-1", "x": 1920, "y": 64, "offset": 1200 },
+    { "id": "goomba-2", "x": 3280, "y": 64, "offset": 1120 },
+    { "id": "goomba-3", "x": 4800, "y": 128, "offset": 1200 },
+    { "id": "goomba-4", "x": 5600, "y": 128, "offset": 2000 }
+  ],
+  "turtles": [
+    { "id": "turtle-1", "x": 3200, "y": 224, "offset": 400 },
+    { "id": "turtle-2", "x": 10400, "y": 304, "offset": 240 },
+    { "id": "turtle-3", "x": 7273, "y": 544, "offset": 469, "variant": "alt" }
+  ],
+  "collisionSurfaces": [
+    {
+      "id": "ground-1-top",
+      "owner": "ground-1",
+      "kind": "ground",
+      "xMin": 0,
+      "xMax": 3374,
+      "height": 64
+    },
+    {
+      "id": "ground-2-top",
+      "owner": "ground-2",
+      "kind": "ground",
+      "xMin": 3360,
+      "xMax": 5680,
+      "height": 128
+    },
+    {
+      "id": "ground-3-top",
+      "owner": "ground-3",
+      "kind": "ground",
+      "xMin": 5920,
+      "xMax": 7680,
+      "height": 64
+    },
+    {
+      "id": "ground-4-top",
+      "owner": "ground-4",
+      "kind": "ground",
+      "xMin": 7840,
+      "xMax": 8240,
+      "height": 64
+    },
+    {
+      "id": "ground-5-top",
+      "owner": "ground-5",
+      "kind": "ground",
+      "xMin": 8480,
+      "xMax": 11440,
+      "height": 64
+    },
+    {
+      "id": "ground-6-top",
+      "owner": "ground-6",
+      "kind": "ground",
+      "xMin": 11520,
+      "xMax": 20520,
+      "height": 64
+    },
+    {
+      "id": "box-1-2-top",
+      "owner": "prize-boxes-1-2",
+      "kind": "box",
+      "xMin": 1120,
+      "xMax": 1280,
+      "height": 384
+    },
+    {
+      "id": "box-3-4-top",
+      "owner": "prize-boxes-3-4",
+      "kind": "box",
+      "xMin": 1360,
+      "xMax": 1520,
+      "height": 624
+    },
+    {
+      "id": "box-5-top",
+      "owner": "prize-box-5",
+      "kind": "box",
+      "xMin": 2320,
+      "xMax": 2400,
+      "height": 544
+    },
+    {
+      "id": "box-6-top",
+      "owner": "prize-box-6",
+      "kind": "box",
+      "xMin": 3520,
+      "xMax": 3600,
+      "height": 208
+    },
+    {
+      "id": "box-7-top",
+      "owner": "prize-box-7",
+      "kind": "box",
+      "xMin": 3760,
+      "xMax": 3840,
+      "height": 368
+    },
+    {
+      "id": "box-8-top",
+      "owner": "prize-box-8",
+      "kind": "box",
+      "xMin": 7520,
+      "xMax": 7600,
+      "height": 304
+    },
+    {
+      "id": "box-9-top",
+      "owner": "prize-box-9",
+      "kind": "box",
+      "xMin": 7360,
+      "xMax": 7440,
+      "height": 1424
+    },
+    {
+      "id": "cube-1-upper",
+      "owner": "cube-1",
+      "kind": "platform",
+      "xMin": 1605,
+      "xMax": 1835,
+      "height": 460
+    },
+    {
+      "id": "cube-1-lower",
+      "owner": "cube-1",
+      "kind": "platform",
+      "xMin": 1440,
+      "xMax": 1675,
+      "height": 300
+    },
+    {
+      "id": "pipe-1-top",
+      "owner": "pipe-1",
+      "kind": "pipe",
+      "xMin": 2000,
+      "xMax": 2160,
+      "height": 304
+    },
+    {
+      "id": "cube-2-top",
+      "owner": "cube-2",
+      "kind": "platform",
+      "xMin": 2800,
+      "xMax": 3114,
+      "height": 624
+    },
+    {
+      "id": "cube-2-mid-high",
+      "owner": "cube-2",
+      "kind": "platform",
+      "xMin": 2566,
+      "xMax": 2874,
+      "height": 460
+    },
+    {
+      "id": "cube-2-mid-low",
+      "owner": "cube-2",
+      "kind": "platform",
+      "xMin": 2245,
+      "xMax": 2635,
+      "height": 300
+    },
+    {
+      "id": "cube-2-low",
+      "owner": "cube-2",
+      "kind": "platform",
+      "xMin": 2806,
+      "xMax": 3275,
+      "height": 222
+    },
+    {
+      "id": "cube-3-top",
+      "owner": "cube-3",
+      "kind": "platform",
+      "xMin": 6804,
+      "xMax": 7353,
+      "height": 544
+    },
+    {
+      "id": "cube-3-mid",
+      "owner": "cube-3",
+      "kind": "platform",
+      "xMin": 6644,
+      "xMax": 7193,
+      "height": 382
+    },
+    {
+      "id": "cube-3-low",
+      "owner": "cube-3",
+      "kind": "platform",
+      "xMin": 6485,
+      "xMax": 7034,
+      "height": 222
+    },
+    {
+      "id": "rock-1-2-top",
+      "owner": "rocks-1-2",
+      "kind": "platform",
+      "xMin": 7680,
+      "xMax": 7840,
+      "height": 464
+    },
+    {
+      "id": "rock-3-8-top",
+      "owner": "rocks-3-8",
+      "kind": "platform",
+      "xMin": 8160,
+      "xMax": 8240,
+      "height": 304
+    },
+    {
+      "id": "rock-3-8-mid",
+      "owner": "rocks-3-8",
+      "kind": "platform",
+      "xMin": 8080,
+      "xMax": 8240,
+      "height": 224
+    },
+    {
+      "id": "rock-3-8-low",
+      "owner": "rocks-3-8",
+      "kind": "platform",
+      "xMin": 8000,
+      "xMax": 8240,
+      "height": 144
+    },
+    {
+      "id": "rock-9-14-top",
+      "owner": "rocks-9-14",
+      "kind": "platform",
+      "xMin": 8480,
+      "xMax": 8560,
+      "height": 304
+    },
+    {
+      "id": "rock-9-14-mid",
+      "owner": "rocks-9-14",
+      "kind": "platform",
+      "xMin": 8480,
+      "xMax": 8640,
+      "height": 224
+    },
+    {
+      "id": "rock-9-14-low",
+      "owner": "rocks-9-14",
+      "kind": "platform",
+      "xMin": 8480,
+      "xMax": 8720,
+      "height": 144
+    },
+    {
+      "id": "brick-stack-1-top",
+      "owner": "bricks-1-16",
+      "kind": "brick",
+      "xMin": 10160,
+      "xMax": 10480,
+      "height": 304
+    },
+    {
+      "id": "brick-stack-1-mid",
+      "owner": "bricks-1-16",
+      "kind": "brick",
+      "xMin": 10080,
+      "xMax": 10480,
+      "height": 224
+    },
+    {
+      "id": "brick-stack-1-low",
+      "owner": "bricks-1-16",
+      "kind": "brick",
+      "xMin": 10000,
+      "xMax": 10560,
+      "height": 144
+    },
+    {
+      "id": "brick-stack-2-mid",
+      "owner": "bricks-17-19",
+      "kind": "brick",
+      "xMin": 10720,
+      "xMax": 10800,
+      "height": 224
+    },
+    {
+      "id": "brick-stack-2-low",
+      "owner": "bricks-17-19",
+      "kind": "brick",
+      "xMin": 10720,
+      "xMax": 10880,
+      "height": 144
+    },
+    {
+      "id": "cube-4-top",
+      "owner": "cube-4",
+      "kind": "platform",
+      "xMin": 10960,
+      "xMax": 11200,
+      "height": 304
+    },
+    {
+      "id": "cube-4-top-2",
+      "owner": "cube-4",
+      "kind": "platform",
+      "xMin": 11120,
+      "xMax": 11360,
+      "height": 784
+    },
+    {
+      "id": "pipe-2-top",
+      "owner": "pipe-2",
+      "kind": "pipe",
+      "xMin": 9200,
+      "xMax": 9360,
+      "height": 224
+    },
+    {
+      "id": "pipe-3-top",
+      "owner": "pipe-3",
+      "kind": "pipe",
+      "xMin": 9520,
+      "xMax": 9680,
+      "height": 304
+    },
+    {
+      "id": "pipe-4-top",
+      "owner": "pipe-4",
+      "kind": "pipe",
+      "xMin": 11520,
+      "xMax": 11680,
+      "height": 304
+    },
+    {
+      "id": "pipe-5-top",
+      "owner": "pipe-5",
+      "kind": "pipe",
+      "xMin": 11520,
+      "xMax": 11680,
+      "height": 1744
+    },
+    {
+      "id": "pipe-7-top",
+      "owner": "pipe-7",
+      "kind": "pipe",
+      "xMin": 11840,
+      "xMax": 12000,
+      "height": 224
+    },
+    {
+      "id": "final-pipe-zone-top",
+      "owner": "pipe-final",
+      "kind": "pipe",
+      "xMin": 12840,
+      "xMax": 13280,
+      "height": 215
+    },
+    {
+      "id": "sky-cube-top",
+      "owner": "cube-5",
+      "kind": "platform",
+      "xMin": 6725,
+      "xMax": 7035,
+      "height": 1344
+    },
+    {
+      "id": "sky-cloud-1-top",
+      "owner": "clouds-1-4",
+      "kind": "platform",
+      "xMin": 7200,
+      "xMax": 7520,
+      "height": 1104
+    },
+    {
+      "id": "sky-cloud-2-top",
+      "owner": "clouds-5-17",
+      "kind": "platform",
+      "xMin": 7600,
+      "xMax": 8640,
+      "height": 1184
+    }
+  ],
+  "collisionCeilings": [
+    {
+      "id": "box-1-2-bottom",
+      "owner": "prize-boxes-1-2",
+      "xMin": 1120,
+      "xMax": 1280,
+      "height": 214
+    },
+    {
+      "id": "box-3-4-bottom",
+      "owner": "prize-boxes-3-4",
+      "xMin": 1360,
+      "xMax": 1520,
+      "height": 454
+    },
+    { "id": "box-5-bottom", "owner": "prize-box-5", "xMin": 2320, "xMax": 2400, "height": 374 },
+    { "id": "box-7-bottom", "owner": "prize-box-7", "xMin": 3760, "xMax": 3840, "height": 198 },
+    { "id": "box-8-bottom", "owner": "prize-box-8", "xMin": 7520, "xMax": 7600, "height": 134 },
+    { "id": "box-9-bottom", "owner": "prize-box-9", "xMin": 7360, "xMax": 7440, "height": 1254 },
+    { "id": "pipe-4-bottom", "owner": "pipe-4", "xMin": 11520, "xMax": 11680, "height": 444 },
+    {
+      "id": "final-pipe-bottom",
+      "owner": "pipe-final",
+      "xMin": 12850,
+      "xMax": 13320,
+      "height": 104
+    }
+  ]
+}

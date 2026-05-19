@@ -1,57 +1,95 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 import { motion, useAnimationControls } from 'framer-motion'
 
+import type { PlayerCharacter } from '@/lib/store'
+
 export type MarioProps = {
+  cameraY?: number
+  character: PlayerCharacter
+  down: boolean
+  dying: boolean
+  enteringPipe?: boolean
+  enteringPipeDirection?: 'down' | 'right'
+  exitingPipe?: boolean
   variant: 1 | 2 | 3
   x: number
   y: number
   xPos: number
   forwards: boolean
   jump: boolean
+  zIndex?: number
 }
 
 type VariantProps = {
-  [variant: string]: {
-    [state: number]: {
-      src: string
-      width: number
-      height: number
-    }
-  }
+  name: 'regular' | 'super' | 'raccoon'
+  width: number
+  height: number
+  frames: number
 }
 
-const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
-  const variants: VariantProps = {
-    1: {
-      1: { src: '/images/mario/mario.regular.1.png', width: 100, height: 100 },
-      2: { src: '/images/mario/mario.regular.2.png', width: 100, height: 100 },
-    },
-    2: {
-      1: { src: '/images/mario/mario.super.1.png', width: 80, height: 160 },
-      2: { src: '/images/mario/mario.super.2.png', width: 80, height: 160 },
-    },
-    3: {
-      1: { src: '/images/mario/mario.raccoon.1.png', width: 120, height: 160 },
-      2: { src: '/images/mario/mario.raccoon.2.png', width: 120, height: 160 },
-    },
-  }
-
-  const jumpVariants: VariantProps = {
-    1: { 1: { src: '/images/mario/mario.regular.jump.png', width: 100, height: 100 } },
-    2: { 1: { src: '/images/mario/mario.super.jump.png', width: 80, height: 160 } },
-    3: { 1: { src: '/images/mario/mario.raccoon.jump.png', width: 120, height: 160 } },
-  }
+const Mario = ({
+  cameraY = 0,
+  character,
+  down,
+  dying,
+  enteringPipe = false,
+  enteringPipeDirection = 'down',
+  exitingPipe = false,
+  variant,
+  x,
+  y,
+  xPos,
+  forwards,
+  jump,
+  zIndex = 9,
+}: MarioProps) => {
+  const variants = {
+    1: { name: 'regular', width: 100, height: 100, frames: 3 },
+    2: { name: 'super', width: 80, height: 160, frames: 4 },
+    3: { name: 'raccoon', width: 120, height: 160, frames: 4 },
+  } satisfies Record<MarioProps['variant'], VariantProps>
 
   // Derive animation state mathematically from xPos
-  const walkScale = 80 // Pixels per walk cycle
+  const walkScale = 240 // Pixels per walk cycle
   const state = Math.floor(Math.abs(xPos) / walkScale) % 2 === 0 ? 1 : 2
+  const currentVariant = variants[variant]
+  const crouch = down && variant !== 1 && !jump && !dying && !enteringPipe && !exitingPipe
+  const frame = crouch ? 3 : jump || dying ? 2 : state - 1
+  const pulseControls = useAnimationControls()
+  const marioInitial = exitingPipe ? { translateY: 192 } : false
+  const pipeEntryAnimation =
+    enteringPipeDirection === 'right'
+      ? {
+          opacity: [1, 1, 0],
+          translateX: [0, 96, 192],
+          transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
+        }
+      : {
+          opacity: [1, 1, 0],
+          translateY: [0, 96, 192],
+          transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
+        }
+  const marioAnimation = dying
+    ? {
+        opacity: [1, 1, 0],
+        rotate: [0, 0, 26],
+        translateY: [0, -150, 520],
+        transition: { duration: 1.05, ease: 'easeInOut', times: [0, 0.28, 1] },
+      }
+    : enteringPipe
+      ? pipeEntryAnimation
+      : exitingPipe
+        ? {
+            opacity: 1,
+            translateY: [192, 96, 0],
+            transition: { duration: 0.68, ease: 'easeOut', times: [0, 0.28, 1] },
+          }
+        : pulseControls
 
   // Brief pulsate on variant change
-  const pulseControls = useAnimationControls()
   const prevVariantRef = useRef(variant)
   useEffect(() => {
     if (prevVariantRef.current !== variant) {
@@ -69,29 +107,20 @@ const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
 
   return (
     <Box
-      zIndex={9}
+      zIndex={zIndex}
       position={'fixed'}
-      left={
-        x +
-        (forwards && variant !== 1
-          ? 80 -
-            ((jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0)
-          : 0) +
-        'px'
-      }
+      left={x + (forwards && variant !== 1 ? 80 - currentVariant.width : 0) + 'px'}
       bottom={y + 'px'}
-      w={
-        ((jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0) + 'px'
-      }
-      h={
-        ((jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0) +
-        'px'
-      }
-      transform={!forwards ? 'scaleX(-1)' : ''}
+      w={currentVariant.width + 'px'}
+      h={currentVariant.height + 'px'}
+      transform={`${cameraY ? `translate3d(0, ${cameraY}px, 0) ` : ''}${
+        !forwards ? 'scaleX(-1)' : ''
+      }`}
     >
       <Box
         as={motion.div}
-        animate={pulseControls}
+        initial={marioInitial}
+        animate={marioAnimation}
         style={{
           transformOrigin: 'bottom center',
           width: '100%',
@@ -99,25 +128,20 @@ const Mario = ({ variant, x, y, xPos, forwards, jump }: MarioProps) => {
           position: 'relative',
         }}
       >
-      <NextImage
-        alt={'mario'}
-        src={(jump ? jumpVariants[variant]?.[1]?.src : variants[variant]?.[state]?.src) || ''}
-        width={(jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0}
-        height={
-          (jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0
-        }
-        draggable={false}
-        priority
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          width:
-            (jump ? jumpVariants[variant]?.[1]?.width : variants[variant]?.[state]?.width) || 0,
-          height:
-            (jump ? jumpVariants[variant]?.[1]?.height : variants[variant]?.[state]?.height) || 0,
-        }}
-      />
+        <Box
+          aria-label={character}
+          role={'img'}
+          position={'absolute'}
+          right={0}
+          bottom={0}
+          w={currentVariant.width + 'px'}
+          h={currentVariant.height + 'px'}
+          bgImage={`url("/images/${character}/${character}.${currentVariant.name}.sprite.png")`}
+          bgPosition={`-${frame * currentVariant.width}px 0`}
+          bgRepeat={'no-repeat'}
+          bgSize={`${currentVariant.width * currentVariant.frames}px ${currentVariant.height}px`}
+          sx={{ imageRendering: 'pixelated' }}
+        />
       </Box>
     </Box>
   )

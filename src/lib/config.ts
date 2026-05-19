@@ -7,4 +7,10 @@ export const config = {
     version: process.env.NEXT_PUBLIC_VERSION || '',
     environment: process.env.NODE_ENV || '',
   },
+  forms: {
+    pipeRoomMessage: {
+      endpoint: '/api/hidden-message',
+      turnstileSiteKey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
+    },
+  },
 }

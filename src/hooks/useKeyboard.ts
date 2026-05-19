@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useEventListener } from '@chakra-ui/react'
+
+import { isEditableTarget } from '@/lib/is-editable-target'
 
 type KeyboardProps = {
   active: boolean
@@ -15,61 +16,76 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
   const [escape, setEscape] = useState(false)
 
   const keys = useRef<Set<string>>(new Set())
+  const stateRef = useRef({ up, down, left, right, escape })
 
-  useEventListener(window, 'keydown', (event) => {
-    if (active && event.code) {
+  useEffect(() => {
+    stateRef.current = { up, down, left, right, escape }
+  }, [up, down, left, right, escape])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!active || !event.code) return
+      if (isEditableTarget(event.target)) return
+
       keys.current.add(event.code)
 
       if (event.code === 'ArrowUp' || event.code === 'Space') {
         event.preventDefault()
-        if (!up) setUp(true)
+        if (!stateRef.current.up) setUp(true)
       } else if (event.code === 'ArrowDown') {
         event.preventDefault()
-        if (!down) setDown(true)
+        if (!stateRef.current.down) setDown(true)
       }
 
       if (event.code === 'ArrowLeft') {
         event.preventDefault()
-        if (!left) setLeft(true)
+        if (!stateRef.current.left) setLeft(true)
       } else if (event.code === 'ArrowRight') {
         event.preventDefault()
-        if (!right) setRight(true)
+        if (!stateRef.current.right) setRight(true)
       }
 
       if (event.code === 'Escape') {
         event.preventDefault()
-        if (!escape) setEscape(true)
+        if (!stateRef.current.escape) setEscape(true)
       }
     }
-  })
 
-  useEventListener(window, 'keyup', (event) => {
-    if (active && event.code) {
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (!active || !event.code) return
+      if (isEditableTarget(event.target)) return
+
       keys.current.delete(event.code)
 
       if (event.code === 'ArrowUp' || event.code === 'Space') {
         event.preventDefault()
-
-        if (up) setUp(false)
+        if (stateRef.current.up) setUp(false)
       } else if (event.code === 'ArrowDown') {
         event.preventDefault()
-        if (down) setDown(false)
+        if (stateRef.current.down) setDown(false)
       }
 
       if (event.code === 'ArrowLeft') {
         event.preventDefault()
-        if (left) setLeft(false)
+        if (stateRef.current.left) setLeft(false)
       } else if (event.code === 'ArrowRight') {
         event.preventDefault()
-        if (right) setRight(false)
+        if (stateRef.current.right) setRight(false)
       }
 
       if (event.code === 'Escape') {
         event.preventDefault()
-        setEscape(!!escape)
+        setEscape(false)
       }
     }
-  })
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
+  }, [active])
 
   useEffect(() => {
     if (!active) {

@@ -2,7 +2,7 @@
 
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { keyframes } from '@emotion/react'
 
 type CloudProps = {
   y: number
@@ -20,6 +20,11 @@ type VariantProps = {
     height: number
   }
 }
+
+const cloudDrift = keyframes`
+  0% { margin-left: 100%; }
+  100% { margin-left: -140%; }
+`
 
 const Clouds = () => {
   const clouds: CloudProps[] = [
@@ -107,23 +112,14 @@ const Clouds = () => {
       {clouds.map((item, x) => (
         <Box
           key={x}
-          as={motion.div}
           position={'fixed'}
           top={item.y + 'vh'}
           left={0}
           w={'full'}
           opacity={item.opacity}
-          initial={{ marginLeft: '100%' }}
-          animate={{
-            marginLeft: '-140%',
-            transition: {
-              delay: item.delay,
-              duration: item.duration,
-              ease: 'linear',
-              repeat: Infinity,
-              repeatType: 'loop',
-              repeatDelay: 0,
-            },
+          marginLeft={'100%'}
+          sx={{
+            animation: `${cloudDrift} ${item.duration}s linear ${item.delay}s infinite both`,
           }}
         >
           <NextImage
@@ -133,7 +129,7 @@ const Clouds = () => {
             height={variants[item.variant]?.height || 0}
             style={{ transform: 'scale(' + item.scale + ')' }}
             draggable={false}
-            priority
+            unoptimized
           />
         </Box>
       ))}

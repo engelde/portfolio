@@ -5,15 +5,16 @@ import Code from '@/components/code'
 import { config } from '@/lib/config'
 
 export type FooterProps = {
+  animated?: boolean
   dark?: boolean
 }
 
-const Footer = ({ dark }: FooterProps) => {
+const Footer = ({ animated = true, dark }: FooterProps) => {
   const year = new Date().getFullYear()
 
   return (
     <HStack
-      zIndex={10}
+      zIndex={35}
       position={'fixed'}
       bottom={0}
       left={0}
@@ -23,8 +24,8 @@ const Footer = ({ dark }: FooterProps) => {
     >
       <Box
         as={motion.div}
-        initial={{ translateX: '-150%' }}
-        animate={{ translateX: 0, transition: { delay: 1.5 } }}
+        initial={animated ? { translateX: '-150%' } : false}
+        animate={animated ? { translateX: 0, transition: { delay: 1.5 } } : undefined}
       >
         {(dark && (
           <Code text={'© ' + year + ' ' + config.app.author + ' | v' + config.app.version} />
@@ -36,8 +37,8 @@ const Footer = ({ dark }: FooterProps) => {
       </Box>
       <Box
         as={motion.div}
-        initial={{ translateX: '150%' }}
-        animate={{ translateX: 0, transition: { delay: 1.5 } }}
+        initial={animated ? { translateX: '150%' } : false}
+        animate={animated ? { translateX: 0, transition: { delay: 1.5 } } : undefined}
       >
         {(dark && <Code text={'</body>'} />) || (
           <Text fontSize={'sm'} color={'white'} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>

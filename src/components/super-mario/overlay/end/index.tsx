@@ -1,38 +1,61 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { Box, Flex, Heading, HStack, Link, Tooltip, VStack } from '@chakra-ui/react'
-import { Fireworks } from '@fireworks-js/react'
+import { Box, Flex, Heading, HStack, Link, Tooltip, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import Wordmark from '@/components/wordmark'
 
+const Fireworks = dynamic(() => import('@fireworks-js/react').then((mod) => mod.Fireworks), {
+  ssr: false,
+})
+
 export type EndProps = {
-  complete: boolean
+  active: boolean
+  locked: boolean
+  mode: 'course-clear' | 'game-over'
   x: number
   xPos: number
 }
 
-const End = ({ complete, x, xPos }: EndProps) => {
+const End = ({ active, locked, mode, x, xPos }: EndProps) => {
   const [fireworks, setFireworks] = useState(false)
+  const [mobile] = useMediaQuery('(max-width: 48rem)')
+  const courseClear = mode === 'course-clear'
+  const screenLeft = locked ? 0 : Math.max(0, x - xPos)
+  const visible = active || xPos >= x
+  const interactive = active && locked
+  const linkTabIndex = interactive ? undefined : -1
+  const restartTabIndex = interactive ? 0 : -1
 
   useEffect(() => {
-    if (complete && !fireworks) {
+    if (active && courseClear && !fireworks) {
       setFireworks(true)
     }
-  }, [complete, fireworks])
+  }, [active, courseClear, fireworks])
+
+  useEffect(() => {
+    if (courseClear && xPos > x - 1600) {
+      void import('@fireworks-js/react')
+    }
+  }, [courseClear, x, xPos])
 
   return (
     <Box
+      data-end-screen={'true'}
       zIndex={20}
       position={'absolute'}
-      left={x + 'px'}
+      left={screenLeft + 'px'}
       bottom={0}
       p={0}
-      h={'100vh'}
-      w={'100vw'}
+      h={'100dvh'}
+      minH={'100vh'}
+      w={'100dvw'}
+      minW={'100vw'}
+      aria-hidden={!interactive}
       alignItems={'center'}
       justifyContent={'center'}
       bg={'black'}
@@ -46,27 +69,26 @@ const End = ({ complete, x, xPos }: EndProps) => {
         display: 'block',
         position: 'absolute',
         left: '-26px',
-        bottom: 0,
+        bottom: '64px',
         width: '32px',
-        height: '100%',
+        height: 'calc(100% - 64px)',
       }}
     >
-      <Flex h={'100vh'} w={'100vw'} alignItems={'center'} justifyContent={'center'}>
-        <Box
-          zIndex={'-1'}
-          position={'absolute'}
-          bottom={0}
-          left={0}
-          width={'100%'}
-          minHeight={'100%'}
-        >
+      <Flex
+        h={'100dvh'}
+        minH={'100vh'}
+        w={'100dvw'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
+        <Box zIndex={0} position={'absolute'} bottom={0} left={0} width={'100%'} minHeight={'100%'}>
           <NextImage
             alt={'clear'}
             src={'/images/clear/clear.png'}
             height={700}
             width={1028}
             draggable={false}
-            priority
+            unoptimized
             style={{
               position: 'absolute',
               bottom: 64,
@@ -76,7 +98,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
             }}
           />
 
-          {fireworks && (
+          {fireworks && courseClear && (
             <Box
               position={'absolute'}
               top={0}
@@ -93,11 +115,11 @@ const End = ({ complete, x, xPos }: EndProps) => {
                   acceleration: 1,
                   friction: 0.97,
                   gravity: 1.5,
-                  particles: 50,
-                  traceLength: 2,
-                  traceSpeed: 6,
-                  explosion: 7,
-                  intensity: 5,
+                  particles: mobile ? 20 : 50,
+                  traceLength: mobile ? 1 : 2,
+                  traceSpeed: mobile ? 4 : 6,
+                  explosion: mobile ? 4 : 7,
+                  intensity: mobile ? 2 : 5,
                   flickering: 50,
                   lineStyle: 'round',
                   hue: {
@@ -105,8 +127,8 @@ const End = ({ complete, x, xPos }: EndProps) => {
                     max: 360,
                   },
                   delay: {
-                    min: 25,
-                    max: 45,
+                    min: 15,
+                    max: 35,
                   },
                   rocketsPoint: {
                     min: 90,
@@ -153,30 +175,64 @@ const End = ({ complete, x, xPos }: EndProps) => {
               width={360}
               height={420}
               draggable={false}
-              priority
+              unoptimized
             />
           </Box>
         </Box>
 
+        <Box zIndex={2} position={'absolute'} bottom={0} left={0} w={'100vw'} h={'64px'}>
+          <Box
+            position={'absolute'}
+            left={0}
+            bottom={0}
+            w={'12px'}
+            h={'64px'}
+            bg={'url("/images/ground/ground.1.png") no-repeat left top'}
+            backgroundSize={'12px 128px'}
+          />
+          <Box
+            position={'absolute'}
+            left={'12px'}
+            right={'4px'}
+            bottom={0}
+            h={'64px'}
+            bg={'url("/images/ground/ground.2.png") repeat-x left top'}
+            backgroundSize={'64px 128px'}
+          />
+          <Box
+            position={'absolute'}
+            right={0}
+            bottom={0}
+            w={'4px'}
+            h={'64px'}
+            bg={'url("/images/ground/ground.3.png") no-repeat left top'}
+            backgroundSize={'4px 128px'}
+          />
+        </Box>
+
         <Box
           as={motion.div}
+          zIndex={3}
           alignItems={'center'}
           justifyContent={'center'}
           opacity={0}
-          marginTop={'-3000px'}
-          {...(xPos >= x && {
-            initial: { opacity: 0, marginTop: -3000 },
-            animate: { opacity: 1, marginTop: 0, transition: { duration: 0.6 } },
-          })}
+          px={4}
+          maxW={'100%'}
+          initial={false}
+          animate={
+            visible
+              ? { opacity: 1, translateY: 0, transition: { duration: 0.6 } }
+              : { opacity: 0, translateY: -300 }
+          }
         >
-          <VStack spacing={16}>
-            <Wordmark textAlign={'center'} />
+          <VStack spacing={{ base: 8, md: 16 }} maxW={'100%'}>
+            <Wordmark textAlign={'center'} w={{ base: '320px', md: '700px' }} />
 
             <Heading
               as={motion.div}
-              size={{ base: '2xl', md: '4xl' }}
-              color={'white'}
-              letterSpacing={'4px'}
+              size={{ base: 'xl', md: '4xl' }}
+              color={courseClear ? 'white' : 'red.500'}
+              letterSpacing={{ base: '2px', md: '4px' }}
               textTransform={'uppercase'}
               initial={{ scale: 1 }}
               whileInView={{
@@ -193,18 +249,27 @@ const End = ({ complete, x, xPos }: EndProps) => {
                 },
               }}
             >
-              COURSE CLEAR!
+              {courseClear ? 'COURSE CLEAR!' : 'GAME OVER'}
             </Heading>
 
             <VStack spacing={0}>
               <Heading
                 as={motion.div}
-                size={{ base: '2xl', md: '4xl' }}
+                size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
+                color={'white'}
                 cursor={'pointer'}
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.08 }}
                 _hover={{ color: 'cyan.500' }}
+                role={'button'}
+                tabIndex={restartTabIndex}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' && event.key !== ' ') return
+
+                  event.preventDefault()
+                  window.location.reload()
+                }}
                 onClick={() => window.location.reload()}
               >
                 {'> restart'}
@@ -212,26 +277,35 @@ const End = ({ complete, x, xPos }: EndProps) => {
 
               <Heading
                 as={motion.div}
-                size={{ base: '2xl', md: '4xl' }}
+                size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
+                color={'white'}
                 cursor={'pointer'}
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.08 }}
                 _hover={{ color: 'cyan.500' }}
               >
-                <Link as={NextLink} href={'https://github.com/engelde/portfolio'} target={'_blank'}>
+                <Link
+                  as={NextLink}
+                  color={'white'}
+                  href={'https://github.com/engelde/portfolio'}
+                  target={'_blank'}
+                  tabIndex={linkTabIndex}
+                  _hover={{ color: 'cyan.500' }}
+                >
                   {'> view source'}
                 </Link>
               </Heading>
             </VStack>
 
-            <HStack justifyContent={'center'} verticalAlign={'middle'} spacing={8}>
+            <HStack justifyContent={'center'} verticalAlign={'middle'} spacing={{ base: 5, md: 8 }}>
               <Link
                 as={NextLink}
                 href={'https://github.com/engelde'}
                 target={'_blank'}
                 referrerPolicy={'no-referrer'}
                 rel={'noopener'}
+                tabIndex={linkTabIndex}
               >
                 <Tooltip label={'GitHub'} bg={'black'}>
                   <Box
@@ -246,13 +320,18 @@ const End = ({ complete, x, xPos }: EndProps) => {
                       width={49}
                       height={50}
                       draggable={false}
-                      priority
+                      unoptimized
                     />
                   </Box>
                 </Tooltip>
               </Link>
 
-              <Link as={NextLink} href={'https://www.linkedin.com/in/engelde'} target={'_blank'}>
+              <Link
+                as={NextLink}
+                href={'https://www.linkedin.com/in/engelde'}
+                target={'_blank'}
+                tabIndex={linkTabIndex}
+              >
                 <Tooltip label={'LinkedIn'} bg={'black'}>
                   <Box
                     as={motion.div}
@@ -266,13 +345,18 @@ const End = ({ complete, x, xPos }: EndProps) => {
                       width={50}
                       height={50}
                       draggable={false}
-                      priority
+                      unoptimized
                     />
                   </Box>
                 </Tooltip>
               </Link>
 
-              <Link as={NextLink} href={'https://orcid.org/0009-0001-0780-738X'} target={'_blank'}>
+              <Link
+                as={NextLink}
+                href={'https://orcid.org/0009-0001-0780-738X'}
+                target={'_blank'}
+                tabIndex={linkTabIndex}
+              >
                 <Tooltip label={'ORCID'} bg={'black'}>
                   <Box
                     as={motion.div}
@@ -286,7 +370,7 @@ const End = ({ complete, x, xPos }: EndProps) => {
                       width={50}
                       height={50}
                       draggable={false}
-                      priority
+                      unoptimized
                     />
                   </Box>
                 </Tooltip>
