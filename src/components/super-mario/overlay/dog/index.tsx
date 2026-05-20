@@ -27,8 +27,8 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
           initial: { opacity: 0, marginTop: -600 },
           animate: { opacity: 1, marginTop: 0, transition: { duration: 0.6 } },
         }) || {
-        initial: { opacity: 1, marginTop: 0 },
-        animate: { opacity: 1, marginTop: -600 },
+        initial: { opacity: 0, marginTop: -600 },
+        animate: { opacity: 0, marginTop: -600 },
       })}
       style={{ pointerEvents: 'none' }}
     >
@@ -75,8 +75,8 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
             initial: { opacity: 0, marginLeft: 1200 },
             animate: { opacity: 1, marginLeft: 0, transition: { duration: 0.8, delay: 0.6 } },
           }) || {
-          initial: { opacity: 1, marginLeft: 0 },
-          animate: { opacity: 1, marginLeft: 1200 },
+          initial: { opacity: 0, marginLeft: 1200 },
+          animate: { opacity: 0, marginLeft: 1200 },
         })}
       >
         <Icon as={PiArrowElbowLeftUpBold} boxSize={6} />

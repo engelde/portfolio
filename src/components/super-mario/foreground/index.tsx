@@ -399,10 +399,6 @@ const Foreground = ({
             setMario={setMario}
             score={score}
             setScore={setScore}
-            worldX={1440}
-            worldY={544}
-            xPos={xPos}
-            yPos={yPos}
           />
         ),
       },
@@ -535,8 +531,6 @@ const Foreground = ({
       setScore,
       itemHandlers,
       prizeBoxHandlers,
-      xPos,
-      yPos,
     ]
   )
 

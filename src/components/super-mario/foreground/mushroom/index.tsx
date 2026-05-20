@@ -7,6 +7,7 @@ import { Box } from '@chakra-ui/react'
 import { useAudio } from '@/hooks/useAudio'
 
 import Points from '../points'
+import { usePowerUpCollision } from '../usePowerUpCollision'
 
 export type MushroomProps = {
   x: number
@@ -18,10 +19,6 @@ export type MushroomProps = {
   setMario: (variant: 1 | 2 | 3) => void
   score: number
   setScore: Dispatch<SetStateAction<number>>
-  worldX: number
-  worldY: number
-  xPos: number
-  yPos: number
 }
 
 type MushroomPose = {
@@ -60,19 +57,6 @@ const getMushroomPose = (elapsed: number): MushroomPose => {
   }
 }
 
-const getMushroomRect = (elapsed: number, worldX: number, worldY: number, x: number, y: number) => {
-  const pose = getMushroomPose(Math.min(mushroomDuration, elapsed))
-  const left = worldX + x + pose.x
-  const bottom = worldY + y + 80 - pose.y
-
-  return {
-    left,
-    right: left + 80,
-    bottom,
-    top: bottom + 80,
-  }
-}
-
 const Mushroom = ({
   x,
   y,
@@ -82,12 +66,9 @@ const Mushroom = ({
   setActive,
   setMario,
   setScore,
-  worldX,
-  worldY,
-  xPos,
-  yPos,
 }: MushroomProps) => {
   const { playAudio } = useAudio()
+  const mushroomRef = useRef<HTMLDivElement | null>(null)
   const spawnedAtRef = useRef(performance.now())
   const pausedAtRef = useRef<number | null>(null)
   const poseRef = useRef<MushroomPose>(initialMushroomPose)
@@ -142,6 +123,13 @@ const Mushroom = ({
     }
   }, [animationsPaused])
 
+  usePowerUpCollision({
+    animationsPaused,
+    enabled: !active && !running && !disabled,
+    onCollect: collect,
+    powerUpRef: mushroomRef,
+  })
+
   useEffect(() => {
     if (animationsPaused) return
     if (active || running || disabled) return
@@ -155,45 +143,19 @@ const Mushroom = ({
       poseRef.current = nextPose
       setPose(nextPose)
 
-      const mushroomRect = getMushroomRect(elapsed, worldX, worldY, x, y)
-      const marioWidth = mario === 3 ? 120 : mario === 2 ? 80 : 100
-      const marioLeft = xPos + (mario === 3 ? -24 : 0)
-      const marioRight = marioLeft + marioWidth
-      const marioBottom = yPos
-      const marioTop = yPos + (mario === 1 ? 100 : 160)
-      const horizontalHit = marioRight > mushroomRect.left + 8 && marioLeft < mushroomRect.right - 8
-      const verticalHit = marioTop > mushroomRect.bottom + 8 && marioBottom < mushroomRect.top - 8
-
-      if (horizontalHit && verticalHit) {
-        collect()
-        return
-      }
-
       frame = requestAnimationFrame(tick)
     }
 
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
-  }, [
-    active,
-    animationsPaused,
-    collect,
-    disabled,
-    mario,
-    running,
-    worldX,
-    worldY,
-    x,
-    xPos,
-    y,
-    yPos,
-  ])
+  }, [active, animationsPaused, disabled, running])
 
   return (
     <>
       {active && <Points x={x + pointsPose.x} y={y + 80 - pointsPose.y} total={value} />}
       {!disabled && (
         <Box
+          ref={mushroomRef}
           zIndex={-1}
           position={'absolute'}
           left={x + 'px'}
