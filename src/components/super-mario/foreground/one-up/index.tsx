@@ -31,21 +31,51 @@ const OneUp = ({
   const { playAudio } = useAudio()
   const oneUpRef = useRef<HTMLDivElement | null>(null)
   const [appearing, setAppearing] = useState(true)
+  const [collectible, setCollectible] = useState(false)
   const [running, setRunning] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const value = 1
 
   const collect = useCallback(() => {
-    if (active || running || disabled) return
+    if (!collectible || active || running || disabled) return
     setActive(true)
-  }, [active, disabled, running, setActive])
+  }, [active, collectible, disabled, running, setActive])
 
   usePowerUpCollision({
     animationsPaused,
-    enabled: !active && !running && !disabled,
+    enabled: collectible && !active && !running && !disabled,
     onCollect: collect,
     powerUpRef: oneUpRef,
   })
+
+  useEffect(() => {
+    if (collectible || active || running || disabled) return
+
+    let frame: number
+    let lastFrame: number | null = null
+    let elapsed = 0
+    const revealDuration = 620
+
+    const tick = (time: number) => {
+      if (lastFrame === null) lastFrame = time
+
+      if (!animationsPaused) {
+        elapsed += time - lastFrame
+      }
+
+      lastFrame = time
+
+      if (elapsed >= revealDuration) {
+        setCollectible(true)
+        return
+      }
+
+      frame = requestAnimationFrame(tick)
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [active, animationsPaused, collectible, disabled, running])
 
   useEffect(() => {
     if (appearing) {
@@ -79,10 +109,10 @@ const OneUp = ({
           w={'80px'}
           h={'80px'}
           p={0}
-          cursor={'pointer'}
+          cursor={collectible ? 'pointer' : 'default'}
           opacity={active ? 0 : 1}
           transition={'opacity .1s ease-out'}
-          _hover={{ cursor: 'pointer', filter: 'brightness(110%)' }}
+          _hover={{ cursor: collectible ? 'pointer' : 'default', filter: 'brightness(110%)' }}
           onClick={collect}
         >
           <NextImage
