@@ -274,7 +274,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
           initial: { opacity: 0, marginTop: -600 },
           animate: { opacity: 1, marginTop: 0 },
         }) || {
-        initial: { opacity: 1, marginTop: 0 },
+        initial: { opacity: 0, marginTop: -600 },
         animate: { opacity: 0, marginTop: -600 },
       })}
     >

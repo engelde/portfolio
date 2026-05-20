@@ -244,7 +244,7 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
           initial: { opacity: 0, marginTop: -600 },
           animate: { opacity: 1, marginTop: 0 },
         }) || {
-        initial: { opacity: 1, marginTop: 0 },
+        initial: { opacity: 0, marginTop: -600 },
         animate: { opacity: 0, marginTop: -600 },
       })}
     >
