@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.5](https://github.com/engelde/portfolio/compare/v1.7.4...v1.7.5) (2026-05-20)
+
+
+### 🐛 Bug Fixes
+
+* tighten powerup collision and overlay entry ([9cbe09f](https://github.com/engelde/portfolio/commit/9cbe09f496069c97f01902c636e2ae78c98b3d8f))
+
 ### [1.7.4](https://github.com/engelde/portfolio/compare/v1.7.3...v1.7.4) (2026-05-19)
 
 
