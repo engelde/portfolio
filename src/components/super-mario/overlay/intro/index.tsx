@@ -1,4 +1,5 @@
 'use client'
+
 import { Box, HStack, Icon, Kbd, Link, Text, VStack } from '@chakra-ui/react'
 import { BsMouseFill } from 'react-icons/bs'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'

@@ -166,7 +166,7 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
                 opacity: 0.9,
               }}
             >
-              <Drawer.CloseTrigger asChild>
+              <Drawer.CloseTrigger asChild aria-label={'Close'}>
                 <MotionBox
                   position={'absolute'}
                   top={2}

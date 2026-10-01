@@ -19,8 +19,13 @@ export function EmotionRegistry({ children }: { children: React.ReactNode }) {
     const insert = cache.insert
     cache.insert = (...args) => {
       const [selector, serialized] = args
-      if (cache.inserted[serialized.name] === undefined) {
-        inserted.push({ name: serialized.name, isGlobal: !selector })
+      if (typeof window === 'undefined' && cache.inserted[serialized.name] === undefined) {
+        // <Global> inserts a fresh { name, styles } object, while regular styles and the keyframes
+        // chained to them are serialized objects that always carry a `next` key.
+        inserted.push({
+          name: serialized.name,
+          isGlobal: selector === '' && !('next' in serialized),
+        })
       }
       return insert(...args)
     }

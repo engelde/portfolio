@@ -1,4 +1,5 @@
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react'
+import { statAnatomy } from '@chakra-ui/react/anatomy'
 
 // Chakra v3 changed its palette, heading scale and several component recipes. These overrides
 // keep the v2 values the site was designed with.
@@ -19,7 +20,7 @@ const config = defineConfig({
           800: { value: 'rgba(0, 0, 0, 0.80)' },
         },
         whiteAlpha: { 700: { value: 'rgba(255, 255, 255, 0.64)' } },
-        gray: { 200: { value: '#E2E8F0' } },
+        gray: { 100: { value: '#EDF2F7' }, 200: { value: '#E2E8F0' } },
         red: { 500: { value: '#E53E3E' }, 600: { value: '#C53030' } },
         orange: { 400: { value: '#ED8936' }, 500: { value: '#DD6B20' } },
         yellow: { 400: { value: '#ECC94B' }, 500: { value: '#D69E2E' } },
@@ -47,7 +48,8 @@ const config = defineConfig({
     },
     slotRecipes: {
       stat: {
-        slots: ['root', 'valueText'],
+        // Slot lists merge by index, so restate the defaults rather than a subset.
+        slots: statAnatomy.keys(),
         base: {
           valueText: { letterSpacing: 'normal' },
         },

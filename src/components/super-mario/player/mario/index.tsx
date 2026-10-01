@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
 import { useAnimationControls } from 'framer-motion'
