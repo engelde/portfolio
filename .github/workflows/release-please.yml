@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: Release PR
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          # A fine-grained PAT from the repo owner (contents + pull requests: write)
+          # attributes release PRs and commits to that account and lets CI run on
+          # them. Falls back to GITHUB_TOKEN (github-actions[bot]) when unset.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          target-branch: main
+
+  sync-dev:
+    name: Sync dev with main
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: dev
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
+
+      - name: Fast-forward dev, or open a sync PR if it has diverged
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
+        run: |
+          if git merge --ff-only origin/main && git push origin dev; then
+            exit 0
+          fi
+          gh pr create --base dev --head main \
+            --title "chore(release): sync main into dev" \
+            --body "dev has diverged from main since the last release. Merge this to bring the release commit and changelog into dev." \
+            || echo "A sync pull request is already open."
