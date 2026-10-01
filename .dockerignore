@@ -13,3 +13,6 @@
 .playwright-mcp
 output/
 *.tsbuildinfo
+.github
+.vscode
+resources
