@@ -1,8 +1,8 @@
 'use client'
 
 import NextImage from 'next/image'
-import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+
+import { MotionBox } from '@/components/motion'
 
 export type TreeProps = {
   variant: 1 | 2 | 3 | 4
@@ -43,8 +43,7 @@ const Tree = ({ variant, x, y }: TreeProps) => {
   }
 
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={1}
       position={'absolute'}
       left={x + 'px'}
@@ -62,7 +61,7 @@ const Tree = ({ variant, x, y }: TreeProps) => {
         draggable={false}
         unoptimized
       />
-    </Box>
+    </MotionBox>
   )
 }
 

@@ -1,8 +1,8 @@
 'use client'
 
 import NextImage from 'next/image'
-import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+
+import { MotionBox } from '@/components/motion'
 
 export type CubeProps = {
   variant: 1 | 2 | 3 | 4 | 5
@@ -48,8 +48,7 @@ const Cube = ({ variant, x, y }: CubeProps) => {
   }
 
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={1}
       position={'absolute'}
       left={x + 'px'}
@@ -67,7 +66,7 @@ const Cube = ({ variant, x, y }: CubeProps) => {
         draggable={false}
         unoptimized
       />
-    </Box>
+    </MotionBox>
   )
 }
 

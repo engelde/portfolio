@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
 
+import { MotionBox, MotionFlex, MotionVStack } from '@/components/motion'
 import Wordmark from '@/components/wordmark'
 
 import styles from './styles.module.css'
@@ -230,8 +230,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
   }, [handleStart, isInstructing, isLoading])
 
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       ref={preloaderRef}
       zIndex={'overlay'}
       position={'fixed'}
@@ -272,8 +271,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         justifyContent={'center'}
       >
         {(position === 1 && (
-          <VStack
-            as={motion.div}
+          <MotionVStack
             spacing={2}
             {...(!isPreloading && {
               initial: { translateY: 0 },
@@ -284,10 +282,9 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
             <Text fontSize={'2xl'} color={'cyan.500'}>
               <strong>Loading...</strong>
             </Text>
-          </VStack>
+          </MotionVStack>
         )) || (
-          <VStack
-            as={motion.div}
+          <MotionVStack
             {...((!isInstructing && {
               initial: { translateY: 0 },
               animate: { translateY: 2000, transition: { duration: 0.9 } },
@@ -296,8 +293,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
               animate: { translateY: 0, transition: { duration: 0.9 } },
             })}
           >
-            <Flex
-              as={motion.div}
+            <MotionFlex
               w={'full'}
               alignItems={'center'}
               justifyContent={'center'}
@@ -307,8 +303,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
               <VStack spacing={16}>
                 <Wordmark textAlign={'center'} />
 
-                <VStack
-                  as={motion.div}
+                <MotionVStack
                   spacing={0}
                   alignItems={'center'}
                   justifyContent={'center'}
@@ -345,13 +340,13 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
                   >
                     <strong>{'>'}</strong>
                   </Text>
-                </VStack>
+                </MotionVStack>
               </VStack>
-            </Flex>
-          </VStack>
+            </MotionFlex>
+          </MotionVStack>
         )}
       </Flex>
-    </Box>
+    </MotionBox>
   )
 }
 

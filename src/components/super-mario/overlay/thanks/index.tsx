@@ -1,9 +1,9 @@
 'use client'
 
-import { Box, Heading } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Heading } from '@chakra-ui/react'
 
 import Code from '@/components/code'
+import { MotionBox } from '@/components/motion'
 
 export type ThanksProps = {
   xPos: number
@@ -14,8 +14,7 @@ export type ThanksProps = {
 
 const Thanks = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={10}
       position={'fixed'}
       top={12}
@@ -48,7 +47,7 @@ const Thanks = ({ xPos, xMin, xMax, offset }: ThanksProps) => {
         STOPPING BY!
       </Heading>
       <Code text={'</h1>'} />
-    </Box>
+    </MotionBox>
   )
 }
 

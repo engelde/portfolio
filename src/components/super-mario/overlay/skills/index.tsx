@@ -1,7 +1,6 @@
 'use client'
 
-import { Box, Heading, HStack, Icon, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Heading, HStack, Icon, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { FaAws, FaJava } from 'react-icons/fa6'
 import {
   SiAnthropic,
@@ -35,6 +34,7 @@ import {
 } from 'react-icons/si'
 
 import Code from '@/components/code'
+import { MotionBox, MotionHeading } from '@/components/motion'
 
 export type SkillsProps = {
   xPos: number
@@ -258,8 +258,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
   ]
 
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={10}
       position={'fixed'}
       top={8}
@@ -278,8 +277,8 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
         animate: { opacity: 0, marginTop: -600 },
       })}
     >
-      <Heading
-        as={motion.div}
+      <MotionHeading
+        as="div"
         size={'4xl'}
         color={'red.500'}
         pb={2}
@@ -300,7 +299,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
         <Code text={'<h1>'} />
         Skills
         <Code text={'</h1>'} />
-      </Heading>
+      </MotionHeading>
 
       <Text fontSize={'xl'} pb={6} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
         <Code text={'<p>'} />
@@ -326,9 +325,8 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
             {skillset.map(
               (skill, x) =>
                 xPos > skill.x && (
-                  <Box
+                  <MotionBox
                     key={x}
-                    as={motion.div}
                     color={'white'}
                     display={'inline'}
                     alignItems={'center'}
@@ -358,13 +356,13 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                         />
                       </Tooltip>
                     </Link>
-                  </Box>
+                  </MotionBox>
                 )
             )}
           </Heading>
         </VStack>
       </HStack>
-    </Box>
+    </MotionBox>
   )
 }
 
