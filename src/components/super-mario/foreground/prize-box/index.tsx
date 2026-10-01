@@ -3,7 +3,6 @@
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -22,18 +21,9 @@ export type PrizeBoxProps = {
   children: ReactNode
 }
 
-const boxAnimation = keyframes`
-  0% { background-position: -80px 0; }
-  25% { background-position: -160px 0; }
-  50% { background-position: -240px 0; }
-  75% { background-position: -320px 0; }
-  100% { background-position: -80px 0; }
-`
+const boxAnimation = 'sm-prize-box-box-animation'
 
-const boxEnter = keyframes`
-  0% { transform: translateY(150%); }
-  100% { transform: translateY(0); }
-`
+const boxEnter = 'sm-prize-box-box-enter'
 
 const PrizeBox = ({
   x,

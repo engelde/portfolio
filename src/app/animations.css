@@ -1,0 +1,430 @@
+/* Sprite and scene animations for the super-mario components. */
+
+@keyframes sm-clouds-cloud-drift {
+  0% {
+    margin-left: 100%;
+  }
+  100% {
+    margin-left: -140%;
+  }
+}
+
+@keyframes sm-daylight-cycle {
+  0% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
+}
+
+@keyframes sm-sun-cycle {
+  0% {
+    margin-top: 35px;
+    margin-right: 35px;
+    transform: scale(0.8);
+  }
+  36%,
+  40% {
+    margin-top: -125px;
+    margin-right: -125px;
+    transform: scale(0.9);
+  }
+  48%,
+  56% {
+    margin-top: -300px;
+    margin-right: -300px;
+    transform: scale(1);
+  }
+  64%,
+  94% {
+    margin-top: -125px;
+    margin-right: -125px;
+    transform: scale(0.9);
+  }
+  100% {
+    margin-top: 35px;
+    margin-right: 35px;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes sm-brick-animation {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -80px 0;
+  }
+  50% {
+    background-position: -160px 0;
+  }
+  75% {
+    background-position: -240px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes sm-coin-spin {
+  0%,
+  19.99% {
+    background-position: 0 0;
+  }
+  20%,
+  39.99% {
+    background-position: -80px 0;
+  }
+  40%,
+  59.99% {
+    background-position: -160px 0;
+  }
+  60%,
+  79.99% {
+    background-position: -240px 0;
+  }
+  80%,
+  99.99% {
+    background-position: -320px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes sm-coin-collect {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  40%,
+  60% {
+    opacity: 1;
+    transform: translateY(-200px);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sm-goomba-walk-animation {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: -80px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes sm-goomba-move-animation {
+  0% {
+    transform: translateX(calc(var(--enemy-offset) * -1));
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(var(--enemy-offset) * -1));
+  }
+}
+
+@keyframes sm-leaf-rise {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-160px);
+  }
+}
+
+@keyframes sm-fire-animation {
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: -30px 0;
+  }
+  50% {
+    background-position: -60px 0;
+  }
+  75% {
+    background-position: -90px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes sm-fire-flight {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  6% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  94% {
+    opacity: 1;
+    transform: translate(var(--fire-x), var(--fire-y));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--fire-x), var(--fire-y));
+  }
+}
+
+@keyframes sm-pipe-enter {
+  0% {
+    transform: translateY(150%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes sm-pipe-plant-hitbox-travel {
+  0%,
+  5% {
+    transform: translateY(160px);
+  }
+  30%,
+  60% {
+    transform: translateY(0);
+  }
+  95%,
+  100% {
+    transform: translateY(160px);
+  }
+}
+
+@keyframes sm-plant-animation1 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: -80px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes sm-plant-animation2 {
+  0% {
+    background-position: -160px 0;
+  }
+  16.6% {
+    background-position: -240px 0;
+  }
+  33.3% {
+    background-position: -320px 0;
+  }
+  50% {
+    background-position: -400px 0;
+  }
+  66.6% {
+    background-position: -320px 0;
+  }
+  83.3% {
+    background-position: -240px 0;
+  }
+  100% {
+    background-position: -160px 0;
+  }
+}
+
+@keyframes sm-plant-travel {
+  0%,
+  5% {
+    transform: translateY(160px);
+  }
+  30%,
+  60% {
+    transform: translateY(0);
+  }
+  95%,
+  100% {
+    transform: translateY(160px);
+  }
+}
+
+@keyframes sm-plant-defeat {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(64px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(96px);
+  }
+}
+
+@keyframes sm-points-float {
+  0%,
+  20% {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  30%,
+  70% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes sm-prize-box-box-animation {
+  0% {
+    background-position: -80px 0;
+  }
+  25% {
+    background-position: -160px 0;
+  }
+  50% {
+    background-position: -240px 0;
+  }
+  75% {
+    background-position: -320px 0;
+  }
+  100% {
+    background-position: -80px 0;
+  }
+}
+
+@keyframes sm-prize-box-box-enter {
+  0% {
+    transform: translateY(150%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes sm-turtle-walk-animation {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: -80px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes sm-turtle-move-animation {
+  0% {
+    transform: translateX(calc(var(--enemy-offset) * -1)) scaleX(-1);
+  }
+  50% {
+    transform: translateX(0) scaleX(-1);
+  }
+  50.1% {
+    transform: translateX(0) scaleX(1);
+  }
+  100% {
+    transform: translateX(calc(var(--enemy-offset) * -1)) scaleX(1);
+  }
+}
+
+@keyframes sm-turtle-shell-animation {
+  0%,
+  24.99% {
+    background-position: -160px -80px;
+  }
+  25%,
+  49.99% {
+    background-position: -240px -80px;
+  }
+  50%,
+  74.99% {
+    background-position: -320px -80px;
+  }
+  75%,
+  99.99% {
+    background-position: -400px -80px;
+  }
+  100% {
+    background-position: -160px -80px;
+  }
+}
+
+@keyframes sm-pipe-room-coin-spin {
+  0%,
+  19.99% {
+    background-position: 0 0;
+  }
+  20%,
+  39.99% {
+    background-position: -80px 0;
+  }
+  40%,
+  59.99% {
+    background-position: -160px 0;
+  }
+  60%,
+  79.99% {
+    background-position: -240px 0;
+  }
+  80%,
+  99.99% {
+    background-position: -320px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes sm-pipe-room-coin-collect {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-64px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+}
+
+@keyframes sm-pipe-room-points-float {
+  0%,
+  20% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  30%,
+  70% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}

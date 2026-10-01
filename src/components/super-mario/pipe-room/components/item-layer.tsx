@@ -1,5 +1,4 @@
 import { Box, Text } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import type { PipeRoomCoin, PipeRoomPrizeBox } from '../types'
 
@@ -12,44 +11,11 @@ type PipeRoomItemLayerProps = {
   tileSize: number
 }
 
-const coinSpin = keyframes`
-  0%, 19.99% { background-position: 0 0; }
-  20%, 39.99% { background-position: -80px 0; }
-  40%, 59.99% { background-position: -160px 0; }
-  60%, 79.99% { background-position: -240px 0; }
-  80%, 99.99% { background-position: -320px 0; }
-  100% { background-position: 0 0; }
-`
+const coinSpin = 'sm-pipe-room-coin-spin'
 
-const coinCollect = keyframes`
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  70% {
-    opacity: 1;
-    transform: translateY(-64px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-80px);
-  }
-`
+const coinCollect = 'sm-pipe-room-coin-collect'
 
-const pointsFloat = keyframes`
-  0%, 20% {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  30%, 70% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  90%, 100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-`
+const pointsFloat = 'sm-pipe-room-points-float'
 
 const coinVisualScale = 0.8
 

@@ -2,7 +2,6 @@
 
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -28,17 +27,9 @@ export type GoombaProps = {
 
 type DefeatState = 'alive' | 'squished' | 'gone'
 
-const walkAnimation = keyframes`
-  0% { background-position: 0 0; }
-  50% { background-position: -80px 0; }
-  100% { background-position: 0 0; }
-`
+const walkAnimation = 'sm-goomba-walk-animation'
 
-const moveAnimation = keyframes`
-  0% { transform: translateX(calc(var(--enemy-offset) * -1)); }
-  50% { transform: translateX(0); }
-  100% { transform: translateX(calc(var(--enemy-offset) * -1)); }
-`
+const moveAnimation = 'sm-goomba-move-animation'
 
 const Goomba = ({
   id,

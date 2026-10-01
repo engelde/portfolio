@@ -1,7 +1,6 @@
 'use client'
 
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 export type BrickProps = {
   id?: string
@@ -9,13 +8,7 @@ export type BrickProps = {
   y: number
 }
 
-const animation = keyframes`
-  0% { background-position: 0 0; }
-  25% { background-position: -80px 0; }
-  50% { background-position: -160px 0; }
-  75% { background-position: -240px 0; }
-  100% { background-position: 0 0; }
-`
+const animation = 'sm-brick-animation'
 
 const Brick = ({ id, x, y }: BrickProps) => {
   return (

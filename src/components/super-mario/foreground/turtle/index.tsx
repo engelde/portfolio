@@ -10,7 +10,6 @@ import {
   useState,
 } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -61,34 +60,11 @@ type ShellRoutePose = {
   pose: ShellPose
 }
 
-const walkAnimation = keyframes`
-  0% { background-position: 0 0; }
-  50% { background-position: -80px 0; }
-  100% { background-position: 0 0; }
-`
+const walkAnimation = 'sm-turtle-walk-animation'
 
-const moveAnimation = keyframes`
-  0% {
-    transform: translateX(calc(var(--enemy-offset) * -1)) scaleX(-1);
-  }
-  50% {
-    transform: translateX(0) scaleX(-1);
-  }
-  50.1% {
-    transform: translateX(0) scaleX(1);
-  }
-  100% {
-    transform: translateX(calc(var(--enemy-offset) * -1)) scaleX(1);
-  }
-`
+const moveAnimation = 'sm-turtle-move-animation'
 
-const shellAnimation = keyframes`
-  0%, 24.99% { background-position: -160px -80px; }
-  25%, 49.99% { background-position: -240px -80px; }
-  50%, 74.99% { background-position: -320px -80px; }
-  75%, 99.99% { background-position: -400px -80px; }
-  100% { background-position: -160px -80px; }
-`
+const shellAnimation = 'sm-turtle-shell-animation'
 
 const Turtle = ({
   animationsPaused = false,

@@ -1,7 +1,6 @@
 'use client'
 
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 export type FireProps = {
   x: number
@@ -13,32 +12,9 @@ export type FireProps = {
   onComplete: () => void
 }
 
-const fireAnimation = keyframes`
-  0% { background-position: 0 0; }
-  25% { background-position: -30px 0; }
-  50% { background-position: -60px 0; }
-  75% { background-position: -90px 0; }
-  100% { background-position: 0 0; }
-`
+const fireAnimation = 'sm-fire-animation'
 
-const fireFlight = keyframes`
-  0% {
-    opacity: 0;
-    transform: translate(0, 0);
-  }
-  6% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  94% {
-    opacity: 1;
-    transform: translate(var(--fire-x), var(--fire-y));
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--fire-x), var(--fire-y));
-  }
-`
+const fireFlight = 'sm-fire-flight'
 
 const Fire = ({ x, y, flightX, flightY, angle, shotKey, onComplete }: FireProps) => {
   return (

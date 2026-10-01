@@ -10,7 +10,6 @@ import React, {
 } from 'react'
 import NextImage from 'next/image'
 import { Box, VStack } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -33,16 +32,9 @@ type PipeDirection = 'up' | 'down'
 type PipePlacement = 'bottom' | 'top'
 type PipeSkin = 'normal' | 'alt'
 
-const pipeEnter = keyframes`
-  0% { transform: translateY(150%); }
-  100% { transform: translateY(0); }
-`
+const pipeEnter = 'sm-pipe-enter'
 
-const plantHitboxTravel = keyframes`
-  0%, 5% { transform: translateY(160px); }
-  30%, 60% { transform: translateY(0); }
-  95%, 100% { transform: translateY(160px); }
-`
+const plantHitboxTravel = 'sm-pipe-plant-hitbox-travel'
 
 const plantCycleSeconds = 8
 const firePeakWindowStart = 0.41
