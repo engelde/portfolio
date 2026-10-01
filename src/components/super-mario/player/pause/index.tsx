@@ -4,10 +4,8 @@ import type { ChangeEvent } from 'react'
 import NextImage from 'next/image'
 import {
   Box,
-  Button,
   Drawer,
   DrawerBody,
-  DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
   Flex,
@@ -17,8 +15,8 @@ import {
   useEventListener,
   VStack,
 } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
 
+import { MotionButton, MotionDrawerCloseButton } from '@/components/motion'
 import Wordmark from '@/components/wordmark'
 import { useAudio } from '@/hooks/useAudio'
 import { type PlayerCharacter, useStore } from '@/lib/store'
@@ -98,8 +96,8 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
     <>
       <Flex pr={{ base: 2, lg: 2 }} pl={{ base: 2, lg: 2 }}>
         <HStack>
-          <Button
-            as={motion.p}
+          <MotionButton
+            as="p"
             title={'Pause'}
             aria-label={'open menu'}
             variant={'link'}
@@ -127,7 +125,7 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
             onClick={handleOpen}
           >
             PAUSE
-          </Button>
+          </MotionButton>
         </HStack>
       </Flex>
 
@@ -153,8 +151,8 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
             opacity: 0.9,
           }}
         >
-          <DrawerCloseButton
-            as={motion.div}
+          <MotionDrawerCloseButton
+            as="div"
             zIndex={15}
             _active={{ color: 'cyan.300' }}
             _hover={{ color: 'cyan.300' }}
@@ -166,7 +164,7 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
             initial={{ scaleY: 0.55 }}
           >
             X
-          </DrawerCloseButton>
+          </MotionDrawerCloseButton>
           <DrawerBody>
             <Flex h={'90vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
               <VStack spacing={12}>

@@ -2,7 +2,6 @@
 
 import type { MouseEventHandler } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 export type PlantProps = {
   variant: 1 | 2
@@ -13,42 +12,13 @@ export type PlantProps = {
   onClick?: MouseEventHandler<HTMLDivElement>
 }
 
-const animation1 = keyframes`
-  0% { background-position: 0 0; }
-  50% { background-position: -80px 0; }
-  100% { background-position: 0 0; }
-`
+const animation1 = 'sm-plant-animation1'
 
-const animation2 = keyframes`
-  0% { background-position: -160px 0; }
-  16.6% { background-position: -240px 0; }
-  33.3% { background-position: -320px 0; }
-  50% { background-position: -400px 0; }
-  66.6% { background-position: -320px 0; }
-  83.3% { background-position: -240px 0; }
-  100% { background-position: -160px 0; }
-`
+const animation2 = 'sm-plant-animation2'
 
-const plantTravel = keyframes`
-  0%, 5% { transform: translateY(160px); }
-  30%, 60% { transform: translateY(0); }
-  95%, 100% { transform: translateY(160px); }
-`
+const plantTravel = 'sm-plant-travel'
 
-const plantDefeat = keyframes`
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  45% {
-    opacity: 1;
-    transform: translateY(64px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(96px);
-  }
-`
+const plantDefeat = 'sm-plant-defeat'
 
 const Plant = ({ variant, forwards, x, y, defeated = false, onClick }: PlantProps) => {
   return (

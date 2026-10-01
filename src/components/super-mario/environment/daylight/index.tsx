@@ -1,13 +1,8 @@
 'use client'
 
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
-const daylightCycle = keyframes`
-  0% { background-position: 50% 0%; }
-  50% { background-position: 50% 100%; }
-  100% { background-position: 50% 0%; }
-`
+const daylightCycle = 'sm-daylight-cycle'
 
 const Daylight = () => {
   return (

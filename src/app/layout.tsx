@@ -8,6 +8,7 @@ import { fonts } from './fonts'
 import { Providers } from './providers'
 
 import './globals.css'
+import './animations.css'
 
 export const metadata: Metadata = {
   title: 'David Engel | Software Engineer',
@@ -21,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fonts.sans.variable} ${fonts.mono.variable} antialiased`}>
+      <body className={`${fonts.sans.variable} ${fonts.mono.variable}`}>
         <Providers>{children}</Providers>
         <Analytics />
         <SpeedInsights />

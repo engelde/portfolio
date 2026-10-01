@@ -2,7 +2,6 @@
 
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -20,33 +19,9 @@ export type CoinProps = {
   setScore: Dispatch<SetStateAction<number>>
 }
 
-const coinSpin = keyframes`
-  0%, 19.99% { background-position: 0 0; }
-  20%, 39.99% { background-position: -80px 0; }
-  40%, 59.99% { background-position: -160px 0; }
-  60%, 79.99% { background-position: -240px 0; }
-  80%, 99.99% { background-position: -320px 0; }
-  100% { background-position: 0 0; }
-`
+const coinSpin = 'sm-coin-spin'
 
-const coinCollect = keyframes`
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  40%, 60% {
-    opacity: 1;
-    transform: translateY(-200px);
-  }
-  80% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-`
+const coinCollect = 'sm-coin-collect'
 
 const coinFrameSize = 80
 const coinVisualScale = 0.8

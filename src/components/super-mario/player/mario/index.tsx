@@ -1,9 +1,9 @@
 'use client'
-
 import { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
-import { motion, useAnimationControls } from 'framer-motion'
+import { useAnimationControls } from 'framer-motion'
 
+import { MotionBox } from '@/components/motion'
 import type { PlayerCharacter } from '@/lib/store'
 
 export type MarioProps = {
@@ -117,8 +117,7 @@ const Mario = ({
         !forwards ? 'scaleX(-1)' : ''
       }`}
     >
-      <Box
-        as={motion.div}
+      <MotionBox
         initial={marioInitial}
         animate={marioAnimation}
         style={{
@@ -142,7 +141,7 @@ const Mario = ({
           bgSize={`${currentVariant.width * currentVariant.frames}px ${currentVariant.height}px`}
           sx={{ imageRendering: 'pixelated' }}
         />
-      </Box>
+      </MotionBox>
     </Box>
   )
 }

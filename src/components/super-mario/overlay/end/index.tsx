@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { Box, Flex, Heading, HStack, Link, Tooltip, useMediaQuery, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Box, Flex, HStack, Link, Tooltip, useMediaQuery, VStack } from '@chakra-ui/react'
 
+import { MotionBox, MotionHeading } from '@/components/motion'
 import Wordmark from '@/components/wordmark'
 
 const Fireworks = dynamic(() => import('@fireworks-js/react').then((mod) => mod.Fireworks), {
@@ -108,7 +108,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
               className={'fireworks'}
             >
               <Fireworks
-                className="h-screen w-screen"
+                style={{ width: '100vw', height: '100vh' }}
                 options={{
                   autoresize: true,
                   opacity: 0.6,
@@ -210,8 +210,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
           />
         </Box>
 
-        <Box
-          as={motion.div}
+        <MotionBox
           zIndex={3}
           alignItems={'center'}
           justifyContent={'center'}
@@ -228,8 +227,8 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
           <VStack spacing={{ base: 8, md: 16 }} maxW={'100%'}>
             <Wordmark textAlign={'center'} w={{ base: '320px', md: '700px' }} />
 
-            <Heading
-              as={motion.div}
+            <MotionHeading
+              as="div"
               size={{ base: 'xl', md: '4xl' }}
               color={courseClear ? 'white' : 'red.500'}
               letterSpacing={{ base: '2px', md: '4px' }}
@@ -250,11 +249,11 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
               }}
             >
               {courseClear ? 'COURSE CLEAR!' : 'GAME OVER'}
-            </Heading>
+            </MotionHeading>
 
             <VStack spacing={0}>
-              <Heading
-                as={motion.div}
+              <MotionHeading
+                as="div"
                 size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
                 color={'white'}
@@ -273,10 +272,10 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 onClick={() => window.location.reload()}
               >
                 {'> restart'}
-              </Heading>
+              </MotionHeading>
 
-              <Heading
-                as={motion.div}
+              <MotionHeading
+                as="div"
                 size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
                 color={'white'}
@@ -295,7 +294,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 >
                   {'> view source'}
                 </Link>
-              </Heading>
+              </MotionHeading>
             </VStack>
 
             <HStack justifyContent={'center'} verticalAlign={'middle'} spacing={{ base: 5, md: 8 }}>
@@ -308,12 +307,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 tabIndex={linkTabIndex}
               >
                 <Tooltip label={'GitHub'} bg={'black'}>
-                  <Box
-                    as={motion.div}
-                    cursor={'pointer'}
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.12 }}
-                  >
+                  <MotionBox cursor={'pointer'} initial={{ scale: 1 }} whileHover={{ scale: 1.12 }}>
                     <NextImage
                       alt={'GitHub'}
                       src={'/images/github/github.png'}
@@ -322,7 +316,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                       draggable={false}
                       unoptimized
                     />
-                  </Box>
+                  </MotionBox>
                 </Tooltip>
               </Link>
 
@@ -333,12 +327,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 tabIndex={linkTabIndex}
               >
                 <Tooltip label={'LinkedIn'} bg={'black'}>
-                  <Box
-                    as={motion.div}
-                    cursor={'pointer'}
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.12 }}
-                  >
+                  <MotionBox cursor={'pointer'} initial={{ scale: 1 }} whileHover={{ scale: 1.12 }}>
                     <NextImage
                       alt={'LinkedIn'}
                       src={'/images/linkedin/linkedin.png'}
@@ -347,7 +336,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                       draggable={false}
                       unoptimized
                     />
-                  </Box>
+                  </MotionBox>
                 </Tooltip>
               </Link>
 
@@ -358,12 +347,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 tabIndex={linkTabIndex}
               >
                 <Tooltip label={'ORCID'} bg={'black'}>
-                  <Box
-                    as={motion.div}
-                    cursor={'pointer'}
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.12 }}
-                  >
+                  <MotionBox cursor={'pointer'} initial={{ scale: 1 }} whileHover={{ scale: 1.12 }}>
                     <NextImage
                       alt={'ORCID'}
                       src={'/images/orcid/orcid.png'}
@@ -372,12 +356,12 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                       draggable={false}
                       unoptimized
                     />
-                  </Box>
+                  </MotionBox>
                 </Tooltip>
               </Link>
             </HStack>
           </VStack>
-        </Box>
+        </MotionBox>
       </Flex>
     </Box>
   )

@@ -1,7 +1,7 @@
-import { Box, HStack, Text } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { HStack, Text } from '@chakra-ui/react'
 
 import Code from '@/components/code'
+import { MotionBox } from '@/components/motion'
 import { config } from '@/lib/config'
 
 export type FooterProps = {
@@ -22,8 +22,7 @@ const Footer = ({ animated = true, dark }: FooterProps) => {
       justifyContent={'space-between'}
       p={3}
     >
-      <Box
-        as={motion.div}
+      <MotionBox
         initial={animated ? { translateX: '-150%' } : false}
         animate={animated ? { translateX: 0, transition: { delay: 1.5 } } : undefined}
       >
@@ -34,9 +33,8 @@ const Footer = ({ animated = true, dark }: FooterProps) => {
             {'© ' + year + ' ' + config.app.author + ' | v' + config.app.version}
           </Text>
         )}
-      </Box>
-      <Box
-        as={motion.div}
+      </MotionBox>
+      <MotionBox
         initial={animated ? { translateX: '150%' } : false}
         animate={animated ? { translateX: 0, transition: { delay: 1.5 } } : undefined}
       >
@@ -45,7 +43,7 @@ const Footer = ({ animated = true, dark }: FooterProps) => {
             {'</body>'}
           </Text>
         )}
-      </Box>
+      </MotionBox>
     </HStack>
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 
-import { Box, Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
 
+import { MotionBox } from '@/components/motion'
 import { config } from '@/lib/config'
 
 export type StatsProps = {
@@ -16,8 +16,7 @@ export type StatsProps = {
 
 const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={15}
       position={'fixed'}
       top={2}
@@ -77,7 +76,7 @@ const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
           </StatGroup>
         )}
       </VStack>
-    </Box>
+    </MotionBox>
   )
 }
 

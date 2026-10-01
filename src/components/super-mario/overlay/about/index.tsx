@@ -2,10 +2,10 @@
 
 import type { ReactNode } from 'react'
 import NextImage from 'next/image'
-import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Box, HStack, VStack } from '@chakra-ui/react'
 
 import Code from '@/components/code'
+import { MotionBox, MotionHeading, MotionText } from '@/components/motion'
 
 export type AboutProps = {
   xPos: number
@@ -26,9 +26,9 @@ type VariantProps = {
 const BioDescription = (
   <VStack alignItems={'left'} spacing={0} mb={2}>
     {['Full Stack Software Engineer', 'Los Angeles, CA'].map((text, x) => (
-      <Text
+      <MotionText
         key={x}
-        as={motion.div}
+        as="div"
         whileInView={{
           scaleX: [1, 0.9, 0.9, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1],
           scaleY: [1, 0.9, 0.9, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1],
@@ -44,14 +44,14 @@ const BioDescription = (
         }}
       >
         <Code text={'// ' + text} />
-      </Text>
+      </MotionText>
     ))}
   </VStack>
 )
 
 const BioContent = (
-  <Text
-    as={motion.div}
+  <MotionText
+    as="div"
     maxW={700}
     pb={2}
     fontSize={'xl'}
@@ -64,12 +64,12 @@ const BioContent = (
       "I am a full stack software engineer with over 10 years of experience managing and collaborating with teams to deliver successful projects to senior leadership, clients and investors. I hold a Master of Science in Software Engineering from DePaul University and I currently enjoy working with TypeScript, React, Next.js, Node, Python, Docker, and AWS, as well as exploring what’s possible with frontier AI models and machine learning. I have been working in research and the higher education sector for the last several years but, when I'm not working, I spend my time going on new adventures with my amazing wife, Annie, and my awesome dog, Frodo."
     }
     <Code text={'</p>'} />
-  </Text>
+  </MotionText>
 )
 
 const ExperienceDescription = (
-  <Text
-    as={motion.div}
+  <MotionText
+    as="div"
     mb={2}
     initial={{ translateX: 2400 }}
     animate={{ translateX: 0, transition: { duration: 0.6 } }}
@@ -77,14 +77,14 @@ const ExperienceDescription = (
     <Code
       text={'// "Wise men say forgiveness is divine but never pay full price for late pizza."'}
     />
-  </Text>
+  </MotionText>
 )
 
 const ExperienceContent = (
   <VStack alignItems={'left'} spacing={{ base: 4, md: 6 }}>
     <VStack alignItems={'left'}>
-      <Heading
-        as={motion.div}
+      <MotionHeading
+        as="div"
         pb={0}
         size={'2xl'}
         color={'green.500'}
@@ -105,11 +105,11 @@ const ExperienceContent = (
         <Code text={'<h2>'} />
         Education
         <Code text={'</h2>'} />
-      </Heading>
+      </MotionHeading>
 
       <HStack spacing={4}>
-        <Heading
-          as={motion.div}
+        <MotionHeading
+          as="div"
           mt={0}
           size={'md'}
           minW={'180px'}
@@ -124,10 +124,10 @@ const ExperienceContent = (
           <br />
           Software Engineering
           <br />
-        </Heading>
+        </MotionHeading>
 
-        <Heading
-          as={motion.div}
+        <MotionHeading
+          as="div"
           mt={0}
           size={'md'}
           minW={'180px'}
@@ -142,13 +142,13 @@ const ExperienceContent = (
           <br />
           English, Creative Writing
           <br />
-        </Heading>
+        </MotionHeading>
       </HStack>
     </VStack>
 
     <VStack alignItems={'left'}>
-      <Heading
-        as={motion.div}
+      <MotionHeading
+        as="div"
         pb={0}
         size={'2xl'}
         color={'orange.500'}
@@ -169,11 +169,11 @@ const ExperienceContent = (
         <Code text={'<h2>'} />
         Experience
         <Code text={'</h2>'} />
-      </Heading>
+      </MotionHeading>
 
       <HStack spacing={4} w={'full'} maxW={'800px'}>
-        <Heading
-          as={motion.div}
+        <MotionHeading
+          as="div"
           mt={0}
           size={'md'}
           minW={'180px'}
@@ -188,10 +188,10 @@ const ExperienceContent = (
           <br />
           Hoover Institution
           <br />
-        </Heading>
+        </MotionHeading>
 
-        <Heading
-          as={motion.div}
+        <MotionHeading
+          as="div"
           mt={0}
           size={'md'}
           minW={'180px'}
@@ -206,7 +206,7 @@ const ExperienceContent = (
           <br />
           Cultural Relations and University Events
           <br />
-        </Heading>
+        </MotionHeading>
       </HStack>
     </VStack>
   </VStack>
@@ -229,8 +229,7 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
   }
 
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={10}
       position={'fixed'}
       top={8}
@@ -248,13 +247,15 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
         animate: { opacity: 0, marginTop: -600 },
       })}
     >
-      <Heading
-        as={motion.div}
+      <MotionHeading
+        as="div"
         pb={6}
         size={'4xl'}
         color={variants[variant]?.color || 'white'}
         textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
-        transition={'color .3s ease-in-out'}
+        transitionProperty={'color'}
+        transitionDuration={'.3s'}
+        transitionTimingFunction={'ease-in-out'}
         initial={{ scale: 1 }}
         whileInView={{
           scale: [1, 1.04, 1],
@@ -271,12 +272,11 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
         <Code text={'<h1>'} />
         About
         <Code text={'</h1>'} />
-      </Heading>
+      </MotionHeading>
 
       <HStack mb={2} spacing={{ base: 4, md: 8 }} alignItems={'top'} justifyContent={'flex-start'}>
         <VStack alignItems={'left'}>
-          <Box
-            as={motion.div}
+          <MotionBox
             w={{ base: 130, md: 300 }}
             h={{ base: 130, md: 300 }}
             border={4}
@@ -308,19 +308,19 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
               draggable={false}
               unoptimized
             />
-          </Box>
+          </MotionBox>
         </VStack>
 
         <VStack alignItems={'top'} spacing={4}>
-          <Heading
-            as={motion.div}
+          <MotionHeading
+            as="div"
             size={'2xl'}
             textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
           >
             David Engel
-          </Heading>
+          </MotionHeading>
 
           <Box>{variants[variant]?.description}</Box>
 
@@ -331,7 +331,7 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
       <Box mt={2} display={{ base: 'block', md: 'none' }}>
         {variants[variant]?.content}
       </Box>
-    </Box>
+    </MotionBox>
   )
 }
 

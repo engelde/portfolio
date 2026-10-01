@@ -1,11 +1,11 @@
 'use client'
 
-import { Box, Heading, HStack, Icon, Kbd, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Box, HStack, Icon, Kbd, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { BsMouseFill } from 'react-icons/bs'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 
 import Code from '@/components/code'
+import { MotionBox, MotionHeading, MotionHStack, MotionText } from '@/components/motion'
 
 export type IntroProps = {
   xPos: number
@@ -16,8 +16,7 @@ export type IntroProps = {
 
 const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={10}
       position={'fixed'}
       top={8}
@@ -35,8 +34,8 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
       style={{ pointerEvents: 'none' }}
     >
       <VStack alignItems={'left'} spacing={2}>
-        <Heading
-          as={motion.div}
+        <MotionHeading
+          as="div"
           size={'4xl'}
           color={'green.500'}
           textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
@@ -56,9 +55,9 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
           <Code text={'<h1>'} />
           Hello World
           <Code text={'</h1>'} />
-        </Heading>
-        <Text
-          as={motion.div}
+        </MotionHeading>
+        <MotionText
+          as="div"
           fontSize={'xl'}
           maxW={820}
           textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
@@ -89,11 +88,10 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
           </Link>
           {'.'}
           <Code text={'</p>'} />
-        </Text>
+        </MotionText>
       </VStack>
 
-      <HStack
-        as={motion.div}
+      <MotionHStack
         color={'black'}
         spacing={10}
         mt={12}
@@ -145,8 +143,8 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             to pause
           </Text>
         </HStack>
-      </HStack>
-    </Box>
+      </MotionHStack>
+    </MotionBox>
   )
 }
 

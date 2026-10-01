@@ -162,7 +162,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
     () => ({
       _focusVisible: {
         borderColor: 'cyan.500',
-        boxShadow: '0 0 0 2px var(--chakra-colors-cyan-500)',
+        boxShadow: '0 0 0 2px var(--app-colors-cyan-500)',
       },
       _placeholder: { color: 'whiteAlpha.700' },
       bg: 'black',

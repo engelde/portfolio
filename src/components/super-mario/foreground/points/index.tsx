@@ -1,7 +1,6 @@
 'use client'
 
 import { Text } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 export type PointsProps = {
   x: number
@@ -9,20 +8,7 @@ export type PointsProps = {
   total: number | string
 }
 
-const pointsFloat = keyframes`
-  0%, 20% {
-    opacity: 0;
-    transform: translateY(80px);
-  }
-  30%, 70% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  90%, 100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-`
+const pointsFloat = 'sm-points-float'
 
 const Points = ({ x, y, total }: PointsProps) => {
   return (

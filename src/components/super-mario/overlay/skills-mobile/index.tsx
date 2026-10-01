@@ -1,9 +1,9 @@
 'use client'
 
-import { Box, Flex, Heading, Link, Text } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Flex, Link, Text } from '@chakra-ui/react'
 
 import Code from '@/components/code'
+import { MotionBox, MotionHeading } from '@/components/motion'
 
 export type SkillsMobileProps = {
   xPos: number
@@ -47,8 +47,7 @@ const skillset = [
 
 const SkillsMobile = ({ xPos, xMin, xMax, offset }: SkillsMobileProps) => {
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={10}
       position={'fixed'}
       top={8}
@@ -67,8 +66,8 @@ const SkillsMobile = ({ xPos, xMin, xMax, offset }: SkillsMobileProps) => {
         animate: { opacity: 0, marginTop: -600 },
       })}
     >
-      <Heading
-        as={motion.div}
+      <MotionHeading
+        as="div"
         size={'3xl'}
         color={'red.500'}
         pb={2}
@@ -77,7 +76,7 @@ const SkillsMobile = ({ xPos, xMin, xMax, offset }: SkillsMobileProps) => {
         <Code text={'<h1>'} />
         Skills
         <Code text={'</h1>'} />
-      </Heading>
+      </MotionHeading>
 
       <Text fontSize={'xl'} pb={4} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
         <Code text={'<p>'} />A few favorite tools, languages, and frameworks.
@@ -95,8 +94,8 @@ const SkillsMobile = ({ xPos, xMin, xMax, offset }: SkillsMobileProps) => {
                 referrerPolicy={'no-referrer'}
                 rel={'noopener'}
               >
-                <Box
-                  as={motion.span}
+                <MotionBox
+                  as="span"
                   display={'inline-block'}
                   px={3}
                   py={1}
@@ -109,12 +108,12 @@ const SkillsMobile = ({ xPos, xMin, xMax, offset }: SkillsMobileProps) => {
                   textShadow={'none'}
                 >
                   {skill.name}
-                </Box>
+                </MotionBox>
               </Link>
             )
         )}
       </Flex>
-    </Box>
+    </MotionBox>
   )
 }
 

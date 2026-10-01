@@ -3,7 +3,6 @@
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -22,10 +21,7 @@ export type LeafProps = {
   setScore: Dispatch<SetStateAction<number>>
 }
 
-const leafRise = keyframes`
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-160px); }
-`
+const leafRise = 'sm-leaf-rise'
 
 const Leaf = ({
   x,
