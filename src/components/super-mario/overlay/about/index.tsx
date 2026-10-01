@@ -24,7 +24,7 @@ type VariantProps = {
 }
 
 const BioDescription = (
-  <VStack alignItems={'left'} spacing={0} mb={2}>
+  <VStack alignItems={'left'} gap={0} mb={2}>
     {['Full Stack Software Engineer', 'Los Angeles, CA'].map((text, x) => (
       <MotionText
         key={x}
@@ -81,7 +81,7 @@ const ExperienceDescription = (
 )
 
 const ExperienceContent = (
-  <VStack alignItems={'left'} spacing={{ base: 4, md: 6 }}>
+  <VStack alignItems={'left'} gap={{ base: 4, md: 6 }}>
     <VStack alignItems={'left'}>
       <MotionHeading
         as="div"
@@ -107,7 +107,7 @@ const ExperienceContent = (
         <Code text={'</h2>'} />
       </MotionHeading>
 
-      <HStack spacing={4}>
+      <HStack gap={4}>
         <MotionHeading
           as="div"
           mt={0}
@@ -171,7 +171,7 @@ const ExperienceContent = (
         <Code text={'</h2>'} />
       </MotionHeading>
 
-      <HStack spacing={4} w={'full'} maxW={'800px'}>
+      <HStack gap={4} w={'full'} maxW={'800px'}>
         <MotionHeading
           as="div"
           mt={0}
@@ -274,7 +274,7 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
         <Code text={'</h1>'} />
       </MotionHeading>
 
-      <HStack mb={2} spacing={{ base: 4, md: 8 }} alignItems={'top'} justifyContent={'flex-start'}>
+      <HStack mb={2} gap={{ base: 4, md: 8 }} alignItems={'top'} justifyContent={'flex-start'}>
         <VStack alignItems={'left'}>
           <MotionBox
             w={{ base: 130, md: 300 }}
@@ -311,7 +311,7 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
           </MotionBox>
         </VStack>
 
-        <VStack alignItems={'top'} spacing={4}>
+        <VStack alignItems={'top'} gap={4}>
           <MotionHeading
             as="div"
             size={'2xl'}

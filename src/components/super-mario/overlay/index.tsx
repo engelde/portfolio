@@ -33,7 +33,7 @@ export type OverlayProps = {
 
 const Overlay = ({ ip, forwards, xPos, yPos }: OverlayProps) => {
   const { playAudio } = useAudio()
-  const [mobile] = useMediaQuery('(max-width: 48rem)')
+  const [mobile] = useMediaQuery(['(max-width: 48rem)'])
   const [exited, setExited] = useState(false)
   const [exiting, setExiting] = useState(false)
 

@@ -60,7 +60,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
           h={coinFrameSize + 'px'}
           {...(clickable && !disabled && { cursor: 'pointer', onClick: () => setActive(true) })}
           _hover={{ filter: 'brightness(115%)' }}
-          sx={{
+          css={{
             animation: active ? `${coinCollect} 0.6s ease-in-out forwards` : 'none',
           }}
           onAnimationEnd={(event) => {
@@ -74,10 +74,10 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
             w={coinFrameSize + 'px'}
             h={coinFrameSize + 'px'}
             bgImage={'url("/images/coin/coin.sprite.png")'}
-            bgPosition={'0 0'}
+            backgroundPosition={'0 0'}
             bgRepeat={'no-repeat'}
             bgSize={`${coinFrameSize * 5}px ${coinFrameSize}px`}
-            sx={{
+            css={{
               animation: `${coinSpin} 0.52s steps(1) infinite`,
               imageRendering: 'pixelated',
               transform: `scale(${coinVisualScale})`,

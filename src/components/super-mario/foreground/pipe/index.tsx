@@ -145,7 +145,9 @@ const Pipe = ({
       w={'160px'}
       h={pipeBodyHeight + 'px'}
       bg={`url(${pipeBodySrc}) repeat-y left top / 160px 80px`}
-      sx={{ imageRendering: 'pixelated' }}
+      css={{
+        imageRendering: 'pixelated',
+      }}
     />
   )
   const pipeParts = direction === 'down' ? [pipeBody, pipeTop] : [pipeTop, pipeBody]
@@ -295,12 +297,12 @@ const Pipe = ({
       left={x + 'px'}
       w={'160px'}
       {...pipePlacement}
-      sx={{
+      css={{
         animation: animateEntry ? `${pipeEnter} 0.3s linear 0.3s both` : undefined,
       }}
     >
       <VStack
-        spacing={0}
+        gap={0}
         mb={rotate !== undefined ? '-' + (height / 2 - 76) + 'px' : '0px'}
         transform={'rotate(' + ((rotate !== undefined && rotate + 'deg') || '0deg') + ')'}
       >
@@ -341,7 +343,7 @@ const Pipe = ({
               h={'160px'}
               cursor={'pointer'}
               onClick={handlePlantClick}
-              sx={{
+              css={{
                 animation: `${plantHitboxTravel} ${plantCycleSeconds}s linear infinite`,
               }}
             />

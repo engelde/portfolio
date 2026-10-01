@@ -15,7 +15,7 @@ const Sun = () => {
         w={240}
         h={240}
         opacity={0.4}
-        sx={{
+        css={{
           animation: `${sunCycle} 90s linear infinite`,
         }}
       >
@@ -29,7 +29,7 @@ const Sun = () => {
         w={215}
         h={215}
         opacity={0.9}
-        sx={{
+        css={{
           animation: `${sunCycle} 90s linear infinite`,
         }}
       >

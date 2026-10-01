@@ -77,7 +77,9 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
           animate: { opacity: 0, marginLeft: 1200 },
         })}
       >
-        <Icon as={PiArrowElbowLeftUpBold} boxSize={6} />
+        <Icon boxSize={6} asChild>
+          <PiArrowElbowLeftUpBold />
+        </Icon>
 
         <Text fontSize={'2xl'} mt={2}>
           {'Frodo'}

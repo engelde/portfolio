@@ -136,10 +136,12 @@ const Mario = ({
           w={currentVariant.width + 'px'}
           h={currentVariant.height + 'px'}
           bgImage={`url("/images/${character}/${character}.${currentVariant.name}.sprite.png")`}
-          bgPosition={`-${frame * currentVariant.width}px 0`}
+          backgroundPosition={`-${frame * currentVariant.width}px 0`}
           bgRepeat={'no-repeat'}
           bgSize={`${currentVariant.width * currentVariant.frames}px ${currentVariant.height}px`}
-          sx={{ imageRendering: 'pixelated' }}
+          css={{
+            imageRendering: 'pixelated',
+          }}
         />
       </MotionBox>
     </Box>

@@ -9,12 +9,12 @@ import { MotionBox, MotionFlex, MotionHeading, MotionText } from '@/components/m
 import Turtle from '@/components/super-mario/foreground/turtle'
 
 export default function NotFound() {
-  const [mobile] = useMediaQuery('(max-width: 32rem)')
+  const [mobile] = useMediaQuery(['(max-width: 32rem)'])
 
   return (
     <Layout title={'404'} bg={'black'}>
       <Flex h={'80vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
-        <VStack spacing={0}>
+        <VStack gap={0}>
           <Flex>
             <MotionBox
               width={500}
@@ -49,7 +49,7 @@ export default function NotFound() {
 
           <MotionText
             as="div"
-            align={'center'}
+            textAlign={'center'}
             pb={12}
             initial={{ opacity: 0, translateX: -2000 }}
             animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}

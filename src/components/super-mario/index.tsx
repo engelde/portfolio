@@ -556,7 +556,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       overflowX={'hidden'}
       h={maxYScroll + 'px'}
       w={'100vw'}
-      sx={{
+      css={{
         '&[data-animations-paused="true"] *': {
           animationPlayState: 'paused !important',
         },

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
+import { Box, chakra, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 
 import { MotionBox, MotionFlex, MotionVStack } from '@/components/motion'
 import Wordmark from '@/components/wordmark'
@@ -159,7 +159,7 @@ const preloadImages = async (images: string[], batchSize = 8) => {
 }
 
 const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
-  const [mobile] = useMediaQuery('(max-width: 36rem)')
+  const [mobile] = useMediaQuery(['(max-width: 36rem)'])
   const [isPreloading, setIsPreloading] = useState(true)
   const [isInstructing, setIsInstructing] = useState(false)
   const [position, setPosition] = useState(1)
@@ -249,9 +249,9 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
     >
       <Box aria-hidden={'true'} position={'absolute'} w={'1px'} h={'1px'} overflow={'hidden'}>
         {criticalPreloaderImages.map((src) => (
-          <Box
+          // biome-ignore lint/performance/noImgElement: warms the browser image cache before the game mounts
+          <chakra.img
             key={src}
-            as={'img'}
             src={src}
             alt={''}
             loading={'eager'}
@@ -272,7 +272,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
       >
         {(position === 1 && (
           <MotionVStack
-            spacing={2}
+            gap={2}
             {...(!isPreloading && {
               initial: { translateY: 0 },
               animate: { translateY: 2000, transition: { duration: 0.9 } },
@@ -300,11 +300,11 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
               initial={{ translateY: 2000 }}
               animate={{ translateY: 0, transition: { duration: 0.9 } }}
             >
-              <VStack spacing={16}>
+              <VStack gap={16}>
                 <Wordmark textAlign={'center'} />
 
                 <MotionVStack
-                  spacing={0}
+                  gap={0}
                   alignItems={'center'}
                   justifyContent={'center'}
                   p={1}

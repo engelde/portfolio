@@ -42,10 +42,12 @@ const PipeRoomPlayerSprite = ({
       w={sprite.width + 'px'}
       h={sprite.height + 'px'}
       bgImage={`url("/images/${character}/${character}.${sprite.name}.sprite.png")`}
-      bgPosition={`-${frame * sprite.width}px 0`}
+      backgroundPosition={`-${frame * sprite.width}px 0`}
       bgRepeat={'no-repeat'}
       bgSize={`${sprite.width * sprite.frames}px ${sprite.height}px`}
-      sx={{ imageRendering: 'pixelated' }}
+      css={{
+        imageRendering: 'pixelated',
+      }}
     />
   </Box>
 )

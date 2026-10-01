@@ -1,6 +1,5 @@
 'use client'
-
-import { Heading, HStack, Icon, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
+import { Heading, HStack, Icon, Link, Text, VStack } from '@chakra-ui/react'
 import { FaAws, FaJava } from 'react-icons/fa6'
 import {
   SiAnthropic,
@@ -35,6 +34,7 @@ import {
 
 import Code from '@/components/code'
 import { MotionBox, MotionHeading } from '@/components/motion'
+import { Tooltip } from '@/components/ui/tooltip'
 
 export type SkillsProps = {
   xPos: number
@@ -311,7 +311,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
 
       <HStack
         mb={2}
-        spacing={{ base: 2, md: 3, lg: 4 }}
+        gap={{ base: 2, md: 3, lg: 4 }}
         alignItems={'top'}
         justifyContent={'flex-start'}
       >
@@ -319,7 +319,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
           pl={{ base: 0, md: 1, lg: 2 }}
           pr={{ base: 0, md: 1, lg: 2 }}
           alignItems={'top'}
-          spacing={{ base: 2, md: 4, lg: 8 }}
+          gap={{ base: 2, md: 4, lg: 8 }}
         >
           <Heading size={'2xl'} w={'full'} minW={'240px'} maxW={960}>
             {skillset.map(
@@ -340,9 +340,9 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                       referrerPolicy={'no-referrer'}
                       rel={'noopener'}
                     >
-                      <Tooltip label={skill.name} bg={'black'}>
+                      <Tooltip content={skill.name} contentProps={{ bg: 'black', color: 'white' }}>
                         <Icon
-                          as={skill.icon}
+                          display={'inline-block'}
                           w={{ base: 10, sm: 12, md: 14, lg: 16 }}
                           h={{ base: 10, sm: 12, md: 14, lg: 16 }}
                           m={{ base: 3, md: 4 }}
@@ -353,7 +353,10 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                             transform: 'scale(1.25)',
                             transition: 'color .1s ease-in-out, transform .1s ease-in-out',
                           }}
-                        />
+                          asChild
+                        >
+                          <skill.icon />
+                        </Icon>
                       </Tooltip>
                     </Link>
                   </MotionBox>

@@ -29,7 +29,7 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
       style={{ pointerEvents: 'none' }}
     >
       <MotionVStack
-        spacing={0}
+        gap={0}
         p={1}
         alignItems={'center'}
         justifyContent={'center'}

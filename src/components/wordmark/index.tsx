@@ -1,8 +1,8 @@
 'use client'
 
-import { Box, type BoxProps } from '@chakra-ui/react'
+import { chakra, type HTMLChakraProps } from '@chakra-ui/react'
 
-const Wordmark = (props: BoxProps) => {
+const Wordmark = (props: HTMLChakraProps<'img'>) => {
   const { fontSize, ...rest } = props
   const width =
     fontSize === '5px'
@@ -10,8 +10,8 @@ const Wordmark = (props: BoxProps) => {
       : { base: '360px', sm: '540px', md: '700px' }
 
   return (
-    <Box
-      as={'img'}
+    // biome-ignore lint/performance/noImgElement: static svg wordmark, nothing for next/image to optimize
+    <chakra.img
       src={'/images/wordmark/wordmark.svg'}
       alt={'David Engel'}
       draggable={false}

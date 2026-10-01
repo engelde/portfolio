@@ -79,7 +79,7 @@ const PrizeBox = ({
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
-      sx={{
+      css={{
         animation: `${boxEnter} 0.3s linear 0.3s both`,
       }}
     >
@@ -106,10 +106,10 @@ const PrizeBox = ({
         bgImage={'url("/images/box/box.sprite.png")'}
         bgRepeat={'no-repeat'}
         bgSize={'400px 80px'}
-        bgPosition={status ? '-80px 0' : '0 0'}
+        backgroundPosition={status ? '-80px 0' : '0 0'}
         _hover={{ filter: status ? 'brightness(115%)' : 'brightness(100%)' }}
         onClick={handleAction}
-        sx={{
+        css={{
           animation: status ? `${boxAnimation} 0.52s steps(1) infinite` : 'none',
           imageRendering: 'pixelated',
         }}

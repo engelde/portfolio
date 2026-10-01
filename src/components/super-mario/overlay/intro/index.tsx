@@ -1,11 +1,11 @@
 'use client'
-
-import { Box, HStack, Icon, Kbd, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
+import { Box, HStack, Icon, Kbd, Link, Text, VStack } from '@chakra-ui/react'
 import { BsMouseFill } from 'react-icons/bs'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 
 import Code from '@/components/code'
 import { MotionBox, MotionHeading, MotionHStack, MotionText } from '@/components/motion'
+import { Tooltip } from '@/components/ui/tooltip'
 
 export type IntroProps = {
   xPos: number
@@ -33,7 +33,7 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
       })}
       style={{ pointerEvents: 'none' }}
     >
-      <VStack alignItems={'left'} spacing={2}>
+      <VStack alignItems={'left'} gap={2}>
         <MotionHeading
           as="div"
           size={'4xl'}
@@ -93,16 +93,18 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
 
       <MotionHStack
         color={'black'}
-        spacing={10}
+        gap={10}
         mt={12}
         display={{ base: 'none', lg: 'flex' }}
         initial={{ opacity: 0, translateX: -2000 }}
         animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}
       >
-        <HStack color={'black'} spacing={1}>
-          <Tooltip label={'Scroll'} bg={'black'}>
+        <HStack color={'black'} gap={1}>
+          <Tooltip content={'Scroll'} contentProps={{ bg: 'black', color: 'white' }}>
             <Box style={{ pointerEvents: 'auto' }}>
-              <Icon as={BsMouseFill} boxSize={9} color={'white'} />
+              <Icon boxSize={9} color={'white'} asChild>
+                <BsMouseFill />
+              </Icon>
             </Box>
           </Tooltip>
 
@@ -110,21 +112,29 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             or
           </Text>
 
-          <Tooltip label={'Arrow Keys'} bg={'black'}>
+          <Tooltip content={'Arrow Keys'} contentProps={{ bg: 'black', color: 'white' }}>
             <HStack style={{ pointerEvents: 'auto' }}>
               <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
-                <Icon as={FiArrowLeft} />
+                <Icon asChild>
+                  <FiArrowLeft />
+                </Icon>
               </Kbd>
-              <VStack spacing={0.5}>
+              <VStack gap={0.5}>
                 <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
-                  <Icon as={FiArrowUp} />
+                  <Icon asChild>
+                    <FiArrowUp />
+                  </Icon>
                 </Kbd>
                 <Kbd bg={'white'} mb={''} borderColor={'blackAlpha.300'}>
-                  <Icon as={FiArrowDown} />
+                  <Icon asChild>
+                    <FiArrowDown />
+                  </Icon>
                 </Kbd>
               </VStack>
               <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
-                <Icon as={FiArrowRight} />
+                <Icon asChild>
+                  <FiArrowRight />
+                </Icon>
               </Kbd>
             </HStack>
           </Tooltip>
@@ -133,7 +143,7 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             to move and
           </Text>
 
-          <Tooltip label={'Escape Key'} bg={'black'}>
+          <Tooltip content={'Escape Key'} contentProps={{ bg: 'black', color: 'white' }}>
             <Kbd bg={'white'} borderColor={'blackAlpha.300'} style={{ pointerEvents: 'auto' }}>
               esc
             </Kbd>

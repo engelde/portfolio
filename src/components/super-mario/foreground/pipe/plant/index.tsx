@@ -31,7 +31,7 @@ const Plant = ({ variant, forwards, x, y, defeated = false, onClick }: PlantProp
       h={160}
       cursor={defeated ? 'default' : 'pointer'}
       onClick={defeated ? undefined : onClick}
-      sx={{
+      css={{
         animation: defeated
           ? `${plantDefeat} 0.42s ease-in forwards`
           : `${plantTravel} 8s linear infinite`,
@@ -43,15 +43,16 @@ const Plant = ({ variant, forwards, x, y, defeated = false, onClick }: PlantProp
         w={'80px'}
         h={'160px'}
         bgImage={'url("/images/plant/plant.sprite.png")'}
-        bgPosition={variant === 1 ? '0 0' : '-160px 0'}
+        backgroundPosition={variant === 1 ? '0 0' : '-160px 0'}
         bgRepeat={'no-repeat'}
         bgSize={'480px 160px'}
         transform={forwards ? 'scaleX(-1)' : 'scaleX(1)'}
-        sx={{
+        css={{
           animation:
             variant === 1
               ? `${animation1} 0.8s steps(1) infinite`
               : `${animation2} 2.4s steps(1) infinite`,
+
           imageRendering: 'pixelated',
         }}
       />
