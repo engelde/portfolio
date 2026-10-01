@@ -108,7 +108,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
               className={'fireworks'}
             >
               <Fireworks
-                className="h-screen w-screen"
+                style={{ width: '100vw', height: '100vh' }}
                 options={{
                   autoresize: true,
                   opacity: 0.6,
