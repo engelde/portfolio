@@ -88,7 +88,14 @@ export const useController = ({
   stompBounceSignal = 0,
 }: ControllerProps) => {
   const { playAudio } = useAudio()
-  const { keys, down, escape, up, left, right } = useKeyboard({ active: active && !movementLocked })
+  const {
+    keys,
+    down,
+    escape: escapePressed,
+    up,
+    left,
+    right,
+  } = useKeyboard({ active: active && !movementLocked })
   const { scrollY } = useScroll()
   const { height } = useWindow()
 
@@ -565,6 +572,7 @@ export const useController = ({
   ])
 
   // Game Loop
+  // biome-ignore lint/correctness/useExhaustiveDependencies: left/right/up/loopWake are intentional triggers that restart the idle game loop
   useEffect(() => {
     if (!active || mobile || movementLocked) return
 
@@ -828,11 +836,11 @@ export const useController = ({
 
   // Pause
   useEffect(() => {
-    if (!pause.paused && escape) {
+    if (!pause.paused && escapePressed) {
       pause.setPaused(true)
       playAudio('pause')
     }
-  }, [escape, pause, playAudio])
+  }, [escapePressed, pause, playAudio])
 
   return {
     down,

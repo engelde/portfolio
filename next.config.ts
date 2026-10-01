@@ -1,5 +1,5 @@
+import { createRequire } from 'node:module'
 import type { NextConfig } from 'next'
-import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const { version } = require('./package.json')

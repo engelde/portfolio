@@ -45,7 +45,7 @@ const resumeAnimationFrames = () => {
 
   const callbacks = Array.from(queuedFrames.values())
   queuedFrames = new Map()
-  callbacks.forEach((callback) => requestFrame(callback))
+  for (const callback of callbacks) requestFrame(callback)
 }
 
 export const useGameAnimationPause = (

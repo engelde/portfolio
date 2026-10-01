@@ -49,6 +49,7 @@
           "level": "on",
           "options": {
             "groups": [
+              ":NODE:",
               ["react", "react/**"],
               ["next", "next/**"],
               ":PACKAGE:",
@@ -61,5 +62,17 @@
         }
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["src/components/super-mario/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    }
+  ]
 }

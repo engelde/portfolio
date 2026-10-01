@@ -290,7 +290,7 @@ const Turtle = ({
         y: lowGroundY,
       }
     },
-    [finalWallX, highGroundY, pipeRightX, platformEdgeX, prizeHitX, shellSpeed, y]
+    [finalWallX, prizeHitX, y]
   )
 
   const getShellRoutePose = useCallback(
@@ -336,7 +336,7 @@ const Turtle = ({
         },
       }
     },
-    [shellSpeed, y]
+    [y]
   )
 
   const shellHitsLeafPrizeBox = useCallback(
@@ -353,14 +353,7 @@ const Turtle = ({
         shellBottom <= prizeBoxTopY + prizeBoxCollisionTolerance
       )
     },
-    [
-      prizeBoxBottomY,
-      prizeBoxCollisionTolerance,
-      prizeBoxLeftX,
-      prizeBoxRightX,
-      prizeBoxTopY,
-      shellSize,
-    ]
+    [prizeBoxRightX, prizeBoxTopY]
   )
 
   useEffect(() => {

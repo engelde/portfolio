@@ -67,7 +67,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
         setRunning(true)
       }
     }
-  }, [active, disabled, playAudio, setActive, setScore, running, setDisabled, setRunning])
+  }, [active, disabled, playAudio, setScore, running])
 
   return (
     <>
