@@ -3,8 +3,8 @@ import { Box, HStack, Icon, Kbd, Link, Text, VStack } from '@chakra-ui/react'
 import { BsMouseFill } from 'react-icons/bs'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 
-import Code from '@/components/code'
-import { MotionBox, MotionHeading, MotionHStack, MotionText } from '@/components/motion'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionHeading, MotionHStack, MotionText } from '@/components/ui/motion'
 import { Tooltip } from '@/components/ui/tooltip'
 
 export type IntroProps = {

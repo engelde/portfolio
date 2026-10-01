@@ -4,8 +4,8 @@ import type { ReactNode } from 'react'
 import NextImage from 'next/image'
 import { Box, HStack, VStack } from '@chakra-ui/react'
 
-import Code from '@/components/code'
-import { MotionBox, MotionHeading, MotionText } from '@/components/motion'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionHeading, MotionText } from '@/components/ui/motion'
 
 export type AboutProps = {
   xPos: number

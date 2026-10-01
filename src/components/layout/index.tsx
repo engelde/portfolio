@@ -6,8 +6,8 @@ import type { ContainerProps } from '@chakra-ui/react'
 import { Box, Container } from '@chakra-ui/react'
 
 import Footer from '@/components/footer'
-import { MotionBox } from '@/components/motion'
 import Preloader from '@/components/preloader'
+import { MotionBox } from '@/components/ui/motion'
 
 export type LayoutProps = ContainerProps & {
   dark?: boolean

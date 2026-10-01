@@ -3,10 +3,10 @@
 import NextLink from 'next/link'
 import { Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 
-import Code from '@/components/code'
 import Layout from '@/components/layout'
-import { MotionBox, MotionFlex, MotionHeading, MotionText } from '@/components/motion'
 import Turtle from '@/components/super-mario/foreground/turtle'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionFlex, MotionHeading, MotionText } from '@/components/ui/motion'
 
 export default function NotFound() {
   const [mobile] = useMediaQuery(['(max-width: 32rem)'])

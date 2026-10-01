@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
 import { useAnimationControls } from 'framer-motion'
 
-import { MotionBox } from '@/components/motion'
+import { MotionBox } from '@/components/ui/motion'
 import type { PlayerCharacter } from '@/lib/store'
 
 export type MarioProps = {

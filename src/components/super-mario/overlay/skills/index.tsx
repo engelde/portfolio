@@ -32,8 +32,8 @@ import {
   SiVuedotjs,
 } from 'react-icons/si'
 
-import Code from '@/components/code'
-import { MotionBox, MotionHeading } from '@/components/motion'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionHeading } from '@/components/ui/motion'
 import { Tooltip } from '@/components/ui/tooltip'
 
 export type SkillsProps = {

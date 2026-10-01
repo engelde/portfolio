@@ -2,7 +2,7 @@
 
 import { Text } from '@chakra-ui/react'
 
-import { MotionFlex, MotionVStack } from '@/components/motion'
+import { MotionFlex, MotionVStack } from '@/components/ui/motion'
 
 export type ScrollIndicatorProps = {
   xPos: number

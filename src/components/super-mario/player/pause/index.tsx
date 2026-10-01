@@ -4,7 +4,7 @@ import { type ChangeEvent, useCallback, useEffect } from 'react'
 import NextImage from 'next/image'
 import { Box, Drawer, Flex, Heading, HStack, Portal, Text, VStack } from '@chakra-ui/react'
 
-import { MotionBox, MotionButton } from '@/components/motion'
+import { MotionBox, MotionButton } from '@/components/ui/motion'
 import Wordmark from '@/components/wordmark'
 import { useAudio } from '@/hooks/useAudio'
 import { type PlayerCharacter, useStore } from '@/lib/store'

@@ -5,7 +5,7 @@ import NextImage from 'next/image'
 import NextLink from 'next/link'
 import { Box, Flex, HStack, Link, useMediaQuery, VStack } from '@chakra-ui/react'
 
-import { MotionBox, MotionHeading } from '@/components/motion'
+import { MotionBox, MotionHeading } from '@/components/ui/motion'
 import { Tooltip } from '@/components/ui/tooltip'
 import Wordmark from '@/components/wordmark'
 

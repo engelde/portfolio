@@ -1,7 +1,7 @@
 import { HStack, Text } from '@chakra-ui/react'
 
-import Code from '@/components/code'
-import { MotionBox } from '@/components/motion'
+import Code from '@/components/ui/code'
+import { MotionBox } from '@/components/ui/motion'
 import { config } from '@/lib/config'
 
 export type FooterProps = {

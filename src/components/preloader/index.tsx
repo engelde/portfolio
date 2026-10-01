@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Box, chakra, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 
-import { MotionBox, MotionFlex, MotionVStack } from '@/components/motion'
+import { MotionBox, MotionFlex, MotionVStack } from '@/components/ui/motion'
 import Wordmark from '@/components/wordmark'
 
 import styles from './styles.module.css'

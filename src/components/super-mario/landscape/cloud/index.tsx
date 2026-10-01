@@ -2,7 +2,7 @@
 
 import NextImage from 'next/image'
 
-import { MotionBox } from '@/components/motion'
+import { MotionBox } from '@/components/ui/motion'
 
 export type CloudProps = {
   x: number

@@ -4,7 +4,7 @@ import NextImage from 'next/image'
 import { Icon, Text } from '@chakra-ui/react'
 import { PiArrowElbowLeftUpBold } from 'react-icons/pi'
 
-import { MotionBox, MotionHStack } from '@/components/motion'
+import { MotionBox, MotionHStack } from '@/components/ui/motion'
 
 export type DogProps = {
   xPos: number

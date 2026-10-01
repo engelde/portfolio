@@ -2,7 +2,7 @@
 
 import { Flex, Stat, VStack } from '@chakra-ui/react'
 
-import { MotionBox } from '@/components/motion'
+import { MotionBox } from '@/components/ui/motion'
 import { config } from '@/lib/config'
 
 export type StatsProps = {

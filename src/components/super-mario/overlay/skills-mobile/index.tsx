@@ -2,8 +2,8 @@
 
 import { Flex, Link, Text } from '@chakra-ui/react'
 
-import Code from '@/components/code'
-import { MotionBox, MotionHeading } from '@/components/motion'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionHeading } from '@/components/ui/motion'
 
 export type SkillsMobileProps = {
   xPos: number
