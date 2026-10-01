@@ -3,14 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
+  type CollisionCeiling,
+  type CollisionSurface,
   collisionEdgeTolerance,
   findLandingSurface,
   findStepSurface,
   findSupportSurface,
   getLowestGroundHeight,
   getMarioFootprint,
-  type CollisionCeiling,
-  type CollisionSurface,
 } from '@/components/super-mario/level-map'
 import { useAudio } from '@/hooks/useAudio'
 import { useKeyboard } from '@/hooks/useKeyboard'

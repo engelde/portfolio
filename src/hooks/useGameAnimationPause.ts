@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, type RefObject } from 'react'
+import { type RefObject, useEffect } from 'react'
 
 let pauseDepth = 0
 let pausedFrameId = 1

@@ -33,6 +33,9 @@
     }
   },
   "css": {
+    "formatter": {
+      "quoteStyle": "single"
+    },
     "parser": {
       "cssModules": true,
       "tailwindDirectives": true

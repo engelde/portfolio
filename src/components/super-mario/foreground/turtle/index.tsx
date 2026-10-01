@@ -1,13 +1,13 @@
 'use client'
 
 import {
+  type Dispatch,
+  type MouseEvent,
+  type SetStateAction,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type Dispatch,
-  type MouseEvent,
-  type SetStateAction,
 } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'

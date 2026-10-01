@@ -1,12 +1,12 @@
 'use client'
 
 import {
+  type FormEvent,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type FormEvent,
   type WheelEvent,
 } from 'react'
 import Script from 'next/script'
