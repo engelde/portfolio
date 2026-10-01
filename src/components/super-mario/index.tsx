@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { MotionConfig } from 'framer-motion'
+import { MotionConfig } from 'motion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 import { useController } from '@/hooks/useController'

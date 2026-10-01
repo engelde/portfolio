@@ -90,9 +90,9 @@ const ExperienceContent = (
         color={'green.500'}
         textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         initial={{ scale: 1 }}
+        transformOrigin={'left'}
         whileInView={{
           scale: [1, 1.04, 1],
-          transformOrigin: 'left',
           transition: {
             type: 'keyframes',
             times: [0, 0.5, 1],
@@ -154,9 +154,9 @@ const ExperienceContent = (
         color={'orange.500'}
         textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
         initial={{ scale: 1 }}
+        transformOrigin={'left'}
         whileInView={{
           scale: [1, 1.04, 1],
-          transformOrigin: 'left',
           transition: {
             type: 'keyframes',
             times: [0, 0.5, 1],
@@ -257,9 +257,9 @@ const About = ({ xPos, xMin, xMax, variant }: AboutProps) => {
         transitionDuration={'.3s'}
         transitionTimingFunction={'ease-in-out'}
         initial={{ scale: 1 }}
+        transformOrigin={'left'}
         whileInView={{
           scale: [1, 1.04, 1],
-          transformOrigin: 'left',
           transition: {
             type: 'keyframes',
             times: [0, 0.5, 1],

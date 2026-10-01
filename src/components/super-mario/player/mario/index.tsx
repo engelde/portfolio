@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
-import { useAnimationControls } from 'framer-motion'
+import {
+  type LegacyAnimationControls,
+  type TargetAndTransition,
+  useAnimationControls,
+} from 'motion/react'
 
 import { MotionBox } from '@/components/ui/motion'
 import type { PlayerCharacter } from '@/lib/store'
@@ -61,7 +65,7 @@ const Mario = ({
   const frame = crouch ? 3 : jump || dying ? 2 : state - 1
   const pulseControls = useAnimationControls()
   const marioInitial = exitingPipe ? { translateY: 192 } : false
-  const pipeEntryAnimation =
+  const pipeEntryAnimation: TargetAndTransition =
     enteringPipeDirection === 'right'
       ? {
           opacity: [1, 1, 0],
@@ -73,7 +77,7 @@ const Mario = ({
           translateY: [0, 96, 192],
           transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
         }
-  const marioAnimation = dying
+  const marioAnimation: TargetAndTransition | LegacyAnimationControls = dying
     ? {
         opacity: [1, 1, 0],
         rotate: [0, 0, 26],
