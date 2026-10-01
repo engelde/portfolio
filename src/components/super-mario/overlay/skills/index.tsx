@@ -285,9 +285,9 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
         pb={2}
         textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
         initial={{ scale: 1 }}
+        transformOrigin={'left'}
         whileInView={{
           scale: [1, 1.04, 1],
-          transformOrigin: 'left',
           transition: {
             type: 'keyframes',
             times: [0, 0.5, 1],
