@@ -45,11 +45,15 @@ pnpm build
 pnpm start
 ```
 
-Build and run with Docker:
+Build and run with Docker. Public `NEXT_PUBLIC_*` values are baked in at build time, and server-only secrets are passed when the container starts:
 
 ```bash
-docker build -t engelde/portfolio .
-docker run --name portfolio -p 80:3000 -d engelde/portfolio
+docker build -t engelde/portfolio \
+  --build-arg NEXT_PUBLIC_POSTHOG_KEY=... \
+  --build-arg NEXT_PUBLIC_POSTHOG_HOST=... \
+  --build-arg NEXT_PUBLIC_TURNSTILE_SITE_KEY=... \
+  .
+docker run --name portfolio -p 80:3000 --env-file .env.production -d engelde/portfolio
 ```
 
 ## Asset Credits
