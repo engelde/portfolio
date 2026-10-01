@@ -11,7 +11,7 @@ export type GroundProps = {
 const Ground = ({ x, width, height }: GroundProps) => {
   return (
     <Box zIndex={21} position={'absolute'} left={x + 'px'} bottom={0} w={width + 'px'}>
-      <HStack spacing={0}>
+      <HStack gap={0}>
         <Box
           w={'12px'}
           h={height + 'px'}

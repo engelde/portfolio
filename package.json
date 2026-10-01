@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack",
+    "build": "next build",
     "start": "next start",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
@@ -23,10 +23,9 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@chakra-ui/next-js": "^2.4.2",
-    "@chakra-ui/react": "^2.10.10",
+    "@chakra-ui/react": "^3.37.0",
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
     "@fireworks-js/react": "^2.10.8",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",

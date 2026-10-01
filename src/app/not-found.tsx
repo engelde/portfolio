@@ -3,18 +3,18 @@
 import NextLink from 'next/link'
 import { Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 
-import Code from '@/components/code'
 import Layout from '@/components/layout'
-import { MotionBox, MotionFlex, MotionHeading, MotionText } from '@/components/motion'
 import Turtle from '@/components/super-mario/foreground/turtle'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionFlex, MotionHeading, MotionText } from '@/components/ui/motion'
 
 export default function NotFound() {
-  const [mobile] = useMediaQuery('(max-width: 32rem)')
+  const [mobile] = useMediaQuery(['(max-width: 32rem)'])
 
   return (
     <Layout title={'404'} bg={'black'}>
       <Flex h={'80vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
-        <VStack spacing={0}>
+        <VStack gap={0}>
           <Flex>
             <MotionBox
               width={500}
@@ -49,7 +49,7 @@ export default function NotFound() {
 
           <MotionText
             as="div"
-            align={'center'}
+            textAlign={'center'}
             pb={12}
             initial={{ opacity: 0, translateX: -2000 }}
             animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}

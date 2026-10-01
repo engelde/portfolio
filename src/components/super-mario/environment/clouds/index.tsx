@@ -114,7 +114,7 @@ const Clouds = () => {
           w={'full'}
           opacity={item.opacity}
           marginLeft={'100%'}
-          sx={{
+          css={{
             animation: `${cloudDrift} ${item.duration}s linear ${item.delay}s infinite both`,
           }}
         >

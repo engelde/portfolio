@@ -18,7 +18,9 @@ const WallRun = ({ image, tileSize, x, y, width, height }: WallRunProps) => (
     bgImage={`url("${image}")`}
     bgRepeat={'repeat'}
     bgSize={`${tileSize}px ${tileSize}px`}
-    sx={{ imageRendering: 'pixelated' }}
+    css={{
+      imageRendering: 'pixelated',
+    }}
   />
 )
 

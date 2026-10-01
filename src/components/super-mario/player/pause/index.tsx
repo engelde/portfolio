@@ -1,22 +1,10 @@
 'use client'
 
-import type { ChangeEvent } from 'react'
+import { type ChangeEvent, useCallback, useEffect } from 'react'
 import NextImage from 'next/image'
-import {
-  Box,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  Flex,
-  Heading,
-  HStack,
-  Text,
-  useEventListener,
-  VStack,
-} from '@chakra-ui/react'
+import { Box, Drawer, Flex, Heading, HStack, Portal, Text, VStack } from '@chakra-ui/react'
 
-import { MotionButton, MotionDrawerCloseButton } from '@/components/motion'
+import { MotionBox, MotionButton } from '@/components/ui/motion'
 import Wordmark from '@/components/wordmark'
 import { useAudio } from '@/hooks/useAudio'
 import { type PlayerCharacter, useStore } from '@/lib/store'
@@ -55,10 +43,10 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
     playAudio('pause')
   }
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false)
     playAudio('stomp')
-  }
+  }, [setOpen, playAudio])
 
   const handleLink = (x: number, y: number) => {
     setOpen(false)
@@ -84,13 +72,20 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
     handleAudioLevel(Number(event.currentTarget.value))
   }
 
-  useEventListener(typeof window !== 'undefined' ? window : null, 'keydown', (event) => {
-    if (open && event.code === 'Escape') {
-      event.preventDefault()
-      event.stopPropagation()
-      handleClose()
+  useEffect(() => {
+    if (!open) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === 'Escape') {
+        event.preventDefault()
+        event.stopPropagation()
+        handleClose()
+      }
     }
-  })
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [open, handleClose])
 
   return (
     <>
@@ -100,7 +95,12 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
             as="p"
             title={'Pause'}
             aria-label={'open menu'}
-            variant={'link'}
+            variant={'plain'}
+            h={'auto'}
+            minW={'auto'}
+            borderWidth={0}
+            fontWeight={'semibold'}
+            lineHeight={'normal'}
             zIndex={15}
             position={'fixed'}
             top={4}
@@ -129,239 +129,280 @@ const Pause = ({ length, open, setOpen, setX, setY }: PauseProps) => {
         </HStack>
       </Flex>
 
-      <Drawer isOpen={open} placement={'left'} size={'lg'} onClose={handleClose}>
-        <DrawerOverlay bg={'blackAlpha.800'} />
-        <DrawerContent
-          color={'white'}
-          bg={'black'}
-          overflow={'visible'}
-          _after={{
-            background:
-              'linear-gradient(45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(135deg, #000 16px, transparent 0)',
-            backgroundRepeat: 'repeat-y',
-            backgroundPosition: 'right top',
-            backgroundSize: '32px 32px',
-            content: '""',
-            display: 'block',
-            position: 'absolute',
-            right: '-26px',
-            bottom: 0,
-            width: '32px',
-            height: '100%',
-            opacity: 0.9,
-          }}
-        >
-          <MotionDrawerCloseButton
-            as="div"
-            zIndex={15}
-            _active={{ color: 'cyan.300' }}
-            _hover={{ color: 'cyan.300' }}
-            cursor={'pointer'}
-            whileHover={{ color: '#76E4F7', scale: 1.25 }}
-            fontFamily={'VT323'}
-            fontSize={'36px'}
-            transformOrigin={'center'}
-            initial={{ scaleY: 0.55 }}
-          >
-            X
-          </MotionDrawerCloseButton>
-          <DrawerBody>
-            <Flex h={'90vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
-              <VStack spacing={12}>
-                <VStack spacing={8} alignItems={'center'} justifyContent={'center'}>
-                  <Wordmark textAlign={'center'} fontSize={'5px'} />
+      <Drawer.Root
+        open={open}
+        placement={'start'}
+        // Escape is handled by the window listener above, as in the game's own controls.
+        closeOnEscape={false}
+        size="lg"
+        onOpenChange={(e) => {
+          if (!e.open) {
+            handleClose()
+          }
+        }}
+      >
+        <Portal>
+          <Drawer.Backdrop bg={'blackAlpha.800'} />
+          <Drawer.Positioner>
+            <Drawer.Content
+              fontSize={'md'}
+              lineHeight={1.5}
+              color={'white'}
+              bg={'black'}
+              overflow={'visible'}
+              _after={{
+                background:
+                  'linear-gradient(45deg, #000 16px, transparent 0), linear-gradient(0deg, #000 0px, transparent 0), linear-gradient(135deg, #000 16px, transparent 0)',
+                backgroundRepeat: 'repeat-y',
+                backgroundPosition: 'right top',
+                backgroundSize: '32px 32px',
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                right: '-26px',
+                bottom: 0,
+                width: '32px',
+                height: '100%',
+                opacity: 0.9,
+              }}
+            >
+              <Drawer.CloseTrigger asChild aria-label={'Close'}>
+                <MotionBox
+                  position={'absolute'}
+                  top={2}
+                  insetEnd={3}
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  w={8}
+                  h={8}
+                  zIndex={15}
+                  _active={{ color: 'cyan.300' }}
+                  _hover={{ color: 'cyan.300' }}
+                  cursor={'pointer'}
+                  whileHover={{ color: '#76E4F7', scale: 1.25 }}
+                  fontFamily={'VT323'}
+                  fontSize={'36px'}
+                  transformOrigin={'center'}
+                  initial={{ scaleY: 0.55 }}
+                >
+                  X
+                </MotionBox>
+              </Drawer.CloseTrigger>
+              <Drawer.Body>
+                <Flex h={'90vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
+                  <VStack gap={12}>
+                    <VStack gap={8} alignItems={'center'} justifyContent={'center'}>
+                      <Wordmark textAlign={'center'} fontSize={'5px'} />
 
-                  <Heading fontSize={'4xl'} color={'white'}>
-                    PAUSED
-                  </Heading>
-                </VStack>
+                      <Heading fontSize={'4xl'} color={'white'}>
+                        PAUSED
+                      </Heading>
+                    </VStack>
 
-                <VStack spacing={0} alignItems={'center'} justifyContent={'center'}>
-                  {links.map((link, x) => (
-                    <Text
-                      key={x}
-                      fontSize={'2xl'}
-                      textAlign={'center'}
-                      _hover={{ cursor: 'pointer', color: link.color }}
-                      onClick={() => handleLink(link.x, link.y)}
-                    >
-                      {link.name}
-                    </Text>
-                  ))}
-                </VStack>
-
-                <VStack spacing={3} alignItems={'center'} justifyContent={'center'}>
-                  <Text fontSize={'2xl'} textAlign={'center'}>
-                    Player
-                  </Text>
-
-                  <HStack spacing={4} role={'radiogroup'} aria-label={'Player character'}>
-                    {playerCharacters.map((character) => {
-                      const selected = playerCharacter === character
-
-                      return (
-                        <Flex
-                          key={character}
-                          as={'button'}
-                          type={'button'}
-                          role={'radio'}
-                          aria-checked={selected}
-                          alignItems={'center'}
-                          justifyContent={'center'}
-                          w={'70px'}
-                          h={'70px'}
-                          p={'2px'}
-                          border={'none'}
-                          borderRadius={0}
-                          cursor={'pointer'}
-                          bg={selected ? 'white' : 'transparent'}
-                          appearance={'none'}
-                          outline={'none'}
-                          transition={'background-color 0.15s ease'}
-                          _hover={{
-                            bg: 'cyan.500',
-                          }}
-                          _focus={{
-                            outline: 'none',
-                          }}
-                          _focusVisible={{
-                            outline: 'none',
-                          }}
-                          sx={{
-                            '&:focus': {
-                              outline: 'none !important',
-                            },
-                            '&:focus-visible': {
-                              outline: 'none !important',
-                            },
-                          }}
-                          onClick={() => setPlayerCharacter(character)}
+                    <VStack gap={0} alignItems={'center'} justifyContent={'center'}>
+                      {links.map((link, x) => (
+                        <Text
+                          key={x}
+                          fontSize={'2xl'}
+                          textAlign={'center'}
+                          _hover={{ cursor: 'pointer', color: link.color }}
+                          onClick={() => handleLink(link.x, link.y)}
                         >
-                          <Flex
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                            w={'full'}
-                            h={'full'}
-                            bg={'black'}
-                          >
-                            <NextImage
-                              alt={character}
-                              src={`/images/${character}/${character}.regular.1.png`}
-                              width={48}
-                              height={48}
-                              draggable={false}
-                              unoptimized
-                              style={{
-                                height: '48px',
-                                imageRendering: 'pixelated',
-                                objectFit: 'contain',
-                                width: '48px',
+                          {link.name}
+                        </Text>
+                      ))}
+                    </VStack>
+
+                    <VStack gap={3} alignItems={'center'} justifyContent={'center'}>
+                      <Text fontSize={'2xl'} textAlign={'center'}>
+                        Player
+                      </Text>
+
+                      <HStack gap={4} role={'radiogroup'} aria-label={'Player character'}>
+                        {playerCharacters.map((character) => {
+                          const selected = playerCharacter === character
+
+                          return (
+                            <Flex
+                              key={character}
+                              role={'radio'}
+                              aria-checked={selected}
+                              alignItems={'center'}
+                              justifyContent={'center'}
+                              w={'70px'}
+                              h={'70px'}
+                              p={'2px'}
+                              border={'none'}
+                              borderRadius={0}
+                              cursor={'pointer'}
+                              bg={selected ? 'white' : 'transparent'}
+                              appearance={'none'}
+                              outline={'none'}
+                              transition={'background-color 0.15s ease'}
+                              _hover={{
+                                bg: 'cyan.500',
                               }}
-                            />
-                          </Flex>
-                        </Flex>
-                      )
-                    })}
-                  </HStack>
-                </VStack>
+                              _focus={{
+                                outline: 'none',
+                              }}
+                              _focusVisible={{
+                                outline: 'none',
+                              }}
+                              css={{
+                                '&:focus': {
+                                  outline: 'none !important',
+                                },
 
-                <VStack spacing={2} alignItems={'center'} justifyContent={'center'}>
-                  <Text fontSize={'2xl'} textAlign={'center'}>
-                    Audio
-                  </Text>
+                                '&:focus-visible': {
+                                  outline: 'none !important',
+                                },
+                              }}
+                              asChild
+                            >
+                              <button type={'button'} onClick={() => setPlayerCharacter(character)}>
+                                <Flex
+                                  alignItems={'center'}
+                                  justifyContent={'center'}
+                                  w={'full'}
+                                  h={'full'}
+                                  bg={'black'}
+                                >
+                                  <NextImage
+                                    alt={character}
+                                    src={`/images/${character}/${character}.regular.1.png`}
+                                    width={48}
+                                    height={48}
+                                    draggable={false}
+                                    unoptimized
+                                    style={{
+                                      height: '48px',
+                                      imageRendering: 'pixelated',
+                                      objectFit: 'contain',
+                                      width: '48px',
+                                    }}
+                                  />
+                                </Flex>
+                              </button>
+                            </Flex>
+                          )
+                        })}
+                      </HStack>
+                    </VStack>
 
-                  <Box
-                    position={'relative'}
-                    aria-label={'audio-slider'}
-                    data-allow-scroll-lock-gesture={'true'}
-                    w={'120px'}
-                    h={'24px'}
-                  >
-                    <Box
-                      position={'absolute'}
-                      top={'50%'}
-                      left={0}
-                      right={0}
-                      h={'4px'}
-                      transform={'translateY(-50%)'}
-                      bg={'rgba(255, 255, 255, 0.42)'}
-                      pointerEvents={'none'}
-                    >
-                      <Box data-audio-fill={'true'} h={'full'} w={`${audio}%`} bg={'cyan.500'} />
-                    </Box>
-                    <Box
-                      data-audio-thumb={'true'}
-                      position={'absolute'}
-                      top={'50%'}
-                      left={`calc(${audio}% - 7px)`}
-                      w={'14px'}
-                      h={'14px'}
-                      borderRadius={'50%'}
-                      transform={'translateY(-50%)'}
-                      bg={'white'}
-                      pointerEvents={'none'}
-                    />
-                    <Box
-                      as={'input'}
-                      type={'range'}
-                      aria-label={'audio-slider'}
-                      data-allow-scroll-lock-gesture={'true'}
-                      position={'absolute'}
-                      inset={0}
-                      w={'full'}
-                      h={'full'}
-                      m={0}
-                      min={0}
-                      max={100}
-                      value={audio}
-                      cursor={'pointer'}
-                      onChange={handleAudioInput}
-                      _focusVisible={{
-                        outline: '2px solid',
-                        outlineColor: 'cyan.500',
-                        outlineOffset: '5px',
-                      }}
-                      sx={{
-                        appearance: 'none',
-                        bg: 'transparent',
-                        touchAction: 'none',
-                        '&::-webkit-slider-runnable-track': {
-                          h: '24px',
-                          bg: 'transparent',
-                        },
-                        '&::-webkit-slider-thumb': {
-                          appearance: 'none',
-                          w: '18px',
-                          h: '24px',
-                          bg: 'transparent',
-                          cursor: 'grab',
-                        },
-                        '&:active::-webkit-slider-thumb': {
-                          cursor: 'grabbing',
-                        },
-                        '&::-moz-range-track': {
-                          h: '24px',
-                          bg: 'transparent',
-                        },
-                        '&::-moz-range-thumb': {
-                          w: '18px',
-                          h: '24px',
-                          border: 0,
-                          bg: 'transparent',
-                          cursor: 'grab',
-                        },
-                        '&:active::-moz-range-thumb': {
-                          cursor: 'grabbing',
-                        },
-                      }}
-                    />
-                  </Box>
-                </VStack>
-              </VStack>
-            </Flex>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+                    <VStack gap={2} alignItems={'center'} justifyContent={'center'}>
+                      <Text fontSize={'2xl'} textAlign={'center'}>
+                        Audio
+                      </Text>
+
+                      <Box
+                        position={'relative'}
+                        aria-label={'audio-slider'}
+                        data-allow-scroll-lock-gesture={'true'}
+                        w={'120px'}
+                        h={'24px'}
+                      >
+                        <Box
+                          position={'absolute'}
+                          top={'50%'}
+                          left={0}
+                          right={0}
+                          h={'4px'}
+                          transform={'translateY(-50%)'}
+                          bg={'rgba(255, 255, 255, 0.42)'}
+                          pointerEvents={'none'}
+                        >
+                          <Box
+                            data-audio-fill={'true'}
+                            h={'full'}
+                            w={`${audio}%`}
+                            bg={'cyan.500'}
+                          />
+                        </Box>
+                        <Box
+                          data-audio-thumb={'true'}
+                          position={'absolute'}
+                          top={'50%'}
+                          left={`calc(${audio}% - 7px)`}
+                          w={'14px'}
+                          h={'14px'}
+                          borderRadius={'50%'}
+                          transform={'translateY(-50%)'}
+                          bg={'white'}
+                          pointerEvents={'none'}
+                        />
+                        <Box
+                          aria-label={'audio-slider'}
+                          data-allow-scroll-lock-gesture={'true'}
+                          position={'absolute'}
+                          inset={0}
+                          w={'full'}
+                          h={'full'}
+                          m={0}
+                          cursor={'pointer'}
+                          _focusVisible={{
+                            outline: '2px solid',
+                            outlineColor: 'cyan.500',
+                            outlineOffset: '5px',
+                          }}
+                          css={{
+                            appearance: 'none',
+                            bg: 'transparent',
+                            touchAction: 'none',
+
+                            '&::-webkit-slider-runnable-track': {
+                              h: '24px',
+                              bg: 'transparent',
+                            },
+
+                            '&::-webkit-slider-thumb': {
+                              appearance: 'none',
+                              w: '18px',
+                              h: '24px',
+                              bg: 'transparent',
+                              cursor: 'grab',
+                            },
+
+                            '&:active::-webkit-slider-thumb': {
+                              cursor: 'grabbing',
+                            },
+
+                            '&::-moz-range-track': {
+                              h: '24px',
+                              bg: 'transparent',
+                            },
+
+                            '&::-moz-range-thumb': {
+                              w: '18px',
+                              h: '24px',
+                              border: 0,
+                              bg: 'transparent',
+                              cursor: 'grab',
+                            },
+
+                            '&:active::-moz-range-thumb': {
+                              cursor: 'grabbing',
+                            },
+                          }}
+                          asChild
+                        >
+                          <input
+                            type={'range'}
+                            min={0}
+                            max={100}
+                            value={audio}
+                            onChange={handleAudioInput}
+                          />
+                        </Box>
+                      </Box>
+                    </VStack>
+                  </VStack>
+                </Flex>
+              </Drawer.Body>
+            </Drawer.Content>
+          </Drawer.Positioner>
+        </Portal>
+      </Drawer.Root>
     </>
   )
 }

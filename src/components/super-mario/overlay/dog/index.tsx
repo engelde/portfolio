@@ -4,7 +4,7 @@ import NextImage from 'next/image'
 import { Icon, Text } from '@chakra-ui/react'
 import { PiArrowElbowLeftUpBold } from 'react-icons/pi'
 
-import { MotionBox, MotionHStack } from '@/components/motion'
+import { MotionBox, MotionHStack } from '@/components/ui/motion'
 
 export type DogProps = {
   xPos: number
@@ -77,7 +77,9 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
           animate: { opacity: 0, marginLeft: 1200 },
         })}
       >
-        <Icon as={PiArrowElbowLeftUpBold} boxSize={6} />
+        <Icon boxSize={6} asChild>
+          <PiArrowElbowLeftUpBold />
+        </Icon>
 
         <Text fontSize={'2xl'} mt={2}>
           {'Frodo'}

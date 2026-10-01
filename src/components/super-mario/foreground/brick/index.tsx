@@ -27,10 +27,10 @@ const Brick = ({ id, x, y }: BrickProps) => {
         w={'80px'}
         h={'80px'}
         bgImage={'url("/images/brick/brick.sprite.png")'}
-        bgPosition={'0 0'}
+        backgroundPosition={'0 0'}
         bgRepeat={'no-repeat'}
         bgSize={'320px 80px'}
-        sx={{
+        css={{
           animation: `${animation} 1s steps(1) infinite`,
           imageRendering: 'pixelated',
         }}

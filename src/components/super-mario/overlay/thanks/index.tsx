@@ -2,8 +2,8 @@
 
 import { Heading } from '@chakra-ui/react'
 
-import Code from '@/components/code'
-import { MotionBox } from '@/components/motion'
+import Code from '@/components/ui/code'
+import { MotionBox } from '@/components/ui/motion'
 
 export type ThanksProps = {
   xPos: number

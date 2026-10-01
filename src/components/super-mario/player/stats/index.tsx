@@ -1,8 +1,8 @@
 'use client'
 
-import { Stat, StatGroup, StatNumber, VStack } from '@chakra-ui/react'
+import { Flex, Stat, VStack } from '@chakra-ui/react'
 
-import { MotionBox } from '@/components/motion'
+import { MotionBox } from '@/components/ui/motion'
 import { config } from '@/lib/config'
 
 export type StatsProps = {
@@ -30,50 +30,50 @@ const Stats = ({ xPos, yPos, lives, score, timer, complete }: StatsProps) => {
       initial={{ translateX: '150%' }}
       animate={{ translateX: 0, transition: { delay: 1 } }}
     >
-      <VStack spacing={0} w={{ base: '160px', md: '200px' }}>
-        <StatGroup w={'full'} alignItems={'center'} justifyContent={'space-between'}>
-          <Stat textAlign={'left'}>
-            <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Level'}>
+      <VStack gap={0} w={{ base: '160px', md: '200px' }}>
+        <Flex w={'full'} alignItems={'center'} justifyContent={'space-between'}>
+          <Stat.Root textAlign={'left'}>
+            <Stat.ValueText fontSize={{ base: 'lg', md: '2xl' }} title={'Level'}>
               World 1-1
-            </StatNumber>
-          </Stat>
-          <Stat textAlign={'right'}>
-            <StatNumber
+            </Stat.ValueText>
+          </Stat.Root>
+          <Stat.Root textAlign={'right'} alignItems={'flex-end'}>
+            <Stat.ValueText
               fontSize={{ base: 'lg', md: '2xl' }}
               title={'Timer'}
               {...((complete && { color: 'green.500' }) || (timer < 61 && { color: 'red.500' }))}
             >
               {timer}
-            </StatNumber>
-          </Stat>
-        </StatGroup>
+            </Stat.ValueText>
+          </Stat.Root>
+        </Flex>
 
-        <StatGroup w={'full'} alignItems={'center'} justifyContent={'space-between'}>
-          <Stat textAlign={'left'}>
-            <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Lives'}>
+        <Flex w={'full'} alignItems={'center'} justifyContent={'space-between'}>
+          <Stat.Root textAlign={'left'}>
+            <Stat.ValueText fontSize={{ base: 'lg', md: '2xl' }} title={'Lives'}>
               M x {lives}
-            </StatNumber>
-          </Stat>
-          <Stat textAlign={'right'}>
-            <StatNumber fontSize={{ base: 'lg', md: '2xl' }} title={'Score'}>
+            </Stat.ValueText>
+          </Stat.Root>
+          <Stat.Root textAlign={'right'} alignItems={'flex-end'}>
+            <Stat.ValueText fontSize={{ base: 'lg', md: '2xl' }} title={'Score'}>
               {String(score).padStart(6, '0')}
-            </StatNumber>
-          </Stat>
-        </StatGroup>
+            </Stat.ValueText>
+          </Stat.Root>
+        </Flex>
 
         {config.app.environment === 'development' && (
-          <StatGroup w={'full'} alignItems={'center'} justifyContent={'space-between'}>
-            <Stat textAlign={'left'}>
-              <StatNumber fontSize={'lg'} title={'X'}>
+          <Flex w={'full'} alignItems={'center'} justifyContent={'space-between'}>
+            <Stat.Root textAlign={'left'}>
+              <Stat.ValueText fontSize={'lg'} title={'X'}>
                 x: {Math.round(xPos)}
-              </StatNumber>
-            </Stat>
-            <Stat textAlign={'right'}>
-              <StatNumber fontSize={'lg'} title={'Y'}>
+              </Stat.ValueText>
+            </Stat.Root>
+            <Stat.Root textAlign={'right'} alignItems={'flex-end'}>
+              <Stat.ValueText fontSize={'lg'} title={'Y'}>
                 y: {Math.round(yPos)}
-              </StatNumber>
-            </Stat>
-          </StatGroup>
+              </Stat.ValueText>
+            </Stat.Root>
+          </Flex>
         )}
       </VStack>
     </MotionBox>

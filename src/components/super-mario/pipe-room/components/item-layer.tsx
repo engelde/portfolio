@@ -49,7 +49,7 @@ const PipeRoomItemLayer = ({
               fontWeight={'bold'}
               textAlign={'center'}
               textShadow={'3px 3px rgba(0, 0, 0, 0.8)'}
-              sx={{
+              css={{
                 animation: `${pointsFloat} 0.8s ease-in-out forwards`,
               }}
             >
@@ -74,7 +74,7 @@ const PipeRoomItemLayer = ({
             onClick={() => {
               if (!collecting) onCoinCollect(id)
             }}
-            sx={{
+            css={{
               animation: collecting ? `${coinCollect} 0.6s ease-in-out forwards` : 'none',
             }}
           >
@@ -82,10 +82,10 @@ const PipeRoomItemLayer = ({
               w={tileSize + 'px'}
               h={tileSize + 'px'}
               bgImage={'url("/images/coin/coin.sprite.png")'}
-              bgPosition={'0 0'}
+              backgroundPosition={'0 0'}
               bgRepeat={'no-repeat'}
               bgSize={`${tileSize * 5}px ${tileSize}px`}
-              sx={{
+              css={{
                 animation: `${coinSpin} 0.52s steps(1) infinite`,
                 imageRendering: 'pixelated',
                 transform: `scale(${coinVisualScale})`,
@@ -108,10 +108,12 @@ const PipeRoomItemLayer = ({
         w={tileSize + 'px'}
         h={tileSize + 'px'}
         bgImage={'url("/images/box/box.sprite.png")'}
-        bgPosition={`-${tileSize}px 0`}
+        backgroundPosition={`-${tileSize}px 0`}
         bgRepeat={'no-repeat'}
         bgSize={`${tileSize * 5}px ${tileSize}px`}
-        sx={{ imageRendering: 'pixelated' }}
+        css={{
+          imageRendering: 'pixelated',
+        }}
       />
     ))}
   </>

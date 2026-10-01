@@ -14,7 +14,7 @@ const Daylight = () => {
       minH={'100vh'}
       backgroundSize={'100% 800%'}
       backgroundImage={'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%)'}
-      sx={{
+      css={{
         animation: `${daylightCycle} 90s linear infinite`,
       }}
     />

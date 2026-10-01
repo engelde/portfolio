@@ -479,10 +479,10 @@ const Turtle = ({
             w={'80px'}
             h={'80px'}
             bgImage={`url("${spriteSheet}")`}
-            bgPosition={'-160px -80px'}
+            backgroundPosition={'-160px -80px'}
             bgRepeat={'no-repeat'}
             bgSize={'480px 160px'}
-            sx={{
+            css={{
               animation: `${shellAnimation} 0.36s steps(1) infinite`,
               imageRendering: 'pixelated',
             }}
@@ -502,7 +502,7 @@ const Turtle = ({
       h={'160px'}
       cursor={'pointer'}
       onClick={handleClick}
-      sx={{
+      css={{
         '--enemy-offset': `${offset}px`,
         animation: `${moveAnimation} ${duration}s linear infinite`,
       }}
@@ -513,10 +513,10 @@ const Turtle = ({
         w={'80px'}
         h={'160px'}
         bgImage={`url("${spriteSheet}")`}
-        bgPosition={'0 0'}
+        backgroundPosition={'0 0'}
         bgRepeat={'no-repeat'}
         bgSize={'480px 160px'}
-        sx={{
+        css={{
           animation: `${walkAnimation} 0.9s steps(1) infinite`,
           imageRendering: 'pixelated',
         }}

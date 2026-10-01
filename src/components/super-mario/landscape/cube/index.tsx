@@ -2,7 +2,7 @@
 
 import NextImage from 'next/image'
 
-import { MotionBox } from '@/components/motion'
+import { MotionBox } from '@/components/ui/motion'
 
 export type CubeProps = {
   variant: 1 | 2 | 3 | 4 | 5

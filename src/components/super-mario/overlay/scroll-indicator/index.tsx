@@ -2,7 +2,7 @@
 
 import { Text } from '@chakra-ui/react'
 
-import { MotionFlex, MotionVStack } from '@/components/motion'
+import { MotionFlex, MotionVStack } from '@/components/ui/motion'
 
 export type ScrollIndicatorProps = {
   xPos: number
@@ -29,7 +29,7 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
       style={{ pointerEvents: 'none' }}
     >
       <MotionVStack
-        spacing={0}
+        gap={0}
         p={1}
         alignItems={'center'}
         justifyContent={'center'}

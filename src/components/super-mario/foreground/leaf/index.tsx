@@ -85,7 +85,7 @@ const Leaf = ({
           transition={'opacity .1s ease-out'}
           _hover={{ cursor: 'pointer', filter: 'brightness(110%)' }}
           onClick={collect}
-          sx={{
+          css={{
             animation: `${leafRise} 0.4s ease-in-out forwards`,
           }}
         >

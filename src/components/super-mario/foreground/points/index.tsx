@@ -24,7 +24,7 @@ const Points = ({ x, y, total }: PointsProps) => {
       textShadow={'3px 3px rgba(0, 0, 0, 0.8)'}
       fontSize={'4xl'}
       p={0}
-      sx={{
+      css={{
         animation: `${pointsFloat} 0.8s ease-in-out forwards`,
       }}
     >
