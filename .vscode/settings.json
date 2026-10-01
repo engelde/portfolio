@@ -6,6 +6,5 @@
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "files.insertFinalNewline": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "files.insertFinalNewline": true
 }
