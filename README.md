@@ -18,6 +18,14 @@ Install dependencies:
 pnpm i
 ```
 
+Git hooks (formatting, commit message linting and a pre-push typecheck) are installed by
+[lefthook](https://lefthook.dev) during `pnpm i`. If this clone previously used husky, point git
+back at its default hooks directory first:
+
+```bash
+git config --unset core.hooksPath && pnpm exec lefthook install
+```
+
 ## Development
 
 Run the development server:

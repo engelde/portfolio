@@ -21,7 +21,7 @@ import { motion } from 'framer-motion'
 
 import Wordmark from '@/components/wordmark'
 import { useAudio } from '@/hooks/useAudio'
-import { useStore, type PlayerCharacter } from '@/lib/store'
+import { type PlayerCharacter, useStore } from '@/lib/store'
 
 export type PauseProps = {
   length: number

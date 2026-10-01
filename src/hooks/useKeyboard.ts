@@ -13,14 +13,14 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
   const [down, setDown] = useState(false)
   const [left, setLeft] = useState(false)
   const [right, setRight] = useState(false)
-  const [escape, setEscape] = useState(false)
+  const [escapePressed, setEscape] = useState(false)
 
   const keys = useRef<Set<string>>(new Set())
-  const stateRef = useRef({ up, down, left, right, escape })
+  const stateRef = useRef({ up, down, left, right, escape: escapePressed })
 
   useEffect(() => {
-    stateRef.current = { up, down, left, right, escape }
-  }, [up, down, left, right, escape])
+    stateRef.current = { up, down, left, right, escape: escapePressed }
+  }, [up, down, left, right, escapePressed])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -94,9 +94,9 @@ export const useKeyboard = ({ active }: KeyboardProps) => {
       if (down) setDown(false)
       if (left) setLeft(false)
       if (right) setRight(false)
-      if (escape) setEscape(false)
+      if (escapePressed) setEscape(false)
     }
-  }, [active, up, down, left, right, escape])
+  }, [active, up, down, left, right, escapePressed])
 
-  return { up, down, left, right, escape, keys }
+  return { up, down, left, right, escape: escapePressed, keys }
 }

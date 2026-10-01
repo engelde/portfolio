@@ -5,10 +5,10 @@ import { useMediaQuery } from '@chakra-ui/react'
 
 import {
   brickSegments,
+  type CollisionSurface,
   collisionCeilings,
   collisionSurfaces,
   levelLength,
-  type CollisionSurface,
 } from '@/components/super-mario/level-map'
 import { useStore } from '@/lib/store'
 

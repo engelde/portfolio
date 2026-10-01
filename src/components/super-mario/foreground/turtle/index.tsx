@@ -1,13 +1,13 @@
 'use client'
 
 import {
+  type Dispatch,
+  type MouseEvent,
+  type SetStateAction,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type Dispatch,
-  type MouseEvent,
-  type SetStateAction,
 } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
@@ -290,7 +290,7 @@ const Turtle = ({
         y: lowGroundY,
       }
     },
-    [finalWallX, highGroundY, pipeRightX, platformEdgeX, prizeHitX, shellSpeed, y]
+    [finalWallX, prizeHitX, y]
   )
 
   const getShellRoutePose = useCallback(
@@ -336,7 +336,7 @@ const Turtle = ({
         },
       }
     },
-    [shellSpeed, y]
+    [y]
   )
 
   const shellHitsLeafPrizeBox = useCallback(
@@ -353,14 +353,7 @@ const Turtle = ({
         shellBottom <= prizeBoxTopY + prizeBoxCollisionTolerance
       )
     },
-    [
-      prizeBoxBottomY,
-      prizeBoxCollisionTolerance,
-      prizeBoxLeftX,
-      prizeBoxRightX,
-      prizeBoxTopY,
-      shellSize,
-    ]
+    [prizeBoxRightX, prizeBoxTopY]
   )
 
   useEffect(() => {

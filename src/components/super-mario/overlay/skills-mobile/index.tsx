@@ -80,8 +80,7 @@ const SkillsMobile = ({ xPos, xMin, xMax, offset }: SkillsMobileProps) => {
       </Heading>
 
       <Text fontSize={'xl'} pb={4} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
-        <Code text={'<p>'} />
-        A few favorite tools, languages, and frameworks.
+        <Code text={'<p>'} />A few favorite tools, languages, and frameworks.
         <Code text={'</p>'} />
       </Text>
 

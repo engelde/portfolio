@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 
@@ -67,7 +67,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
         setRunning(true)
       }
     }
-  }, [active, disabled, playAudio, setActive, setScore, running, setDisabled, setRunning])
+  }, [active, disabled, playAudio, setScore, running])
 
   return (
     <>

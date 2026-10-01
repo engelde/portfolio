@@ -1,12 +1,12 @@
 'use client'
 
 import React, {
+  type Dispatch,
+  type SetStateAction,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type Dispatch,
-  type SetStateAction,
 } from 'react'
 import NextImage from 'next/image'
 import { Box, VStack } from '@chakra-ui/react'

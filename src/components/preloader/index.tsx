@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
@@ -164,11 +164,10 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
   const [isInstructing, setIsInstructing] = useState(false)
   const [position, setPosition] = useState(1)
   const preloaderRef = useRef<HTMLDivElement | null>(null)
-  const router = useRouter()
   const pathname = usePathname()
 
   // Preload
-  const preload = async () => {
+  const preload = useCallback(async () => {
     preloaderRef.current?.scrollTo({ top: 0, behavior: 'auto' })
     window.scrollTo({ top: 0, behavior: 'auto' })
 
@@ -181,7 +180,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         setIsInstructing(true)
       }, 600)
     }, 900)
-  }
+  }, [])
 
   // Start preloading
   useEffect(() => {
@@ -199,7 +198,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         void preload()
       }
     }
-  }, [isPreloading, pathname, setIsPreloading, setIsLoading, router])
+  }, [isPreloading, pathname, setIsLoading, preload])
 
   // Scroll to start
   const handleStart = useCallback(() => {
@@ -272,7 +271,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         alignItems={'center'}
         justifyContent={'center'}
       >
-        {(position == 1 && (
+        {(position === 1 && (
           <VStack
             as={motion.div}
             spacing={2}

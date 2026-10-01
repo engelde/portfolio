@@ -1,4 +1,4 @@
-import { createRequire } from 'module'
+import { createRequire } from 'node:module'
 import type { NextConfig } from 'next'
 
 const require = createRequire(import.meta.url)
