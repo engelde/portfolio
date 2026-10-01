@@ -14,13 +14,13 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.4.2",
@@ -36,7 +36,6 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-icons": "^5.7.0",
-    "sharp": "^0.35.5",
     "zod": "^4.6.5",
     "zustand": "^5.0.15"
   },
@@ -51,6 +50,6 @@
     "@types/react-dom": "^19.3.0",
     "lefthook": "^2.1.15",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   }
 }
