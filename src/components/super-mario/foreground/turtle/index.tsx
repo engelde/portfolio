@@ -1,16 +1,15 @@
 'use client'
 
 import {
+  type Dispatch,
+  type MouseEvent,
+  type SetStateAction,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type Dispatch,
-  type MouseEvent,
-  type SetStateAction,
 } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -61,34 +60,11 @@ type ShellRoutePose = {
   pose: ShellPose
 }
 
-const walkAnimation = keyframes`
-  0% { background-position: 0 0; }
-  50% { background-position: -80px 0; }
-  100% { background-position: 0 0; }
-`
+const walkAnimation = 'sm-turtle-walk-animation'
 
-const moveAnimation = keyframes`
-  0% {
-    transform: translateX(calc(var(--enemy-offset) * -1)) scaleX(-1);
-  }
-  50% {
-    transform: translateX(0) scaleX(-1);
-  }
-  50.1% {
-    transform: translateX(0) scaleX(1);
-  }
-  100% {
-    transform: translateX(calc(var(--enemy-offset) * -1)) scaleX(1);
-  }
-`
+const moveAnimation = 'sm-turtle-move-animation'
 
-const shellAnimation = keyframes`
-  0%, 24.99% { background-position: -160px -80px; }
-  25%, 49.99% { background-position: -240px -80px; }
-  50%, 74.99% { background-position: -320px -80px; }
-  75%, 99.99% { background-position: -400px -80px; }
-  100% { background-position: -160px -80px; }
-`
+const shellAnimation = 'sm-turtle-shell-animation'
 
 const Turtle = ({
   animationsPaused = false,
@@ -290,7 +266,7 @@ const Turtle = ({
         y: lowGroundY,
       }
     },
-    [finalWallX, highGroundY, pipeRightX, platformEdgeX, prizeHitX, shellSpeed, y]
+    [finalWallX, prizeHitX, y]
   )
 
   const getShellRoutePose = useCallback(
@@ -336,7 +312,7 @@ const Turtle = ({
         },
       }
     },
-    [shellSpeed, y]
+    [y]
   )
 
   const shellHitsLeafPrizeBox = useCallback(
@@ -353,14 +329,7 @@ const Turtle = ({
         shellBottom <= prizeBoxTopY + prizeBoxCollisionTolerance
       )
     },
-    [
-      prizeBoxBottomY,
-      prizeBoxCollisionTolerance,
-      prizeBoxLeftX,
-      prizeBoxRightX,
-      prizeBoxTopY,
-      shellSize,
-    ]
+    [prizeBoxRightX, prizeBoxTopY]
   )
 
   useEffect(() => {
@@ -510,10 +479,10 @@ const Turtle = ({
             w={'80px'}
             h={'80px'}
             bgImage={`url("${spriteSheet}")`}
-            bgPosition={'-160px -80px'}
+            backgroundPosition={'-160px -80px'}
             bgRepeat={'no-repeat'}
             bgSize={'480px 160px'}
-            sx={{
+            css={{
               animation: `${shellAnimation} 0.36s steps(1) infinite`,
               imageRendering: 'pixelated',
             }}
@@ -533,7 +502,7 @@ const Turtle = ({
       h={'160px'}
       cursor={'pointer'}
       onClick={handleClick}
-      sx={{
+      css={{
         '--enemy-offset': `${offset}px`,
         animation: `${moveAnimation} ${duration}s linear infinite`,
       }}
@@ -544,10 +513,10 @@ const Turtle = ({
         w={'80px'}
         h={'160px'}
         bgImage={`url("${spriteSheet}")`}
-        bgPosition={'0 0'}
+        backgroundPosition={'0 0'}
         bgRepeat={'no-repeat'}
         bgSize={'480px 160px'}
-        sx={{
+        css={{
           animation: `${walkAnimation} 0.9s steps(1) infinite`,
           imageRendering: 'pixelated',
         }}

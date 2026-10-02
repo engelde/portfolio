@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { MotionConfig } from 'framer-motion'
+import { MotionConfig } from 'motion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 import { useController } from '@/hooks/useController'
@@ -556,7 +556,7 @@ const SuperMario = ({ ip }: SuperMarioProps) => {
       overflowX={'hidden'}
       h={maxYScroll + 'px'}
       w={'100vw'}
-      sx={{
+      css={{
         '&[data-animations-paused="true"] *': {
           animationPlayState: 'paused !important',
         },

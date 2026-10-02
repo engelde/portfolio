@@ -1,0 +1,4 @@
+allowBuilds:
+  core-js: true
+  lefthook: true
+  sharp: true

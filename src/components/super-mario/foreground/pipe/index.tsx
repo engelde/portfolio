@@ -1,16 +1,15 @@
 'use client'
 
 import React, {
+  type Dispatch,
+  type SetStateAction,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type Dispatch,
-  type SetStateAction,
 } from 'react'
 import NextImage from 'next/image'
 import { Box, VStack } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -33,16 +32,9 @@ type PipeDirection = 'up' | 'down'
 type PipePlacement = 'bottom' | 'top'
 type PipeSkin = 'normal' | 'alt'
 
-const pipeEnter = keyframes`
-  0% { transform: translateY(150%); }
-  100% { transform: translateY(0); }
-`
+const pipeEnter = 'sm-pipe-enter'
 
-const plantHitboxTravel = keyframes`
-  0%, 5% { transform: translateY(160px); }
-  30%, 60% { transform: translateY(0); }
-  95%, 100% { transform: translateY(160px); }
-`
+const plantHitboxTravel = 'sm-pipe-plant-hitbox-travel'
 
 const plantCycleSeconds = 8
 const firePeakWindowStart = 0.41
@@ -153,7 +145,9 @@ const Pipe = ({
       w={'160px'}
       h={pipeBodyHeight + 'px'}
       bg={`url(${pipeBodySrc}) repeat-y left top / 160px 80px`}
-      sx={{ imageRendering: 'pixelated' }}
+      css={{
+        imageRendering: 'pixelated',
+      }}
     />
   )
   const pipeParts = direction === 'down' ? [pipeBody, pipeTop] : [pipeTop, pipeBody]
@@ -303,12 +297,12 @@ const Pipe = ({
       left={x + 'px'}
       w={'160px'}
       {...pipePlacement}
-      sx={{
+      css={{
         animation: animateEntry ? `${pipeEnter} 0.3s linear 0.3s both` : undefined,
       }}
     >
       <VStack
-        spacing={0}
+        gap={0}
         mb={rotate !== undefined ? '-' + (height / 2 - 76) + 'px' : '0px'}
         transform={'rotate(' + ((rotate !== undefined && rotate + 'deg') || '0deg') + ')'}
       >
@@ -349,7 +343,7 @@ const Pipe = ({
               h={'160px'}
               cursor={'pointer'}
               onClick={handlePlantClick}
-              sx={{
+              css={{
                 animation: `${plantHitboxTravel} ${plantCycleSeconds}s linear infinite`,
               }}
             />

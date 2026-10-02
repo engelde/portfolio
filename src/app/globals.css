@@ -1,33 +1,14 @@
-@import 'tailwindcss';
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html,
 body {
   padding: 0;
   margin: 0;
   background: black;
+  /* biome-ignore lint/complexity/noImportantStyles: must beat Chakra's body font */
   font-family: var(--font-mono), monospace !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -48,6 +29,7 @@ body {
 
 a {
   color: inherit;
+  /* biome-ignore lint/complexity/noImportantStyles: must beat Chakra's link underline */
   text-decoration: none !important;
 }
 
@@ -56,5 +38,6 @@ a {
 }
 
 code {
+  /* biome-ignore lint/complexity/noImportantStyles: must beat Chakra's code font */
   font-family: var(--font-mono), monospace !important;
 }

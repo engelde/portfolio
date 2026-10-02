@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -20,33 +19,9 @@ export type CoinProps = {
   setScore: Dispatch<SetStateAction<number>>
 }
 
-const coinSpin = keyframes`
-  0%, 19.99% { background-position: 0 0; }
-  20%, 39.99% { background-position: -80px 0; }
-  40%, 59.99% { background-position: -160px 0; }
-  60%, 79.99% { background-position: -240px 0; }
-  80%, 99.99% { background-position: -320px 0; }
-  100% { background-position: 0 0; }
-`
+const coinSpin = 'sm-coin-spin'
 
-const coinCollect = keyframes`
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  40%, 60% {
-    opacity: 1;
-    transform: translateY(-200px);
-  }
-  80% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-`
+const coinCollect = 'sm-coin-collect'
 
 const coinFrameSize = 80
 const coinVisualScale = 0.8
@@ -67,7 +42,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
         setRunning(true)
       }
     }
-  }, [active, disabled, playAudio, setActive, setScore, running, setDisabled, setRunning])
+  }, [active, disabled, playAudio, setScore, running])
 
   return (
     <>
@@ -85,7 +60,7 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
           h={coinFrameSize + 'px'}
           {...(clickable && !disabled && { cursor: 'pointer', onClick: () => setActive(true) })}
           _hover={{ filter: 'brightness(115%)' }}
-          sx={{
+          css={{
             animation: active ? `${coinCollect} 0.6s ease-in-out forwards` : 'none',
           }}
           onAnimationEnd={(event) => {
@@ -99,10 +74,10 @@ const Coin = ({ x, y, show, clickable, active, setActive, setScore }: CoinProps)
             w={coinFrameSize + 'px'}
             h={coinFrameSize + 'px'}
             bgImage={'url("/images/coin/coin.sprite.png")'}
-            bgPosition={'0 0'}
+            backgroundPosition={'0 0'}
             bgRepeat={'no-repeat'}
             bgSize={`${coinFrameSize * 5}px ${coinFrameSize}px`}
-            sx={{
+            css={{
               animation: `${coinSpin} 0.52s steps(1) infinite`,
               imageRendering: 'pixelated',
               transform: `scale(${coinVisualScale})`,

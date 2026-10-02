@@ -4,10 +4,10 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 import type { ContainerProps } from '@chakra-ui/react'
 import { Box, Container } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
 
 import Footer from '@/components/footer'
 import Preloader from '@/components/preloader'
+import { MotionBox } from '@/components/ui/motion'
 
 export type LayoutProps = ContainerProps & {
   dark?: boolean
@@ -22,7 +22,7 @@ const Layout = ({ dark, children, ...rest }: LayoutProps) => {
       <Preloader isLoading={isLoading} setIsLoading={setIsLoading} />
 
       {!isLoading && (
-        <Box as={motion.div} minH={'100vh'} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <MotionBox minH={'100vh'} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <Box
             minH={'calc(100vh - 61px)'}
             p={6}
@@ -34,7 +34,7 @@ const Layout = ({ dark, children, ...rest }: LayoutProps) => {
             {children}
             <Footer dark={(dark !== undefined && dark && true) || false} />
           </Box>
-        </Box>
+        </MotionBox>
       )}
     </Container>
   )

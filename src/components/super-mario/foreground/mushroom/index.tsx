@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
 
@@ -34,7 +34,7 @@ const initialMushroomPose = { x: 0, y: 0 }
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value))
 
-const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3)
+const easeOutCubic = (value: number) => 1 - (1 - value) ** 3
 
 const getMushroomPose = (elapsed: number): MushroomPose => {
   if (elapsed <= mushroomEmergeSeconds) {

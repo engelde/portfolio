@@ -1,9 +1,10 @@
 'use client'
 
 import NextImage from 'next/image'
-import { Box, HStack, Icon, Text } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Icon, Text } from '@chakra-ui/react'
 import { PiArrowElbowLeftUpBold } from 'react-icons/pi'
+
+import { MotionBox, MotionHStack } from '@/components/ui/motion'
 
 export type DogProps = {
   xPos: number
@@ -14,8 +15,7 @@ export type DogProps = {
 
 const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={xPos > xMin ? 0 : 10}
       position={'fixed'}
       top={36}
@@ -32,8 +32,7 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
       })}
       style={{ pointerEvents: 'none' }}
     >
-      <Box
-        as={motion.div}
+      <MotionBox
         w={{ base: 225, md: 275 }}
         h={{ base: 225, md: 275 }}
         border={4}
@@ -65,9 +64,8 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
           draggable={false}
           unoptimized
         />
-      </Box>
-      <HStack
-        as={motion.div}
+      </MotionBox>
+      <MotionHStack
         pl={4}
         pt={2}
         {...((xPos > xMin &&
@@ -79,13 +77,15 @@ const Dog = ({ xPos, xMin, xMax, offset }: DogProps) => {
           animate: { opacity: 0, marginLeft: 1200 },
         })}
       >
-        <Icon as={PiArrowElbowLeftUpBold} boxSize={6} />
+        <Icon boxSize={6} asChild>
+          <PiArrowElbowLeftUpBold />
+        </Icon>
 
         <Text fontSize={'2xl'} mt={2}>
           {'Frodo'}
         </Text>
-      </HStack>
-    </Box>
+      </MotionHStack>
+    </MotionBox>
   )
 }
 

@@ -1,11 +1,12 @@
 'use client'
 
-import { Box, Heading, HStack, Icon, Kbd, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Box, HStack, Icon, Kbd, Link, Text, VStack } from '@chakra-ui/react'
 import { BsMouseFill } from 'react-icons/bs'
 import { FiArrowDown, FiArrowLeft, FiArrowRight, FiArrowUp } from 'react-icons/fi'
 
-import Code from '@/components/code'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionHeading, MotionHStack, MotionText } from '@/components/ui/motion'
+import { Tooltip } from '@/components/ui/tooltip'
 
 export type IntroProps = {
   xPos: number
@@ -16,8 +17,7 @@ export type IntroProps = {
 
 const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={10}
       position={'fixed'}
       top={8}
@@ -34,16 +34,16 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
       })}
       style={{ pointerEvents: 'none' }}
     >
-      <VStack alignItems={'left'} spacing={2}>
-        <Heading
-          as={motion.div}
+      <VStack alignItems={'left'} gap={2}>
+        <MotionHeading
+          as="div"
           size={'4xl'}
           color={'green.500'}
           textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
           initial={{ scale: 1 }}
+          transformOrigin={'left'}
           whileInView={{
             scale: [1, 1.04, 1],
-            transformOrigin: 'left',
             transition: {
               type: 'keyframes',
               times: [0, 0.5, 1],
@@ -56,9 +56,9 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
           <Code text={'<h1>'} />
           Hello World
           <Code text={'</h1>'} />
-        </Heading>
-        <Text
-          as={motion.div}
+        </MotionHeading>
+        <MotionText
+          as="div"
           fontSize={'xl'}
           maxW={820}
           textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}
@@ -89,22 +89,23 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
           </Link>
           {'.'}
           <Code text={'</p>'} />
-        </Text>
+        </MotionText>
       </VStack>
 
-      <HStack
-        as={motion.div}
+      <MotionHStack
         color={'black'}
-        spacing={10}
+        gap={10}
         mt={12}
         display={{ base: 'none', lg: 'flex' }}
         initial={{ opacity: 0, translateX: -2000 }}
         animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}
       >
-        <HStack color={'black'} spacing={1}>
-          <Tooltip label={'Scroll'} bg={'black'}>
+        <HStack color={'black'} gap={1}>
+          <Tooltip content={'Scroll'} contentProps={{ bg: 'black', color: 'white' }}>
             <Box style={{ pointerEvents: 'auto' }}>
-              <Icon as={BsMouseFill} boxSize={9} color={'white'} />
+              <Icon boxSize={9} color={'white'} asChild>
+                <BsMouseFill />
+              </Icon>
             </Box>
           </Tooltip>
 
@@ -112,21 +113,29 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             or
           </Text>
 
-          <Tooltip label={'Arrow Keys'} bg={'black'}>
+          <Tooltip content={'Arrow Keys'} contentProps={{ bg: 'black', color: 'white' }}>
             <HStack style={{ pointerEvents: 'auto' }}>
               <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
-                <Icon as={FiArrowLeft} />
+                <Icon asChild>
+                  <FiArrowLeft />
+                </Icon>
               </Kbd>
-              <VStack spacing={0.5}>
+              <VStack gap={0.5}>
                 <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
-                  <Icon as={FiArrowUp} />
+                  <Icon asChild>
+                    <FiArrowUp />
+                  </Icon>
                 </Kbd>
                 <Kbd bg={'white'} mb={''} borderColor={'blackAlpha.300'}>
-                  <Icon as={FiArrowDown} />
+                  <Icon asChild>
+                    <FiArrowDown />
+                  </Icon>
                 </Kbd>
               </VStack>
               <Kbd bg={'white'} borderColor={'blackAlpha.300'}>
-                <Icon as={FiArrowRight} />
+                <Icon asChild>
+                  <FiArrowRight />
+                </Icon>
               </Kbd>
             </HStack>
           </Tooltip>
@@ -135,7 +144,7 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             to move and
           </Text>
 
-          <Tooltip label={'Escape Key'} bg={'black'}>
+          <Tooltip content={'Escape Key'} contentProps={{ bg: 'black', color: 'white' }}>
             <Kbd bg={'white'} borderColor={'blackAlpha.300'} style={{ pointerEvents: 'auto' }}>
               esc
             </Kbd>
@@ -145,8 +154,8 @@ const Intro = ({ xPos, xMin, xMax, ip }: IntroProps) => {
             to pause
           </Text>
         </HStack>
-      </HStack>
-    </Box>
+      </MotionHStack>
+    </MotionBox>
   )
 }
 

@@ -493,7 +493,7 @@ export const usePipeRoomEngine = ({
       if (exitTimeoutRef.current) clearTimeout(exitTimeoutRef.current)
       if (exitFrameRef.current !== null) cancelAnimationFrame(exitFrameRef.current)
       stepTransitionRef.current = null
-      coinTimeouts.forEach((timeout) => clearTimeout(timeout))
+      for (const timeout of coinTimeouts.values()) clearTimeout(timeout)
       coinTimeouts.clear()
     }
   }, [])

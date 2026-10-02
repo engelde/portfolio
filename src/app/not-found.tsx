@@ -1,34 +1,33 @@
 'use client'
 
 import NextLink from 'next/link'
-import { Box, Flex, Heading, Text, useMediaQuery, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 
-import Code from '@/components/code'
 import Layout from '@/components/layout'
 import Turtle from '@/components/super-mario/foreground/turtle'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionFlex, MotionHeading, MotionText } from '@/components/ui/motion'
 
 export default function NotFound() {
-  const [mobile] = useMediaQuery('(max-width: 32rem)')
+  const [mobile] = useMediaQuery(['(max-width: 32rem)'])
 
   return (
     <Layout title={'404'} bg={'black'}>
       <Flex h={'80vh'} w={'full'} alignItems={'center'} justifyContent={'center'}>
-        <VStack spacing={0}>
+        <VStack gap={0}>
           <Flex>
-            <Box
-              as={motion.div}
+            <MotionBox
               width={500}
               mb={8}
               initial={{ opacity: 0, translateY: -2000 }}
               animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}
             >
               <Turtle relative={true} x={400} y={0} offset={400} />
-            </Box>
+            </MotionBox>
           </Flex>
 
-          <Heading
-            as={motion.div}
+          <MotionHeading
+            as="div"
             pb={4}
             size={'4xl'}
             color={'red.500'}
@@ -46,26 +45,25 @@ export default function NotFound() {
               {"'NOT FOUND'"}
             </Text>
             {')'}
-          </Heading>
+          </MotionHeading>
 
-          <Text
-            as={motion.div}
-            align={'center'}
+          <MotionText
+            as="div"
+            textAlign={'center'}
             pb={12}
             initial={{ opacity: 0, translateX: -2000 }}
             animate={{ opacity: 1, translateX: 0, transition: { duration: 0.9 } }}
           >
             <Code text={'// "Not all those who wander are lost." - J.R.R. Tolkien'} />
-          </Text>
+          </MotionText>
 
-          <Flex
-            as={motion.div}
+          <MotionFlex
             initial={{ opacity: 0, translateY: 2000 }}
             animate={{ opacity: 1, translateY: 0, transition: { duration: 0.9 } }}
           >
             <NextLink href={'/'} passHref>
-              <Heading
-                as={motion.div}
+              <MotionHeading
+                as="div"
                 size={{ base: '2xl', md: '4xl' }}
                 textAlign={'center'}
                 cursor={'pointer'}
@@ -86,9 +84,9 @@ export default function NotFound() {
                 _hover={{ color: 'cyan.500' }}
               >
                 {'> restart'}
-              </Heading>
+              </MotionHeading>
             </NextLink>
-          </Flex>
+          </MotionFlex>
         </VStack>
       </Flex>
     </Layout>

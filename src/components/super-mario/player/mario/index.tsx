@@ -2,8 +2,13 @@
 
 import { useEffect, useRef } from 'react'
 import { Box } from '@chakra-ui/react'
-import { motion, useAnimationControls } from 'framer-motion'
+import {
+  type LegacyAnimationControls,
+  type TargetAndTransition,
+  useAnimationControls,
+} from 'motion/react'
 
+import { MotionBox } from '@/components/ui/motion'
 import type { PlayerCharacter } from '@/lib/store'
 
 export type MarioProps = {
@@ -60,7 +65,7 @@ const Mario = ({
   const frame = crouch ? 3 : jump || dying ? 2 : state - 1
   const pulseControls = useAnimationControls()
   const marioInitial = exitingPipe ? { translateY: 192 } : false
-  const pipeEntryAnimation =
+  const pipeEntryAnimation: TargetAndTransition =
     enteringPipeDirection === 'right'
       ? {
           opacity: [1, 1, 0],
@@ -72,7 +77,7 @@ const Mario = ({
           translateY: [0, 96, 192],
           transition: { duration: 0.62, ease: 'easeIn', times: [0, 0.66, 1] },
         }
-  const marioAnimation = dying
+  const marioAnimation: TargetAndTransition | LegacyAnimationControls = dying
     ? {
         opacity: [1, 1, 0],
         rotate: [0, 0, 26],
@@ -117,8 +122,7 @@ const Mario = ({
         !forwards ? 'scaleX(-1)' : ''
       }`}
     >
-      <Box
-        as={motion.div}
+      <MotionBox
         initial={marioInitial}
         animate={marioAnimation}
         style={{
@@ -137,12 +141,14 @@ const Mario = ({
           w={currentVariant.width + 'px'}
           h={currentVariant.height + 'px'}
           bgImage={`url("/images/${character}/${character}.${currentVariant.name}.sprite.png")`}
-          bgPosition={`-${frame * currentVariant.width}px 0`}
+          backgroundPosition={`-${frame * currentVariant.width}px 0`}
           bgRepeat={'no-repeat'}
           bgSize={`${currentVariant.width * currentVariant.frames}px ${currentVariant.height}px`}
-          sx={{ imageRendering: 'pixelated' }}
+          css={{
+            imageRendering: 'pixelated',
+          }}
         />
-      </Box>
+      </MotionBox>
     </Box>
   )
 }

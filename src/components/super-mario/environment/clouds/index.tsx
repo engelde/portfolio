@@ -2,7 +2,6 @@
 
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 type CloudProps = {
   y: number
@@ -21,10 +20,7 @@ type VariantProps = {
   }
 }
 
-const cloudDrift = keyframes`
-  0% { margin-left: 100%; }
-  100% { margin-left: -140%; }
-`
+const cloudDrift = 'sm-clouds-cloud-drift'
 
 const Clouds = () => {
   const clouds: CloudProps[] = [
@@ -118,7 +114,7 @@ const Clouds = () => {
           w={'full'}
           opacity={item.opacity}
           marginLeft={'100%'}
-          sx={{
+          css={{
             animation: `${cloudDrift} ${item.duration}s linear ${item.delay}s infinite both`,
           }}
         >

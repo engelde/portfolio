@@ -3,7 +3,6 @@
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
 import { useAudio } from '@/hooks/useAudio'
 
@@ -22,18 +21,9 @@ export type PrizeBoxProps = {
   children: ReactNode
 }
 
-const boxAnimation = keyframes`
-  0% { background-position: -80px 0; }
-  25% { background-position: -160px 0; }
-  50% { background-position: -240px 0; }
-  75% { background-position: -320px 0; }
-  100% { background-position: -80px 0; }
-`
+const boxAnimation = 'sm-prize-box-box-animation'
 
-const boxEnter = keyframes`
-  0% { transform: translateY(150%); }
-  100% { transform: translateY(0); }
-`
+const boxEnter = 'sm-prize-box-box-enter'
 
 const PrizeBox = ({
   x,
@@ -89,7 +79,7 @@ const PrizeBox = ({
       position={'absolute'}
       left={x + 'px'}
       bottom={y + 'px'}
-      sx={{
+      css={{
         animation: `${boxEnter} 0.3s linear 0.3s both`,
       }}
     >
@@ -116,10 +106,10 @@ const PrizeBox = ({
         bgImage={'url("/images/box/box.sprite.png")'}
         bgRepeat={'no-repeat'}
         bgSize={'400px 80px'}
-        bgPosition={status ? '-80px 0' : '0 0'}
+        backgroundPosition={status ? '-80px 0' : '0 0'}
         _hover={{ filter: status ? 'brightness(115%)' : 'brightness(100%)' }}
         onClick={handleAction}
-        sx={{
+        css={{
           animation: status ? `${boxAnimation} 0.52s steps(1) infinite` : 'none',
           imageRendering: 'pixelated',
         }}

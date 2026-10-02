@@ -1,7 +1,6 @@
 'use client'
 
-import { Box, Heading, HStack, Icon, Link, Text, Tooltip, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Heading, HStack, Icon, Link, Text, VStack } from '@chakra-ui/react'
 import { FaAws, FaJava } from 'react-icons/fa6'
 import {
   SiAnthropic,
@@ -34,7 +33,9 @@ import {
   SiVuedotjs,
 } from 'react-icons/si'
 
-import Code from '@/components/code'
+import Code from '@/components/ui/code'
+import { MotionBox, MotionHeading } from '@/components/ui/motion'
+import { Tooltip } from '@/components/ui/tooltip'
 
 export type SkillsProps = {
   xPos: number
@@ -258,8 +259,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
   ]
 
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={10}
       position={'fixed'}
       top={8}
@@ -278,16 +278,16 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
         animate: { opacity: 0, marginTop: -600 },
       })}
     >
-      <Heading
-        as={motion.div}
+      <MotionHeading
+        as="div"
         size={'4xl'}
         color={'red.500'}
         pb={2}
         textShadow={'2px 2px rgba(0, 0, 0, 0.09)'}
         initial={{ scale: 1 }}
+        transformOrigin={'left'}
         whileInView={{
           scale: [1, 1.04, 1],
-          transformOrigin: 'left',
           transition: {
             type: 'keyframes',
             times: [0, 0.5, 1],
@@ -300,7 +300,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
         <Code text={'<h1>'} />
         Skills
         <Code text={'</h1>'} />
-      </Heading>
+      </MotionHeading>
 
       <Text fontSize={'xl'} pb={6} textShadow={'1px 1px rgba(0, 0, 0, 0.09)'}>
         <Code text={'<p>'} />
@@ -312,7 +312,7 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
 
       <HStack
         mb={2}
-        spacing={{ base: 2, md: 3, lg: 4 }}
+        gap={{ base: 2, md: 3, lg: 4 }}
         alignItems={'top'}
         justifyContent={'flex-start'}
       >
@@ -320,15 +320,14 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
           pl={{ base: 0, md: 1, lg: 2 }}
           pr={{ base: 0, md: 1, lg: 2 }}
           alignItems={'top'}
-          spacing={{ base: 2, md: 4, lg: 8 }}
+          gap={{ base: 2, md: 4, lg: 8 }}
         >
           <Heading size={'2xl'} w={'full'} minW={'240px'} maxW={960}>
             {skillset.map(
               (skill, x) =>
                 xPos > skill.x && (
-                  <Box
+                  <MotionBox
                     key={x}
-                    as={motion.div}
                     color={'white'}
                     display={'inline'}
                     alignItems={'center'}
@@ -342,9 +341,9 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                       referrerPolicy={'no-referrer'}
                       rel={'noopener'}
                     >
-                      <Tooltip label={skill.name} bg={'black'}>
+                      <Tooltip content={skill.name} contentProps={{ bg: 'black', color: 'white' }}>
                         <Icon
-                          as={skill.icon}
+                          display={'inline-block'}
                           w={{ base: 10, sm: 12, md: 14, lg: 16 }}
                           h={{ base: 10, sm: 12, md: 14, lg: 16 }}
                           m={{ base: 3, md: 4 }}
@@ -355,16 +354,19 @@ const Skills = ({ xPos, xMin, xMax, offset }: SkillsProps) => {
                             transform: 'scale(1.25)',
                             transition: 'color .1s ease-in-out, transform .1s ease-in-out',
                           }}
-                        />
+                          asChild
+                        >
+                          <skill.icon />
+                        </Icon>
                       </Tooltip>
                     </Link>
-                  </Box>
+                  </MotionBox>
                 )
             )}
           </Heading>
         </VStack>
       </HStack>
-    </Box>
+    </MotionBox>
   )
 }
 

@@ -3,3 +3,16 @@
 /dist/
 /out/
 /.next/
+
+# never bake secrets or local artifacts into images
+.env
+.env*
+.git
+.vercel
+.playwright-cli
+.playwright-mcp
+output/
+*.tsbuildinfo
+.github
+.vscode
+resources

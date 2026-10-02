@@ -1,7 +1,8 @@
 'use client'
 
-import { Flex, Text, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Text } from '@chakra-ui/react'
+
+import { MotionFlex, MotionVStack } from '@/components/ui/motion'
 
 export type ScrollIndicatorProps = {
   xPos: number
@@ -9,8 +10,7 @@ export type ScrollIndicatorProps = {
 
 const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
   return (
-    <Flex
-      as={motion.div}
+    <MotionFlex
       zIndex={22}
       position={'fixed'}
       left={0}
@@ -28,9 +28,8 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
       })}
       style={{ pointerEvents: 'none' }}
     >
-      <VStack
-        as={motion.div}
-        spacing={0}
+      <MotionVStack
+        gap={0}
         p={1}
         alignItems={'center'}
         justifyContent={'center'}
@@ -61,8 +60,8 @@ const ScrollIndicator = ({ xPos }: ScrollIndicatorProps) => {
         >
           {'>'}
         </Text>
-      </VStack>
-    </Flex>
+      </MotionVStack>
+    </MotionFlex>
   )
 }
 

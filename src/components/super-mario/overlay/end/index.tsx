@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { Box, Flex, Heading, HStack, Link, Tooltip, useMediaQuery, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { Box, Flex, HStack, Link, useMediaQuery, VStack } from '@chakra-ui/react'
 
+import { MotionBox, MotionHeading } from '@/components/ui/motion'
+import { Tooltip } from '@/components/ui/tooltip'
 import Wordmark from '@/components/wordmark'
 
 const Fireworks = dynamic(() => import('@fireworks-js/react').then((mod) => mod.Fireworks), {
@@ -23,7 +24,7 @@ export type EndProps = {
 
 const End = ({ active, locked, mode, x, xPos }: EndProps) => {
   const [fireworks, setFireworks] = useState(false)
-  const [mobile] = useMediaQuery('(max-width: 48rem)')
+  const [mobile] = useMediaQuery(['(max-width: 48rem)'])
   const courseClear = mode === 'course-clear'
   const screenLeft = locked ? 0 : Math.max(0, x - xPos)
   const visible = active || xPos >= x
@@ -108,7 +109,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
               className={'fireworks'}
             >
               <Fireworks
-                className="h-screen w-screen"
+                style={{ width: '100vw', height: '100vh' }}
                 options={{
                   autoresize: true,
                   opacity: 0.6,
@@ -210,8 +211,7 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
           />
         </Box>
 
-        <Box
-          as={motion.div}
+        <MotionBox
           zIndex={3}
           alignItems={'center'}
           justifyContent={'center'}
@@ -225,11 +225,11 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
               : { opacity: 0, translateY: -300 }
           }
         >
-          <VStack spacing={{ base: 8, md: 16 }} maxW={'100%'}>
+          <VStack gap={{ base: 8, md: 16 }} maxW={'100%'}>
             <Wordmark textAlign={'center'} w={{ base: '320px', md: '700px' }} />
 
-            <Heading
-              as={motion.div}
+            <MotionHeading
+              as="div"
               size={{ base: 'xl', md: '4xl' }}
               color={courseClear ? 'white' : 'red.500'}
               letterSpacing={{ base: '2px', md: '4px' }}
@@ -250,11 +250,11 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
               }}
             >
               {courseClear ? 'COURSE CLEAR!' : 'GAME OVER'}
-            </Heading>
+            </MotionHeading>
 
-            <VStack spacing={0}>
-              <Heading
-                as={motion.div}
+            <VStack gap={0}>
+              <MotionHeading
+                as="div"
                 size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
                 color={'white'}
@@ -273,10 +273,10 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 onClick={() => window.location.reload()}
               >
                 {'> restart'}
-              </Heading>
+              </MotionHeading>
 
-              <Heading
-                as={motion.div}
+              <MotionHeading
+                as="div"
                 size={{ base: 'xl', md: '4xl' }}
                 textAlign={'center'}
                 color={'white'}
@@ -286,98 +286,89 @@ const End = ({ active, locked, mode, x, xPos }: EndProps) => {
                 _hover={{ color: 'cyan.500' }}
               >
                 <Link
-                  as={NextLink}
                   color={'white'}
-                  href={'https://github.com/engelde/portfolio'}
-                  target={'_blank'}
                   tabIndex={linkTabIndex}
                   _hover={{ color: 'cyan.500' }}
+                  asChild
                 >
-                  {'> view source'}
+                  <NextLink href={'https://github.com/engelde/portfolio'} target={'_blank'}>
+                    {'> view source'}
+                  </NextLink>
                 </Link>
-              </Heading>
+              </MotionHeading>
             </VStack>
 
-            <HStack justifyContent={'center'} verticalAlign={'middle'} spacing={{ base: 5, md: 8 }}>
-              <Link
-                as={NextLink}
-                href={'https://github.com/engelde'}
-                target={'_blank'}
-                referrerPolicy={'no-referrer'}
-                rel={'noopener'}
-                tabIndex={linkTabIndex}
-              >
-                <Tooltip label={'GitHub'} bg={'black'}>
-                  <Box
-                    as={motion.div}
-                    cursor={'pointer'}
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.12 }}
-                  >
-                    <NextImage
-                      alt={'GitHub'}
-                      src={'/images/github/github.png'}
-                      width={49}
-                      height={50}
-                      draggable={false}
-                      unoptimized
-                    />
-                  </Box>
-                </Tooltip>
+            <HStack justifyContent={'center'} verticalAlign={'middle'} gap={{ base: 5, md: 8 }}>
+              <Link tabIndex={linkTabIndex} asChild>
+                <NextLink
+                  href={'https://github.com/engelde'}
+                  target={'_blank'}
+                  referrerPolicy={'no-referrer'}
+                  rel={'noopener'}
+                >
+                  <Tooltip content={'GitHub'} contentProps={{ bg: 'black', color: 'white' }}>
+                    <MotionBox
+                      cursor={'pointer'}
+                      initial={{ scale: 1 }}
+                      whileHover={{ scale: 1.12 }}
+                    >
+                      <NextImage
+                        alt={'GitHub'}
+                        src={'/images/github/github.png'}
+                        width={49}
+                        height={50}
+                        draggable={false}
+                        unoptimized
+                      />
+                    </MotionBox>
+                  </Tooltip>
+                </NextLink>
               </Link>
 
-              <Link
-                as={NextLink}
-                href={'https://www.linkedin.com/in/engelde'}
-                target={'_blank'}
-                tabIndex={linkTabIndex}
-              >
-                <Tooltip label={'LinkedIn'} bg={'black'}>
-                  <Box
-                    as={motion.div}
-                    cursor={'pointer'}
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.12 }}
-                  >
-                    <NextImage
-                      alt={'LinkedIn'}
-                      src={'/images/linkedin/linkedin.png'}
-                      width={50}
-                      height={50}
-                      draggable={false}
-                      unoptimized
-                    />
-                  </Box>
-                </Tooltip>
+              <Link tabIndex={linkTabIndex} asChild>
+                <NextLink href={'https://www.linkedin.com/in/engelde'} target={'_blank'}>
+                  <Tooltip content={'LinkedIn'} contentProps={{ bg: 'black', color: 'white' }}>
+                    <MotionBox
+                      cursor={'pointer'}
+                      initial={{ scale: 1 }}
+                      whileHover={{ scale: 1.12 }}
+                    >
+                      <NextImage
+                        alt={'LinkedIn'}
+                        src={'/images/linkedin/linkedin.png'}
+                        width={50}
+                        height={50}
+                        draggable={false}
+                        unoptimized
+                      />
+                    </MotionBox>
+                  </Tooltip>
+                </NextLink>
               </Link>
 
-              <Link
-                as={NextLink}
-                href={'https://orcid.org/0009-0001-0780-738X'}
-                target={'_blank'}
-                tabIndex={linkTabIndex}
-              >
-                <Tooltip label={'ORCID'} bg={'black'}>
-                  <Box
-                    as={motion.div}
-                    cursor={'pointer'}
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.12 }}
-                  >
-                    <NextImage
-                      alt={'ORCID'}
-                      src={'/images/orcid/orcid.png'}
-                      width={50}
-                      height={50}
-                      draggable={false}
-                      unoptimized
-                    />
-                  </Box>
-                </Tooltip>
+              <Link tabIndex={linkTabIndex} asChild>
+                <NextLink href={'https://orcid.org/0009-0001-0780-738X'} target={'_blank'}>
+                  <Tooltip content={'ORCID'} contentProps={{ bg: 'black', color: 'white' }}>
+                    <MotionBox
+                      cursor={'pointer'}
+                      initial={{ scale: 1 }}
+                      whileHover={{ scale: 1.12 }}
+                    >
+                      <NextImage
+                        alt={'ORCID'}
+                        src={'/images/orcid/orcid.png'}
+                        width={50}
+                        height={50}
+                        draggable={false}
+                        unoptimized
+                      />
+                    </MotionBox>
+                  </Tooltip>
+                </NextLink>
               </Link>
             </HStack>
           </VStack>
-        </Box>
+        </MotionBox>
       </Flex>
     </Box>
   )

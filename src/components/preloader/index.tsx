@@ -1,10 +1,10 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { Box, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { usePathname } from 'next/navigation'
+import { Box, chakra, Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react'
 
+import { MotionBox, MotionFlex, MotionVStack } from '@/components/ui/motion'
 import Wordmark from '@/components/wordmark'
 
 import styles from './styles.module.css'
@@ -159,16 +159,15 @@ const preloadImages = async (images: string[], batchSize = 8) => {
 }
 
 const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
-  const [mobile] = useMediaQuery('(max-width: 36rem)')
+  const [mobile] = useMediaQuery(['(max-width: 36rem)'])
   const [isPreloading, setIsPreloading] = useState(true)
   const [isInstructing, setIsInstructing] = useState(false)
   const [position, setPosition] = useState(1)
   const preloaderRef = useRef<HTMLDivElement | null>(null)
-  const router = useRouter()
   const pathname = usePathname()
 
   // Preload
-  const preload = async () => {
+  const preload = useCallback(async () => {
     preloaderRef.current?.scrollTo({ top: 0, behavior: 'auto' })
     window.scrollTo({ top: 0, behavior: 'auto' })
 
@@ -181,7 +180,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         setIsInstructing(true)
       }, 600)
     }, 900)
-  }
+  }, [])
 
   // Start preloading
   useEffect(() => {
@@ -199,7 +198,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         void preload()
       }
     }
-  }, [isPreloading, pathname, setIsPreloading, setIsLoading, router])
+  }, [isPreloading, pathname, setIsLoading, preload])
 
   // Scroll to start
   const handleStart = useCallback(() => {
@@ -231,8 +230,7 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
   }, [handleStart, isInstructing, isLoading])
 
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       ref={preloaderRef}
       zIndex={'overlay'}
       position={'fixed'}
@@ -251,9 +249,9 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
     >
       <Box aria-hidden={'true'} position={'absolute'} w={'1px'} h={'1px'} overflow={'hidden'}>
         {criticalPreloaderImages.map((src) => (
-          <Box
+          // biome-ignore lint/performance/noImgElement: warms the browser image cache before the game mounts
+          <chakra.img
             key={src}
-            as={'img'}
             src={src}
             alt={''}
             loading={'eager'}
@@ -272,10 +270,9 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
         alignItems={'center'}
         justifyContent={'center'}
       >
-        {(position == 1 && (
-          <VStack
-            as={motion.div}
-            spacing={2}
+        {(position === 1 && (
+          <MotionVStack
+            gap={2}
             {...(!isPreloading && {
               initial: { translateY: 0 },
               animate: { translateY: 2000, transition: { duration: 0.9 } },
@@ -285,10 +282,9 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
             <Text fontSize={'2xl'} color={'cyan.500'}>
               <strong>Loading...</strong>
             </Text>
-          </VStack>
+          </MotionVStack>
         )) || (
-          <VStack
-            as={motion.div}
+          <MotionVStack
             {...((!isInstructing && {
               initial: { translateY: 0 },
               animate: { translateY: 2000, transition: { duration: 0.9 } },
@@ -297,20 +293,18 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
               animate: { translateY: 0, transition: { duration: 0.9 } },
             })}
           >
-            <Flex
-              as={motion.div}
+            <MotionFlex
               w={'full'}
               alignItems={'center'}
               justifyContent={'center'}
               initial={{ translateY: 2000 }}
               animate={{ translateY: 0, transition: { duration: 0.9 } }}
             >
-              <VStack spacing={16}>
+              <VStack gap={16}>
                 <Wordmark textAlign={'center'} />
 
-                <VStack
-                  as={motion.div}
-                  spacing={0}
+                <MotionVStack
+                  gap={0}
                   alignItems={'center'}
                   justifyContent={'center'}
                   p={1}
@@ -346,13 +340,13 @@ const Preloader = ({ isLoading, setIsLoading }: PreloaderProps) => {
                   >
                     <strong>{'>'}</strong>
                   </Text>
-                </VStack>
+                </MotionVStack>
               </VStack>
-            </Flex>
-          </VStack>
+            </MotionFlex>
+          </MotionVStack>
         )}
       </Flex>
-    </Box>
+    </MotionBox>
   )
 }
 

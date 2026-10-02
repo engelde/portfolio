@@ -1,8 +1,8 @@
 'use client'
 
 import NextImage from 'next/image'
-import { Box } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+
+import { MotionBox } from '@/components/ui/motion'
 
 export type CloudProps = {
   x: number
@@ -11,8 +11,7 @@ export type CloudProps = {
 
 const Cloud = ({ x, y }: CloudProps) => {
   return (
-    <Box
-      as={motion.div}
+    <MotionBox
       zIndex={1}
       position={'absolute'}
       left={x + 'px'}
@@ -30,7 +29,7 @@ const Cloud = ({ x, y }: CloudProps) => {
         draggable={false}
         unoptimized
       />
-    </Box>
+    </MotionBox>
   )
 }
 

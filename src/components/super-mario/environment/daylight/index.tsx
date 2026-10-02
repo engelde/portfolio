@@ -1,13 +1,8 @@
 'use client'
 
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
-const daylightCycle = keyframes`
-  0% { background-position: 50% 0%; }
-  50% { background-position: 50% 100%; }
-  100% { background-position: 50% 0%; }
-`
+const daylightCycle = 'sm-daylight-cycle'
 
 const Daylight = () => {
   return (
@@ -19,7 +14,7 @@ const Daylight = () => {
       minH={'100vh'}
       backgroundSize={'100% 800%'}
       backgroundImage={'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%)'}
-      sx={{
+      css={{
         animation: `${daylightCycle} 90s linear infinite`,
       }}
     />

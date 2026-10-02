@@ -2,35 +2,8 @@
 
 import NextImage from 'next/image'
 import { Box } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 
-const sunCycle = keyframes`
-  0% {
-    margin-top: 35px;
-    margin-right: 35px;
-    transform: scale(0.8);
-  }
-  36%, 40% {
-    margin-top: -125px;
-    margin-right: -125px;
-    transform: scale(0.9);
-  }
-  48%, 56% {
-    margin-top: -300px;
-    margin-right: -300px;
-    transform: scale(1);
-  }
-  64%, 94% {
-    margin-top: -125px;
-    margin-right: -125px;
-    transform: scale(0.9);
-  }
-  100% {
-    margin-top: 35px;
-    margin-right: 35px;
-    transform: scale(0.8);
-  }
-`
+const sunCycle = 'sm-sun-cycle'
 
 const Sun = () => {
   return (
@@ -42,7 +15,7 @@ const Sun = () => {
         w={240}
         h={240}
         opacity={0.4}
-        sx={{
+        css={{
           animation: `${sunCycle} 90s linear infinite`,
         }}
       >
@@ -56,7 +29,7 @@ const Sun = () => {
         w={215}
         h={215}
         opacity={0.9}
-        sx={{
+        css={{
           animation: `${sunCycle} 90s linear infinite`,
         }}
       >

@@ -1,12 +1,12 @@
 'use client'
 
 import {
+  type FormEvent,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type FormEvent,
   type WheelEvent,
 } from 'react'
 import Script from 'next/script'
@@ -162,7 +162,7 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
     () => ({
       _focusVisible: {
         borderColor: 'cyan.500',
-        boxShadow: '0 0 0 2px var(--chakra-colors-cyan-500)',
+        boxShadow: '0 0 0 2px var(--app-colors-cyan-500)',
       },
       _placeholder: { color: 'whiteAlpha.700' },
       bg: 'black',
@@ -359,128 +359,130 @@ const PipeRoomMessageForm = ({ form, onCancel }: PipeRoomMessageFormProps) => {
         />
       )}
 
-      <Box as={'form'} ref={formRef} display={'grid'} gap={3} noValidate onSubmit={handleSubmit}>
-        <Heading
-          as={'h2'}
-          color={'green.500'}
-          fontFamily={pipeRoomFont}
-          fontSize={'5xl'}
-          fontWeight={'black'}
-          lineHeight={1}
-          textTransform={'uppercase'}
-        >
-          Send Message
-        </Heading>
-
-        <Input
-          aria-label={'Name'}
-          autoComplete={'name'}
-          h={'56px'}
-          name={'name'}
-          placeholder={'Name'}
-          required
-          {...fieldStyles}
-        />
-
-        <Input
-          aria-label={'Email'}
-          autoComplete={'email'}
-          h={'56px'}
-          name={'email'}
-          placeholder={'Email'}
-          required
-          type={'email'}
-          {...fieldStyles}
-        />
-
-        <Textarea
-          aria-label={'Message'}
-          h={'136px'}
-          name={'message'}
-          placeholder={'Message'}
-          required
-          resize={'none'}
-          {...fieldStyles}
-        />
-
-        <HStack spacing={4}>
-          <Button
-            type={'button'}
-            flex={1}
-            h={'56px'}
-            border={'4px solid'}
-            borderColor={'white'}
-            borderRadius={0}
-            bg={'black'}
-            color={'white'}
+      <Box display={'grid'} gap={3} asChild>
+        <form ref={formRef} noValidate onSubmit={handleSubmit}>
+          <Heading
+            as={'h2'}
+            color={'green.500'}
             fontFamily={pipeRoomFont}
-            fontSize={'2xl'}
+            fontSize={'5xl'}
             fontWeight={'black'}
-            letterSpacing={0}
-            textTransform={'uppercase'}
-            onClick={() => {
-              formRef.current?.reset()
-              setStatus('idle')
-              setFeedbackMessage('')
-              resetTurnstile()
-              onCancel()
-            }}
-            _hover={{
-              bg: 'red.500',
-              borderColor: 'red.500',
-              color: 'black',
-            }}
-            _active={{ bg: 'red.600', borderColor: 'red.600' }}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            type={'submit'}
-            isDisabled={submitting}
-            isLoading={submitting}
-            loadingText={status === 'verification' ? 'Verify' : 'Sending'}
-            flex={1}
-            h={'56px'}
-            border={'4px solid'}
-            borderColor={'white'}
-            borderRadius={0}
-            bg={'black'}
-            color={'white'}
-            fontFamily={pipeRoomFont}
-            fontSize={'2xl'}
-            fontWeight={'black'}
-            letterSpacing={0}
-            textTransform={'uppercase'}
-            _hover={{
-              bg: 'cyan.500',
-              borderColor: 'cyan.500',
-              color: 'black',
-            }}
-            _active={{ bg: 'green.500', borderColor: 'green.500' }}
-          >
-            {status === 'sent' ? 'Sent' : 'Submit'}
-          </Button>
-        </HStack>
-
-        {turnstileEnabled && (
-          <Box ref={turnstileRef} position={'absolute'} w={0} h={0} overflow={'hidden'} />
-        )}
-
-        {statusMessage && (
-          <Text
-            aria-live={'polite'}
-            color={
-              status === 'sent' ? 'green.500' : status === 'verification' ? 'cyan.500' : 'red.500'
-            }
-            fontFamily={pipeRoomFont}
-            fontSize={'xl'}
-            fontWeight={'bold'}
             lineHeight={1}
+            textTransform={'uppercase'}
           >
-            {statusMessage}
-          </Text>
-        )}
+            Send Message
+          </Heading>
+
+          <Input
+            aria-label={'Name'}
+            autoComplete={'name'}
+            h={'56px'}
+            name={'name'}
+            placeholder={'Name'}
+            required
+            {...fieldStyles}
+          />
+
+          <Input
+            aria-label={'Email'}
+            autoComplete={'email'}
+            h={'56px'}
+            name={'email'}
+            placeholder={'Email'}
+            required
+            type={'email'}
+            {...fieldStyles}
+          />
+
+          <Textarea
+            aria-label={'Message'}
+            h={'136px'}
+            name={'message'}
+            placeholder={'Message'}
+            required
+            resize={'none'}
+            {...fieldStyles}
+          />
+
+          <HStack gap={4}>
+            <Button
+              type={'button'}
+              flex={1}
+              h={'56px'}
+              border={'4px solid'}
+              borderColor={'white'}
+              borderRadius={0}
+              bg={'black'}
+              color={'white'}
+              fontFamily={pipeRoomFont}
+              fontSize={'2xl'}
+              fontWeight={'black'}
+              letterSpacing={0}
+              textTransform={'uppercase'}
+              onClick={() => {
+                formRef.current?.reset()
+                setStatus('idle')
+                setFeedbackMessage('')
+                resetTurnstile()
+                onCancel()
+              }}
+              _hover={{
+                bg: 'red.500',
+                borderColor: 'red.500',
+                color: 'black',
+              }}
+              _active={{ bg: 'red.600', borderColor: 'red.600' }}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              type={'submit'}
+              disabled={submitting}
+              loading={submitting}
+              loadingText={status === 'verification' ? 'Verify' : 'Sending'}
+              flex={1}
+              h={'56px'}
+              border={'4px solid'}
+              borderColor={'white'}
+              borderRadius={0}
+              bg={'black'}
+              color={'white'}
+              fontFamily={pipeRoomFont}
+              fontSize={'2xl'}
+              fontWeight={'black'}
+              letterSpacing={0}
+              textTransform={'uppercase'}
+              _hover={{
+                bg: 'cyan.500',
+                borderColor: 'cyan.500',
+                color: 'black',
+              }}
+              _active={{ bg: 'green.500', borderColor: 'green.500' }}
+            >
+              {status === 'sent' ? 'Sent' : 'Submit'}
+            </Button>
+          </HStack>
+
+          {turnstileEnabled && (
+            <Box ref={turnstileRef} position={'absolute'} w={0} h={0} overflow={'hidden'} />
+          )}
+
+          {statusMessage && (
+            <Text
+              aria-live={'polite'}
+              color={
+                status === 'sent' ? 'green.500' : status === 'verification' ? 'cyan.500' : 'red.500'
+              }
+              fontFamily={pipeRoomFont}
+              fontSize={'xl'}
+              fontWeight={'bold'}
+              lineHeight={1}
+            >
+              {statusMessage}
+            </Text>
+          )}
+        </form>
       </Box>
     </Box>
   )
