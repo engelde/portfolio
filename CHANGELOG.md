@@ -2,6 +2,64 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.0](https://github.com/engelde/portfolio/compare/v1.7.6...v1.8.0) (2026-10-02)
+
+
+### 🐛 Bug Fixes
+
+* **build:** build with webpack to avoid a production hydration error ([0bb4ecb](https://github.com/engelde/portfolio/commit/0bb4ecb0f9c62cedb68b08fcd66421d59558b653))
+* **deps:** refresh dependencies and pin the toolchain ([0e58359](https://github.com/engelde/portfolio/commit/0e5835995782fd9aeb8de254d18c303c3a079dfb))
+* **deps:** refresh dependencies, pin pnpm 11 and Node 24, build with webpack ([e11435f](https://github.com/engelde/portfolio/commit/e11435fec15468038f2fb270a93f0943a3dedced))
+* draw the message form focus ring ([e6a2ece](https://github.com/engelde/portfolio/commit/e6a2eceb2016f123804141ee185dd1bd4a4a00aa))
+
+
+### 🚚 Chores
+
+* **config:** point editor settings and git blame at biome ([63dccb5](https://github.com/engelde/portfolio/commit/63dccb5bb55f29f43051faeaef26511691883405))
+* **release:** release 1.8.0 ([a222d3d](https://github.com/engelde/portfolio/commit/a222d3da01337bd16c3860c17aa91d74190cde1b))
+
+
+### 💄 Styling
+
+* format codebase with biome ([ce664c4](https://github.com/engelde/portfolio/commit/ce664c4dfbe9d07819c6787adebda114c9fa6456))
+
+
+### ♻️ Code Refactoring
+
+* decouple Motion and keyframes from Chakra, remove Tailwind ([900ae44](https://github.com/engelde/portfolio/commit/900ae44780df737225ebc921bda955a899dc78cd))
+* move sprite keyframes from emotion to plain css ([808c717](https://github.com/engelde/portfolio/commit/808c717d039428dd0459e5823f8932d1083b2065))
+* move ui primitives into src/components/ui ([1ec9209](https://github.com/engelde/portfolio/commit/1ec9209c5bfb76b772679b0a54f865db199d795a))
+* resolve biome lint findings ([9cbe7f5](https://github.com/engelde/portfolio/commit/9cbe7f5aec5febaa13f88067d4f0bc043d3383ab))
+* tighten chakra v3 parity ([daeeb01](https://github.com/engelde/portfolio/commit/daeeb01e554e25dd7007b1f481886fdcacb0cf19))
+* wrap chakra components with motion instead of as={motion.x} ([6bacc1a](https://github.com/engelde/portfolio/commit/6bacc1a9f578cd907daade41937162e0d2d616bc))
+
+
+### 📦 Build System
+
+* **build:** multi-stage standalone Docker image ([47afde3](https://github.com/engelde/portfolio/commit/47afde3dd1ade5cac85e1984d89a5b97ab6378c8))
+* **build:** rebuild the docker image as a multi-stage standalone server ([236fc41](https://github.com/engelde/portfolio/commit/236fc419e4d2a2c83027022e5d78dc81e50f8326))
+* **deps:** bump next ([155475e](https://github.com/engelde/portfolio/commit/155475ef0f8f6a8665f5877aab7af6cd12ba50fc))
+* **deps:** bump next from 15.5.18 to 15.5.21 in the npm_and_yarn group across 1 directory ([6cc62ea](https://github.com/engelde/portfolio/commit/6cc62eaf267cbbf96cd172fca0af88418340dcea))
+* **deps:** bump next from 15.5.21 to 15.5.24 in the npm_and_yarn group across 1 directory ([0b514aa](https://github.com/engelde/portfolio/commit/0b514aad4db33b47c2986f03deff009938dbcdad))
+* **deps:** bump next in the npm_and_yarn group across 1 directory ([b44a8dd](https://github.com/engelde/portfolio/commit/b44a8ddc55d2a861d1583583f7db424f7178c7c0))
+* **deps:** bump postcss ([174894d](https://github.com/engelde/portfolio/commit/174894da7521fdb11f18e246f656386c0ad2cf23))
+* **deps:** bump postcss from 8.4.31 to 8.5.8 in the npm_and_yarn group across 1 directory ([11b9e6b](https://github.com/engelde/portfolio/commit/11b9e6b206280dcb351a78395df0b790e7b2cd70))
+* **deps:** bump sharp from 0.34.5 to 0.35.0 in the npm_and_yarn group across 1 directory ([5d90858](https://github.com/engelde/portfolio/commit/5d90858d761234ecf84df746f809ed3e133ee8f1))
+* **deps:** bump sharp from 0.35.1 to 0.35.4 in the npm_and_yarn group across 1 directory ([ddd74c6](https://github.com/engelde/portfolio/commit/ddd74c6a3248e2591b82632bd054bcb5a7fb2951))
+* **deps:** bump sharp in the npm_and_yarn group across 1 directory ([535d54c](https://github.com/engelde/portfolio/commit/535d54ccf6bf74ffc9f76d7d4cdb06b69c2863a4))
+* **deps:** bump sharp in the npm_and_yarn group across 1 directory ([5d302a6](https://github.com/engelde/portfolio/commit/5d302a6771a2f8eb338cacf2eff20ab102477d55))
+* **deps:** remove tailwind ([1bd2d00](https://github.com/engelde/portfolio/commit/1bd2d006e2b7e9965c0695dc3e4f0eac030c5548))
+* **deps:** replace eslint, prettier, husky and lint-staged with biome and lefthook ([77d4651](https://github.com/engelde/portfolio/commit/77d4651f2bce690fc1b42f6c8f834ede35be7860))
+* **deps:** replace framer-motion 10 with motion 13 ([173bf33](https://github.com/engelde/portfolio/commit/173bf33f78b56a8061eca9f2e8ecd2ebb789e531))
+* **deps:** replace framer-motion with Motion 13 and release 1.8.0 ([bdaad70](https://github.com/engelde/portfolio/commit/bdaad7054d07510287de59e6b294d5a5783fbd79))
+* **deps:** switch to Biome and lefthook, add CI and Dependabot config ([d76c56b](https://github.com/engelde/portfolio/commit/d76c56bd82422d98566a9c5b771f3c4a467d9b5d))
+* **deps:** TypeScript 7 and finish the Next 16 migration ([46106ac](https://github.com/engelde/portfolio/commit/46106aca33af6b2bd2269481541d8060ddf92b1d))
+* **deps:** upgrade to chakra ui v3 ([0a0e481](https://github.com/engelde/portfolio/commit/0a0e481e82a96f98998d463eb0168414ec391705))
+* **deps:** upgrade to Chakra UI v3 ([3d4c695](https://github.com/engelde/portfolio/commit/3d4c695f722999f7d120127705a1ea1457d17d62))
+* **deps:** upgrade to typescript 7 and finish the next 16 migration ([4eed8ee](https://github.com/engelde/portfolio/commit/4eed8eeb6aced8370a7a43e65f8b3c252973eedb))
+* **release:** replace standard-version with release-please ([e518491](https://github.com/engelde/portfolio/commit/e518491bac89de424960a73a17cdfaab4a58f43a))
+* **release:** replace standard-version with release-please ([95592a5](https://github.com/engelde/portfolio/commit/95592a51950e3ca8acbada3f4f9a72456fd6d5b0))
+
 ### [1.7.6](https://github.com/engelde/portfolio/compare/v1.7.5...v1.7.6) (2026-05-20)
 
 
