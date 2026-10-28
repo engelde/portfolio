@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/engelde/portfolio/compare/v1.8.1...v1.8.2) (2026-10-28)
+
+
+### 📦 Build System
+
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates ([82e6ef0](https://github.com/engelde/portfolio/commit/82e6ef0f1fb78f680f828cea1586caea8baefeee))
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates ([19ea4c8](https://github.com/engelde/portfolio/commit/19ea4c898b16ef6b7e21f7c6f5d5467403823741))
+
 ## [1.8.1](https://github.com/engelde/portfolio/compare/v1.8.0...v1.8.1) (2026-10-28)
 
 
