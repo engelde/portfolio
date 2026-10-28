@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/engelde/portfolio/compare/v1.8.0...v1.8.1) (2026-10-28)
+
+
+### 📦 Build System
+
+* **deps:** bump @types/node from 24.19.0 to 26.6.3 ([3efab5f](https://github.com/engelde/portfolio/commit/3efab5f10b0f42e5f333efb82ce5cf30be5c64ef))
+* **deps:** bump @types/node from 24.19.0 to 26.6.3 ([830659a](https://github.com/engelde/portfolio/commit/830659afc28b7c97633ef42da28383ee3678247a))
+* **deps:** bump motion from 13.5.0 to 14.0.0 ([0bcb810](https://github.com/engelde/portfolio/commit/0bcb810ba14b813fdc58764fdccc60290cdb6e25))
+* **deps:** bump motion from 13.5.0 to 14.0.0 ([fb0fdf7](https://github.com/engelde/portfolio/commit/fb0fdf70c31cac9a108d72f9171d5732d903f8a9))
+* **deps:** bump the minor-and-patch group with 4 updates ([c9ff77f](https://github.com/engelde/portfolio/commit/c9ff77f45c4cbd38e4fe05f63aaa20d684ff9e8b))
+* **deps:** bump the minor-and-patch group with 4 updates ([1e08f06](https://github.com/engelde/portfolio/commit/1e08f06a8329900244d794afa4f946e03dd16685))
+
 ## [1.8.0](https://github.com/engelde/portfolio/compare/v1.7.6...v1.8.0) (2026-10-02)
 
 
